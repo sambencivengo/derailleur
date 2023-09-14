@@ -1,8 +1,7 @@
 import cors from "cors";
-import express from "express";
 import next from "next";
 import { env } from "./env";
-
+import express from "express";
 
 console.log(`Node environment: ${env.nodeEnv}`);
 const port = process.env.PORT || 8000;
@@ -12,8 +11,8 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 
 app.prepare()
-	.then(async () => {
-		const server = express();
+    .then(async () => {
+      const server = express();
 
 		server.use(
 			cors({
@@ -34,4 +33,4 @@ app.prepare()
 	})
 	.catch((error) => {
 		console.error(`App has crashed: ${error}`);
-	});
+});
