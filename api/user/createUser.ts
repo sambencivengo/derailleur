@@ -1,4 +1,3 @@
-import { Prisma, User } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../prisma";
 
