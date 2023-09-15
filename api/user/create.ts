@@ -7,10 +7,14 @@ export default async function createUser(
   res: NextApiResponse
 ) {
   const { username } = req.body;
-  const newUSer = await prisma.user.create({
+  const newUser = await prisma.user.create({
     data: {
-      username
+      username,
+
     }
-  });
-  // TODO: catch Errors
+  }); // TODO: catch Errors
+
+  console.log('👤 User Created', newUser);
+
+  return res.status(201).json(newUser);
 }
