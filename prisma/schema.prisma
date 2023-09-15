@@ -12,14 +12,14 @@ datasource db {
 
 model User {
   id    Int     @id @default(autoincrement())
-  username  String?
+  username  String
   posts Post[]
 }
 
 model Post {
   id        Int     @id @default(autoincrement())
   title     String
-  content   String?
+  content   String
   published Boolean @default(false)
   author    User    @relation(fields: [authorId], references: [id])
   authorId  Int
