@@ -1,4 +1,5 @@
 import setEnv from '@americanairlines/simple-env';
+import { UUID } from 'crypto';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -9,4 +10,3 @@ export const env = setEnv({
 		websiteUrl: 'WEBSITE_URL',
 	},
 });
-

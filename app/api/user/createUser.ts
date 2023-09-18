@@ -1,5 +1,6 @@
-import prisma from "../../../prisma/prisma";
+
 import { NextApiResponse } from "next";
+import prisma from "../../../prisma/prisma";
 
 
 export default async function createUser(
@@ -10,7 +11,6 @@ export default async function createUser(
   const newUser = await prisma.user.create({
     data: {
       username,
-
     }
   });
 

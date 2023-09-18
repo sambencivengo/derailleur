@@ -3,5 +3,5 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   clearMocks: true,
-  setupFilesAfterEnv: ['<rootDir>/app/test/singleton.ts'],
+  setupFilesAfterEnv: ['<rootDir>/app/__test__/singleton.ts'],
 };
