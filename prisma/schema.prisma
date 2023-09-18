@@ -11,20 +11,20 @@ datasource db {
 }
 
 model User {
-  id    String     @id @default(uuid())
+  id String @id @default(uuid())
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  username  String @unique
+  updatedAt DateTime @default(now()) @updatedAt
+  username String @unique
   posts Post[]
 }
 
 model Post {
-  id        String     @id @default(uuid())
-  title     String
-  content   String
+  id String @id @default(uuid())
+  title String
+  content String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
   published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  String
+  author User @relation(fields: [authorId], references: [id])
+  authorId String
 }
