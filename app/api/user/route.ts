@@ -10,10 +10,13 @@ export default function handler(
   if (req.method === 'POST')
   {
     const { username } = req.body;
-    return createUser(username, res);
   } else
   {
 
   }
 }
 
+
+export async function POST(request: NextApiRequest, response: NextApiResponse) {
+  return createUser(request, response);
+}

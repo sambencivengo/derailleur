@@ -1,16 +1,18 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../prisma";
+import { NextApiResponse } from "next";
+
 
 export default async function createUser(
-  username: string,
+  req: Request,
   res: NextApiResponse
 ) {
+  const { username } = await req.json();
   const newUser = await prisma.user.create({
     data: {
       username,
 
     }
-  }); // TODO: catch Errors
+  });
 
   console.log('👤 User Created', newUser);
 
