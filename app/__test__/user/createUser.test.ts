@@ -1,13 +1,5 @@
-import { createUser, updateUsername } from '../queries/user/createUser';
-import { prismaMock } from './singleton';
-
-
-// describe('', function () {
-//   this.beforeAll(() => {
-
-//   });
-
-// });
+import { updateUsername, createUser } from "../../queries/user/createUser";
+import { prismaMock } from "../prismaMock";
 
 test('should create new user ', async () => {
 
