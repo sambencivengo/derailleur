@@ -1,4 +1,3 @@
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import prisma from "../../../prisma/prisma";
 import { v4 as uuid } from 'uuid';
 import { User } from "../../../types/user";
@@ -6,6 +5,8 @@ import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } fro
 
 export interface CreateUser {
   username: string;
+  favoriteBike?: string;
+  location?: string;
 }
 
 export async function createUser(user: CreateUser, userId = uuid()): Promise<DerailleurResponse<User>> {
