@@ -6,19 +6,11 @@ export interface CreateUser {
 }
 
 export async function createUser(user: CreateUser, userId = uuid()) {
-  return await prisma.user.create({
+  const newUser = await prisma.user.create({
     data: {
       ...user,
       id: userId
     }
   });
-}
-
-export async function updateUsername(userId: string, username: string) {
-  return await prisma.user.update({
-    where: { id: userId },
-    data: {
-      username
-    },
-  });
+  return (newUser);
 }
