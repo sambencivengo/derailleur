@@ -1,8 +1,8 @@
+import assert from "assert";
 import { CreateUser, createUser } from "../../queries/user/createUser";
 import { v4 as uuid } from 'uuid';
-import assert from "assert";
+import { cleanUpTable } from "../utils/cleanUpDatabase";
 import prisma from "../../../prisma/prisma";
-import { TableNames, cleanUpTable } from "../utils/cleanUpDatabase";
 
 describe('Create User Query', function () {
 
@@ -32,14 +32,10 @@ describe('Create User Query', function () {
     assert.strictEqual(response.username, testUsername2);
     assert.strictEqual(response.id, testUserId2);
 
-
-    const users = await prisma.users.findMany({});
-    console.log('####', users.length, users);
-
   });
 
   afterAll(async function () {
-    await cleanUpTable(TableNames.USERS);
+    await cleanUpTable(prisma.users);
   });
 });
 

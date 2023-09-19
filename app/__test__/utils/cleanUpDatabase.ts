@@ -1,13 +1,8 @@
-import prisma from "../../../prisma/prisma";
+import { Prisma } from "@prisma/client";
+import { DefaultArgs } from "@prisma/client/runtime/library";
 
-export enum TableNames {
-  USERS = 'Users',
-  POSTS = 'Posts'
-}
-export async function cleanUpTable(tableName: TableNames) {
-  if (tableName === TableNames.USERS) {
-    await prisma.users.deleteMany({});
-  } else if (tableName === TableNames.POSTS) {
-    await prisma.posts.deleteMany({});
-  }
+export type PrismaTable = Prisma.UsersDelegate<DefaultArgs> | Prisma.UsersDelegate<DefaultArgs>;
+
+export async function cleanUpTable(prismaTable: PrismaTable) {
+  await prismaTable.deleteMany({});
 }
