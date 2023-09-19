@@ -6,7 +6,8 @@ import createUser from './createUser';
 export default function handler(
   req: NextApiRequest,
   res: NextApiResponse
-) {
+)
+{
   if (req.method === 'POST')
   {
     const { username } = req.body;
@@ -17,6 +18,7 @@ export default function handler(
 }
 
 
-export async function POST(request: NextApiRequest, response: NextApiResponse) {
+export async function POST(request: NextApiRequest, response: NextApiResponse)
+{
   return createUser(request, response);
 }

@@ -3,7 +3,8 @@ import { PrismaClient } from '@prisma/client';
 // NOTE: More info on prisma best practices with Next.js 
 // https://www.prisma.io/docs/guides/other/troubleshooting-orm/help-articles/nextjs-prisma-client-dev-practices
 
-const prismaClientSingleton = () => {
+const prismaClientSingleton = () =>
+{
   return new PrismaClient();
 };
 

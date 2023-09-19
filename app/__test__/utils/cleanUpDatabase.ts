@@ -1,23 +1,42 @@
-import { Prisma } from "@prisma/client";
 import prisma from "../../../prisma/prisma";
 
 type UserIds = Array<string>;
-export async function cleanUserTable<T>(arrayOfIds: UserIds, modelName: 'user' | 'post') {
-  const deleteUserPromises = arrayOfIds.map((id) => {
 
-    return prisma.$extends(
-      {
-        model: {
-          $allModels: {
-            async exists(
-              this: T,
-              where: Prisma.Args<T, 'delete'>['where']
-            );
-          }
-        }
+enum TableNames
+{
+  USER = 'user',
+  POST = 'post'
+}
+export async function cleanUserTable(arrayOfIds: UserIds, tableName: TableNames)
+{
+
+
+  if (tableName === TableNames.POST)
+  {
+
+  } else if (tableName === TableNames.USER)
+  {
+
+  }
+
+
+  const deleteUserPromises = arrayOfIds.map((id) =>
+  {
+    return prisma.user.delete({
+      where: {
+        id
       }
-    );
+    });
   });
 
   await Promise.all(deleteUserPromises);
+
+}
+
+function createDeletePromises(arrayOfIds: UserIds)
+{
+  for (let i = 0, limi = arrayOfIds.length; i < limi; i++)
+  {
+
+  }
 }
