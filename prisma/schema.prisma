@@ -7,14 +7,14 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = env("DATABASE_URL")
 }
 
 model Users {
   id String @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
-  username String @unique
+  username String @unique @db.VarChar(30)
   posts Posts[]
 }
 
