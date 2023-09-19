@@ -1,4 +1,5 @@
 import assert from "assert";
+import { faker } from '@faker-js/faker';
 import { CreateUser, createUser } from "../../queries/user/createUser";
 import { v4 as uuid } from 'uuid';
 import { cleanUpTable } from "../utils/cleanUpDatabase";
@@ -7,7 +8,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { PrismaQueryErrorCodes } from "../../../prisma/prismaErrorCodes";
 
 describe('Create User Query', function () {
-  const testUsername = 'testUsername_00';
+  const testUsername = faker.person.firstName();
   const now = new Date();
   const testUserId = uuid();
 
@@ -31,7 +32,6 @@ describe('Create User Query', function () {
   it("Successfully creates a new user with location and favorite bike undefined", async function () {
     const username = 'testUsername_01';
     const response = await createUser({ username });
-    console.log('####', response);
     const result = response.result!;
     assert.strictEqual(result.username, username);
     assert.strictEqual(result.favoriteBike, null);
@@ -49,7 +49,7 @@ describe('Create User Query', function () {
     const username = 'x'.repeat(31);
     const response = await createUser({ username });
     const { result } = response;
-    const error = response.error as PrismaClientKnownRequestError;
+    const error: PrismaClientKnownRequestError = response.error;
     assert.strictEqual(result, null);
     assert.strictEqual(typeof error, 'object');
     assert.strictEqual(error.code, PrismaQueryErrorCodes.VALUE_TOO_LONG);
@@ -58,7 +58,7 @@ describe('Create User Query', function () {
     const username = 'testUsername_02';
     const response = await createUser({ username }, testUserId);
     const { result } = response;
-    const error = response.error as PrismaClientKnownRequestError;
+    const error: PrismaClientKnownRequestError = response.error;
     assert.strictEqual(result, null);
     assert.strictEqual(typeof error, 'object');
     assert.strictEqual(error.code, PrismaQueryErrorCodes.UNIQUE_CONSTRAINT);
