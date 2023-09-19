@@ -18,7 +18,6 @@ export async function createUser(user: CreateUser, userId = uuid()): Promise<Der
     });
     return createSuccessfulResponse(newUser);
   } catch (error: any) {
-    const userError = error as PrismaClientKnownRequestError;
-    return createErrorResponse(userError);
+    return createErrorResponse(error);
   }
 };
