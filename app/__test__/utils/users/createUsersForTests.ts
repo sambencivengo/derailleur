@@ -15,3 +15,24 @@ export async function createUsersForTests(arrayOfUsers: UserPayload[]): Promise<
   const response = await Promise.all(createUserPromises);
   return response;
 }
+
+
+
+interface AddMockDataProps {
+  createDataFunction: (...args: any[]) => Promise<DerailleurResponse<any>>;
+
+  newDataParams: any[][];
+}
+
+export async function addDataToDB(args: AddMockDataProps[]) {
+  let res: any[] = [];
+
+  for (let i = 0, limi = args.length; i < limi; i++) {
+    const { createDocumentFunction, newDocParams } = args[i];
+
+
+  }
+}
+
+
+
