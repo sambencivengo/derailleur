@@ -4,7 +4,7 @@ import { User } from "../../../types/user";
 export type UpdateUser = Partial<User>;
 
 export async function updateUser(userId: string, user: UpdateUser) {
-  return await prisma.user.update({
+  return await prisma.users.update({
     where: { id: userId },
     data: {
       ...user

@@ -2,10 +2,9 @@ import { CreateUser, createUser } from "../../queries/user/createUser";
 import { v4 as uuid } from 'uuid';
 import assert from "assert";
 import prisma from "../../../prisma/prisma";
-import { cleanUserTable } from "../utils/cleanUpDatabase";
+import { TableNames, cleanUpTable } from "../utils/cleanUpDatabase";
 
-describe('Create User Query', function ()
-{
+describe('Create User Query', function () {
 
   const testUsername1 = 'username';
   const testUsername2 = 'username2';
@@ -16,8 +15,7 @@ describe('Create User Query', function ()
     username: testUsername1,
   };
 
-  it("Successfully creates a new user", async function ()
-  {
+  it("Successfully creates a new user", async function () {
     const response = await createUser({ username: testUsername1 }, testUserId1);
 
 
@@ -29,19 +27,19 @@ describe('Create User Query', function ()
   });
 
 
-  it('2 time', async function ()
-  {
+  it('2 time', async function () {
     const response = await createUser({ username: testUsername2 }, testUserId2);
     assert.strictEqual(response.username, testUsername2);
     assert.strictEqual(response.id, testUserId2);
 
 
+    const users = await prisma.users.findMany({});
+    console.log('####', users.length, users);
 
   });
 
-  afterAll(async function ()
-  {
-    await cleanUserTable([testUserId1, testUserId2]);
+  afterAll(async function () {
+    await cleanUpTable(TableNames.USERS);
   });
 });
 

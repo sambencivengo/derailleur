@@ -6,7 +6,7 @@ export interface CreateUser {
 }
 
 export async function createUser(user: CreateUser, userId = uuid()) {
-  const newUser = await prisma.user.create({
+  const newUser = await prisma.users.create({
     data: {
       ...user,
       id: userId

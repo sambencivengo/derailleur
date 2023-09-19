@@ -6,7 +6,7 @@ export default async function findUser(
   res: NextApiResponse
 ) {
   const id = req.query.id as string;
-  const user = await prisma.user.findUnique({
+  const user = await prisma.users.findUnique({
     where: {
       id
     }
