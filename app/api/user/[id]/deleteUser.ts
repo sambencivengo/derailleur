@@ -7,11 +7,10 @@ export default async function deleteUser(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { id } = req.query;
-
+  const id = req.query.id as string;
   const user = await prisma.user.delete({
     where: {
-      id: Number(id)
+      id
     }
   });
   // TODO: catch error or if there is no user found

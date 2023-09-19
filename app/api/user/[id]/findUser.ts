@@ -5,10 +5,10 @@ export default async function findUser(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { id } = req.query;
+  const id = req.query.id as string;
   const user = await prisma.user.findUnique({
     where: {
-      id: Number(id)
+      id
     }
   }); // TODO: catch Errors
 
