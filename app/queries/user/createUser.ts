@@ -3,17 +3,15 @@ import { v4 as uuid } from 'uuid';
 import { User } from "../../../types/user";
 import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from "../../utils/responseGenerators";
 
-export interface CreateUser
-{
+export interface CreateUserPayload {
   username: string;
   favoriteBike?: string;
   location?: string;
 }
 
-export async function createUser(user: CreateUser, userId = uuid()): Promise<DerailleurResponse<User>>
-{
-  try
-  {
+export type CreateUser = (user: CreateUserPayload, userId?: string) => Promise<DerailleurResponse<User>>;
+export async function createUser(user: CreateUserPayload, userId = uuid()): Promise<DerailleurResponse<User>> {
+  try {
     const newUser = await prisma.users.create({
       data: {
         ...user,
@@ -21,8 +19,7 @@ export async function createUser(user: CreateUser, userId = uuid()): Promise<Der
       }
     });
     return createSuccessfulResponse(newUser);
-  } catch (error: any)
-  {
+  } catch (error: any) {
     return createErrorResponse(error);
   }
 };

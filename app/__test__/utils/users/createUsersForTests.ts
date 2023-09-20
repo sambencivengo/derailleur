@@ -1,10 +1,10 @@
 import { User } from "../../../../types/user";
-import { CreateUser, createUser } from "../../../queries/user/createUser";
+import { CreateUser, CreateUserPayload, createUser } from "../../../queries/user/createUser";
 import { DerailleurResponse } from "../../../utils/responseGenerators";
 
 
 interface UserPayload {
-  user: CreateUser,
+  user: CreateUserPayload,
   id?: string;
 }
 export async function createUsersForTests(arrayOfUsers: UserPayload[]): Promise<DerailleurResponse<User>[]> {

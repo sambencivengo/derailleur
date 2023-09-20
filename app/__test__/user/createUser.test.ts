@@ -1,23 +1,21 @@
 import assert from "assert";
 import prisma from "../../../prisma/prisma";
 import { faker } from '@faker-js/faker';
-import { CreateUser, createUser } from "../../queries/user/createUser";
+import { CreateUserPayload, createUser } from "../../queries/user/createUser";
 import { v4 as uuid } from 'uuid';
 import { cleanUpTable } from "../utils/cleanUpDatabase";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { PrismaQueryErrorCodes } from "../../../prisma/prismaErrorCodes";
 
-describe.skip('Create User Query', function ()
-{
+describe.skip('Create User Query', function () {
   const testUsername = faker.person.firstName();
   const now = new Date();
   const testUserId = uuid();
 
-  it("Successfully creates a new user with all fields", async function ()
-  {
+  it("Successfully creates a new user with all fields", async function () {
     const testFavBike = "1991 Trek Single Track 990";
     const testLocation = 'Fort Collins, CO';
-    const testCreateUser: CreateUser = {
+    const testCreateUser: CreateUserPayload = {
       username: testUsername,
       favoriteBike: testFavBike,
       location: testLocation
@@ -31,8 +29,7 @@ describe.skip('Create User Query', function ()
     assert(now < result.createdAt);
     assert(now < result.updatedAt);
   });
-  it("Successfully creates a new user with location and favorite bike undefined", async function ()
-  {
+  it("Successfully creates a new user with location and favorite bike undefined", async function () {
     const username = 'testUsername_01';
     const response = await createUser({ username });
     const result = response.result!;
@@ -42,15 +39,13 @@ describe.skip('Create User Query', function ()
     assert(now < result.createdAt);
     assert(now < result.updatedAt);
   });
-  it("Fails to create a user due to username conflict", async function ()
-  {
+  it("Fails to create a user due to username conflict", async function () {
     const response = await createUser({ username: testUsername });
     const { error, result } = response;
     assert.strictEqual(result, null);
     assert.strictEqual(typeof error, 'object');
   });
-  it("Fails to create a user due to username being greater than 30 characters", async function ()
-  {
+  it("Fails to create a user due to username being greater than 30 characters", async function () {
     const username = 'x'.repeat(31);
     const response = await createUser({ username });
     const { result } = response;
@@ -59,8 +54,7 @@ describe.skip('Create User Query', function ()
     assert.strictEqual(typeof error, 'object');
     assert.strictEqual(error.code, PrismaQueryErrorCodes.VALUE_TOO_LONG);
   });
-  it("Fails to create a user due to being supplied a non-unique uuid()", async function ()
-  {
+  it("Fails to create a user due to being supplied a non-unique uuid()", async function () {
     const username = 'testUsername_02';
     const response = await createUser({ username }, testUserId);
     const { result } = response;
@@ -70,8 +64,7 @@ describe.skip('Create User Query', function ()
     assert.strictEqual(error.code, PrismaQueryErrorCodes.UNIQUE_CONSTRAINT);
   });
 
-  afterAll(async function ()
-  {
+  afterAll(async function () {
     await cleanUpTable(prisma.users);
   });
 });
