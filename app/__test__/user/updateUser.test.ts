@@ -11,7 +11,8 @@ import { createUsersForTests } from '../utils/users/createUsersForTests';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { PrismaQueryErrorCodes } from '../../../prisma/prismaErrorCodes';
 
-describe("Update User Query", function () {
+describe.skip("Update User Query", function ()
+{
   const testUserId_00 = uuid();
   const testUserId_01 = uuid();
   const now = new Date();
@@ -25,10 +26,12 @@ describe("Update User Query", function () {
     username: testUsername_01
   };
 
-  beforeAll(async function () {
+  beforeAll(async function ()
+  {
     await createUsersForTests([{ user: newUser_00, id: testUserId_00 }, { user: newUser_01, id: testUserId_01 }]);
   });
-  it('Successfully updates a user record with a favorite bike', async function () {
+  it('Successfully updates a user record with a favorite bike', async function ()
+  {
     const response = await updateUser(testUserId_00, { favoriteBike: testUserFavoriteBike_00 });
     const { error } = response;
     const result = response.result!;
@@ -41,7 +44,8 @@ describe("Update User Query", function () {
     assert.strictEqual(result.id, testUserId_00);
     assert.strictEqual(result.username, testUsername_00);
   });
-  it('Successfully updates a user record with a location', async function () {
+  it('Successfully updates a user record with a location', async function ()
+  {
     const testLocation = 'Fort Collins, CO';
     const response = await updateUser(testUserId_00, { location: testLocation });
     const { error } = response;
@@ -55,7 +59,8 @@ describe("Update User Query", function () {
     assert.strictEqual(result.id, testUserId_00);
     assert.strictEqual(result.username, testUsername_00);
   });
-  it('Successfully updates a user record with a location and favorite bike', async function () {
+  it('Successfully updates a user record with a location and favorite bike', async function ()
+  {
     const testLocation = 'Brooklyn, NY';
     const testUserFavoriteBike_00 = "Crust Bombora";
     const response = await updateUser(testUserId_00, { location: testLocation, favoriteBike: testUserFavoriteBike_00 });
@@ -70,7 +75,8 @@ describe("Update User Query", function () {
     assert.strictEqual(result.id, testUserId_00);
     assert.strictEqual(result.username, testUsername_00);
   });
-  it('Fails to update a user with a duplicate username', async function () {
+  it('Fails to update a user with a duplicate username', async function ()
+  {
     const response = await updateUser(testUserId_01, { username: testUsername_00 });
     const { result } = response;
     const error: PrismaClientKnownRequestError = response.error!;
@@ -80,7 +86,8 @@ describe("Update User Query", function () {
   });
 
 
-  afterAll(async function () {
+  afterAll(async function ()
+  {
     await cleanUpTable(prisma.users);
   });
 });

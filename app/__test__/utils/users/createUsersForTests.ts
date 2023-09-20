@@ -18,21 +18,21 @@ export async function createUsersForTests(arrayOfUsers: UserPayload[]): Promise<
 
 
 
-interface AddMockDataProps {
-  createDataFunction: (...args: any[]) => Promise<DerailleurResponse<any>>;
+// interface AddMockDataProps {
+//   createDataFunction: (...args: any[]) => Promise<DerailleurResponse<any>>;
 
-  newDataParams: any[][];
-}
+//   newDataParams: any[][];
+// }
 
-export async function addDataToDB(args: AddMockDataProps[]) {
-  let res: any[] = [];
+// export async function addDataToDB(args: AddMockDataProps[]) {
+//   let res: any[] = [];
 
-  for (let i = 0, limi = args.length; i < limi; i++) {
-    const { createDocumentFunction, newDocParams } = args[i];
+//   for (let i = 0, limi = args.length; i < limi; i++) {
+//     const { createDocumentFunction, newDocParams } = args[i];
 
 
-  }
-}
+//   }
+// }
 
 
 
