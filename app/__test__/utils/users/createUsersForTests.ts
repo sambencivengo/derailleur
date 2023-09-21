@@ -1,5 +1,5 @@
 import { User } from "../../../../types/user";
-import { CreateUser, CreateUserPayload, createUser } from "../../../queries/user/createUser";
+import { CreateUserPayload, createUser } from "../../../queries/user/createUser";
 import { DerailleurResponse } from "../../../utils/responseGenerators";
 
 

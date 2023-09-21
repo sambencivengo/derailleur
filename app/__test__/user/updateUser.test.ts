@@ -1,12 +1,9 @@
 import assert from 'assert';
 import { v4 as uuid } from 'uuid';
-import { CreateUser, CreateUserPayload, createUser } from "../../queries/user/createUser";
+import { CreateUserPayload } from "../../queries/user/createUser";
 import prisma from '../../../prisma/prisma';
 import { cleanUpTable } from '../utils/cleanUpDatabase';
 import { updateUser } from '../../queries/user/updateUser';
-import { faker } from '@faker-js/faker';
-import { User } from '../../../types/user';
-import { DerailleurResponse } from '../../utils/responseGenerators';
 import { createUsersForTests } from '../utils/users/createUsersForTests';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { PrismaQueryErrorCodes } from '../../../prisma/prismaErrorCodes';

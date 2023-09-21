@@ -10,6 +10,7 @@ export interface TestQueryMockProps<R, F extends (...args: Parameters<F>) => Que
   error?: any;
 };
 
+// TODO: handle mock errors....
 export async function testQueryMock<R, F extends (...args: Parameters<F>) => Promise<DerailleurResponse<R>>>(args: TestQueryMockProps<R, F>) {
   const { createRecordFunction, mockFunctionResolvedValue, payload, expectedResult, error } = args;
   mockFunctionResolvedValue(expectedResult);
