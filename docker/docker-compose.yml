@@ -6,10 +6,10 @@ services:
   db:
     image: postgres:13
     restart: always
-    container_name: derailleur-integration-tests-prisma
+    container_name: derailleur-integration-tests
     ports:
       - '5433:5432'
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: db
+      POSTGRES_DB: derailleur

@@ -4,7 +4,7 @@ import { prismaMock } from "../../prismaMock";
 import { CreateUser, CreateUserPayload, createUser } from "../../../../queries/user/createUser";
 import { testQueryMock } from "../../utils/createQueryMock";
 
-describe('Create User Query', function () {
+describe.skip('Create User Query', function () {
   const testUsername = 'testUserName_00';
   const now = new Date();
 

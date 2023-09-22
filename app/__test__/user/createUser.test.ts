@@ -7,7 +7,7 @@ import { cleanUpTable } from "../utils/cleanUpDatabase";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { PrismaQueryErrorCodes } from "../../../prisma/prismaErrorCodes";
 
-describe.skip('Create User Query', function () {
+describe('Create User Query', function () {
   const testUsername = faker.person.firstName();
   const now = new Date();
   const testUserId = uuid();
@@ -65,6 +65,7 @@ describe.skip('Create User Query', function () {
   });
 
   afterAll(async function () {
+
     await cleanUpTable(prisma.users);
   });
 });

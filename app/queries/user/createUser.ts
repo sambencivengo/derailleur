@@ -12,12 +12,14 @@ export interface CreateUserPayload {
 export type CreateUser = (user: CreateUserPayload, userId?: string) => Promise<DerailleurResponse<User>>;
 export async function createUser(user: CreateUserPayload, userId = uuid()): Promise<DerailleurResponse<User>> {
   try {
+    console.log('###', prisma);
     const newUser = await prisma.users.create({
       data: {
         ...user,
         id: userId
       }
     });
+    console.log(newUser);
     return createSuccessfulResponse(newUser);
   } catch (error: any) {
     return createErrorResponse(error);
