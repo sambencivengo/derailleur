@@ -9,7 +9,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prisma:migrate": "npx prisma migrate dev --name",
+    "migrate:create": "npx prisma migrate dev --name",
+    "migrate:docker:deploy": "dotenv -e .env.test -- npx prisma migrate deploy",
     "test": "jest --runInBand"
   },
   "dependencies": {

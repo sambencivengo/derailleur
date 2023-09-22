@@ -6,4 +6,5 @@ module.exports = {
   // NOTE: This is required for mocking with jest and prisma.
   // Currently commented out so that the db tests can run against the database
   // setupFilesAfterEnv: ['<rootDir>/app/__test__/mock/prismaMock.ts'],
+  // setupFilesAfterEnv: ['<rootDir>/prisma/prisma.ts'],
 };
