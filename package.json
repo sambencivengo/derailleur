@@ -11,7 +11,7 @@
     "lint": "next lint",
     "migrate:create": "npx prisma migrate dev --name",
     "migrate:docker:deploy": "dotenv -e .env.test -- npx prisma migrate deploy",
-    "test": "jest --runInBand"
+    "test": "dotenv -e .env.test -- npm run docker:up && npx prisma migrate deploy && jest -i"
   },
   "dependencies": {
     "@americanairlines/simple-env": "^1.0.5",
