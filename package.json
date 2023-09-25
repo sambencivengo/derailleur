@@ -10,10 +10,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "npx prisma migrate deploy && jest -i",
     "migrate:create": "npx prisma migrate dev --name",
-    "migrate:docker:deploy": "dotenv -e .env.test -- npx prisma migrate deploy",
-    "test": "dotenv -e .env.test --  npx prisma migrate deploy && dotenv -e .env.test --  jest -i",
-    "prisma:client": "npx prisma generate"
+    "migrate:docker:deploy": "npx prisma migrate deploy",
+    "prisma:client": "npx prisma generate",
+    "prisma:studio": "npx prisma studio"
   },
   "dependencies": {
     "@americanairlines/simple-env": "^1.0.5",
