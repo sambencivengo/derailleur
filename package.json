@@ -5,13 +5,15 @@
   "scripts": {
     "docker:up": "docker-compose -f docker/docker-compose.yml up -d",
     "docker:down": "docker-compose -f docker/docker-compose.yml down",
+    "docker:container": "docker exec -it $cid psql -U user derailleur",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "migrate:create": "npx prisma migrate dev --name",
     "migrate:docker:deploy": "dotenv -e .env.test -- npx prisma migrate deploy",
-    "test": "npm run docker:up && yarn prisma migrate deploy && jest -i"
+    "test": "dotenv -e .env.test --  npx prisma migrate deploy && dotenv -e .env.test --  jest -i",
+    "prisma:client": "npx prisma generate"
   },
   "dependencies": {
     "@americanairlines/simple-env": "^1.0.5",

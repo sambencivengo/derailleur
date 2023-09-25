@@ -21,7 +21,6 @@ describe('Create User Query', function () {
       location: testLocation
     };
     const response = await createUser(testCreateUser, testUserId);
-    console.log(response);
     const result = response.result!;
     assert.strictEqual(result.username, testUsername);
     assert.strictEqual(result.id, testUserId);

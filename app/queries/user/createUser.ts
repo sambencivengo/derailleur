@@ -19,7 +19,6 @@ export async function createUser(user: CreateUserPayload, userId = uuid()): Prom
         id: userId
       }
     });
-    console.log('###', newUser);
     return createSuccessfulResponse(newUser);
   } catch (error: any) {
     return createErrorResponse(error);
