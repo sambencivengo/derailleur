@@ -16,8 +16,6 @@ export async function createUsersForTests(arrayOfUsers: UserPayload[]): Promise<
   return response;
 }
 
-
-
 // interface AddMockDataProps {
 //   createDataFunction: (...args: any[]) => Promise<DerailleurResponse<any>>;
 

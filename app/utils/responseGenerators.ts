@@ -8,7 +8,7 @@ export interface DerailleurResponse<T = any> {
 export function createSuccessfulResponse<T = any>(result: T): DerailleurResponse<T> {
   return ({ result, error: null });
 };
-
+ 
 export function createErrorResponse(error: any): DerailleurResponse<any> {
   return ({ result: null, error });
 };
