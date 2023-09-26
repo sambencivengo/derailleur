@@ -1,5 +1,5 @@
 import { DerailleurResponse } from "../../../utils/responseGenerators";
-import { QueryResponse } from "../../utils/createMockRecords";
+import { QueryResponse } from "../../utils/addRecordsToDb";
 
 
 type CreateRecordFunction<R, F extends (...args: any) => QueryResponse<R>> = (...args: Parameters<F>) => QueryResponse<R>;

@@ -7,7 +7,7 @@ interface AddMockDataProps<R, F extends (...args: any) => QueryResponse<R>> {
   newRecordParams: Parameters<CreateRecordFunction<R, F>>[];
 }
 
-export async function addDataToDB<R, F extends (...args: Parameters<F>) => Promise<DerailleurResponse<R>>>
+export async function addRecordsToDb<R, F extends (...args: Parameters<F>) => Promise<DerailleurResponse<R>>>
   (...args: AddMockDataProps<R, F>[]) {
   for (let i = 0, limi = args.length; i < limi; i++) {
     const { createRecordFunction, newRecordParams } = args[i];

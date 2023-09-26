@@ -2,7 +2,7 @@ import assert from 'assert';
 import { v4 as uuid } from 'uuid';
 import { CreateUser, CreateUserPayload, createUser } from "../../queries/user/createUser";
 import { updateUser } from '../../queries/user/updateUser';
-import { addDataToDB } from '../utils/createMockRecords';
+import { addRecordsToDb } from '../utils/addRecordsToDb';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { PrismaQueryErrorCodes } from '../../../prisma/prismaErrorCodes';
 import { User } from '../../../types/user';
@@ -24,7 +24,7 @@ describe("Update User Query", function () {
   };
 
   beforeAll(async function () {
-    await addDataToDB<User, CreateUser>(
+    await addRecordsToDb<User, CreateUser>(
       {
         createRecordFunction: createUser,
         newRecordParams: [
