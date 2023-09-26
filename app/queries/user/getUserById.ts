@@ -1,11 +1,11 @@
-import prisma from "../../prisma/prisma";
-import { User } from "../../types/user";
-import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "../utils/responseGenerators";
+import prisma from "../../../prisma/prisma";
+import { User } from "../../../types/user";
+import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "../../utils/responseGenerators";
 
 
 export type GetUserById = (userId: string) => Promise<DerailleurResponse<User>>;
 
-export async function getUserById(userId: string) {
+export async function getUserById(userId: string): Promise<DerailleurResponse<User>> {
   try {
     const user = await prisma.users.findUnique({
       where: {

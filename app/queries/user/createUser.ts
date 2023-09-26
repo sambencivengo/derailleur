@@ -5,8 +5,8 @@ import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } fro
 
 export interface CreateUserPayload {
   username: string;
-  favoriteBike?: string;
-  location?: string;
+  favoriteBike?: string | null;
+  location?: string | null;
 }
 
 export type CreateUser = (user: CreateUserPayload, userId?: string) => Promise<DerailleurResponse<User>>;
