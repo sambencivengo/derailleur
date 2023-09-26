@@ -1,6 +1,7 @@
 import { DerailleurResponse } from "../../../utils/responseGenerators";
+import { QueryResponse } from "../../utils/createMockRecords";
 
-type QueryResponse<R> = Promise<DerailleurResponse<R>>;
+
 type CreateRecordFunction<R, F extends (...args: any) => QueryResponse<R>> = (...args: Parameters<F>) => QueryResponse<R>;
 export interface TestQueryMockProps<R, F extends (...args: Parameters<F>) => QueryResponse<R>> {
   expectedResult: R;

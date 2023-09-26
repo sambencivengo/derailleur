@@ -1,14 +1,15 @@
 import assert from 'assert';
 import { v4 as uuid } from 'uuid';
-import { CreateUserPayload } from "../../queries/user/createUser";
-import prisma from '../../../prisma/prisma';
-import { cleanUpTable } from '../utils/cleanUpDatabase';
+import { CreateUser, CreateUserPayload, createUser } from "../../queries/user/createUser";
 import { updateUser } from '../../queries/user/updateUser';
-import { createUsersForTests } from '../utils/users/createUsersForTests';
+import { addDataToDB } from '../utils/createMockRecords';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { PrismaQueryErrorCodes } from '../../../prisma/prismaErrorCodes';
+import { User } from '../../../types/user';
+import prisma from '../../../prisma/prisma';
+import { cleanUpTable } from '../utils/cleanUpDatabase';
 
-describe.skip("Update User Query", function () {
+describe("Update User Query", function () {
   const testUserId_00 = uuid();
   const testUserId_01 = uuid();
   const now = new Date();
@@ -23,8 +24,17 @@ describe.skip("Update User Query", function () {
   };
 
   beforeAll(async function () {
-    await createUsersForTests([{ user: newUser_00, id: testUserId_00 }, { user: newUser_01, id: testUserId_01 }]);
+    await addDataToDB<User, CreateUser>(
+      {
+        createRecordFunction: createUser,
+        newRecordParams: [
+          [newUser_00, testUserId_00],
+          [newUser_01, testUserId_01]
+        ]
+      }
+    );
   });
+
   it('Successfully updates a user record with a favorite bike', async function () {
     const response = await updateUser(testUserId_00, { favoriteBike: testUserFavoriteBike_00 });
     const { error } = response;
@@ -76,8 +86,7 @@ describe.skip("Update User Query", function () {
     assert.strictEqual(error.code, PrismaQueryErrorCodes.UNIQUE_CONSTRAINT);
   });
 
-
   afterAll(async function () {
-    await cleanUpTable(prisma.users);
+    await cleanUpTable([prisma.users]);
   });
 });
