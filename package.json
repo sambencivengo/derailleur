@@ -6,6 +6,7 @@
     "docker:up": "docker-compose -f docker/docker-compose.yml up -d",
     "docker:down": "docker-compose -f docker/docker-compose.yml down",
     "docker:container": "docker exec -it $cid psql -U user derailleur",
+    "docker:db": "npm run docker:up && npm run migrate:docker:deploy",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

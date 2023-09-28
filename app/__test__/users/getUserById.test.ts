@@ -1,15 +1,15 @@
 import assert from 'assert';
 import { v4 as uuid } from 'uuid';
 import prisma from "../../../prisma/prisma";
-import { User } from "../../../types/user";
-import { CreateUser, CreateUserPayload, createUser } from "../../queries/user/createUser";
-import { getUserById } from "../../queries/user/getUserById";
+import { User } from "../../../types/users";
+import { CreateUser, CreateUserPayload, createUser } from "../../queries/users/createUser";
+import { getUserById } from "../../queries/users/getUserById";
 import { mockUser_00 } from "../mock/user/mockUser";
 import { addRecordsToDb } from "../utils/addRecordsToDb";
 import { cleanUpTable } from "../utils/cleanUpDatabase";
 
 
-describe.only("Get User By ID Query", function () {
+describe("Get User By ID Query", function () {
   const testUserId_00 = uuid();
   const { favoriteBike, username, location } = mockUser_00;
   const now = new Date();
@@ -38,7 +38,7 @@ describe.only("Get User By ID Query", function () {
     assert(now < result.createdAt);
     assert(now < result.updatedAt);
   });
-  it('Successfully gets a user by user ID', async () => {
+  it('Unsuccessfully gets a user when provided a non existent user id', async () => {
     const response = await getUserById('nonExistentUserId');
     assert.strictEqual(response.result, null);
     assert.strictEqual(response.error!, 'Unable to find user by id');

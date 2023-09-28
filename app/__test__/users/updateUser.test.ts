@@ -1,11 +1,11 @@
 import assert from 'assert';
 import { v4 as uuid } from 'uuid';
-import { CreateUser, CreateUserPayload, createUser } from "../../queries/user/createUser";
-import { updateUser } from '../../queries/user/updateUser';
+import { CreateUser, CreateUserPayload, createUser } from "../../queries/users/createUser";
+import { updateUser } from '../../queries/users/updateUser';
 import { addRecordsToDb } from '../utils/addRecordsToDb';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { PrismaQueryErrorCodes } from '../../../prisma/prismaErrorCodes';
-import { User } from '../../../types/user';
+import { User } from '../../../types/users';
 import prisma from '../../../prisma/prisma';
 import { cleanUpTable } from '../utils/cleanUpDatabase';
 
