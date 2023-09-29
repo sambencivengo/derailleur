@@ -1,3 +1,4 @@
+import assert from "assert";
 import { DerailleurResponse } from "../../utils/responseGenerators";
 
 export type QueryResponse<R> = Promise<DerailleurResponse<R>>;
@@ -11,11 +12,15 @@ export async function addRecordsToDb<R, F extends (...args: Parameters<F>) => Pr
   (...args: AddMockDataProps<R, F>[]) {
   for (let i = 0, limi = args.length; i < limi; i++) {
     const { createRecordFunction, newRecordParams } = args[i];
-    await Promise.all(newRecordParams.map((params) => createRecordFunction(...params)))
+    const responses = await Promise.all(newRecordParams.map((params) => createRecordFunction(...params)))
       .catch((e: any) => {
         console.error(e);
         throw e;
       });
+    for (let i = 0, limi = responses.length; i < limi; i++) {
+      assert(responses[i].result, 'Unable to creak mock records in database');
+    };
+    return responses;
   }
 }
 

@@ -27,6 +27,7 @@ export async function createPost(postPayload: CreatePostPayload, userId: string,
         published
       }
     });
+    console.log(newPost);
     return createSuccessfulResponse(newPost);
   } catch (error) {
     createErrorResponse(error);
