@@ -22,6 +22,7 @@ describe('Create User Query', function () {
     };
     const response = await createUser(testCreateUser, testUserId);
     const result = response.result!;
+    assert.ok(response);
     assert.strictEqual(result.username, testUsername);
     assert.strictEqual(result.id, testUserId);
     assert.strictEqual(result.favoriteBike, testFavBike);
@@ -33,6 +34,7 @@ describe('Create User Query', function () {
     const username = 'testUsername_01';
     const response = await createUser({ username });
     const result = response.result!;
+    assert.ok(response);
     assert.strictEqual(result.username, username);
     assert.strictEqual(result.favoriteBike, null);
     assert.strictEqual(result.location, null);
@@ -42,6 +44,7 @@ describe('Create User Query', function () {
   it("Fails to create a user due to username conflict", async function () {
     const response = await createUser({ username: testUsername });
     const { error, result } = response;
+    assert.ok(response);
     assert.strictEqual(result, null);
     assert.strictEqual(typeof error, 'object');
   });
@@ -50,8 +53,9 @@ describe('Create User Query', function () {
     const response = await createUser({ username });
     const { result } = response;
     const error: PrismaClientKnownRequestError = response.error;
+    assert.ok(response);
     assert.strictEqual(result, null);
-    assert.strictEqual(typeof error, 'object');
+    assert.notStrictEqual(typeof error, null);
     assert.strictEqual(error.code, PrismaQueryErrorCodes.VALUE_TOO_LONG);
   });
   it("Fails to create a user due to being supplied a non-unique uuid()", async function () {
@@ -59,8 +63,9 @@ describe('Create User Query', function () {
     const response = await createUser({ username }, testUserId);
     const { result } = response;
     const error: PrismaClientKnownRequestError = response.error;
+    assert.ok(response);
     assert.strictEqual(result, null);
-    assert.strictEqual(typeof error, 'object');
+    assert.notStrictEqual(typeof error, null);
     assert.strictEqual(error.code, PrismaQueryErrorCodes.UNIQUE_CONSTRAINT);
   });
 

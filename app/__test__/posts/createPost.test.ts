@@ -16,6 +16,9 @@ describe.only("Create Post Query", function () {
   const testUser_01 = mockUser_01;
   const testUserId_01 = uuid();
   const now = new Date();
+  const testContent = "Looking to replace suspension fork that I have on my Rockhopper, any recommendations?";
+  const testTitle = "26 inch Fork Replacement";
+  const testPostId_00 = uuid();
 
   beforeAll(async function () {
     await addRecordsToDb<User, CreateUser>(
@@ -30,14 +33,11 @@ describe.only("Create Post Query", function () {
     );
   });
   it("Successfully creates a post", async function () {
-    const testContent = "Looking to replace suspension fork that I have on my Rockhopper, any recommendations?";
-    const testTitle = "26 inch Fork Replacement";
-    const testPostId = uuid();
     const postPayload: CreatePostPayload = {
       title: testTitle,
       content: testContent,
     };
-    const response = await createPost(postPayload, testUserId_00, testPostId);
+    const response = await createPost(postPayload, testUserId_00, testPostId_00);
 
     const result = response.result!;
     assert.ok(response);
@@ -46,9 +46,29 @@ describe.only("Create Post Query", function () {
     assert.strictEqual(result.content, testContent);
     assert.strictEqual(result.title, testTitle);
     assert.strictEqual(result.published, false);
-    assert.strictEqual(result.id, testPostId);
+    assert.strictEqual(result.id, testPostId_00);
     assert(now < result.updatedAt);
     assert(now < result.createdAt);
+  });
+  it("Fails to  create a post with a duplicate uuid", async function () {
+    const postPayload: CreatePostPayload = {
+      title: testTitle,
+      content: testContent,
+    };
+    const response = await createPost(postPayload, testUserId_00, testPostId_00);
+    assert.ok(response);
+    assert.strictEqual(response.result, null);
+    assert.ok(response.error);
+  });
+  it("Fails to  create a post with a nonexistent userId", async function () {
+    const postPayload: CreatePostPayload = {
+      title: testTitle,
+      content: testContent,
+    };
+    const response = await createPost(postPayload, 'nonExistentUserId', uuid());
+    assert.ok(response);
+    assert.strictEqual(response.result, null);
+    assert.ok(response.error);
   });
 
   afterAll(async function () {

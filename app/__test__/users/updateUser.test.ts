@@ -39,6 +39,7 @@ describe("Update User Query", function () {
     const response = await updateUser(testUserId_00, { favoriteBike: testUserFavoriteBike_00 });
     const { error } = response;
     const result = response.result!;
+    assert.ok(response);
     assert.strictEqual(error, null);
     assert(now < result.createdAt);
     assert(now < result.updatedAt);
@@ -53,6 +54,7 @@ describe("Update User Query", function () {
     const response = await updateUser(testUserId_00, { location: testLocation });
     const { error } = response;
     const result = response.result!;
+    assert.ok(response);
     assert.strictEqual(error, null);
     assert(now < result.createdAt);
     assert(now < result.updatedAt);
@@ -68,6 +70,7 @@ describe("Update User Query", function () {
     const response = await updateUser(testUserId_00, { location: testLocation, favoriteBike: testUserFavoriteBike_00 });
     const { error } = response;
     const result = response.result!;
+    assert.ok(response);
     assert.strictEqual(error, null);
     assert(now < result.createdAt);
     assert(now < result.updatedAt);
@@ -81,7 +84,8 @@ describe("Update User Query", function () {
     const response = await updateUser(testUserId_01, { username: testUsername_00 });
     const { result } = response;
     const error: PrismaClientKnownRequestError = response.error!;
-    assert.strictEqual(typeof error, 'object');
+    assert.ok(response);
+    assert.ok(response.error);
     assert.strictEqual(result, null);
     assert.strictEqual(error.code, PrismaQueryErrorCodes.UNIQUE_CONSTRAINT);
   });
