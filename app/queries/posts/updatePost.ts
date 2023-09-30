@@ -11,6 +11,7 @@ export interface UpdatePostPayload {
 export type UpdatePost = (
   updatePostPayload: UpdatePostPayload,
   userId: string,
+  authorId: string
 ) => Promise<DerailleurResponse<Post>>;
 
 export async function updatePost(updatePostPayload: UpdatePostPayload, postId: string, authorId: string): Promise<DerailleurResponse<Post>> {
