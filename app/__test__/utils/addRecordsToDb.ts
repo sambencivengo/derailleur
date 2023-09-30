@@ -1,14 +1,17 @@
 import assert from "assert";
 import { DerailleurResponse } from "../../utils/responseGenerators";
 
-export type CreateRecordFunction = (...args: Array<any>) => Promise<DerailleurResponse<any>>;
-interface AddMockDataProps {
-  createRecordFunction: CreateRecordFunction;
-  newRecordParams: Parameters<CreateRecordFunction>[];
-  mockDataName?: 'Users' | 'Posts';
-}
 
-export async function addRecordsToDb(args: AddMockDataProps): Promise<DerailleurResponse<any>[][]> {
+export type CreateRecordFunction<R, F extends (...args: any) => Promise<DerailleurResponse<R>>> = (...args: Parameters<F>) => Promise<DerailleurResponse<R>>;
+
+export interface AddMockDataProps<R, F extends (...args: any) => Promise<DerailleurResponse<R>>> {
+  createRecordFunction: CreateRecordFunction<R, F>;
+  newRecordParams: Parameters<CreateRecordFunction<R, F>>[];
+  mockDataName?: 'Users' | 'Posts';
+};
+
+export async function addRecordsToDb<R, F extends (...args: Parameters<F>) => Promise<DerailleurResponse<R>>>
+  (args: AddMockDataProps<R, F>): Promise<DerailleurResponse<any>[][]> {
   const mockRecordResponses: DerailleurResponse<any>[][] = [];
   const { createRecordFunction, newRecordParams, mockDataName = 'MockData' } = args;
   const responses = await Promise.all(newRecordParams.map((params) => createRecordFunction(...params)))

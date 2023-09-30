@@ -1,17 +1,20 @@
+import assert from "assert";
 import { v4 as uuid } from "uuid";
-import { createUser } from "../../queries/users/createUser";
+import { CreateUser, createUser } from "../../queries/users/createUser";
 import { addRecordsToDb } from "../utils/addRecordsToDb";
-// import { cleanUpTable } from "../utils/cleanUpDatabase";
-// import prisma from "../../../prisma/prisma";
 import { mockUser_00 } from "../mock/user/mockUser";
 import { CreatePostPayload, createPost } from "../../queries/posts/createPost";
+import { User } from "../../../types/users";
+import prisma from "../../../prisma/prisma";
+import { cleanUpTable } from "../utils/cleanUpDatabase";
+
 
 describe.only("Create Post Query", function () {
 
   const testUser = mockUser_00;
   const testUserId = uuid();
   beforeAll(async function () {
-    await addRecordsToDb(
+    await addRecordsToDb<User, CreateUser>(
       {
         createRecordFunction: createUser,
         newRecordParams: [
@@ -27,9 +30,13 @@ describe.only("Create Post Query", function () {
       content: "Looking to replace suspension fork that I have on my Rockhopper, any recommendations?",
     };
     const response = await createPost(postPayload, testUserId);
+    const { error } = response;
+    assert.ok(response);
+    assert.strictEqual(error, null);
+
   });
 
   afterAll(async function () {
-    // await cleanUpTable([prisma.users]);
+    await cleanUpTable([prisma.users]);
   });
 });
