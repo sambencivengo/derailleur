@@ -1,5 +1,6 @@
 import assert from "assert";
 import { DerailleurResponse } from "../../utils/responseGenerators";
+import { Prisma } from "@prisma/client";
 
 
 export type CreateRecordFunction<R, F extends (...args: any) => Promise<DerailleurResponse<R>>> = (...args: Parameters<F>) => Promise<DerailleurResponse<R>>;
@@ -7,7 +8,7 @@ export type CreateRecordFunction<R, F extends (...args: any) => Promise<Deraille
 export interface AddMockDataProps<R, F extends (...args: any) => Promise<DerailleurResponse<R>>> {
   createRecordFunction: CreateRecordFunction<R, F>;
   newRecordParams: Parameters<CreateRecordFunction<R, F>>[];
-  mockDataName?: 'Users' | 'Posts';
+  mockDataName?: Prisma.ModelName;
 };
 
 export async function addRecordsToDb<R, F extends (...args: Parameters<F>) => Promise<DerailleurResponse<R>>>

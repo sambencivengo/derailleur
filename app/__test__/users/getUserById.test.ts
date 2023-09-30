@@ -23,7 +23,8 @@ describe("Get User By ID Query", function () {
     await addRecordsToDb<User, CreateUser>(
       {
         createRecordFunction: createUser,
-        newRecordParams: [[testUser_00, testUserId_00]]
+        newRecordParams: [[testUser_00, testUserId_00]],
+        mockDataName: "Users"
       }
     );
   });
