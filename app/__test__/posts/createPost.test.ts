@@ -2,7 +2,7 @@ import assert from "assert";
 import { v4 as uuid } from "uuid";
 import { CreateUser, createUser } from "../../queries/users/createUser";
 import { addRecordsToDb } from "../utils/addRecordsToDb";
-import { mockUser_00, mockUser_01 } from "../mock/user/mockUser";
+import { mockUser_00 } from "../mock/users/mockUser";
 import { CreatePostPayload, createPost } from "../../queries/posts/createPost";
 import { User } from "../../../types/users";
 import prisma from "../../../prisma/prisma";
@@ -13,8 +13,6 @@ describe.only("Create Post Query", function () {
 
   const testUser_00 = mockUser_00;
   const testUserId_00 = uuid();
-  const testUser_01 = mockUser_01;
-  const testUserId_01 = uuid();
   const now = new Date();
   const testContent = "Looking to replace suspension fork that I have on my Rockhopper, any recommendations?";
   const testTitle = "26 inch Fork Replacement";
@@ -26,7 +24,6 @@ describe.only("Create Post Query", function () {
         createRecordFunction: createUser,
         newRecordParams: [
           [{ username: testUser_00.username }, testUserId_00],
-          [{ username: testUser_01.username }, testUserId_01],
         ],
         mockDataName: 'Users'
       },

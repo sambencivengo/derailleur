@@ -4,7 +4,7 @@ import prisma from "../../../prisma/prisma";
 import { User } from "../../../types/users";
 import { CreateUser, CreateUserPayload, createUser } from "../../queries/users/createUser";
 import { getUserById } from "../../queries/users/getUserById";
-import { mockUser_00 } from "../mock/user/mockUser";
+import { mockUser_00 } from "../mock/users/mockUser";
 import { addRecordsToDb } from "../utils/addRecordsToDb";
 import { cleanUpTable } from "../utils/cleanUpDatabase";
 
