@@ -5,7 +5,8 @@ import { CreateUser } from "./createUser";
 
 export type UpdateUserPayload = Partial<CreateUser>;
 
-export type updateUser = (user: UpdateUserPayload, userId: string) => Promise<DerailleurResponse<User>>;
+export type UpdateUser = (user: UpdateUserPayload, userId: string) => Promise<DerailleurResponse<User>>;
+
 export async function updateUser(user: UpdateUserPayload, userId: string,): Promise<DerailleurResponse<User>> {
   try {
     const updatedUser = await prisma.users.update({
