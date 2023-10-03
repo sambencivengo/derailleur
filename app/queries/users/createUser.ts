@@ -1,3 +1,4 @@
+'use client';
 import prisma from "../../../prisma/prisma";
 import { v4 as uuid } from 'uuid';
 import { User } from "../../../types/users";
