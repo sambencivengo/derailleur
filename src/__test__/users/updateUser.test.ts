@@ -1,12 +1,12 @@
 import assert from 'assert';
 import { v4 as uuid } from 'uuid';
-import { CreateUser, CreateUserPayload, createUser } from "../../queries/users/createUser";
-import { updateUser } from '../../queries/users/updateUser';
+import { CreateUser, CreateUserPayload, createUser } from "../../app/queries/users/createUser";
+import { updateUser } from '../../app/queries/users/updateUser';
 import { addRecordsToDb } from '../utils/addRecordsToDb';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { PrismaQueryErrorCodes } from '../../../../prisma/prismaErrorCodes';
-import { User } from '../../../../types/users';
-import prisma from '../../../../prisma/prisma';
+import { PrismaQueryErrorCodes } from '../../../prisma/prismaErrorCodes';
+import { User } from '../../../types/users';
+import prisma from '../../../prisma/prisma';
 import { cleanUpTable } from '../utils/cleanUpDatabase';
 
 describe("Update User Query", function () {

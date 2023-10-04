@@ -1,4 +1,4 @@
-import prisma from "../../../../prisma/prisma";
+import prisma from "../../../prisma/prisma";
 
 export type UserTable = typeof prisma.users;
 export type PostTable = typeof prisma.posts;

@@ -1,5 +1,5 @@
 import assert from "assert";
-import { DerailleurResponse } from "../../utils/responseGenerators";
+import { DerailleurResponse } from "../../app/utils/responseGenerators";
 import { Prisma } from "@prisma/client";
 
 

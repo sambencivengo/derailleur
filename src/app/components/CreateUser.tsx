@@ -1,8 +1,10 @@
-'use client';
+'use client'
 import React from 'react';
 import { createUser } from '../queries/users/createUser';
 
-export const CreateUser: React.FC = async () => {
+
+export async function CreateUser () {
+
   return (
     <button
       onClick={async () => {

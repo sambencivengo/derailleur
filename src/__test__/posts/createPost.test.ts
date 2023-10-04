@@ -1,11 +1,11 @@
 import assert from "assert";
 import { v4 as uuid } from "uuid";
-import { CreateUser, createUser } from "../../queries/users/createUser";
+import { CreateUser, createUser } from "../../app/queries/users/createUser";
 import { addRecordsToDb } from "../utils/addRecordsToDb";
 import { mockUser_00 } from "../mock/users/mockUser";
-import { CreatePostPayload, createPost } from "../../queries/posts/createPost";
-import { User } from "../../../../types/users";
-import prisma from "../../../../prisma/prisma";
+import { CreatePostPayload, createPost } from "../../app/queries/posts/createPost";
+import { User } from "../../../types/users";
+import prisma from "../../../prisma/prisma";
 import { cleanUpTable } from "../utils/cleanUpDatabase";
 
 
