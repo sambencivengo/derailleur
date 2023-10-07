@@ -1,9 +1,10 @@
-import { CreateUser } from './components/CreateUser';
+import { Heading } from '@chakra-ui/react';
+import { CreateUser } from './components/createUser';
 
 export default function Home() {
   return (
     <>
-      <h1>Hello, Next.js!</h1>
+      <Heading>Hello, Next.js!</Heading>
       <CreateUser />
     </>
   );

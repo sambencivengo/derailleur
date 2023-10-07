@@ -1,18 +1,16 @@
-'use client'
+'use client';
 import React from 'react';
 import { createUser } from '../queries/users/createUser';
+import { Button, HStack } from '@chakra-ui/react';
 
-
-export async function CreateUser () {
-
+export async function CreateUser() {
   return (
-    <button
+    <Button
       onClick={async () => {
-        const newUser = await createUser({ username: 'sammy' });
-        console.log(newUser);
+        await createUser({ username: 'sammy' });
       }}
     >
       Create User
-    </button>
+    </Button>
   );
-};
+}
