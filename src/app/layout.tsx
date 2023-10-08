@@ -1,10 +1,4 @@
-import type { Metadata } from 'next';
-import { Providers } from './providers/providers';
-
-export const metadata: Metadata = {
-  title: 'Derailleur',
-  description: 'An cyclists and adventures.',
-};
+'use client';
 
 export default function RootLayout({
   children,
@@ -13,9 +7,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <Providers>{children}</Providers>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
