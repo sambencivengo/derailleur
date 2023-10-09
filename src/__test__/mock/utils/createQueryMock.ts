@@ -1,4 +1,4 @@
-import { DerailleurResponse } from "../../../app/utils/responseGenerators";
+import { DerailleurResponse } from "../../../utils/responseGenerators";
 
 type CreateRecordFunction<R, F extends (...args: any) => Promise<DerailleurResponse<R>>> = (...args: Parameters<F>) => Promise<DerailleurResponse<R>>;
 export interface TestQueryMockProps<R, F extends (...args: Parameters<F>) => Promise<DerailleurResponse<R>>> {

@@ -1,6 +1,6 @@
 import prisma from "../../../prisma/prisma";
 import { Post } from "../../types/posts";
-import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "../../app/utils/responseGenerators";
+import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "../../utils/responseGenerators";
 
 
 export type GetPostById = (postId: string, userId: string) => Promise<DerailleurResponse<Post>>;
