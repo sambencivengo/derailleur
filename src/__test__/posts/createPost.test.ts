@@ -4,7 +4,7 @@ import { CreateUser, createUser } from "../../app/queries/users/createUser";
 import { addRecordsToDb } from "../utils/addRecordsToDb";
 import { mockUser_00 } from "../mock/users/mockUser";
 import { CreatePostPayload, createPost } from "../../app/queries/posts/createPost";
-import { User } from "../../../types/users";
+import { User } from "../../types/users";
 import prisma from "../../../prisma/prisma";
 import { cleanUpTable } from "../utils/cleanUpDatabase";
 

@@ -1,7 +1,7 @@
 import assert from 'assert';
 import { v4 as uuid } from 'uuid';
 import prisma from "../../../prisma/prisma";
-import { User } from "../../../types/users";
+import { User } from "../../types/users";
 import { CreateUser, CreateUserPayload, createUser } from "../../app/queries/users/createUser";
 import { getUserById } from "../../app/queries/users/getUserById";
 import { mockUser_00 } from "../mock/users/mockUser";

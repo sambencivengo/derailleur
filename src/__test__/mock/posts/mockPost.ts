@@ -1,4 +1,4 @@
-import { Post } from "../../../../types/posts";
+import { Post } from "../../../types/posts";
 import { mockUser_00 } from "../users/mockUser";
 
 export const mockPost_00: Post = {

@@ -5,7 +5,7 @@ import { updateUser } from '../../app/queries/users/updateUser';
 import { addRecordsToDb } from '../utils/addRecordsToDb';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { PrismaQueryErrorCodes } from '../../../prisma/prismaErrorCodes';
-import { User } from '../../../types/users';
+import { User } from '../../types/users';
 import prisma from '../../../prisma/prisma';
 import { cleanUpTable } from '../utils/cleanUpDatabase';
 

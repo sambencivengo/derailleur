@@ -1,7 +1,7 @@
 'use server';
 import prisma from "../../../../prisma/prisma";
 import { v4 as uuid } from 'uuid';
-import { User } from "../../../../types/users";
+import { User } from "../../../types/users";
 import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from "../../utils/responseGenerators";
 
 export interface CreateUserPayload {
