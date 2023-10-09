@@ -1,15 +1,15 @@
 import assert from "assert";
 import { v4 as uuid } from "uuid";
-import { CreateUser, createUser } from "../../app/queries/users/createUser";
+import { CreateUser, createUser } from "../../queries/users/createUser";
 import { addRecordsToDb } from "../utils/addRecordsToDb";
 import { mockUser_00, mockUser_01 } from "../mock/users/mockUser";
-import { CreatePost, createPost } from "../../app/queries/posts/createPost";
+import { CreatePost, createPost } from "../../queries/posts/createPost";
 import { User } from "../../types/users";
 import { Post } from "../../types/posts";
 import { mockPost_00 } from "../mock/posts/mockPost";
 import { cleanUpTable } from "../utils/cleanUpDatabase";
 import prisma from "../../../prisma/prisma";
-import { UpdatePostPayload, updatePost } from "../../app/queries/posts/updatePost";
+import { UpdatePostPayload, updatePost } from "../../queries/posts/updatePost";
 
 
 describe.only("Update Post Query", function () {

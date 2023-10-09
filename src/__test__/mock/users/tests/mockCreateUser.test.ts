@@ -3,7 +3,7 @@
 import { v4 as uuid } from 'uuid';
 import { User } from "../../../../types/users";
 import { prismaMock } from "../../prismaMock";
-import { CreateUser, CreateUserPayload, createUser } from "../../../../app/queries/users/createUser";
+import { CreateUser, CreateUserPayload, createUser } from "../../../../queries/users/createUser";
 import { testQueryMock } from "../../utils/createQueryMock";
 
 describe.skip('Create User Query', function () {

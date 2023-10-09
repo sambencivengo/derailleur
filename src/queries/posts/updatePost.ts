@@ -1,6 +1,6 @@
-import prisma from "../../../../prisma/prisma";
-import { Post } from "../../../types/posts";
-import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "../../utils/responseGenerators";
+import prisma from "../../../prisma/prisma";
+import { Post } from "../../types/posts";
+import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "../../app/utils/responseGenerators";
 
 export interface UpdatePostPayload {
   title: string;

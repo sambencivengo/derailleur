@@ -1,6 +1,6 @@
-import prisma from "../../../../prisma/prisma";
-import { User } from "../../../types/users";
-import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "../../utils/responseGenerators";
+import prisma from "../../../prisma/prisma";
+import { User } from "../../types/users";
+import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "../../app/utils/responseGenerators";
 import { CreateUser } from "./createUser";
 
 export type UpdateUserPayload = Partial<CreateUser>;
