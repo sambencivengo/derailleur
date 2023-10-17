@@ -8,8 +8,8 @@ export default function Nav() {
   return (
     <header>
       <nav>
-        <ul className="flex items-center justify-between">
-          <li>
+        <div className="flex items-center justify-between">
+          <div>
             <a
               className="pointer-events-none flex place-items-center gap-2 p-8"
               href="https://vercel.com"
@@ -25,11 +25,11 @@ export default function Nav() {
                 priority
               />
             </a>
-          </li>
-          <li>
+          </div>
+          <div>
             <ToggleDarkModeButton />
-          </li>
-        </ul>
+          </div>
+        </div>
       </nav>
     </header>
   );

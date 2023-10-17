@@ -3,7 +3,7 @@ import { Button } from '../components/ui/button';
 
 export default function Home() {
   return (
-    <main className="p-10">
+    <main>
       <Nav />
       <section className="py-10 flex flex-col items-center gap-8">
         <h1>Shadcn is awesome</h1>
