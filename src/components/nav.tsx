@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import { ToggleDarkModeButton } from './ui/toggleDarkModeButton';
 
 export default function Nav() {
   return (
@@ -23,7 +24,9 @@ export default function Nav() {
               />
             </a>
           </li>
-          <li>Toggle Button</li>
+          <li>
+            <ToggleDarkModeButton />
+          </li>
         </ul>
       </nav>
     </header>
