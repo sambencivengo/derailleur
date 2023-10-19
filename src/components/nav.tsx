@@ -1,8 +1,7 @@
 'use client';
-import Image from 'next/image';
-import { ToggleDarkModeButton } from './ui/toggleDarkModeButton';
-import { Sun, Moon } from 'lucide-react';
 import { Button } from './ui/button';
+import { ToggleDarkModeButton } from './ui/toggleDarkModeButton';
+import UserNameLoginButton from './ui/userNameLogInButton';
 
 export default function Nav() {
   return (
@@ -11,22 +10,16 @@ export default function Nav() {
         <div className="flex items-center justify-between">
           <div>
             <a
-              className="pointer-events-none flex place-items-center gap-2 p-8"
+              className="pointer-events-none flex place-items-center gap-2"
               href="https://vercel.com"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className="dark:invert"
-                width={100}
-                height={24}
-                priority
-              />
+              <h1 className="text-2xl">DERAILLEUR</h1>
             </a>
           </div>
-          <div>
+          <div className="flex">
+            <UserNameLoginButton />
             <ToggleDarkModeButton />
           </div>
         </div>
