@@ -1,3 +1,4 @@
+import React from 'react';
 import { Button } from './button';
 import {
   DropdownMenu,
@@ -9,9 +10,12 @@ import {
 } from './dropdown-menu';
 
 export default function UserNameLoginButton() {
-  return (
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  return isLoggedIn ? (
     <DropdownMenu>
-      <DropdownMenuTrigger>userName</DropdownMenuTrigger>
+      <Button variant="link">
+        <DropdownMenuTrigger>Log In or Sign Up</DropdownMenuTrigger>
+      </Button>
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -21,5 +25,7 @@ export default function UserNameLoginButton() {
         <DropdownMenuItem>Subscription</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
+  ) : (
+    <Button variant="link">Log In or Sign Up</Button>
   );
 }
