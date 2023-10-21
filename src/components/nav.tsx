@@ -1,5 +1,4 @@
 'use client';
-import { Button } from './ui/button';
 import { ToggleDarkModeButton } from './ui/toggleDarkModeButton';
 import UserNameLoginButton from './ui/userNameLogInButton';
 
