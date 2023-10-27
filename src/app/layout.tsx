@@ -1,6 +1,7 @@
 import './styles/globals.css';
 import type { Metadata } from 'next';
 import { ThemeProvider } from '../components/themeProvider';
+import Nav from '../components/nav';
 
 export const metadata: Metadata = {
   title: 'Derailleur',
@@ -13,9 +14,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    // NOTE: suppressHydrationWarning comes from shadcn dark mode/theme implementation
+    <html lang="en" suppressHydrationWarning>
       <body className="p-5">
-        <ThemeProvider attribute="class" defaultTheme="dark">
+        <Nav />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>
       </body>

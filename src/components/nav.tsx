@@ -1,6 +1,5 @@
 'use client';
 import { ToggleDarkModeButton } from './ui/toggleDarkModeButton';
-import UserNameLoginButton from './ui/userNameLogInButton';
 
 export default function Nav() {
   return (
@@ -18,7 +17,6 @@ export default function Nav() {
             </a>
           </div>
           <div className="flex">
-            <UserNameLoginButton />
             <ToggleDarkModeButton />
           </div>
         </div>
