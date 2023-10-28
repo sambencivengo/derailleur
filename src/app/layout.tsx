@@ -16,10 +16,10 @@ export default function RootLayout({
   return (
     // NOTE: suppressHydrationWarning comes from shadcn dark mode/theme implementation
     <html lang="en" suppressHydrationWarning>
-      <body className="p-5">
+      <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Nav />
-          {children}
+          <div className="p-2">{children}</div>
         </ThemeProvider>
       </body>
     </html>
