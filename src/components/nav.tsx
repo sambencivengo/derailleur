@@ -1,4 +1,3 @@
-'use client';
 import { ToggleDarkModeButton } from './ui/toggleDarkModeButton';
 
 export default function Nav() {
