@@ -1,19 +1,6 @@
-import './styles/globals.css';
-import { Inter as FontSans } from 'next/font/google';
 import { cn } from '../lib/utils';
-import type { Metadata } from 'next';
 import { ThemeProvider } from '../components/themeProvider';
-import { Nav } from '../components/nav';
-
-export const metadata: Metadata = {
-  title: 'Derailleur',
-  description: 'A application for bike enthusiasts',
-};
-
-export const fontSans = FontSans({
-  subsets: ['latin'],
-  variable: '--font-sans',
-});
+import { fontSans } from './layout';
 
 export default function RootLayout({
   children,
