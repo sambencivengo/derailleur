@@ -5,7 +5,7 @@ export const Nav: React.FC = () => {
   return (
     <header>
       <nav>
-        <div className="flex items-center justify-between p-2">
+        <div className="flex items-center justify-between p-2 border-b-2">
           <div>
             <a
               className="pointer-events-none flex place-items-center gap-2"
