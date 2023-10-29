@@ -1,7 +1,6 @@
 'use client';
-import Nav from '../components/nav';
 import { Button } from '../components/ui/button';
-import { ToggleDarkModeButton } from '../components/ui/toggleDarkModeButton';
+import { ToggleDarkModeButton } from '../components/toggleDarkModeButton';
 
 export default function Home() {
   return (

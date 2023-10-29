@@ -1,6 +1,6 @@
 import { cn } from '../lib/utils';
-import { ThemeProvider } from '../components/themeProvider';
 import { fontSans } from './layout';
+import { Nav, ThemeProvider } from '@/components';
 
 export default function RootLayout({
   children,
