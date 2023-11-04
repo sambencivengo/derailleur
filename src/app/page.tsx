@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '../components/ui/button';
-import { ToggleDarkModeButton } from '../components/toggleDarkModeButton';
+import { createUser } from '@/queries/users/createUser';
 
 export default function Home() {
   return (
@@ -11,7 +11,16 @@ export default function Home() {
       </section>
       <div>
         <div className="flex gap-6 py-6">
-          <Button>Learn More</Button>
+          <Button
+            onClick={async () => {
+              const response = await createUser({
+                password: 'askjbaskdjb',
+                username: 'sammy1',
+              });
+            }}
+          >
+            Create User
+          </Button>
           <Button>Enroll Now</Button>
         </div>
       </div>
