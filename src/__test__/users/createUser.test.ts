@@ -1,10 +1,9 @@
 import assert from "assert";
-import prisma from "../../../prisma/prisma";
-import { CreateUserPayload, createUser } from "../../queries/users/createUser";
 import { v4 as uuid } from 'uuid';
-import { cleanUpTable } from "../utils/cleanUpDatabase";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { PrismaQueryErrorCodes } from "../../../prisma/prismaErrorCodes";
+import { cleanUpTable } from "~/__test__/utils/cleanUpDatabase";
+import { CreateUserPayload, createUser } from "~/queries/users/createUser";
+import prisma from "~prisma/prisma";
+
 
 
 describe('Create User Query', function () {

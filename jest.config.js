@@ -7,4 +7,8 @@ module.exports = {
   // Currently commented out so that the db tests can run against the database
   // setupFilesAfterEnv: ['<rootDir>/app/__test__/mock/prismaMock.ts'],
   // setupFilesAfterEnv: ['<rootDir>/prisma/prisma.ts'],
+  moduleNameMapper: {
+    '~/(.*)': '<rootDir>/src/$1',
+    '~prisma/(.*)': '<rootDir>/prisma/$1',
+  },
 };
