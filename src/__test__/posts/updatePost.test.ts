@@ -76,9 +76,11 @@ describe.only("Update Post Query", function () {
     };
 
     const response = await updatePost(updatePostPayload, 'nonExistentPostId', testUserId_00);
+    const { result, error } = response;
     assert.ok(response);
-    assert.strictEqual(response.result, null);
-    assert.ok(response.error);
+    assert.strictEqual(result, null);
+    assert.notStrictEqual(error, null);
+    assert.strictEqual(typeof error!.message, 'string');
   });
   it("Fails to update a post belonging to another user", async function () {
     const updatedPostContent = "Updated post content";
@@ -90,9 +92,11 @@ describe.only("Update Post Query", function () {
     };
 
     const response = await updatePost(updatePostPayload, testPostId_00, testUserId_01);
+    const { result, error } = response;
     assert.ok(response);
-    assert.strictEqual(response.result, null);
-    assert.ok(response.error);
+    assert.strictEqual(result, null);
+    assert.notStrictEqual(error, null);
+    assert.strictEqual(typeof error!.message, 'string');
   });
 
 

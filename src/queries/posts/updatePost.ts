@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import prisma from "../../../prisma/prisma";
 import { Post } from "../../types/posts";
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "../../utils/responseGenerators";
@@ -30,6 +31,10 @@ export async function updatePost(updatePostPayload: UpdatePostPayload, postId: s
     });
     return createSuccessfulResponse(updatedPost);
   } catch (error: any) {
-    return createErrorResponse(error);
+    if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
+      return createErrorResponse('An error occurred when trying update a post', { userId: authorId, updatePostPayload, postId, error: JSON.stringify(error) });
+    }
+    const errResponse = { userId: authorId, updatePostPayload, postId, prismaErrorCode: error.code };
+    return createErrorResponse('Unable to update post due to prisma error', errResponse);
   }
 };

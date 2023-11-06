@@ -2,6 +2,7 @@ import { v4 as uuid } from 'uuid';
 import prisma from "../../../prisma/prisma";
 import { Post } from "../../types/posts";
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "../../utils/responseGenerators";
+import { Prisma } from '@prisma/client';
 
 export interface CreatePostPayload {
   title: string;
@@ -29,6 +30,10 @@ export async function createPost(postPayload: CreatePostPayload, userId: string,
     });
     return createSuccessfulResponse(newPost);
   } catch (error: any) {
-    return createErrorResponse(error);
+    if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
+      return createErrorResponse('An error occurred when trying create a post', { userId, postPayload, error: JSON.stringify(error) });
+    }
+    const errResponse = { userId, postPayload, prismaErrorCode: error.code };
+    return createErrorResponse('Unable to create post due to prisma error', errResponse);
   }
 };

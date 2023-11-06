@@ -64,9 +64,11 @@ describe("Create Post Query", function () {
       content: testContent,
     };
     const response = await createPost(postPayload, 'nonExistentUserId', uuid());
+    const { result, error } = response;
     assert.ok(response);
-    assert.strictEqual(response.result, null);
-    assert.ok(response.error);
+    assert.strictEqual(result, null);
+    assert.notStrictEqual(error, null);
+    assert.strictEqual(typeof error!.message, 'string');
   });
 
   afterAll(async function () {
