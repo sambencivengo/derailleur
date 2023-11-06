@@ -9,9 +9,10 @@ import prisma from "../../../prisma/prisma";
 import { cleanUpTable } from "../utils/cleanUpDatabase";
 
 
-describe.only("Create Post Query", function () {
+describe("Create Post Query", function () {
 
   const testUser_00 = mockUser_00;
+  const testPassword = 'testPassword';
   const testUserId_00 = uuid();
   const now = new Date();
   const testContent = "Looking to replace suspension fork that I have on my Rockhopper, any recommendations?";
@@ -23,7 +24,7 @@ describe.only("Create Post Query", function () {
       {
         createRecordFunction: createUser,
         newRecordParams: [
-          [{ username: testUser_00.username }, testUserId_00],
+          [{ username: testUser_00.username, password: testPassword }, testUserId_00],
         ],
         mockDataName: 'Users'
       },

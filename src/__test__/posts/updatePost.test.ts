@@ -15,6 +15,7 @@ import { UpdatePostPayload, updatePost } from "../../queries/posts/updatePost";
 describe.only("Update Post Query", function () {
 
   const testUser_00 = mockUser_00;
+  const testPassword = "testPassword";
   const testUserId_00 = uuid();
   const testUser_01 = mockUser_01;
   const testUserId_01 = uuid();
@@ -26,8 +27,8 @@ describe.only("Update Post Query", function () {
       {
         createRecordFunction: createUser,
         newRecordParams: [
-          [{ username: testUser_00.username }, testUserId_00],
-          [{ username: testUser_01.username }, testUserId_01],
+          [{ username: testUser_00.username, password: testPassword }, testUserId_00],
+          [{ username: testUser_01.username, password: testPassword }, testUserId_01],
         ],
         mockDataName: 'Users'
       },

@@ -11,10 +11,12 @@ import { cleanUpTable } from "../utils/cleanUpDatabase";
 
 describe("Get User By ID Query", function () {
   const testUserId_00 = uuid();
+  const testPassword = 'testPassword';
   const { favoriteBike, username, location } = mockUser_00;
   const now = new Date();
   const testUser_00: CreateUserPayload = {
     username,
+    password: testPassword,
     favoriteBike,
     location
   };

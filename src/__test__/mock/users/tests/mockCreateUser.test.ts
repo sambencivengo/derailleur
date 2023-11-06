@@ -8,6 +8,7 @@ import { testQueryMock } from "../../utils/createQueryMock";
 
 describe.skip('Create User Query', function () {
   const testUsername = 'testUserName_00';
+  const testPassword = "testPassword";
   const now = new Date();
 
   it("Successfully creates a new user with all fields", async function () {
@@ -15,6 +16,7 @@ describe.skip('Create User Query', function () {
     const testLocation = 'Fort Collins, CO';
     const testCreateUserPayload: CreateUserPayload = {
       username: testUsername,
+      password: testPassword,
       favoriteBike: testFavBike,
       location: testLocation,
     };
@@ -29,7 +31,7 @@ describe.skip('Create User Query', function () {
 
     await testQueryMock<User, CreateUser>({
       createRecordFunction: createUser,
-      mockFunctionResolvedValue: prismaMock.users.create.mockResolvedValue,
+      mockFunctionResolvedValue: prismaMock.users.create.mockRejectedValue,
       payload: [testCreateUserPayload],
       expectedResult: testExpectedUser
     });
@@ -37,6 +39,7 @@ describe.skip('Create User Query', function () {
   it("Successfully creates a new user with location and favorite bike undefined", async function () {
     const testCreateUserPayload: CreateUserPayload = {
       username: testUsername,
+      password: testPassword,
     };
     const testExpectedUser: User = {
       id: uuid(),
@@ -48,7 +51,7 @@ describe.skip('Create User Query', function () {
     };
     await testQueryMock<User, CreateUser>({
       createRecordFunction: createUser,
-      mockFunctionResolvedValue: prismaMock.users.create.mockResolvedValue,
+      mockFunctionResolvedValue: prismaMock.users.create.mockRejectedValue,
       payload: [testCreateUserPayload],
       expectedResult: testExpectedUser,
     });
