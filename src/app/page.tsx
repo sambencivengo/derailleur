@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '../components/ui/button';
-import { createUser } from '@/queries/users/createUser';
+import { createUser } from '../queries/users/createUser';
 
 export default function Home() {
   return (
@@ -17,6 +17,7 @@ export default function Home() {
                 password: 'askjbaskdjb',
                 username: 'sammy1',
               });
+              console.log('###', response);
             }}
           >
             Create User

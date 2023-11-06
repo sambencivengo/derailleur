@@ -17,15 +17,15 @@
       {
         "name": "next"
       }
-    ],
-    "paths": {
-      "@/*": ["./src/*"],
-      "@components/*": ["./src/components/*"],
-      "@types/*": ["./src/types/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@lib/*": ["./src/lib/*"],
-      "@queries/*": ["./src/queries/*"]
-    }
+    ]
+    // "paths": {
+    //   "@/*": ["./src/*"],
+    //   "@components/*": ["./src/components/*"],
+    //   "@types/*": ["./src/types/*"],
+    //   "@utils/*": ["./src/utils/*"],
+    //   "@lib/*": ["./src/lib/*"],
+    //   "@queries/*": ["./src/queries/*"]
+    // }
   },
   "include": [
     "next-env.d.ts",

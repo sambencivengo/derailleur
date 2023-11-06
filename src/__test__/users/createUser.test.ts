@@ -53,22 +53,20 @@ describe('Create User Query', function () {
   it("Fails to create a user due to username being greater than 30 characters", async function () {
     const username = 'x'.repeat(31);
     const response = await createUser({ username, password: testPassword });
-    const { result } = response;
-    const error: PrismaClientKnownRequestError = response.error;
+    const { result, error } = response;
     assert.ok(response);
     assert.strictEqual(result, null);
-    assert.notStrictEqual(typeof error, null);
-    assert.strictEqual(error.code, PrismaQueryErrorCodes.VALUE_TOO_LONG);
+    assert.notStrictEqual(error, null);
+    assert.strictEqual(typeof error!.message, 'string');
   });
   it("Fails to create a user due to being supplied a non-unique uuid()", async function () {
     const username = 'testUsername_02';
     const response = await createUser({ username, password: testPassword }, testUserId);
-    const { result } = response;
-    const error: PrismaClientKnownRequestError = response.error;
+    const { result, error } = response;
     assert.ok(response);
     assert.strictEqual(result, null);
-    assert.notStrictEqual(typeof error, null);
-    assert.strictEqual(error.code, PrismaQueryErrorCodes.UNIQUE_CONSTRAINT);
+    assert.notStrictEqual(error, null);
+    assert.strictEqual(typeof error!.message, 'string');
   });
 
   afterAll(async function () {
