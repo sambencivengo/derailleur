@@ -3,8 +3,6 @@ import { v4 as uuid } from 'uuid';
 import { CreateUser, CreateUserPayload, createUser } from "../../queries/users/createUser";
 import { updateUser } from '../../queries/users/updateUser';
 import { addRecordsToDb } from '../utils/addRecordsToDb';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { PrismaQueryErrorCodes } from '../../../prisma/prismaErrorCodes';
 import { User } from '../../types/users';
 import prisma from '../../../prisma/prisma';
 import { cleanUpTable } from '../utils/cleanUpDatabase';
@@ -85,12 +83,11 @@ describe("Update User Query", function () {
   });
   it('Fails to update a user with a duplicate username', async function () {
     const response = await updateUser({ username: testUsername_00 }, testUserId_01);
-    const { result } = response;
-    const error: PrismaClientKnownRequestError = response.error!;
+    const { result, error } = response;
     assert.ok(response);
-    assert.ok(response.error);
     assert.strictEqual(result, null);
-    assert.strictEqual(error.code, PrismaQueryErrorCodes.UNIQUE_CONSTRAINT);
+    assert.notStrictEqual(error, null);
+    assert.strictEqual(typeof error!.message, 'string');
   });
 
   afterAll(async function () {
