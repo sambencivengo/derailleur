@@ -1,8 +1,8 @@
 import { v4 as uuid } from 'uuid';
-import prisma from "../../../prisma/prisma";
-import { Post } from "../../types/posts";
-import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "../../utils/responseGenerators";
 import { Prisma } from '@prisma/client';
+import { Post } from '~/types/posts';
+import prisma from '~prisma/prisma';
+import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from '~/utils';
 
 export interface CreatePostPayload {
   title: string;

@@ -1,11 +1,11 @@
 import assert from 'assert';
 import { v4 as uuid } from 'uuid';
-import { CreateUser, CreateUserPayload, createUser } from "../../queries/users/createUser";
-import { updateUser } from '../../queries/users/updateUser';
-import { addRecordsToDb } from '../utils/addRecordsToDb';
-import { User } from '../../types/users';
-import prisma from '../../../prisma/prisma';
-import { cleanUpTable } from '../utils/cleanUpDatabase';
+import { addRecordsToDb } from '~/__test__/utils/addRecordsToDb';
+import { cleanUpTable } from '~/__test__/utils/cleanUpDatabase';
+import { CreateUserPayload, CreateUser, createUser } from '~/queries/users/createUser';
+import { updateUser } from '~/queries/users/updateUser';
+import { User } from '~/types/users';
+import prisma from '~prisma/prisma';
 
 describe("Update User Query", function () {
   const testUserId_00 = uuid();

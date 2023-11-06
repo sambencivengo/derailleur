@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
-import prisma from "../../../prisma/prisma";
-import { Post } from "../../types/posts";
-import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "../../utils/responseGenerators";
+import { Post } from "~/types/posts";
+import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from "~/utils";
+import prisma from "~prisma/prisma";
 
 export interface UpdatePostPayload {
   title: string;

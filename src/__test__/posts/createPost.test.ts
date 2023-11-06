@@ -1,12 +1,11 @@
 import assert from "assert";
 import { v4 as uuid } from "uuid";
-import { CreateUser, createUser } from "../../queries/users/createUser";
-import { addRecordsToDb } from "../utils/addRecordsToDb";
-import { mockUser_00 } from "../mock/users/mockUser";
-import { CreatePostPayload, createPost } from "../../queries/posts/createPost";
-import { User } from "../../types/users";
-import prisma from "../../../prisma/prisma";
-import { cleanUpTable } from "../utils/cleanUpDatabase";
+import { mockUser_00 } from "~/__test__/mock/users/mockUser";
+import { addRecordsToDb, cleanUpTable } from "~/__test__/utils";
+import { CreatePostPayload, createPost } from "~/queries/posts/createPost";
+import { CreateUser, createUser } from "~/queries/users/createUser";
+import { User } from "~/types/users";
+import prisma from "~prisma/prisma";
 
 
 describe("Create Post Query", function () {

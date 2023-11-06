@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
-import prisma from "../../../prisma/prisma";
-import { User } from "../../types/users";
-import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "../../utils/responseGenerators";
+import { User } from "~/types/users";
+import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
+import prisma from "~prisma/prisma";
 
 
 export type GetUserById = (userId: string) => Promise<DerailleurResponse<User>>;

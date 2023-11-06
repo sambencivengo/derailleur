@@ -1,8 +1,8 @@
 import { Prisma } from "@prisma/client";
-import prisma from "../../../prisma/prisma";
-import { User } from "../../types/users";
-import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "../../utils/responseGenerators";
-import { CreateUserPayload } from "./createUser";
+import { CreateUserPayload } from "~/queries/users/createUser";
+import { User } from "~/types/users";
+import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from "~/utils";
+import prisma from "~prisma/prisma";
 
 export type UpdateUserPayload = Omit<Partial<CreateUserPayload>, 'password'>;
 

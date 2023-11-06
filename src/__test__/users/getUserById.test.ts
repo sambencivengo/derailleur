@@ -1,12 +1,12 @@
 import assert from 'assert';
 import { v4 as uuid } from 'uuid';
-import prisma from "../../../prisma/prisma";
-import { User } from "../../types/users";
-import { CreateUser, CreateUserPayload, createUser } from "../../queries/users/createUser";
-import { getUserById } from "../../queries/users/getUserById";
-import { mockUser_00 } from "../mock/users/mockUser";
-import { addRecordsToDb } from "../utils/addRecordsToDb";
-import { cleanUpTable } from "../utils/cleanUpDatabase";
+import { mockUser_00 } from '~/__test__/mock/users/mockUser';
+import { addRecordsToDb } from '~/__test__/utils/addRecordsToDb';
+import { cleanUpTable } from '~/__test__/utils/cleanUpDatabase';
+import { CreateUserPayload, CreateUser, createUser } from '~/queries/users/createUser';
+import { getUserById } from '~/queries/users/getUserById';
+import { User } from '~/types/users';
+import prisma from '~prisma/prisma';
 
 
 describe("Get User By ID Query", function () {

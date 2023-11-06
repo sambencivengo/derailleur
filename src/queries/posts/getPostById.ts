@@ -1,6 +1,7 @@
-import prisma from "../../../prisma/prisma";
-import { Post } from "../../types/posts";
-import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "../../utils/responseGenerators";
+import { Prisma } from "@prisma/client";
+import { Post } from "~/types/posts";
+import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
+import prisma from "~prisma/prisma";
 
 
 export type GetPostById = (postId: string, userId: string) => Promise<DerailleurResponse<Post>>;
@@ -13,12 +14,17 @@ export async function getPostById(postId: string, userId: string): Promise<Derai
       }
     });
     if (!post) {
-      const error = "Unable to find user by id";
-      return createErrorResponse(error);
-    } else {
-      return createSuccessfulResponse(post);
+      return createErrorResponse("Unable to find post with by provided ID", { userId, postId });
     }
+    return createSuccessfulResponse(post);
+
+
+
   } catch (error: any) {
-    return createErrorResponse(error);
+    if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
+      return createErrorResponse('An error occurred when trying find post by ID', { userId, postId, error: JSON.stringify(error) });
+    }
+    const errResponse = { userId, postId, prismaErrorCode: error.code };
+    return createErrorResponse('Unable to find post by ID due to prisma error', errResponse);
   }
 }
