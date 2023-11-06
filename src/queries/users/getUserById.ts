@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import prisma from "../../../prisma/prisma";
 import { User } from "../../types/users";
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "../../utils/responseGenerators";
@@ -13,13 +14,14 @@ export async function getUserById(userId: string): Promise<DerailleurResponse<Us
       }
     });
     if (!user) {
-      // TODO: Create a standard error format that includes data like userId
-      const error = "Unable to find user by id";
-      return createErrorResponse(error);
-    } else {
-      return createSuccessfulResponse(user);
+      return createErrorResponse("Unable to find user by provided ID", { userId });
     }
+    return createSuccessfulResponse(user);
   } catch (error: any) {
-    return createErrorResponse(error);
+    if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
+      return createErrorResponse('An error occurred when trying find user by ID', { userId, error: JSON.stringify(error) });
+    }
+    const errResponse = { userId, prismaErrorCode: error.code };
+    return createErrorResponse('Unable to find user by ID due to prisma error', errResponse);
   }
 };

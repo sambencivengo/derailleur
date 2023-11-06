@@ -44,10 +44,11 @@ describe("Get User By ID Query", function () {
   });
   it('Unsuccessfully gets a user when provided a non existent user id', async () => {
     const response = await getUserById('nonExistentUserId');
+    const { result, error } = response;
     assert.ok(response);
-    assert.ok(response.error);
-    assert.strictEqual(response.result, null);
-    assert.strictEqual(response.error, 'Unable to find user by id');
+    assert.strictEqual(result, null);
+    assert.notStrictEqual(error, null);
+    assert.strictEqual(typeof error!.message, 'string');
   });
 
   afterAll(async function () {
