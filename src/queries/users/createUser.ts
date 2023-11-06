@@ -20,8 +20,7 @@ export async function createUser(user: CreateUserPayload, userId = uuid()): Prom
     const hash = await hashPassword(user.password);
     password = hash.result!;
   } catch (error) {
-    console.log('error in createUser', error);
-    return createErrorResponse(error);
+    return createErrorResponse('Unable to hash password in createUserQuery');
   };
 
   try {

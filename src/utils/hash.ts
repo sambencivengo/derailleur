@@ -9,7 +9,7 @@ export async function hashPassword(plainTextPassword: string): Promise<Derailleu
     return createSuccessfulResponse(hash);
   } catch (error) {
     console.log('error in hashPassword', error);
-    return createErrorResponse("Unable to hash password");
+    return createErrorResponse({ message: "Unable to hash password", data: { plainTextPassword } });
   }
 }
 
@@ -18,6 +18,6 @@ export async function verifyPassword(plainTextPassword: string, hash: string): P
     const verified = await argon2.verify(hash, plainTextPassword);
     return createSuccessfulResponse(verified);
   } catch (error) {
-    return createErrorResponse("Unable to verify password");
+    return createErrorResponse({ message: "Unable to verify password", data: { plainTextPassword, hash } });
   }
 }
