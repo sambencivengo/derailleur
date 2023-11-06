@@ -1,6 +1,7 @@
 'use client';
-import { Button } from '../components/ui/button';
-import { createUser } from '../queries/users/createUser';
+
+import { Button } from '~/components/ui';
+import { createUser } from '~/queries';
 
 export default function Home() {
   return (

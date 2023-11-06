@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { useTheme } from 'next-themes';
 import { Sun, Moon } from 'lucide-react';
-import { Button } from '@/components/ui';
+import { Button } from '~/components/ui';
 
 export function ToggleDarkModeButton() {
   const { setTheme, theme } = useTheme();

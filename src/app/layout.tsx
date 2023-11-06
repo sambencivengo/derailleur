@@ -1,8 +1,9 @@
 import './styles/globals.css';
 import { Inter as FontSans } from 'next/font/google';
 import type { Metadata } from 'next';
-import { cn } from '@/lib/utils';
-import { Nav, ThemeProvider } from '@/components';
+import { ThemeProvider } from 'next-themes';
+import { Nav } from '~/components';
+import { cn } from '~/lib/utils';
 
 export const metadata: Metadata = {
   title: 'Derailleur',
