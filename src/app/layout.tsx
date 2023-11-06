@@ -1,8 +1,7 @@
 import './styles/globals.css';
 import { Inter as FontSans } from 'next/font/google';
 import type { Metadata } from 'next';
-import { ThemeProvider } from 'next-themes';
-import { Nav } from '~/components';
+import { Nav, ThemeProvider } from '~/components';
 import { cn } from '~/lib/utils';
 
 export const metadata: Metadata = {
@@ -29,7 +28,12 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <Nav />
           <div className="p-2">{children}</div>
         </ThemeProvider>

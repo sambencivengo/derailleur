@@ -1,3 +1,4 @@
+'use server';
 import { Prisma } from "@prisma/client";
 import { User } from "~/types/users";
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";

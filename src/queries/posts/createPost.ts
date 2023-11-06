@@ -1,3 +1,4 @@
+'use server';
 import { v4 as uuid } from 'uuid';
 import { Prisma } from '@prisma/client';
 import { Post } from '~/types/posts';

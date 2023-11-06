@@ -1,5 +1,5 @@
 import React from 'react';
-import { ToggleDarkModeButton } from '@/components';
+import { ToggleDarkModeButton } from '~/components';
 
 export const Nav: React.FC = () => {
   return (
