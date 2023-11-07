@@ -3,9 +3,8 @@ import { v4 as uuid } from "uuid";
 import { mockPost_00 } from "~/__test__/mock/posts/mockPost";
 import { mockUser_00, mockUser_01 } from "~/__test__/mock/users/mockUser";
 import { addRecordsToDb, cleanUpTable } from "~/__test__/utils";
-import { CreateUser, createUser, CreatePost, createPost, UpdatePostPayload, updatePost } from "~/queries";
-import { Post } from "~/types/posts";
-import { User } from "~/types/users";
+import { createUser, createPost, updatePost } from "~/queries";
+import { CreateUser, Post, CreatePost, UpdatePostPayload, User } from "~/types";
 import prisma from "~prisma/prisma";
 
 describe.only("Update Post Query", function () {

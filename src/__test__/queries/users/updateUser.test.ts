@@ -1,8 +1,8 @@
 import assert from 'assert';
 import { v4 as uuid } from 'uuid';
 import { addRecordsToDb, cleanUpTable } from '~/__test__/utils';
-import { CreateUserPayload, CreateUser, createUser, updateUser } from '~/queries';
-import { User } from '~/types/users';
+import { createUser, updateUser } from '~/queries';
+import { CreateUserPayload, CreateUser, User } from '~/types';
 import prisma from '~prisma/prisma';
 
 describe("Update User Query", function () {

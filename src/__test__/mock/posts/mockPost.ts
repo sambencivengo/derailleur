@@ -1,5 +1,5 @@
-import { Post } from "../../../types/posts";
-import { mockUser_00 } from "../users/mockUser";
+import { mockUser_00 } from "~/__test__/mock/users/mockUser";
+import { Post } from "~/types";
 
 export const mockPost_00: Post = {
   id: 'testPostId_00',

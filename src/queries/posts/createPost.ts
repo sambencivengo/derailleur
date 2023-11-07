@@ -1,21 +1,10 @@
 'use server';
 import { v4 as uuid } from 'uuid';
 import { Prisma } from '@prisma/client';
-import { Post } from '~/types/posts';
 import prisma from '~prisma/prisma';
 import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from '~/utils';
+import { CreatePostPayload, Post } from '~/types';
 
-export interface CreatePostPayload {
-  title: string;
-  content: string;
-  published?: boolean;
-}
-
-export type CreatePost = (
-  postPayload: CreatePostPayload,
-  userId: string,
-  postId?: string
-) => Promise<DerailleurResponse<Post>>;
 
 export async function createPost(postPayload: CreatePostPayload, userId: string, postId = uuid()): Promise<DerailleurResponse<Post>> {
   const { content, title, published } = postPayload;

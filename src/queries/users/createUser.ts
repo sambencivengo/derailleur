@@ -1,21 +1,11 @@
 'use server';
 import { Prisma } from "@prisma/client";
 import { v4 as uuid } from 'uuid';
-import { User } from "~/types/users";
-import { DerailleurResponse, hashPassword, createErrorResponse, createSuccessfulResponse } from "~/utils";
 import prisma from "~prisma/prisma";
+import { DerailleurResponse, hashPassword, createErrorResponse, createSuccessfulResponse } from "~/utils";
 import { PrismaQueryErrorCodes } from "~prisma/prismaErrorCodes";
+import { CreateUserPayload, User } from "~/types";
 
-
-
-export interface CreateUserPayload {
-  username: string;
-  password: string;
-  favoriteBike?: string | null;
-  location?: string | null;
-}
-
-export type CreateUser = (user: CreateUserPayload, userId?: string) => Promise<DerailleurResponse<User>>;
 
 export async function createUser(user: CreateUserPayload, userId = uuid()): Promise<DerailleurResponse<User>> {
 

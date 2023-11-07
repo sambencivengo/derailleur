@@ -1,10 +1,9 @@
 // TODO: Re-introduce mock/non-integration testing
-
 import { v4 as uuid } from 'uuid';
-import { User } from "../../../../types/users";
-import { prismaMock } from "../../prismaMock";
-import { CreateUser, CreateUserPayload, createUser } from "../../../../queries/users/createUser";
-import { testQueryMock } from "../../utils/createQueryMock";
+import { prismaMock } from '~/__test__/mock/prismaMock';
+import { testQueryMock } from '~/__test__/mock/utils/createQueryMock';
+import { createUser } from '~/queries';
+import { CreateUserPayload, CreateUser, User } from '~/types';
 
 describe.skip('Create User Query', function () {
   const testUsername = 'testUserName_00';

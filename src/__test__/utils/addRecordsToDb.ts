@@ -1,6 +1,6 @@
 import assert from "assert";
-import { DerailleurResponse } from "../../utils/responseGenerators";
 import { Prisma } from "@prisma/client";
+import { DerailleurResponse } from "~/utils";
 
 
 export type CreateRecordFunction<R, F extends (...args: any) => Promise<DerailleurResponse<R>>> = (...args: Parameters<F>) => Promise<DerailleurResponse<R>>;

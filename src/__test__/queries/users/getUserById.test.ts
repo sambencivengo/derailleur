@@ -2,8 +2,9 @@ import assert from 'assert';
 import { v4 as uuid } from 'uuid';
 import { mockUser_00 } from '~/__test__/mock/users/mockUser';
 import { addRecordsToDb, cleanUpTable } from '~/__test__/utils';
-import { CreateUserPayload, CreateUser, createUser, getUserById } from '~/queries';
-import { User } from '~/types/users';
+import { createUser, getUserById } from '~/queries';
+import { CreateUserPayload, CreateUser } from '~/types';
+import { User } from '~/types/models/users';
 import prisma from '~prisma/prisma';
 
 

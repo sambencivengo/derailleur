@@ -1,20 +1,9 @@
 'use server';
 import { Prisma } from "@prisma/client";
-import { Post } from "~/types/posts";
+import { UpdatePostPayload } from "~/types";
+import { Post } from "~/types/models/posts/posts.types";
 import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from "~/utils";
 import prisma from "~prisma/prisma";
-
-export interface UpdatePostPayload {
-  title: string;
-  content: string;
-  published?: boolean;
-}
-
-export type UpdatePost = (
-  updatePostPayload: UpdatePostPayload,
-  userId: string,
-  authorId: string
-) => Promise<DerailleurResponse<Post>>;
 
 export async function updatePost(updatePostPayload: UpdatePostPayload, postId: string, authorId: string): Promise<DerailleurResponse<Post>> {
   const { content, title, published } = updatePostPayload;

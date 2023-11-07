@@ -1,7 +1,8 @@
 import assert from "assert";
 import { v4 as uuid } from 'uuid';
 import { cleanUpTable } from "~/__test__/utils";
-import { CreateUserPayload, createUser } from "~/queries";
+import { createUser } from "~/queries";
+import { CreateUserPayload } from "~/types";
 import prisma from "~prisma/prisma";
 
 

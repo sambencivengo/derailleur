@@ -2,9 +2,10 @@ import assert from "assert";
 import { v4 as uuid } from "uuid";
 import { mockUser_00 } from "~/__test__/mock/users/mockUser";
 import { addRecordsToDb, cleanUpTable } from "~/__test__/utils";
-import { CreateUser, createUser, CreatePostPayload, createPost } from "~/queries";
-import { User } from "~/types/users";
+import { createUser, createPost } from "~/queries";
+import { CreatePostPayload, CreateUser, User } from "~/types";
 import prisma from "~prisma/prisma";
+
 
 
 describe("Create Post Query", function () {

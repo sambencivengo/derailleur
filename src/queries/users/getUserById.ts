@@ -1,11 +1,8 @@
 'use server';
 import { Prisma } from "@prisma/client";
-import { User } from "~/types/users";
+import { User } from "~/types/models/users";
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
 import prisma from "~prisma/prisma";
-
-
-export type GetUserById = (userId: string) => Promise<DerailleurResponse<User>>;
 
 export async function getUserById(userId: string): Promise<DerailleurResponse<User>> {
   try {
