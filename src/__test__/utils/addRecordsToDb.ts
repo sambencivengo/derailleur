@@ -15,6 +15,7 @@ export async function addRecordsToDb<R, F extends (...args: Parameters<F>) => Pr
   (args: AddMockDataProps<R, F>): Promise<DerailleurResponse<any>[][]> {
   const mockRecordResponses: DerailleurResponse<any>[][] = [];
   const { createRecordFunction, newRecordParams, mockDataName = 'MockData' } = args;
+
   const responses = await Promise.all(newRecordParams.map((params) => createRecordFunction(...params)))
     .catch((e: any) => {
       console.error(e);
