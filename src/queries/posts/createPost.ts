@@ -26,4 +26,4 @@ export async function createPost(postPayload: CreatePostPayload, userId: string,
     const errResponse = { userId, postPayload, prismaErrorCode: error.code };
     return createErrorResponse('Unable to create post due to prisma error', errResponse);
   }
-};
+}

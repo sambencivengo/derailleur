@@ -1,7 +1,8 @@
+'use client';
 import React from 'react';
 import { ToggleDarkModeButton } from '~/components';
 
-export const Nav: React.FC = () => {
+export const Nav = () => {
   return (
     <header>
       <nav>
