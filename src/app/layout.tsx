@@ -1,10 +1,9 @@
 import './styles/globals.css';
 import { Inter as FontSans } from 'next/font/google';
 import type { Metadata } from 'next';
-import { Nav, ThemeProvider } from '~/components';
 import { cn } from '~/lib/utils';
-import { AuthProvider } from '~/components/authProvider';
 import { getServerSession } from 'next-auth';
+import { Nav, ThemeProvider } from '~/components';
 
 export const metadata: Metadata = {
   title: 'Derailleur',
@@ -31,17 +30,17 @@ export default async function RootLayout({
           fontSans.variable
         )}
       >
-        <AuthProvider session={session}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Nav />
-            <div className="p-2">{children}</div>
-          </ThemeProvider>
-        </AuthProvider>
+        {/* <AuthProvider session={session}> */}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Nav />
+          <div className="p-2">{children}</div>
+        </ThemeProvider>
+        {/* </AuthProvider> */}
       </body>
     </html>
   );

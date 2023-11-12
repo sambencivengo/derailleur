@@ -2,7 +2,7 @@
 import React from 'react';
 import { ToggleDarkModeButton } from '~/components';
 
-export const Nav = () => {
+export function Nav() {
   return (
     <header>
       <nav>
@@ -24,4 +24,4 @@ export const Nav = () => {
       </nav>
     </header>
   );
-};
+}
