@@ -8,13 +8,8 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GITHUB_ID ?? "",
       clientSecret: process.env.GITHUB_SECRET ?? ""
     }),
-    CredentialsProvider({
-      credentials
-    })
+    // CredentialsProvider({
+    //   credentials
+    // })
   ]
-};
-
-
-const credentialsConfig: CredentialsConfig = {
-  authorize: () => { }
 };

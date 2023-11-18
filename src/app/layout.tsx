@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { cn } from '~/lib/utils';
 import { getServerSession } from 'next-auth';
 import { Nav, ThemeProvider } from '~/components';
+import { AuthProvider } from '../components/authProvider';
 
 export const metadata: Metadata = {
   title: 'Derailleur',
@@ -30,17 +31,16 @@ export default async function RootLayout({
           fontSans.variable
         )}
       >
-        {/* <AuthProvider session={session}> */}
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Nav />
-          <div className="p-2">{children}</div>
-        </ThemeProvider>
-        {/* </AuthProvider> */}
+        <AuthProvider session={session}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="p-2">{children}</div>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );
