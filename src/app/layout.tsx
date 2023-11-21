@@ -3,8 +3,7 @@ import { Inter as FontSans } from 'next/font/google';
 import type { Metadata } from 'next';
 import { cn } from '~/lib/utils';
 import { getServerSession } from 'next-auth';
-import { Nav, ThemeProvider } from '~/components';
-import { AuthProvider } from '../components/authProvider';
+import { Nav, ThemeProvider, AuthProvider } from '~/components';
 
 export const metadata: Metadata = {
   title: 'Derailleur',
@@ -38,6 +37,7 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <Nav />
             <div className="p-2">{children}</div>
           </ThemeProvider>
         </AuthProvider>

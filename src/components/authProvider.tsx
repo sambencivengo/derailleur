@@ -7,7 +7,6 @@ type AuthProviderProps = {
   children?: React.ReactNode;
   session: Session | null;
 };
-
 export const AuthProvider = async ({
   children,
   session,

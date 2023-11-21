@@ -1,6 +1,6 @@
 
 import NextAuth from "next-auth";
-import { authOptions } from "~/app/api/auth/[...nextauth]/options";
+import { authOptions } from "~/app/api/auth/[...nextauth]/authOptions";
 // import CredentialsProvider from "next-auth/providers/credentials";
 
 
