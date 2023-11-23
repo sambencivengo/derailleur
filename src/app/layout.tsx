@@ -38,7 +38,7 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             <Nav />
-            <div className="p-2">{children}</div>
+            <div className="px-56">{children}</div>
           </ThemeProvider>
         </AuthProvider>
       </body>
