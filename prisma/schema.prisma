@@ -10,6 +10,8 @@ datasource db {
   url = env("DATABASE_URL")
 }
 
+
+
 model Users {
   id String @id @default(uuid())
   createdAt DateTime @default(now())
@@ -19,6 +21,15 @@ model Users {
   location String?
   favoriteBike String? 
   posts Posts[]
+  session User_Sessions?
+}
+
+model User_Sessions {
+  id String @id @default(uuid())
+  active_expires DateTime
+  idle_expires DateTime
+  user Users @relation(fields: [userId], references: [id])
+  userId String @unique
 }
 
 model Posts {
