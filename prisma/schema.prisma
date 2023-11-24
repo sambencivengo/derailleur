@@ -17,14 +17,21 @@ model Users {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   username String @unique @db.VarChar(30)
-  password String @db.VarChar(255)
+  userKey UserKey?
   location String?
   favoriteBike String? 
   posts Posts[]
-  session User_Sessions?
+  session UserSessions?
 }
 
-model User_Sessions {
+model UserKey {
+  id String @id @default(uuid())
+  user Users @relation(fields: [userId], references: [id])
+  userId String @unique
+  hashed_password String
+}
+
+model UserSessions {
   id String @id @default(uuid())
   active_expires DateTime
   idle_expires DateTime
