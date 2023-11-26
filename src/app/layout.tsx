@@ -2,8 +2,7 @@ import './styles/globals.css';
 import { Inter as FontSans } from 'next/font/google';
 import type { Metadata } from 'next';
 import { cn } from '~/lib/utils';
-import { getServerSession } from 'next-auth';
-import { Nav, ThemeProvider, AuthProvider } from '~/components';
+import { Nav, ThemeProvider } from '~/components';
 
 export const metadata: Metadata = {
   title: 'Derailleur',
@@ -20,7 +19,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession();
   return (
     // NOTE: suppressHydrationWarning comes from shadcn dark mode/theme implementation
     <html lang="en" suppressHydrationWarning>
@@ -30,17 +28,15 @@ export default async function RootLayout({
           fontSans.variable
         )}
       >
-        <AuthProvider session={session}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Nav />
-            <div className="px-56">{children}</div>
-          </ThemeProvider>
-        </AuthProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Nav />
+          <div className="px-56">{children}</div>
+        </ThemeProvider>
       </body>
     </html>
   );

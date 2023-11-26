@@ -1,9 +1,8 @@
 'use client';
-import Link from 'next/link';
 import React from 'react';
 import { ToggleDarkModeButton } from '~/components';
 import { Button } from './ui';
-import { signIn } from 'next-auth/react';
+import Link from 'next/link';
 
 export function Nav() {
   return (
@@ -21,8 +20,11 @@ export function Nav() {
             </a>
           </div>
           <div className="flex">
-            <Button variant={'link'} onClick={() => signIn()}>
-              Sign In
+            <Button variant={'link'}>
+              <Link href={'/login'}>Log in</Link>
+            </Button>
+            <Button variant={'link'}>
+              <Link href={'/signup'}>Sign up</Link>
             </Button>
             <ToggleDarkModeButton />
           </div>

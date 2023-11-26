@@ -1,7 +1,10 @@
-import { signIn } from 'next-auth/react';
 import React from 'react';
 import { Button } from '~/components/ui';
 
 export const SignInButton: React.FC = () => {
-  return <Button onClick={() => signIn()}>Sign In</Button>;
+  return (
+    <Button onClick={() => console.log('replace with button that works')}>
+      Sign In
+    </Button>
+  );
 };
