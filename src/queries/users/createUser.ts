@@ -20,8 +20,8 @@ export async function createUser(user: CreateUserPayload, userId = uuid()): Prom
       data: {
         ...user,
         password,
-        id: userId
-      }
+        id: userId,
+      },
     });
     return createSuccessfulResponse(newUser);
   } catch (error: any) {

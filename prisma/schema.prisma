@@ -21,15 +21,17 @@ model Users {
   location String?
   favoriteBike String? 
   posts Posts[]
-  session UserSessions?
+  auth_session Session[]
 }
 
-model UserSessions {
-  id String @id @default(uuid())
+model Session {
+  id             String @id @unique
+  userId        String
   active_expires DateTime
-  idle_expires DateTime
-  user Users @relation(fields: [userId], references: [id])
-  userId String @unique
+  idle_expires   DateTime
+  user Users @relation(references: [id], fields: [userId], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model Posts {

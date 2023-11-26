@@ -9,7 +9,7 @@ declare namespace Lucia {
     createdAt: Date;
     updatedAt: Date;
   };
-  type DatabaseUserSessionAttributes = {
+  type DatabaseSessionAttributes = {
     id: string;
     active_expires: Date;
     idle_expires: Date;

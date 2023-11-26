@@ -1,9 +1,11 @@
 
+import { v4 as uuid } from 'uuid';
 import { auth } from "~/auth/lucia";
 import * as context from "next/headers";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { createUser } from "~/queries";
+import prisma from '~prisma/prisma';
 
 
 export const POST = async (request: NextRequest) => {
@@ -42,11 +44,12 @@ export const POST = async (request: NextRequest) => {
 
 
   try {
+    const userId = uuid();
     // NOTE: From lucia auth docs
     const userResponse = await createUser({
       username,
       password
-    });
+    }, userId);
 
     if (!userResponse.result) {
       return NextResponse.json(
@@ -61,13 +64,29 @@ export const POST = async (request: NextRequest) => {
 
 
     const session = await auth.createSession({
-      userId: userResponse.result.id,
-      attributes: {}
+      attributes: {
+        id: uuid(),
+        active_expires: new Date('1/1/2025'),
+        idle_expires: new Date('1/1/2025'),
+        userId: userId
+      },
+      userId: userId
+    }).catch((e) => {
+      console.log('IN CATCH FOR CREATE SESSION', e);
     });
-    console.log({ session });
+
+    // const session = await prisma.session.create({
+    //   data: {
+    //     id: uuid(),
+    //     active_expires: new Date('1/1/2025'),
+    //     idle_expires: new Date('1/1/2025'),
+    //     userId: userResponse.result.id,
+    //   }
+    // });
+
     const authRequest = auth.handleRequest(request.method, context);
-    console.log(authRequest);
     authRequest.setSession(session);
+    console.log('SESSION AFTER SET', authRequest);
 
     // NOTE: replace lucia auth stuff with prisma queries
     return new Response(null, {
@@ -95,7 +114,7 @@ export const POST = async (request: NextRequest) => {
     //     }
     //   );
     // }
-
+    console.log(e);
     return NextResponse.json(
       {
         error: "An unknown error occurred"
