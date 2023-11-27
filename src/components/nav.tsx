@@ -1,6 +1,6 @@
 'use server';
 import React from 'react';
-import { LogInButton, LogOutButton, ToggleDarkModeButton } from '~/components';
+import { LogInButton, SignUpButton, ToggleDarkModeButton } from '~/components';
 import Link from 'next/link';
 
 export async function Nav() {
@@ -15,7 +15,7 @@ export async function Nav() {
           </div>
           <div className="flex">
             <LogInButton />
-            <LogOutButton />
+            <SignUpButton />
 
             <ToggleDarkModeButton />
           </div>
