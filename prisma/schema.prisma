@@ -18,27 +18,27 @@ model User {
   location String?
   favoriteBike String?
   posts Post[]
-  auth_sessions Session[]
-  keys Key[]
+  auth_session Session[]
+  key Key[]
 }
 
 model Session {
   id String @id @unique
   user_id String
   active_expires BigInt
-  idle_expires BigInt
+  idle_expires   BigInt
   user User @relation(references: [id], fields: [user_id], onDelete: Cascade)
 
   @@index([user_id])
 }
 
 model Key {
-  id String @id @unique
+  id              String  @id @unique
   hashed_password String?
-  user_Id String
-  user User @relation(references: [id], fields: [user_Id], onDelete: Cascade)
+  user_id         String
+  user User @relation(references: [id], fields: [user_id], onDelete: Cascade)
   
-  @@index([user_Id])
+  @@index([user_id])
 }
 
 model Post {
@@ -51,27 +51,3 @@ model Post {
   author User @relation(references: [id], fields: [authorId], onDelete: Cascade)
   authorId String
 }
-
-
-
-// model Users {
-//   id String @id @default(uuid())
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @default(now()) @updatedAt
-//   username String @unique @db.VarChar(30)
-//   password String @db.VarChar(255)
-//   location String?
-//   favoriteBike String? 
-//   posts Posts[]
-//   auth_session Session[]
-// }
-
-// model Session {
-//   id             String @id @unique
-//   userId        String
-//   active_expires DateTime
-//   idle_expires   DateTime
-//   user Users @relation(references: [id], fields: [userId], onDelete: Cascade)
-
-//   @@index([userId])
-// }

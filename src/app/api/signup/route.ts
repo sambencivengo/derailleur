@@ -4,9 +4,7 @@ import * as context from "next/headers";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { createUser } from '~/queries';
-import prisma from '~prisma/prisma';
 import { auth } from '~/auth/lucia';
-import { hashPassword } from '~/utils';
 
 
 export const POST = async (request: NextRequest) => {
@@ -46,43 +44,19 @@ export const POST = async (request: NextRequest) => {
 
   try {
     const userId = uuid();
-    const keyId = uuid();
 
     // Abstracted Prisma Query that does not use Lucia
-    const user = await createUser({
+    await createUser({
       username,
     }, userId);
+
     // Lucia Auth call using the prisma adapter
-    const key = await auth.createKey({
+    await auth.createKey({
       password,
       providerId: 'username',
       providerUserId: username.toLowerCase(),
       userId,
-    }).catch((e) => {
-      console.log(e);
     });
-
-
-    // const user = await auth.createUser({
-    //   userId,
-    //   attributes: {
-    //     username
-    //   },
-    //   key: {
-    //     password,
-    //     providerId: 'username',
-    //     providerUserId: username
-    //   }
-    // });
-    console.log(user);
-    // const key = await prisma.key.create({
-    //   data: {
-    //     id: keyId,
-    //     hashed_password: hashed_password.result!,
-    //     user_Id: userId
-    //   }
-    // });
-
 
     const session = await auth.createSession({
       userId: userId,
@@ -97,27 +71,6 @@ export const POST = async (request: NextRequest) => {
         Location: "/" // redirect to profile page
       }
     });
-
-    // const session = await auth.createSession({
-    //   attributes: {
-    //     id: uuid(),
-    //     active_expires: new Date('1/1/2025'),
-    //     idle_expires: new Date('1/1/2025'),
-    //     userId: userId
-    //   },
-    //   userId: userId
-    // }).catch((e) => {
-    //   console.log('IN CATCH FOR CREATE SESSION', e);
-    // });
-
-    // const session = await prisma.session.create({
-    //   data: {
-    //     id: uuid(),
-    //     active_expires: new Date('1/1/2025'),
-    //     idle_expires: new Date('1/1/2025'),
-    //     userId: userResponse.result.id,
-    //   }
-    // });
   } catch (e) {
     // NOTE: handle prismaQuery catches
     console.log(e);
