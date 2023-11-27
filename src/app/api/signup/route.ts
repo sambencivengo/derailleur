@@ -6,6 +6,7 @@ import type { NextRequest } from "next/server";
 import { createUser } from '~/queries';
 import prisma from '~prisma/prisma';
 import { auth } from '~/auth/lucia';
+import { hashPassword } from '~/utils';
 
 
 export const POST = async (request: NextRequest) => {
@@ -60,15 +61,15 @@ export const POST = async (request: NextRequest) => {
     //     username,
     //   }
     // });
+    const hashed_password = await hashPassword(password);
     const key = await prisma.key.create({
       data: {
         id: uuid(),
-        hashed_password: password,
+        hashed_password: hashed_password.result!,
         user_Id: userId
       }
-    }).catch((e) => {
-      console.log('IN KEY CATCH', e);
     });
+
     const expiration = new Date('1/1/2025');
     const session = await auth.createSession({
       userId: userId,
@@ -78,9 +79,8 @@ export const POST = async (request: NextRequest) => {
       }
     });
     const authRequest = auth.handleRequest(request.method, context);
-
     authRequest.setSession(session);
-    console.log('AFTER SESSION SET');
+
     return new Response(null, {
       status: 302,
       headers: {
@@ -110,24 +110,6 @@ export const POST = async (request: NextRequest) => {
     // });
   } catch (e) {
     // NOTE: handle prismaQuery catches
-
-
-    // this part depends on the database you're using
-    // check for unique constraint error in user table
-    // if (
-    //   e instanceof SomeDatabaseError &&
-    //   e.message === USER_TABLE_UNIQUE_CONSTRAINT_ERROR
-    // ) {
-    //   return NextResponse.json(
-    //     {
-    //       error: "Username already taken"
-    //     },
-    //     {
-    //       status: 400
-    //     }
-    //   );
-    // }
-    console.log(e);
     return NextResponse.json(
       {
         error: "An unknown error occurred"
