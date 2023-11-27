@@ -1,11 +1,11 @@
 
 import { v4 as uuid } from 'uuid';
-import { auth } from "~/auth/lucia";
 import * as context from "next/headers";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { createUser } from '~/queries';
 import prisma from '~prisma/prisma';
+import { auth } from '~/auth/lucia';
 
 
 export const POST = async (request: NextRequest) => {
@@ -46,33 +46,40 @@ export const POST = async (request: NextRequest) => {
   try {
     const userId = uuid();
     // NOTE: From lucia auth docs
-    // const user = await auth.createUser({
-    //   attributes: {
-    //     username,
-    //   },
-    //   key: null
-    // });
-
-    const user = await prisma.users.create({
-      data: {
-        id: userId,
+    const user = await auth.createUser({
+      attributes: {
         username,
-      }
+      },
+      userId: userId,
+      key: null
     });
-    const key = await auth.createKey({
-      userId,
-      password,
-      providerId: 'username',
-      providerUserId: username,
+
+    // const user = await prisma.user.create({
+    //   data: {
+    //     id: userId,
+    //     username,
+    //   }
+    // });
+    const key = await prisma.key.create({
+      data: {
+        id: uuid(),
+        hashed_password: password,
+        user_Id: userId
+      }
     }).catch((e) => {
       console.log('IN KEY CATCH', e);
     });
+    const expiration = new Date('1/1/2025');
     const session = await auth.createSession({
       userId: userId,
-      attributes: {}
+      attributes: {
+        active_expires: expiration,
+        idle_expires: expiration
+      }
     });
-    const authRequest = auth.handleRequest(request.method, context);
-    authRequest.setSession(session);
+    console.log(session);
+    // const authRequest = auth.handleRequest(request.method, context);
+    // authRequest.setSession(session);
     return new Response(null, {
       status: 302,
       headers: {
