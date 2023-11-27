@@ -2,8 +2,12 @@
 import React from 'react';
 import { LogInButton, SignUpButton, ToggleDarkModeButton } from '~/components';
 import Link from 'next/link';
+import { getPageSession } from '~/auth';
+import { LogOutButton } from '~/components/logOutButton';
 
 export async function Nav() {
+  const session = await getPageSession();
+
   return (
     <header>
       <nav>
@@ -14,9 +18,14 @@ export async function Nav() {
             </Link>
           </div>
           <div className="flex">
-            <LogInButton />
-            <SignUpButton />
-
+            {session ? (
+              <LogOutButton />
+            ) : (
+              <>
+                <LogInButton />
+                <SignUpButton />
+              </>
+            )}
             <ToggleDarkModeButton />
           </div>
         </div>

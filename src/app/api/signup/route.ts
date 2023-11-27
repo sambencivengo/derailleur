@@ -4,7 +4,7 @@ import * as context from "next/headers";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { createUser } from '~/queries';
-import { auth } from '~/auth/lucia';
+import { auth } from '~/auth';
 
 
 export const POST = async (request: NextRequest) => {

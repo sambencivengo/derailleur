@@ -1,7 +1,14 @@
-import { Form } from '~/components/form';
+import { redirect } from 'next/navigation';
+import { Form } from '~/components';
 import { Button, Container } from '~/components/ui';
+import * as context from 'next/headers';
+import { auth } from '~/auth';
 
 export default async function Page() {
+  const authRequest = auth.handleRequest('GET', context);
+
+  const session = await authRequest.validate();
+  if (session) redirect('/');
   return (
     <Container>
       <h1>Sign Up</h1>
