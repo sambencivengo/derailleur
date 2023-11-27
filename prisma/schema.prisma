@@ -18,8 +18,8 @@ model User {
   location String?
   favoriteBike String?
   posts Post[]
-  auth_session Session[]
-  key Key[]
+  auth_sessions Session[]
+  keys Key[]
 }
 
 model Session {
@@ -35,8 +35,8 @@ model Session {
 model Key {
   id String @id @unique
   hashed_password String?
-  user User @relation(references: [id], fields: [user_Id], onDelete: Cascade)
   user_Id String
+  user User @relation(references: [id], fields: [user_Id], onDelete: Cascade)
   
   @@index([user_Id])
 }
@@ -48,7 +48,7 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   published Boolean @default(false)
-  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  author User @relation(references: [id], fields: [authorId], onDelete: Cascade)
   authorId String
 }
 

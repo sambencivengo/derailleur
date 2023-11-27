@@ -46,35 +46,47 @@ export const POST = async (request: NextRequest) => {
 
   try {
     const userId = uuid();
-    // NOTE: From lucia auth docs
-    // const user = await auth.createUser({
-    //   attributes: {
-    //     username,
-    //   },
-    //   userId: userId,
-    //   key: null
-    // });
+    const keyId = uuid();
 
+    // Abstracted Prisma Query that does not use Lucia
     const user = await createUser({
       username,
     }, userId);
-
-    const hashed_password = await hashPassword(password);
-    const key = await prisma.key.create({
-      data: {
-        id: uuid(),
-        hashed_password: hashed_password.result!,
-        user_Id: userId
-      }
+    // Lucia Auth call using the prisma adapter
+    const key = await auth.createKey({
+      password,
+      providerId: 'username',
+      providerUserId: username.toLowerCase(),
+      userId,
+    }).catch((e) => {
+      console.log(e);
     });
 
-    const expiration = new Date('1/1/2025');
+
+    // const user = await auth.createUser({
+    //   userId,
+    //   attributes: {
+    //     username
+    //   },
+    //   key: {
+    //     password,
+    //     providerId: 'username',
+    //     providerUserId: username
+    //   }
+    // });
+    console.log(user);
+    // const key = await prisma.key.create({
+    //   data: {
+    //     id: keyId,
+    //     hashed_password: hashed_password.result!,
+    //     user_Id: userId
+    //   }
+    // });
+
+
     const session = await auth.createSession({
       userId: userId,
-      attributes: {
-        active_expires: expiration,
-        idle_expires: expiration
-      }
+      attributes: {}
     });
     const authRequest = auth.handleRequest(request.method, context);
     authRequest.setSession(session);
@@ -108,6 +120,7 @@ export const POST = async (request: NextRequest) => {
     // });
   } catch (e) {
     // NOTE: handle prismaQuery catches
+    console.log(e);
     return NextResponse.json(
       {
         error: "An unknown error occurred"
