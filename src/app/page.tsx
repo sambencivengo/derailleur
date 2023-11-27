@@ -29,9 +29,14 @@ export default async function Home() {
 
   return (
     <main>
-      {session && <h1>SESSION EXISTS {session.user.username}</h1>}
+      {session ? (
+        <h1>SESSION EXISTS {session.user.username}</h1>
+      ) : (
+        <h1 className="text-rose-500">NO SESSION</h1>
+      )}
+
       <section className="py-10 flex flex-col items-center gap-4">
-        {mockPosts &&
+        {session &&
           mockPosts.map((post) => <FrontPagePost post={post} key={post.id} />)}
       </section>
       <div>
