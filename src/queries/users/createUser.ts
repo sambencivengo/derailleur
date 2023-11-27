@@ -9,17 +9,10 @@ import { CreateUserPayload, User } from "~/types";
 
 export async function createUser(user: CreateUserPayload, userId = uuid()): Promise<DerailleurResponse<User>> {
 
-  const hash = await hashPassword(user.password);
-  const password = hash?.result;
-  if (!password) {
-    return createErrorResponse('Unable to hash password in createUserQuery', { user });
-  }
-
   try {
-    const newUser = await prisma.users.create({
+    const newUser = await prisma.user.create({
       data: {
         ...user,
-        password,
         id: userId,
       },
     });

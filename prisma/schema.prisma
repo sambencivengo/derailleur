@@ -16,6 +16,7 @@ model User {
   updatedAt DateTime @default(now()) @updatedAt
   username String @unique @db.VarChar(30)
   location String?
+  favoriteBike String?
   posts Post[]
   auth_session Session[]
   key Key[]

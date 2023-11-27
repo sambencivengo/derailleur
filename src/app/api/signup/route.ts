@@ -47,20 +47,18 @@ export const POST = async (request: NextRequest) => {
   try {
     const userId = uuid();
     // NOTE: From lucia auth docs
-    const user = await auth.createUser({
-      attributes: {
-        username,
-      },
-      userId: userId,
-      key: null
-    });
-
-    // const user = await prisma.user.create({
-    //   data: {
-    //     id: userId,
+    // const user = await auth.createUser({
+    //   attributes: {
     //     username,
-    //   }
+    //   },
+    //   userId: userId,
+    //   key: null
     // });
+
+    const user = await createUser({
+      username,
+    }, userId);
+
     const hashed_password = await hashPassword(password);
     const key = await prisma.key.create({
       data: {
