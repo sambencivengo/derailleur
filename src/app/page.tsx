@@ -1,5 +1,7 @@
 import { mockUser_00 } from '~/__test__/mock/users/mockUser';
+import { auth } from '~/auth/lucia';
 import { FrontPagePost } from '~/components/frontPagePost';
+import * as context from 'next/headers';
 import { Post } from '~/types';
 
 const mockPost: Post = {
@@ -21,9 +23,13 @@ const mockPosts: Post[] = [
   mockPost,
 ];
 
-export default function Home() {
+export default async function Home() {
+  const authRequest = auth.handleRequest('GET', context);
+  const session = await authRequest.validate();
+
   return (
     <main>
+      {session && <h1>SESSION EXISTS {session.user.username}</h1>}
       <section className="py-10 flex flex-col items-center gap-4">
         {mockPosts &&
           mockPosts.map((post) => <FrontPagePost post={post} key={post.id} />)}

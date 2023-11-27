@@ -77,9 +77,10 @@ export const POST = async (request: NextRequest) => {
         idle_expires: expiration
       }
     });
-    console.log(session);
-    // const authRequest = auth.handleRequest(request.method, context);
-    // authRequest.setSession(session);
+    const authRequest = auth.handleRequest(request.method, context);
+
+    authRequest.setSession(session);
+    console.log('AFTER SESSION SET');
     return new Response(null, {
       status: 302,
       headers: {
