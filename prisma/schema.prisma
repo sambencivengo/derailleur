@@ -10,32 +10,38 @@ datasource db {
   url = env("DATABASE_URL")
 }
 
-
-
 model Users {
-  id String @id @default(uuid())
+  id String @id @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   username String @unique @db.VarChar(30)
-  password String @db.VarChar(255)
   location String?
-  favoriteBike String? 
   posts Posts[]
   auth_session Session[]
+  key Key[]
 }
 
 model Session {
-  id             String @id @unique
-  userId        String
-  active_expires DateTime
-  idle_expires   DateTime
+  id String @id @unique
+  userId String
+  activeExpires BigInt
+  idleExpires BigInt
+  user Users @relation(references: [id], fields: [userId], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Key {
+  id String @id @unique
+  hashed_password String?
+  userId String
   user Users @relation(references: [id], fields: [userId], onDelete: Cascade)
 
   @@index([userId])
 }
 
 model Posts {
-  id String @id @default(uuid())
+  id String @id @unique
   title String
   content String
   createdAt DateTime @default(now())
@@ -44,3 +50,27 @@ model Posts {
   author Users @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId String
 }
+
+
+
+// model Users {
+//   id String @id @default(uuid())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @default(now()) @updatedAt
+//   username String @unique @db.VarChar(30)
+//   password String @db.VarChar(255)
+//   location String?
+//   favoriteBike String? 
+//   posts Posts[]
+//   auth_session Session[]
+// }
+
+// model Session {
+//   id             String @id @unique
+//   userId        String
+//   active_expires DateTime
+//   idle_expires   DateTime
+//   user Users @relation(references: [id], fields: [userId], onDelete: Cascade)
+
+//   @@index([userId])
+// }
