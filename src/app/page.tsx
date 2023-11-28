@@ -1,10 +1,9 @@
 import { mockUser_00 } from '~/__test__/mock/users/mockUser';
-import { auth } from '~/auth/lucia';
 import { FrontPagePost } from '~/components/frontPagePost';
-import * as context from 'next/headers';
 import { Post } from '~/types';
-import { AuthRequest } from 'lucia';
 import { getPageSession } from '~/auth';
+import { NewForm } from '~/components/newForm';
+import { Container } from '~/components/ui';
 
 const mockPost: Post = {
   authorId: mockUser_00.id,
@@ -20,10 +19,14 @@ const mockPosts: Post[] = [mockPost, mockPost, mockPost, mockPost, mockPost, moc
 
 export default async function Home() {
   const session = await getPageSession();
+
   return (
     <main>
-      {session ? <h1>SESSION EXISTS {session.user.username}</h1> : <h1 className="text-rose-500">NO SESSION</h1>}
-
+      {session ? <h1>SESSION EXISTS. Username: {session.user.username}</h1> : <h1 className="text-rose-500">NO SESSION</h1>}
+      <Container>
+        <h1 className="text-red-500">TEMP CONTAINER TO TEST NEW FORM. IGNORE</h1>
+        <NewForm />
+      </Container>
       <section className="py-10 flex flex-col items-center gap-4">{session && mockPosts.map((post) => <FrontPagePost post={post} key={post.id} />)}</section>
       <div>
         <div className="flex gap-6 py-6"></div>
