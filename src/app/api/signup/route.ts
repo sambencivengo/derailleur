@@ -2,15 +2,19 @@
 import { v4 as uuid } from 'uuid';
 import * as context from "next/headers";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextRequest } from "next/server";
 import { createUser } from '~/queries';
 import { auth } from '~/auth';
 
 
 export const POST = async (request: NextRequest) => {
-  const formData = await request.formData();
-  const username = formData.get("username");
-  const password = formData.get("password");
+
+  // const formData = await request.formData();
+  const body = await request.json();;
+  const username = body.username;
+  const password = body.password;
+  // const username = formData.get("username");
+  // const password = formData.get("password");
   // TODO: Extra validators here
   if (
     typeof username !== "string" ||
@@ -41,14 +45,20 @@ export const POST = async (request: NextRequest) => {
     );
   }
 
-
   try {
     const userId = uuid();
 
     // Abstracted Prisma Query that does not use Lucia
-    await createUser({
+    const userResponse = await createUser({
       username,
     }, userId);
+    if (userResponse.error) {
+      return NextResponse.json(userResponse.error.message,
+        {
+          status: 401
+        }
+      );
+    }
 
     // Lucia Auth call using the prisma adapter
     await auth.createKey({

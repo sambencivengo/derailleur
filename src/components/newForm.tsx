@@ -1,23 +1,46 @@
 'use client';
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { Button } from '~/components/ui';
 
-interface NewFormProps {}
+type Inputs = {
+  username: string;
+  password: string;
+};
 
-export const NewForm: React.FC<NewFormProps> = ({}) => {
+export const NewForm: React.FC = () => {
+  const [postError, setPostError] = React.useState<string>('');
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const response = await fetch('/api/signup', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      const errors: any = await response.text();
+      console.log({ errors });
+      setPostError(errors);
+    }
+  };
   return (
-    <form onSubmit={handleSubmit((data) => console.log(data))}>
-      <input {...register('firstName')} />
-      <input {...register('lastName', { required: true })} />
-      {errors.lastName && <p>Last name is required.</p>}
-      <input {...register('age', { pattern: /\d+/ })} />
-      {errors.age && <p>Please enter number for age.</p>}
-      <input type="submit" />
+    /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col gap-2 w-64">
+        <input autoComplete="current-password" placeholder="username" {...register('username', { required: true })} />
+        {errors.username && <span>This field is required</span>}
+
+        <input autoComplete="current-password" type="password" placeholder="password" {...register('password', { required: true })} />
+        {/* errors will return when field validation fails  */}
+        {errors.password && <span>This field is required</span>}
+        {postError.length !== 0 && <p className="text-red-500">{postError}</p>}
+        <Button type="submit" className="w-24">
+          Submit
+        </Button>
+      </div>
     </form>
   );
 };
