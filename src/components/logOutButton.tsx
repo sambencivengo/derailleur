@@ -2,13 +2,13 @@
 import Link from 'next/link';
 import React from 'react';
 import { auth } from '~/auth';
-import { Form } from '~/components';
+import { OldForm } from '~/components';
 import { Button } from '~/components/ui';
 
 export const LogOutButton: React.FC = () => {
   return (
-    <Form action="/api/logout">
+    <OldForm action="/api/logout">
       <Button variant={'link'}>Log out</Button>
-    </Form>
+    </OldForm>
   );
 };

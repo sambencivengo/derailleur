@@ -8,7 +8,7 @@ interface FormProps {
   action: string;
 }
 
-export const Form: React.FC<FormProps> = ({ children, action }) => {
+export const OldForm: React.FC<FormProps> = ({ children, action }) => {
   const router = useRouter();
   const makeRequest = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
