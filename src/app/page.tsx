@@ -25,7 +25,6 @@ export default async function Home() {
       {session ? <h1>SESSION EXISTS. Username: {session.user.username}</h1> : <h1 className="text-rose-500">NO SESSION</h1>}
       <Container>
         <h1 className="text-red-500">TEMP CONTAINER TO TEST NEW FORM. IGNORE</h1>
-        <NewForm />
       </Container>
       <section className="py-10 flex flex-col items-center gap-4">{session && mockPosts.map((post) => <FrontPagePost post={post} key={post.id} />)}</section>
       <div>
