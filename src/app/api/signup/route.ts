@@ -8,13 +8,12 @@ import { auth } from '~/auth';
 
 
 export const POST = async (request: NextRequest) => {
-
-  // const formData = await request.formData();
-  const body = await request.json();;
-  const username = body.username;
-  const password = body.password;
-  // const username = formData.get("username");
-  // const password = formData.get("password");
+  const formData = await request.formData();
+  // const body = await request.json();
+  // const username = body.username;
+  // const password = body.password;
+  const username = formData.get("username");
+  const password = formData.get("password");
   // TODO: Extra validators here
   if (
     typeof username !== "string" ||
