@@ -1,7 +1,8 @@
 'use client';
 
-import { FieldValues, Form, UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
+import { Form } from '~/components/ui';
 
 interface FormWrapperProps<F extends FieldValues> {
   children: React.ReactNode;

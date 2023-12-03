@@ -2,18 +2,27 @@
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { FormControl, FormField, FormItem, FormLabel, FormMessage, Button, Input, Form } from '~/components/ui';
+import { FormControl, FormField, FormItem, FormMessage, Button, Input } from '~/components/ui';
+import { FormWrapper } from '~/components';
+import { SignUpSchema } from '~/schemas';
 
-const signUpSchema = z.object({
+// NOTE: Necessary in this file to prevent build errors
+const userSignUpSchema = z.object({
   username: z
-    .string()
+    .string({
+      required_error: 'Username is required',
+      invalid_type_error: 'Username must be a string',
+    })
     .min(2, {
       message: 'Username must be at least 2 characters.',
     })
     .max(50)
     .trim(),
   password: z
-    .string()
+    .string({
+      required_error: 'Password is required',
+      invalid_type_error: 'Password must be a string',
+    })
     .min(2, {
       message: 'Password must be at least 2 characters.',
     })
@@ -22,29 +31,33 @@ const signUpSchema = z.object({
 });
 
 export const SignUpForm = () => {
-  const form = useForm<z.infer<typeof signUpSchema>>({
-    resolver: zodResolver(signUpSchema),
+  const form = useForm<SignUpSchema>({
+    resolver: zodResolver(userSignUpSchema),
     defaultValues: {
       username: '',
       password: '',
     },
   });
 
-  function onSubmit(values: z.infer<typeof signUpSchema>) {
+  async function onSubmit(values: z.infer<typeof userSignUpSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+    const response = await fetch('/api/signup', {
+      body: JSON.stringify(values),
+      method: 'POST',
+    });
+
+    console.log(await response.json());
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col w-44 space-y-4">
+    <FormWrapper form={form} onSubmit={onSubmit}>
+      <div className="flex flex-col w-44 space-y-4">
         <FormField
           control={form.control}
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
               <FormControl>
                 <Input autoComplete="" placeholder="username" {...field} />
               </FormControl>
@@ -57,7 +70,6 @@ export const SignUpForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
               <FormControl>
                 <Input autoComplete="cuu" type="password" placeholder="password" {...field} />
               </FormControl>
@@ -66,7 +78,7 @@ export const SignUpForm = () => {
           )}
         />
         <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+      </div>
+    </FormWrapper>
   );
 };
