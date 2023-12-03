@@ -23,7 +23,6 @@ export const POST = async (req: Request) => {
       username,
     }, userId);
     if (userResponse.errors.length > 0) {
-      console.log('###', userResponse.errors);
       return (createNextResponse({ errors: userResponse.errors, status: 401 }));
     }
 
@@ -42,7 +41,7 @@ export const POST = async (req: Request) => {
     const authRequest = auth.handleRequest(req.method, context);
     authRequest.setSession(session);
 
-    return (createNextResponse({ response: 'success', status: 302 }));
+    return (createNextResponse({ result: 'success', status: 200 }));
   } catch (e) {
     // NOTE: handle prismaQuery catches
     return (createNextResponse({ errors: [{ message: "An unknown error occurred", data: {} }], status: 500 }));

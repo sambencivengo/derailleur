@@ -1,4 +1,5 @@
 'use client';
+import React from 'react';
 import axios, { AxiosError } from 'axios';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,8 +10,7 @@ import { SignUpSchema } from '~/schemas';
 import { AlertCircle } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '~/components/ui/alert';
 import { DerailleurError } from '~/utils';
-import React from 'react';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 // NOTE: Necessary in this file to prevent build errors
 const userSignUpSchema = z.object({
@@ -37,6 +37,8 @@ const userSignUpSchema = z.object({
 });
 
 export const SignUpForm = () => {
+  const router = useRouter();
+
   const [signUpError, setSignUpError] = React.useState<string[] | null>(null);
   const form = useForm<SignUpSchema>({
     resolver: zodResolver(userSignUpSchema),
@@ -49,8 +51,9 @@ export const SignUpForm = () => {
   async function onSubmit(values: z.infer<typeof userSignUpSchema>) {
     const response = await axios
       .post('/api/signup', values)
-      .then((response) => {
-        redirect('/');
+      .then(() => {
+        router.refresh();
+        router.push('/');
       })
       .catch((error: AxiosError) => {
         if (error.response) {
