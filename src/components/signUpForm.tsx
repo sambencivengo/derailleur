@@ -1,10 +1,16 @@
 'use client';
+import axios, { AxiosError } from 'axios';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { FormControl, FormField, FormItem, FormMessage, Button, Input } from '~/components/ui';
 import { FormWrapper } from '~/components';
 import { SignUpSchema } from '~/schemas';
+import { AlertCircle } from 'lucide-react';
+import { Alert, AlertTitle, AlertDescription } from '~/components/ui/alert';
+import { DerailleurError } from '~/utils';
+import React from 'react';
+import { redirect } from 'next/navigation';
 
 // NOTE: Necessary in this file to prevent build errors
 const userSignUpSchema = z.object({
@@ -31,6 +37,7 @@ const userSignUpSchema = z.object({
 });
 
 export const SignUpForm = () => {
+  const [signUpError, setSignUpError] = React.useState<string[] | null>(null);
   const form = useForm<SignUpSchema>({
     resolver: zodResolver(userSignUpSchema),
     defaultValues: {
@@ -40,14 +47,17 @@ export const SignUpForm = () => {
   });
 
   async function onSubmit(values: z.infer<typeof userSignUpSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    const response = await fetch('/api/signup', {
-      body: JSON.stringify(values),
-      method: 'POST',
-    });
-
-    console.log(await response.json());
+    const response = await axios
+      .post('/api/signup', values)
+      .then((response) => {
+        redirect('/');
+      })
+      .catch((error: AxiosError) => {
+        if (error.response) {
+          const { errors } = error.response.data as { errors: DerailleurError[] };
+          setSignUpError(errors.map((error) => error.message));
+        }
+      });
   }
 
   return (
@@ -77,6 +87,15 @@ export const SignUpForm = () => {
             </FormItem>
           )}
         />
+        {signUpError && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            {signUpError.map((message) => {
+              return <AlertDescription>{message}</AlertDescription>;
+            })}
+          </Alert>
+        )}
         <Button type="submit">Submit</Button>
       </div>
     </FormWrapper>
