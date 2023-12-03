@@ -1,35 +1,36 @@
 'use client';
-
-import * as z from 'zod';
+import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, Button, Input, Form } from '~/components/ui';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage, Button, Input, Form } from '~/components/ui';
 
-const formSchema = z.object({
+const signUpSchema = z.object({
   username: z
     .string()
     .min(2, {
       message: 'Username must be at least 2 characters.',
     })
-    .max(50),
+    .max(50)
+    .trim(),
   password: z
     .string()
     .min(2, {
-      message: 'Passowrd must be at least 2 characters.',
+      message: 'Password must be at least 2 characters.',
     })
-    .max(50),
+    .max(50)
+    .trim(),
 });
 
 export const SignUpForm = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof signUpSchema>>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       username: '',
       password: '',
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof signUpSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
@@ -37,7 +38,7 @@ export const SignUpForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col w-44 space-y-4">
         <FormField
           control={form.control}
           name="username"
@@ -45,9 +46,8 @@ export const SignUpForm = () => {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="username" {...field} />
+                <Input autoComplete="" placeholder="username" {...field} />
               </FormControl>
-              <FormDescription>Your new Derailleur username</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -59,9 +59,8 @@ export const SignUpForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="password" {...field} />
+                <Input autoComplete="cuu" type="password" placeholder="password" {...field} />
               </FormControl>
-              <FormDescription>Your new Derailleur username</FormDescription>
               <FormMessage />
             </FormItem>
           )}

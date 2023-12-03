@@ -1,8 +1,8 @@
+'use server';
 import { redirect } from 'next/navigation';
-import { OldForm } from '~/components';
-import { Button, Container } from '~/components/ui';
 import * as context from 'next/headers';
 import { auth } from '~/auth';
+import { SignUpForm } from '~/components/signUpForm';
 
 export default async function Page() {
   const authRequest = auth.handleRequest('GET', context);
@@ -10,9 +10,9 @@ export default async function Page() {
   const session = await authRequest.validate();
   if (session) redirect('/');
   return (
-    <Container>
+    <div className="flex flex-col justify-center">
       <h1>Sign Up</h1>
-      <OldForm action="/api/signup">
+      {/* <OldForm action="/api/signup">
         <label htmlFor="username">Username</label>
         <input name="username" id="username" />
         <br />
@@ -20,7 +20,8 @@ export default async function Page() {
         <input type="password" name="password" id="password" />
         <br />
         <Button type="submit">Sign In</Button>
-      </OldForm>
-    </Container>
+      </OldForm> */}
+      <SignUpForm />
+    </div>
   );
 }
