@@ -1,19 +1,17 @@
-import { OldForm } from '~/components';
-import { Button, Container } from '~/components/ui';
+'use server';
+import { LogInForm } from '~/components';
+import { redirect } from 'next/navigation';
+import * as context from 'next/headers';
+import { auth, getPageSession } from '~/auth';
 
-export default function Page() {
+export default async function Page() {
+  const session = await getPageSession();
+  if (session) redirect('/');
+
   return (
-    <Container>
+    <div className="flex flex-col gap-y-2">
       <h1>Log in</h1>
-      <OldForm action="/api/login">
-        <label htmlFor="username">Username</label>
-        <input name="username" id="username" />
-        <br />
-        <label htmlFor="password">Password</label>
-        <input type="password" name="password" id="password" />
-        <br />
-        <Button type="submit">Log In</Button>
-      </OldForm>
-    </Container>
+      <LogInForm />
+    </div>
   );
 }

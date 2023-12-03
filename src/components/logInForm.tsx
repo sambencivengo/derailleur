@@ -4,16 +4,16 @@ import axios, { AxiosError } from 'axios';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { FormControl, FormField, FormItem, FormMessage, Button, Input } from '~/components/ui';
-import { FormWrapper } from '~/components';
-import { SignUpSchema } from '~/schemas';
+import { LogInSchema } from '~/schemas';
 import { AlertCircle } from 'lucide-react';
+import { FormWrapper } from '~/components';
+import { FormControl, FormField, FormItem, FormMessage, Button, Input } from '~/components/ui';
 import { Alert, AlertTitle, AlertDescription } from '~/components/ui';
 import { DerailleurError } from '~/utils';
 import { useRouter } from 'next/navigation';
 
 // NOTE: Necessary in this file to prevent build errors
-const userSignUpSchema = z.object({
+const userLogInSchema = z.object({
   username: z
     .string({
       required_error: 'Username is required',
@@ -36,21 +36,19 @@ const userSignUpSchema = z.object({
     .trim(),
 });
 
-export const SignUpForm = () => {
+export const LogInForm = () => {
   const router = useRouter();
-
-  const [signUpError, setSignUpError] = React.useState<string[] | null>(null);
-  const form = useForm<SignUpSchema>({
-    resolver: zodResolver(userSignUpSchema),
+  const [logInError, setLogInError] = React.useState<string[] | null>(null);
+  const form = useForm<LogInSchema>({
+    resolver: zodResolver(userLogInSchema),
     defaultValues: {
       username: '',
       password: '',
     },
   });
-
-  async function onSubmit(values: z.infer<typeof userSignUpSchema>) {
+  async function onSubmit(values: z.infer<typeof userLogInSchema>) {
     const response = await axios
-      .post('/api/signup', values)
+      .post('/api/login', values)
       .then(() => {
         router.refresh();
         router.push('/');
@@ -58,7 +56,7 @@ export const SignUpForm = () => {
       .catch((error: AxiosError) => {
         if (error.response) {
           const { errors } = error.response.data as { errors: DerailleurError[] };
-          setSignUpError(errors.map((error) => error.message));
+          setLogInError(errors.map((error) => error.message));
         }
       });
   }
@@ -90,11 +88,11 @@ export const SignUpForm = () => {
             </FormItem>
           )}
         />
-        {signUpError && (
+        {logInError && (
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Error</AlertTitle>
-            {signUpError.map((message) => {
+            {logInError.map((message) => {
               return <AlertDescription>{message}</AlertDescription>;
             })}
           </Alert>
