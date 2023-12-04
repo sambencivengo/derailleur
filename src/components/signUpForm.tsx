@@ -5,12 +5,12 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { FormControl, FormField, FormItem, FormMessage, Button, Input } from '~/components/ui';
-import { FormWrapper } from '~/components';
 import { SignUpSchema } from '~/schemas';
 import { AlertCircle } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '~/components/ui';
 import { DerailleurError } from '~/utils';
 import { useRouter } from 'next/navigation';
+import { FormWrapper } from '~/components';
 
 // NOTE: Necessary in this file to prevent build errors
 const userSignUpSchema = z.object({
@@ -36,9 +36,8 @@ const userSignUpSchema = z.object({
     .trim(),
 });
 
-export const SignUpForm = () => {
+export function SignUpForm() {
   const router = useRouter();
-
   const [signUpError, setSignUpError] = React.useState<string[] | null>(null);
   const form = useForm<SignUpSchema>({
     resolver: zodResolver(userSignUpSchema),
@@ -103,4 +102,4 @@ export const SignUpForm = () => {
       </div>
     </FormWrapper>
   );
-};
+}

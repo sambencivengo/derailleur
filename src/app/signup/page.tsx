@@ -1,7 +1,6 @@
 'use server';
 import { redirect } from 'next/navigation';
-import * as context from 'next/headers';
-import { auth, getPageSession } from '~/auth';
+import { getPageSession } from '~/auth';
 import { SignUpForm } from '~/components';
 
 export default async function Page() {

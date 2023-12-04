@@ -7,8 +7,7 @@ import { useForm } from 'react-hook-form';
 import { LogInSchema } from '~/schemas';
 import { AlertCircle } from 'lucide-react';
 import { FormWrapper } from '~/components';
-import { FormControl, FormField, FormItem, FormMessage, Button, Input } from '~/components/ui';
-import { Alert, AlertTitle, AlertDescription } from '~/components/ui';
+import { FormControl, FormField, FormItem, FormMessage, Button, Input, Alert, AlertTitle, AlertDescription } from '~/components/ui';
 import { DerailleurError } from '~/utils';
 import { useRouter } from 'next/navigation';
 
@@ -36,7 +35,7 @@ const userLogInSchema = z.object({
     .trim(),
 });
 
-export const LogInForm = () => {
+export function LogInForm() {
   const router = useRouter();
   const [logInError, setLogInError] = React.useState<string[] | null>(null);
   const form = useForm<LogInSchema>({
@@ -101,4 +100,4 @@ export const LogInForm = () => {
       </div>
     </FormWrapper>
   );
-};
+}

@@ -10,7 +10,7 @@ interface FormWrapperProps<F extends FieldValues> {
   onSubmit: (fields: z.infer<any>) => Promise<void>;
 }
 
-export const FormWrapper = <F extends FieldValues>({ children, form, onSubmit }: FormWrapperProps<F>) => {
+export function FormWrapper<F extends FieldValues>({ children, form, onSubmit }: FormWrapperProps<F>) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -18,4 +18,4 @@ export const FormWrapper = <F extends FieldValues>({ children, form, onSubmit }:
       </form>
     </Form>
   );
-};
+}
