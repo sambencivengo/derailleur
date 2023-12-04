@@ -18,7 +18,6 @@ export async function getPosts(): Promise<DerailleurResponse<PostWithUserName[]>
       }
     });
     return createSuccessfulResponse(posts);
-
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
       return createErrorResponse([{ message: 'An error occurred when trying posts', data: { error: JSON.stringify(error) } }]);
