@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { LogInSchema } from '~/schemas';
+import { Loader2 } from 'lucide-react';
 import { AlertCircle } from 'lucide-react';
 import { FormWrapper } from '~/components';
 import { FormControl, FormField, FormItem, FormMessage, Button, Input, Alert, AlertTitle, AlertDescription } from '~/components/ui';
@@ -38,6 +39,7 @@ const userLogInSchema = z.object({
 export function LogInForm() {
   const router = useRouter();
   const [logInError, setLogInError] = React.useState<string[] | null>(null);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const form = useForm<LogInSchema>({
     resolver: zodResolver(userLogInSchema),
     defaultValues: {
@@ -46,13 +48,16 @@ export function LogInForm() {
     },
   });
   async function onSubmit(values: z.infer<typeof userLogInSchema>) {
+    setIsLoading(true);
     const response = await axios
       .post('/api/login', values)
       .then(() => {
+        setIsLoading(false);
         router.refresh();
         router.push('/');
       })
       .catch((error: AxiosError) => {
+        setIsLoading(false);
         if (error.response) {
           const { errors } = error.response.data as { errors: DerailleurError[] };
           setLogInError(errors.map((error) => error.message));
@@ -96,7 +101,8 @@ export function LogInForm() {
             })}
           </Alert>
         )}
-        <Button type="submit">Submit</Button>
+
+        <Button type="submit">{isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Submit'}</Button>
       </div>
     </FormWrapper>
   );
