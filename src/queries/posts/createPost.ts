@@ -9,7 +9,7 @@ import { CreatePostPayload, Post } from '~/types';
 export async function createPost(postPayload: CreatePostPayload, userId: string, postId = uuid()): Promise<DerailleurResponse<Post>> {
   const { content, title, published } = postPayload;
   try {
-    const newPost = await prisma.posts.create({
+    const newPost = await prisma.post.create({
       data: {
         id: postId,
         authorId: userId,
@@ -21,9 +21,9 @@ export async function createPost(postPayload: CreatePostPayload, userId: string,
     return createSuccessfulResponse(newPost);
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
-      return createErrorResponse('An error occurred when trying create a post', { userId, postPayload, error: JSON.stringify(error) });
+      return createErrorResponse([{ message: 'An error occurred when trying create a post', data: { userId, postPayload, error: JSON.stringify(error) } }]);
     }
     const errResponse = { userId, postPayload, prismaErrorCode: error.code };
-    return createErrorResponse('Unable to create post due to prisma error', errResponse);
+    return createErrorResponse([{ message: 'Unable to create post due to prisma error', data: errResponse }]);
   }
 }

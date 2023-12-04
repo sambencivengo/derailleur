@@ -22,7 +22,7 @@ export const POST = async (req: Request) => {
     const userResponse = await createUser({
       username,
     }, userId);
-    if (userResponse.errors.length > 0) {
+    if (userResponse.errors.length > 0 || userResponse.result === null) {
       return (createNextResponse({ errors: userResponse.errors, status: 401 }));
     }
 

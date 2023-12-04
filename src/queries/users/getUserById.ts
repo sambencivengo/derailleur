@@ -6,20 +6,20 @@ import prisma from "~prisma/prisma";
 
 export async function getUserById(userId: string): Promise<DerailleurResponse<User>> {
   try {
-    const user = await prisma.users.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id: userId
       }
     });
     if (!user) {
-      return createErrorResponse("Unable to find user by provided ID", { userId });
+      return createErrorResponse([{ message: "Unable to find user by provided ID", data: { userId } }]);
     }
     return createSuccessfulResponse(user);
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
-      return createErrorResponse('An error occurred when trying find user by ID', { userId, error: JSON.stringify(error) });
+      return createErrorResponse([{ message: 'An error occurred when trying find user by ID', data: { userId, error: JSON.stringify(error) } }]);
     }
     const errResponse = { userId, prismaErrorCode: error.code };
-    return createErrorResponse('Unable to find user by ID due to prisma error', errResponse);
+    return createErrorResponse([{ message: 'Unable to find user by ID due to prisma error', data: errResponse }]);
   }
 };
