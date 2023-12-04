@@ -97,8 +97,8 @@ export function SignUpForm() {
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Error</AlertTitle>
-            {signUpError.map((message) => {
-              return <AlertDescription>{message}</AlertDescription>;
+            {signUpError.map((message, idx) => {
+              return <AlertDescription key={idx}>{message}</AlertDescription>;
             })}
           </Alert>
         )}
