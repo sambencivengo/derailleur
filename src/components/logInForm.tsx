@@ -5,9 +5,8 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { LogInSchema } from '~/schemas';
-import { Loader2 } from 'lucide-react';
 import { AlertCircle } from 'lucide-react';
-import { FormWrapper } from '~/components';
+import { FormWrapper, Spinner } from '~/components';
 import { FormControl, FormField, FormItem, FormMessage, Button, Input, Alert, AlertTitle, AlertDescription } from '~/components/ui';
 import { DerailleurError } from '~/utils';
 import { useRouter } from 'next/navigation';
@@ -102,7 +101,7 @@ export function LogInForm() {
           </Alert>
         )}
 
-        <Button type="submit">{isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Submit'}</Button>
+        <Button type="submit">{isLoading ? <Spinner /> : 'Submit'}</Button>
       </div>
     </FormWrapper>
   );

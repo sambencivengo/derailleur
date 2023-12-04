@@ -10,7 +10,7 @@ import { AlertCircle } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '~/components/ui';
 import { DerailleurError } from '~/utils';
 import { useRouter } from 'next/navigation';
-import { FormWrapper } from '~/components';
+import { FormWrapper, Spinner } from '~/components';
 
 // NOTE: Necessary in this file to prevent build errors
 const userSignUpSchema = z.object({
@@ -38,6 +38,7 @@ const userSignUpSchema = z.object({
 
 export function SignUpForm() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [signUpError, setSignUpError] = React.useState<string[] | null>(null);
   const form = useForm<SignUpSchema>({
     resolver: zodResolver(userSignUpSchema),
@@ -48,13 +49,16 @@ export function SignUpForm() {
   });
 
   async function onSubmit(values: z.infer<typeof userSignUpSchema>) {
+    setIsLoading(true);
     await axios
       .post('/api/signup', values)
       .then(() => {
+        setIsLoading(false);
         router.refresh();
         router.push('/');
       })
       .catch((error: AxiosError) => {
+        setIsLoading(false);
         if (error.response) {
           const { errors } = error.response.data as { errors: DerailleurError[] };
           setSignUpError(errors.map((error) => error.message));
@@ -98,7 +102,7 @@ export function SignUpForm() {
             })}
           </Alert>
         )}
-        <Button type="submit">Submit</Button>
+        <Button type="submit">{isLoading ? <Spinner /> : 'Submit'}</Button>
       </div>
     </FormWrapper>
   );
