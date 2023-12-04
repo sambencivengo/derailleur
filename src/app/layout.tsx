@@ -21,7 +21,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <Nav />
-          <div className="px-5 lg:px-56 md:px-24 sm:px-14">{children}</div>
+          <div className="my-5 px-5 lg:px-56 md:px-24 sm:px-14">{children}</div>
         </ThemeProvider>
       </body>
     </html>

@@ -2,12 +2,13 @@
 
 import { AlertCircle } from 'lucide-react';
 import React from 'react';
+import { FrontPagePost } from '~/components';
 import { Alert, AlertTitle, AlertDescription } from '~/components/ui';
-import { Post } from '~/types';
+import { PostWithUserName } from '~/types';
 import { DerailleurResponse } from '~/utils';
 
 interface FrontPagePostContainerProps {
-  postsResponse: DerailleurResponse<Post[]>;
+  postsResponse: DerailleurResponse<PostWithUserName[]>;
 }
 
 export function FrontPagePostContainer({ postsResponse }: FrontPagePostContainerProps) {
@@ -16,12 +17,7 @@ export function FrontPagePostContainer({ postsResponse }: FrontPagePostContainer
     setGetPostsError(true);
   }
   const renderPosts = postsResponse.result!.map((post, idx) => {
-    return (
-      <div key={idx}>
-        {post.title} //
-        {post.content}
-      </div>
-    );
+    return <FrontPagePost post={post} key={idx} />;
   });
   if (getPostsError) {
     return (
@@ -32,5 +28,5 @@ export function FrontPagePostContainer({ postsResponse }: FrontPagePostContainer
       </Alert>
     );
   }
-  return <div>{renderPosts}</div>;
+  return <div className="space-y-2">{renderPosts}</div>;
 }

@@ -7,3 +7,9 @@ export interface Post {
   published: boolean;
   authorId: string;
 }
+
+export interface PostWithUserName extends Post {
+  author: {
+    username: string;
+  };
+}
