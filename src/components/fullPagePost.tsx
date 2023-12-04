@@ -18,19 +18,20 @@ export function FullPagePost({ post }: PostProps) {
             {post.title}
           </Link>
         </CardTitle>
-        <CardDescription>
-          <div className="flex flex-row space-x-1">
-            <p>by</p>
+        <div className="flex flex-row space-x-1">
+          <CardDescription>
+            by {''}
             <Link className="underline hover:text-primary" href={`/user/${post.authorId}`}>
               {post.author.username}
             </Link>
-            <p>{moment(post.createdAt).fromNow()}</p>
-            <p>|</p>
-            <Link href="" className="underline hover:text-primary" onClick={() => console.log('MISSING')}>
-              favorite
+          </CardDescription>
+          <CardDescription>
+            {moment(post.createdAt).fromNow()}{' '}
+            <Link href="" className="underline hover:text-primary text-red-500" onClick={() => console.log('MISSING')}>
+              favorite (NOT WORKING)
             </Link>
-          </div>
-        </CardDescription>
+          </CardDescription>
+        </div>
         <CardContent>
           <p>{post.content}</p>
         </CardContent>

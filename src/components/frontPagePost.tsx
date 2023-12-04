@@ -7,7 +7,6 @@ interface FrontPagePostProps {
   post: PostWithUserName;
 }
 export function FrontPagePost({ post }: FrontPagePostProps) {
-  console.log(post.author.username);
   const { author, authorId, createdAt, id } = post;
   return (
     <Card className="h-auto">
