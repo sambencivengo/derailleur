@@ -8,3 +8,4 @@ export * from './logInButton';
 export * from './formWrapper';
 export * from './signUpButton';
 export * from "./spinner";
+export * from './frontPagePostContainer';
