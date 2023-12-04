@@ -8,9 +8,13 @@ export default async function Page() {
   if (session) redirect('/');
 
   return (
-    <div className="flex flex-col gap-y-2">
-      <h1>Log in</h1>
-      <LogInForm />
-    </div>
+    <main>
+      <div className="flex justify-center">
+        <div className="flex-col space-y-3">
+          <h1>Log in</h1>
+          <LogInForm />
+        </div>
+      </div>
+    </main>
   );
 }

@@ -7,9 +7,11 @@ export default async function Page() {
   const session = await getPageSession();
   if (session) redirect('/');
   return (
-    <div className="flex flex-col gap-y-2">
-      <h1>Sign Up</h1>
-      <SignUpForm />
+    <div className="flex justify-center gap-y-2">
+      <div className="flex-col space-y-3">
+        <h1>Sign Up</h1>
+        <SignUpForm />
+      </div>
     </div>
   );
 }

@@ -48,7 +48,7 @@ export function LogInForm() {
   });
   async function onSubmit(values: z.infer<typeof userLogInSchema>) {
     setIsLoading(true);
-    const response = await axios
+    await axios
       .post('/api/login', values)
       .then(() => {
         setIsLoading(false);

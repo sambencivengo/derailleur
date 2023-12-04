@@ -1,6 +1,6 @@
 'use server';
 import React from 'react';
-import { LogInButton, SignUpButton, ToggleDarkModeButton } from '~/components';
+import { LogInButton, NewPostButton, SignUpButton, ToggleDarkModeButton } from '~/components';
 import { getPageSession } from '~/auth';
 import { LogOutButton } from '~/components/logOutButton';
 import Link from 'next/link';
@@ -18,7 +18,10 @@ export async function Nav() {
           </div>
           <div className="flex">
             {session ? (
-              <LogOutButton />
+              <>
+                <NewPostButton />
+                <LogOutButton />
+              </>
             ) : (
               <>
                 <LogInButton />

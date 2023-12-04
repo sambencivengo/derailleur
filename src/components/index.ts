@@ -11,3 +11,5 @@ export * from "./spinner";
 export * from './frontPagePostContainer';
 export * from './frontPagePost';
 export * from './fullPagePost';
+export * from './newPostButton';
+export * from './newPostForm';

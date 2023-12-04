@@ -5,3 +5,4 @@ export * from './label';
 export * from './form';
 export * from './alert';
 export * from './card';
+export * from './textarea';
