@@ -48,7 +48,7 @@ export function SignUpForm() {
   });
 
   async function onSubmit(values: z.infer<typeof userSignUpSchema>) {
-    const response = await axios
+    await axios
       .post('/api/signup', values)
       .then(() => {
         router.refresh();

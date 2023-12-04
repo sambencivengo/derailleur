@@ -2,43 +2,20 @@
 import * as context from "next/headers";
 import { NextResponse } from "next/server";
 import { LuciaError } from "lucia";
-
-import type { NextRequest } from "next/server";
 import { auth } from "~/auth";
+import { LogInSchema, userLogInSchema, validateSchema } from "~/schemas";
+import { createNextResponse } from "~/utils";
 
-export const POST = async (request: NextRequest) => {
-  const formData = await request.formData();
-  const username = formData.get("username");
-  const password = formData.get("password");
-  // basic check
-  if (
-    typeof username !== "string" ||
-    username.length < 1 ||
-    username.length > 31
-  ) {
-    return NextResponse.json(
-      {
-        error: "Invalid username"
-      },
-      {
-        status: 400
-      }
-    );
+export const POST = async (req: Request) => {
+
+  const body = await req.json();
+  const validateResponse = validateSchema<LogInSchema>({ body, schema: userLogInSchema });
+  if (validateResponse.result === null || validateResponse.errors.length > 0) {
+    return (createNextResponse({ errors: validateResponse.errors, status: 400 }));
   }
-  if (
-    typeof password !== "string" ||
-    password.length < 1 ||
-    password.length > 255
-  ) {
-    return NextResponse.json(
-      {
-        error: "Invalid password"
-      },
-      {
-        status: 400
-      }
-    );
-  }
+
+  const { password, username } = validateResponse.result;
+
   try {
     // find user by key
     // and validate password
@@ -47,7 +24,7 @@ export const POST = async (request: NextRequest) => {
       userId: key.userId,
       attributes: {}
     });
-    const authRequest = auth.handleRequest(request.method, context);
+    const authRequest = auth.handleRequest(req.method, context);
     authRequest.setSession(session);
     return new Response(null, {
       status: 302,
