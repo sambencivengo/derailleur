@@ -3,7 +3,7 @@ import * as context from "next/headers";
 import type { NextRequest } from "next/server";
 import { auth } from "~/auth/lucia";
 
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: Request) => {
   const authRequest = auth.handleRequest(request.method, context);
   // check if user is authenticated
   const session = await authRequest.validate();
