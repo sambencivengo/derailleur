@@ -2,12 +2,22 @@
 import { v4 as uuid } from 'uuid';
 import { Prisma } from '@prisma/client';
 import prisma from '~prisma/prisma';
-import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from '~/utils';
+import { DerailleurResponse, createSuccessfulResponse, createErrorResponse, DerailleurError } from '~/utils';
 import { CreatePostPayload, Post } from '~/types';
+import { CreatePostSchema, createPostSchema, validateSchema } from '~/schemas';
 
 
 export async function createPost(postPayload: CreatePostPayload, userId: string, postId = uuid()): Promise<DerailleurResponse<Post>> {
-  const { content, title, published, category } = postPayload;
+
+  const validateResponse = validateSchema<CreatePostSchema>({ body: postPayload, schema: createPostSchema });
+  if (validateResponse.result === null || validateResponse.errors.length > 0) {
+    const errors: DerailleurError[] = validateResponse.errors.map((error) => {
+      return { data: postPayload, message: error.message };
+    });
+    return (createErrorResponse(errors));
+  }
+  const { content, title, category, published } = validateResponse.result;
+
   try {
     const newPost = await prisma.post.create({
       data: {

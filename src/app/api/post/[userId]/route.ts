@@ -1,6 +1,6 @@
 
 import { createPost, getUserById } from "~/queries";
-import { CreatePostSchemas, createPostSchema, validateSchema } from "~/schemas";
+import { CreatePostSchema, createPostSchema, validateSchema } from "~/schemas";
 import { createNextResponse } from "~/utils";
 
 
@@ -16,7 +16,7 @@ export const POST = async (
   }
 
   const body = await req.json();
-  const validateSchemaResponse = validateSchema<CreatePostSchemas>({ body, schema: createPostSchema });
+  const validateSchemaResponse = validateSchema<CreatePostSchema>({ body, schema: createPostSchema });
   if (validateSchemaResponse.result === null || validateSchemaResponse.errors.length > 0) {
     return (createNextResponse({ errors: validateSchemaResponse.errors, status: 400 }));
   }
