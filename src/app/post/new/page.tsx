@@ -11,7 +11,7 @@ export default async function Page() {
   }
   return (
     <main>
-      <NewPostForm userId={session.user.userId} username={session.user.username} />
+      <NewPostForm userId={session.user.userId} />
     </main>
   );
 }

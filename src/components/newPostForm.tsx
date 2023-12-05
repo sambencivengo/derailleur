@@ -4,14 +4,12 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { FormWrapper, Spinner } from '~/components';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, Textarea } from '~/components/ui';
+import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, Textarea } from '~/components/ui';
 import { CreatePostSchemas } from '~/schemas';
 import { CreatePostPayload } from '~/types';
 import { useRouter } from 'next/navigation';
-import axios, { AxiosError } from 'axios';
-import { DerailleurError } from '~/utils';
 import { createPost } from '~/queries';
-import { getPageSession } from '~/auth';
+import { AlertCircle } from 'lucide-react';
 
 export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
   title: z
@@ -40,7 +38,10 @@ export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
     .optional(),
 });
 
-export function NewPostForm() {
+interface NewPostFormProps {
+  userId: string;
+}
+export function NewPostForm({ userId }: NewPostFormProps) {
   const [submitPostError, setSubmitPostError] = React.useState<string[] | null>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const router = useRouter();
@@ -49,14 +50,20 @@ export function NewPostForm() {
     resolver: zodResolver(createPostSchema),
     defaultValues: {
       content: '',
-      published: false,
+      published: true, // TODO: change this when drafts are implemented
       title: '',
     },
   });
 
   async function onSubmit(values: CreatePostSchemas) {
     setIsLoading(true);
-    // const response = await createPost(values);
+    const response = await createPost(values, userId);
+    if (response.errors.length > 0 || response.result === null) {
+      setIsLoading(false);
+      setSubmitPostError(response.errors.map((error) => error.message));
+    } else {
+      router.push(`/post/${response.result.id}`);
+    }
   }
   return (
     <Card>
@@ -89,6 +96,15 @@ export function NewPostForm() {
               </FormItem>
             )}
           />
+          {submitPostError && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              {submitPostError.map((message, idx) => {
+                return <AlertDescription key={idx}>{message}</AlertDescription>;
+              })}
+            </Alert>
+          )}
           <div className="flex justify-end">
             <Button type="submit">{isLoading ? <Spinner /> : 'Submit'}</Button>
           </div>
