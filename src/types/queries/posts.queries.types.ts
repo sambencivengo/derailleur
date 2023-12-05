@@ -1,9 +1,10 @@
-import { Post } from "~/types";
+import { Post, PostCategory } from "~/types";
 import { DerailleurResponse } from "~/utils";
 
 export interface CreatePostPayload {
   title: string;
   content: string;
+  category?: PostCategory;
   published?: boolean;
 }
 
@@ -12,7 +13,6 @@ export interface UpdatePostPayload {
   content: string;
   published?: boolean;
 }
-
 
 // Query Function Types
 export type CreatePost = (

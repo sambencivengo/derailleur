@@ -7,7 +7,7 @@ import { CreatePostPayload, Post } from '~/types';
 
 
 export async function createPost(postPayload: CreatePostPayload, userId: string, postId = uuid()): Promise<DerailleurResponse<Post>> {
-  const { content, title, published } = postPayload;
+  const { content, title, published, category } = postPayload;
   try {
     const newPost = await prisma.post.create({
       data: {
@@ -15,8 +15,9 @@ export async function createPost(postPayload: CreatePostPayload, userId: string,
         authorId: userId,
         content,
         title,
-        published
-      }
+        published,
+        category
+      },
     });
     return createSuccessfulResponse(newPost);
   } catch (error: any) {

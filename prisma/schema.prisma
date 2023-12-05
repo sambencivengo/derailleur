@@ -33,9 +33,9 @@ model Session {
 }
 
 model Key {
-  id              String  @id @unique
+  id String @id @unique
   hashed_password String?
-  user_id         String
+  user_id String
   user User @relation(references: [id], fields: [user_id], onDelete: Cascade)
   
   @@index([user_id])
@@ -50,4 +50,11 @@ model Post {
   published Boolean @default(false)
   author User @relation(references: [id], fields: [authorId], onDelete: Cascade)
   authorId String
+  category PostCategory?
+}
+
+enum PostCategory {
+  RIG
+  TRIP_REPORT
+  HELP
 }
