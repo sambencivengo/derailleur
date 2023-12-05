@@ -11,7 +11,7 @@ export function FrontPagePost({ post }: FrontPagePostProps) {
   return (
     <Card className="h-auto">
       <CardHeader>
-        <CardTitle>
+        <CardTitle className="text-base">
           <Link className="hover:text-primary" href={`/post/${id}`}>
             {post.title}
           </Link>

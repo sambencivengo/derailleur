@@ -7,26 +7,27 @@ import Link from 'next/link';
 
 export async function Nav() {
   const session = await getPageSession();
+
   return (
     <header>
       <nav>
         <div className="flex items-center justify-between p-2 border-b-2">
-          <div className="flex flex-row space-x-3">
+          <div>
             <Link href="/">
-              <h1 className="text-2xl">DERAILLEUR</h1>
+              <h1 className="text-2xl italic">DERAILLEUR</h1>
             </Link>
           </div>
-          <div className="flex">
+          <div className="flex space-x-3">
             {session ? (
-              <>
+              <div className="grid grid-flow-col content-center space-x-3">
                 <NewPostButton />
                 <LogOutButton />
-              </>
+              </div>
             ) : (
-              <>
+              <div className="grid grid-flow-col content-center space-x-3">
                 <LogInButton />
                 <SignUpButton />
-              </>
+              </div>
             )}
             <ToggleDarkModeButton />
           </div>

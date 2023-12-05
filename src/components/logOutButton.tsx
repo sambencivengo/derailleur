@@ -1,8 +1,8 @@
 'use client';
 import axios from 'axios';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import { Button } from '~/components/ui';
 
 export const LogOutButton: React.FC = () => {
   const router = useRouter();
@@ -19,8 +19,8 @@ export const LogOutButton: React.FC = () => {
       });
   };
   return (
-    <Button onClick={logOut} variant={'link'}>
+    <Link className="text-primary italic hover:underline" href={''} onClick={logOut}>
       Log out
-    </Button>
+    </Link>
   );
 };
