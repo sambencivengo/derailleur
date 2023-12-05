@@ -1,3 +1,4 @@
+import { PostCategory } from '@prisma/client';
 import React from 'react';
 import { FrontPageCategoryFilter, FrontPagePostContainer } from '~/components';
 import { getPosts } from '~/queries';
@@ -5,15 +6,13 @@ import { getPosts } from '~/queries';
 export default async function Home({
   searchParams,
 }: {
-  params?: {
-    num?: string;
-  };
   searchParams?: {
-    category?: string;
+    category?: PostCategory;
   };
 }) {
   const { category } = searchParams!;
-  const posts = await getPosts();
+  const categories = category === undefined ? [] : [category];
+  const posts = await getPosts(categories);
   return (
     <main>
       <div className="my-6">
