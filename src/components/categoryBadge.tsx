@@ -1,13 +1,14 @@
 import { PostCategory } from '@prisma/client';
 import { Badge } from '~/components/ui';
 
-enum CategoryBadgeVariants {
+export enum CategoryBadgeVariants {
   RIG = 'categoryHelp',
   HELP = 'categoryRig',
   TRIP_REPORT = 'categoryTripReport',
 }
 interface CategoryBadgeProps {
   category: PostCategory;
+  asLink?: boolean;
 }
 export function CategoryBadge({ category }: CategoryBadgeProps) {
   const readableCategory = category.replace('_', ' ');

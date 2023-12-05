@@ -1,13 +1,21 @@
 import Link from 'next/link';
 import moment from 'moment';
-import { Card, CardHeader, CardTitle, CardDescription } from '~/components/ui';
+import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '~/components/ui';
 import { PostWithUserName } from '~/types';
+import { CategoryBadge } from '~/components/categoryBadge';
 
 interface FrontPagePostProps {
   post: PostWithUserName;
 }
 export function FrontPagePost({ post }: FrontPagePostProps) {
-  const { author, authorId, createdAt, id } = post;
+  const {
+    author: { username },
+    authorId,
+    createdAt,
+    id,
+    category,
+  } = post;
+
   return (
     <Card className="h-auto">
       <CardHeader>
@@ -20,12 +28,13 @@ export function FrontPagePost({ post }: FrontPagePostProps) {
           <CardDescription>
             by{' '}
             <Link className="underline hover:text-primary" href={`/user/${authorId}`}>
-              {author.username}
+              {username}
             </Link>
           </CardDescription>
           <CardDescription> {moment(createdAt).fromNow()}</CardDescription>
         </div>
       </CardHeader>
+      <CardFooter>{category && <CategoryBadge category={category} />}</CardFooter>
     </Card>
   );
 }
