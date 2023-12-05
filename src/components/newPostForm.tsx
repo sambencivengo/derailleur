@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { createPost } from '~/queries';
 import { AlertCircle } from 'lucide-react';
 import { PostCategory } from '@prisma/client';
+import { CategoryBadge } from '~/components/categoryBadge';
 
 export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
   title: z
@@ -113,26 +114,12 @@ export function NewPostForm({ userId }: NewPostFormProps) {
                   <FormControl>
                     <RadioGroup onValueChange={field.onChange} className="flex flex-col space-y-1">
                       {Object.values(PostCategory).map((category, idx) => {
-                        const readableCategory = category.replace('_', ' ');
-                        console.log(category);
-                        const badgeVariant = () => {
-                          switch (category) {
-                            case PostCategory.HELP:
-                              return <Badge variant="categoryHelp">{readableCategory}</Badge>;
-
-                            case PostCategory.RIG:
-                              return <Badge variant="categoryRig">{readableCategory}</Badge>;
-
-                            case PostCategory.TRIP_REPORT:
-                              return <Badge variant="categoryTripReport">{readableCategory}</Badge>;
-                          }
-                        };
                         return (
                           <FormItem key={idx} className="flex items-center space-x-3 space-y-0">
                             <FormControl>
                               <RadioGroupItem value={category} />
                             </FormControl>
-                            {badgeVariant()}
+                            <CategoryBadge category={category} key={idx} />
                           </FormItem>
                         );
                       })}

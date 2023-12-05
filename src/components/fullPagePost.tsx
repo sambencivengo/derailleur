@@ -10,6 +10,7 @@ interface PostProps {
   post: PostWithUserName;
 }
 export function FullPagePost({ post }: PostProps) {
+  console.log(post);
   return (
     <Card className="h-auto">
       <CardHeader>

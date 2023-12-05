@@ -1,14 +1,5 @@
-const PostCategory: {
-  HELP: "HELP",
-  TRIP_REPORT: "TRIP_REPORT",
-  RIG: "RIG";
-} = {
-  HELP: "HELP",
-  TRIP_REPORT: "TRIP_REPORT",
-  RIG: "RIG"
-};
+import { PostCategory } from "@prisma/client";
 
-export type PostCategory = typeof PostCategory[keyof typeof PostCategory];
 
 export interface Post {
   id: string;
