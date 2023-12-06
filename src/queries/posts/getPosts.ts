@@ -7,7 +7,6 @@ import prisma from "~prisma/prisma";
 
 
 export async function getPosts(categories?: PostCategory[]): Promise<DerailleurResponse<PostWithUserName[]>> {
-  console.log(categories);
   try {
     const posts = await prisma.post.findMany({
       // TODO: create optional filters
