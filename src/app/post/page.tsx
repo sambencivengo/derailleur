@@ -7,11 +7,19 @@ export default async function Home({
   searchParams,
 }: {
   searchParams?: {
-    category?: PostCategory;
+    category?: PostCategory | PostCategory[];
   };
 }) {
   const { category } = searchParams!;
-  const categories = category === undefined ? [] : [category];
+  const categories: PostCategory[] = [];
+
+  if (category !== undefined) {
+    if (Array.isArray(category)) {
+      categories.push(...category);
+    } else {
+      categories.push(category);
+    }
+  }
   const posts = await getPosts(categories);
 
   return (

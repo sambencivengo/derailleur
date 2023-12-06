@@ -1,6 +1,5 @@
 'use client';
 
-import { response } from 'express';
 import { AlertCircle } from 'lucide-react';
 import React from 'react';
 import { FrontPagePost } from '~/components';
