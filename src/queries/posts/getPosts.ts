@@ -7,6 +7,7 @@ import prisma from "~prisma/prisma";
 
 
 export async function getPosts(categories?: PostCategory[]): Promise<DerailleurResponse<PostWithUserName[]>> {
+  console.log(categories);
   try {
     const posts = await prisma.post.findMany({
       // TODO: create optional filters
@@ -26,7 +27,7 @@ export async function getPosts(categories?: PostCategory[]): Promise<DerailleurR
     return createSuccessfulResponse(posts);
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
-      return createErrorResponse([{ message: 'An error occurred when trying posts', data: { error: JSON.stringify(error) } }]);
+      return createErrorResponse([{ message: 'An error occurred when trying to get posts', data: { error: JSON.stringify(error) } }]);
     }
     const errResponse = { error: JSON.stringify(error), prismaErrorCode: error.code };
     return createErrorResponse([{ message: 'Unable to find post by ID due to prisma error', data: errResponse }]);

@@ -13,6 +13,7 @@ export default async function Home({
   const { category } = searchParams!;
   const categories = category === undefined ? [] : [category];
   const posts = await getPosts(categories);
+
   return (
     <main>
       <div className="my-6">

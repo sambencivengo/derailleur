@@ -4,7 +4,6 @@ import { getPosts } from '~/queries';
 
 export default async function Home() {
   const posts = await getPosts();
-
   return (
     <main>
       <div className="my-6">
