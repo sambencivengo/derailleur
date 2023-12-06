@@ -1,5 +1,8 @@
+import Link from 'next/link';
+import React from 'react';
 import { PostCategory } from '@prisma/client';
-import { Badge } from '~/components/ui';
+import { useSearchParams } from 'next/navigation';
+import { Badge, badgeVariants } from '~/components/ui';
 
 export enum CategoryBadgeVariants {
   RIG = 'categoryHelp',
@@ -10,7 +13,7 @@ interface CategoryBadgeProps {
   category: PostCategory;
   asLink?: boolean;
 }
-export function CategoryBadge({ category }: CategoryBadgeProps) {
+export function CategoryBadge({ category, asLink }: CategoryBadgeProps) {
   const readableCategory = category.replace('_', ' ');
   const badgeVariant = () => {
     switch (category) {
@@ -25,5 +28,24 @@ export function CategoryBadge({ category }: CategoryBadgeProps) {
     }
   };
 
+  if (asLink) {
+    const searchParams = useSearchParams();
+
+    const createQueryString = React.useCallback(
+      (name: string, value: string) => {
+        const params = new URLSearchParams(searchParams);
+        params.set(name, value);
+
+        return params.toString();
+      },
+      [searchParams]
+    );
+
+    return (
+      <Link href={'/post/' + '?' + createQueryString('category', category)} className={badgeVariants({ variant: badgeVariant() })}>
+        {readableCategory}
+      </Link>
+    );
+  }
   return <Badge variant={badgeVariant()}>{readableCategory}</Badge>;
 }
