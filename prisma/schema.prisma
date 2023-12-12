@@ -41,6 +41,7 @@ model Key {
   @@index([user_id])
 }
 
+
 model Post {
   id String @id @unique
   title String
@@ -50,11 +51,21 @@ model Post {
   published Boolean @default(false)
   author User @relation(references: [id], fields: [authorId], onDelete: Cascade)
   authorId String
-  category PostCategory?
+  tags TagsOnPosts[]
 }
 
-enum PostCategory {
-  RIG
-  TRIP_REPORT
-  HELP
+model Tag {
+  id String @id @unique @default(uuid())
+  name String
+  posts TagsOnPosts[]
+}
+
+model TagsOnPosts {
+  post Post @relation(fields: [postId], references: [id])
+  postId String
+  tag Tag @relation(fields: [tagId], references: [id])
+  tagId String
+  assignedAt DateTime @default(now())
+
+  @@id([postId, tagId])
 }
