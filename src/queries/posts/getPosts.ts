@@ -1,12 +1,12 @@
 'use server';
 
-import { PostCategory, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { PostWithUserName } from "~/types";
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
 import prisma from "~prisma/prisma";
 
 
-export async function getPosts(categories?: PostCategory[]): Promise<DerailleurResponse<PostWithUserName[]>> {
+export async function getPosts(): Promise<DerailleurResponse<PostWithUserName[]>> {
   try {
     const posts = await prisma.post.findMany({
       // TODO: create optional filters
@@ -17,11 +17,6 @@ export async function getPosts(categories?: PostCategory[]): Promise<DerailleurR
           }
         }
       },
-      where: {
-        category: {
-          in: categories
-        }
-      }
     });
     return createSuccessfulResponse(posts);
   } catch (error: any) {

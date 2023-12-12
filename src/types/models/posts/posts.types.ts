@@ -1,5 +1,3 @@
-import { PostCategory } from "@prisma/client";
-
 
 export interface Post {
   id: string;
@@ -9,7 +7,6 @@ export interface Post {
   updatedAt: Date;
   published: boolean;
   authorId: string;
-  category: PostCategory | null;
 }
 
 export interface PostWithUserName extends Post {

@@ -4,13 +4,12 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { FormWrapper, Spinner } from '~/components';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Alert, AlertDescription, AlertTitle, Badge, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, Label, RadioGroup, RadioGroupItem, Textarea, badgeVariants } from '~/components/ui';
+import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, RadioGroup, RadioGroupItem, Textarea } from '~/components/ui';
 import { CreatePostSchema } from '~/schemas';
 import { CreatePostPayload } from '~/types';
 import { useRouter } from 'next/navigation';
 import { createPost } from '~/queries';
 import { AlertCircle } from 'lucide-react';
-import { PostCategory } from '@prisma/client';
 import { CategoryBadge } from '~/components/categoryBadge';
 
 export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
@@ -32,11 +31,6 @@ export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
       message: 'Post content must be at least 20 characters.',
     })
     .trim(),
-  category: z
-    .nativeEnum(PostCategory, {
-      invalid_type_error: 'Invalid post category type',
-    })
-    .optional(),
   published: z
     .boolean({
       required_error: 'Published is required',
@@ -59,7 +53,6 @@ export function NewPostForm({ userId }: NewPostFormProps) {
       content: '',
       published: true, // TODO: change this when drafts are implemented
       title: '',
-      category: PostCategory.HELP,
     },
   });
 
@@ -104,7 +97,7 @@ export function NewPostForm({ userId }: NewPostFormProps) {
               </FormItem>
             )}
           />
-          <FormField
+          {/* <FormField
             control={form.control}
             name="category"
             render={({ field }) => {
@@ -129,7 +122,7 @@ export function NewPostForm({ userId }: NewPostFormProps) {
                 </FormItem>
               );
             }}
-          />
+          /> */}
           {submitPostError && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
