@@ -97,32 +97,6 @@ export function NewPostForm({ userId }: NewPostFormProps) {
               </FormItem>
             )}
           />
-          {/* <FormField
-            control={form.control}
-            name="category"
-            render={({ field }) => {
-              return (
-                <FormItem className="space-y-3">
-                  <FormLabel>Choose a post category...</FormLabel>
-                  <FormControl>
-                    <RadioGroup onValueChange={field.onChange} className="flex flex-col space-y-1">
-                      {Object.values(PostCategory).map((category, idx) => {
-                        return (
-                          <FormItem key={idx} className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value={category} />
-                            </FormControl>
-                            <CategoryBadge category={category} key={idx} />
-                          </FormItem>
-                        );
-                      })}
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          /> */}
           {submitPostError && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
