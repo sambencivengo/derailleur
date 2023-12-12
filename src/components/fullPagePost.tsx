@@ -5,7 +5,6 @@ import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Button } from '~/components/ui';
 import { PostWithUserName } from '~/types';
 import Link from 'next/link';
-import { CategoryBadge } from '~/components/categoryBadge';
 
 interface PostProps {
   post: PostWithUserName;
@@ -14,7 +13,6 @@ export function FullPagePost({ post }: PostProps) {
   const {
     authorId,
     author: { username },
-    category,
     id,
     content,
     createdAt,
@@ -46,7 +44,6 @@ export function FullPagePost({ post }: PostProps) {
         <CardContent>
           <p>{content}</p>
         </CardContent>
-        <CardFooter>{category && <CategoryBadge category={category} />}</CardFooter>
       </CardHeader>
     </Card>
   );

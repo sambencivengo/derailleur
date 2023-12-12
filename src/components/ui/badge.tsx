@@ -10,9 +10,6 @@ const badgeVariants = cva('inline-flex items-center rounded-full border px-2.5 p
       secondary: 'border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80',
       destructive: 'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
       outline: 'text-foreground',
-      categoryHelp: 'border-transparent bg-orange-500 text-primary-foreground hover:bg-orange-500/80',
-      categoryRig: 'border-transparent bg-pink-500 text-primary-foreground hover:bg-pink-500/80',
-      categoryTripReport: 'border-transparent bg-blue-500 text-primary-foreground hover:bg-blue-500/80',
     },
   },
   defaultVariants: {

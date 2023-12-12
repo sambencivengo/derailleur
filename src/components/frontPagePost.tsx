@@ -2,7 +2,6 @@ import Link from 'next/link';
 import moment from 'moment';
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '~/components/ui';
 import { PostWithUserName } from '~/types';
-import { CategoryBadge } from '~/components/categoryBadge';
 
 interface FrontPagePostProps {
   post: PostWithUserName;
@@ -13,7 +12,6 @@ export function FrontPagePost({ post }: FrontPagePostProps) {
     authorId,
     createdAt,
     id,
-    category,
   } = post;
 
   return (
@@ -34,7 +32,6 @@ export function FrontPagePost({ post }: FrontPagePostProps) {
           <CardDescription> {moment(createdAt).fromNow()}</CardDescription>
         </div>
       </CardHeader>
-      <CardFooter>{category && <CategoryBadge category={category} />}</CardFooter>
     </Card>
   );
 }

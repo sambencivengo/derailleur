@@ -10,7 +10,6 @@ import { CreatePostPayload } from '~/types';
 import { useRouter } from 'next/navigation';
 import { createPost } from '~/queries';
 import { AlertCircle } from 'lucide-react';
-import { CategoryBadge } from '~/components/categoryBadge';
 
 export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
   title: z

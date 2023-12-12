@@ -16,7 +16,7 @@ export async function createPost(postPayload: CreatePostPayload, userId: string,
     });
     return (createErrorResponse(errors));
   }
-  const { content, title, category, published } = validateResponse.result;
+  const { content, title, published } = validateResponse.result;
 
   try {
     const newPost = await prisma.post.create({
@@ -26,7 +26,6 @@ export async function createPost(postPayload: CreatePostPayload, userId: string,
         content,
         title,
         published,
-        category
       },
     });
     return createSuccessfulResponse(newPost);

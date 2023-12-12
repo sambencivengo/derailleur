@@ -13,4 +13,3 @@ export * from './frontPagePost';
 export * from './fullPagePost';
 export * from './newPostButton';
 export * from './newPostForm';
-export * from './categoryBadge';

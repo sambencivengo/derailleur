@@ -1,11 +1,9 @@
-import { PostCategory } from "@prisma/client";
 import { Post } from "~/types";
 import { DerailleurResponse } from "~/utils";
 
 export interface CreatePostPayload {
   title: string;
   content: string;
-  category?: PostCategory;
   published?: boolean;
 }
 

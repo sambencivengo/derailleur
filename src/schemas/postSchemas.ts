@@ -1,4 +1,3 @@
-import { PostCategory } from "@prisma/client";
 import { z } from "zod";
 import { CreatePostPayload } from "~/types";
 
@@ -19,9 +18,6 @@ export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
       required_error: "Published is required",
       invalid_type_error: "Published must be either true or false",
     }).optional(),
-  category: z.nativeEnum(PostCategory, {
-    invalid_type_error: "Invalid post category type",
-  }).optional()
 });
 
 export type CreatePostSchema = z.infer<typeof createPostSchema>;
