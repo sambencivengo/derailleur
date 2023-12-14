@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import moment from 'moment';
-import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '~/components/ui';
+import { Card, CardHeader, CardTitle, CardDescription } from '~/components/ui';
 import { PostWithUserName } from '~/types';
 
 interface FrontPagePostProps {
