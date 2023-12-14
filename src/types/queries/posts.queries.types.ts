@@ -5,12 +5,14 @@ export interface CreatePostPayload {
   title: string;
   content: string;
   published?: boolean;
+  tags: string[];
 }
 
 export interface UpdatePostPayload {
   title: string;
   content: string;
   published?: boolean;
+  tags: string[];
 }
 
 // Query Function Types

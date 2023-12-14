@@ -10,7 +10,6 @@ export default async function Home({
   };
 }) {
   const posts = await getPosts();
-  console.log(searchParams);
 
   return (
     <main>

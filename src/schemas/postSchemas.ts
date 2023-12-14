@@ -18,6 +18,7 @@ export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
       required_error: "Published is required",
       invalid_type_error: "Published must be either true or false",
     }).optional(),
+  tags: z.array(z.string())
 });
 
 export type CreatePostSchema = z.infer<typeof createPostSchema>;

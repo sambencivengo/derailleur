@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { FormWrapper, Spinner } from '~/components';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, RadioGroup, RadioGroupItem, Textarea } from '~/components/ui';
+import { Alert, AlertDescription, AlertTitle, Badge, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, RadioGroup, RadioGroupItem, Textarea } from '~/components/ui';
 import { CreatePostSchema } from '~/schemas';
 import { CreatePostPayload } from '~/types';
 import { useRouter } from 'next/navigation';
@@ -36,6 +36,7 @@ export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
       invalid_type_error: 'Published must be either true or false',
     })
     .optional(),
+  tags: z.array(z.string()),
 });
 
 interface NewPostFormProps {
@@ -52,11 +53,13 @@ export function NewPostForm({ userId }: NewPostFormProps) {
       content: '',
       published: true, // TODO: change this when drafts are implemented
       title: '',
+      tags: [],
     },
   });
 
   async function onSubmit(values: CreatePostSchema) {
     setIsLoading(true);
+    console.log(values);
     const response = await createPost(values, userId);
     if (response.errors.length > 0 || response.result === null) {
       setIsLoading(false);
@@ -91,6 +94,19 @@ export function NewPostForm({ userId }: NewPostFormProps) {
                 <FormLabel>Content</FormLabel>
                 <FormControl>
                   <Textarea {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="tags"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Tags</FormLabel>
+                <FormControl>
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
