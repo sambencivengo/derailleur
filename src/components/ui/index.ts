@@ -10,3 +10,4 @@ export * from "./badge";
 export * from "./radio-group";
 export * from './toggle';
 export * from './toggle-group';
+export * from './inputTags';

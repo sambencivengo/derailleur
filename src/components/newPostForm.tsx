@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { FormWrapper, Spinner } from '~/components';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Alert, AlertDescription, AlertTitle, Badge, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, RadioGroup, RadioGroupItem, Textarea } from '~/components/ui';
+import { Alert, AlertDescription, AlertTitle, Badge, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, InputTags, RadioGroup, RadioGroupItem, Textarea } from '~/components/ui';
 import { CreatePostSchema } from '~/schemas';
 import { CreatePostPayload } from '~/types';
 import { useRouter } from 'next/navigation';
@@ -59,7 +59,6 @@ export function NewPostForm({ userId }: NewPostFormProps) {
 
   async function onSubmit(values: CreatePostSchema) {
     setIsLoading(true);
-    console.log(values);
     const response = await createPost(values, userId);
     if (response.errors.length > 0 || response.result === null) {
       setIsLoading(false);
@@ -106,7 +105,7 @@ export function NewPostForm({ userId }: NewPostFormProps) {
               <FormItem>
                 <FormLabel>Tags</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <InputTags {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
