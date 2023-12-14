@@ -9,35 +9,35 @@ type InputTagsProps = InputProps & {
   onChange: Dispatch<SetStateAction<string[]>>;
 };
 
-export const InputTags = forwardRef<HTMLInputElement, InputTagsProps>(({ value, onChange, ...props }, ref) => {
+export const InputTags = forwardRef<HTMLInputElement, InputTagsProps>(({ type, value, onChange, ...props }, ref) => {
   const [pendingDataPoint, setPendingDataPoint] = React.useState('');
-  const [focus, setFocus] = React.useState<boolean>(false);
+  const [tags, setTags] = React.useState<string[]>([]);
 
-  const addPendingDataPoint = () => {
-    if (pendingDataPoint) {
-      const newDataPoints = new Set([...value, pendingDataPoint]);
-      onChange(Array.from(newDataPoints));
-      setPendingDataPoint('');
-    }
-  };
+  // const addPendingDataPoint = () => {
+  //   if (pendingDataPoint) {
+  //     const newDataPoints = new Set([...value, pendingDataPoint]);
+  //     onChange(Array.from(newDataPoints));
+  //     setPendingDataPoint('');
+  //   }
+  // };
 
-  const [tags, setTags] = useState([]);
-
-  function handleKeyDown(e) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    console.log(e.target.value);
+  }
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     // If user did not press enter key, return
-    if (e.key !== 'Enter') return;
+    if (e.key !== 'Enter') {
+      return;
+    }
     // Get the value of the input
-    const value = e.target.value;
     // If the value is empty, return
-    if (!value.trim()) return;
     // Add the value to the tags array
     setTags([...tags, value]);
     // Clear the input
     e.target.value = '';
   }
-
   return (
-    <div onClick={() => console.log('cliek')} className="flex gap-2 cursor-text h-10 w-full rounded-md border bg-background px-3 py-2 border-input text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:focus-visible:-visible:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+    <div className="flex gap-2 cursor-text h-10 w-full rounded-md border bg-background px-3 py-2 border-input text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:focus-visible:-visible:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
       {/* {tags.map((tag, index) => (
         <div className="tag-item" key={index}>
           <span className="text">{tag}</span>
@@ -56,14 +56,14 @@ export const InputTags = forwardRef<HTMLInputElement, InputTagsProps>(({ value, 
           <p className="whitespace-nowrap">Other Tag</p> <XIcon size="16" />
         </Badge>
         <Badge variant="secondary">
-          <p className="whitespace-nowrap"> Rig </p> <XIcon size="16" />
+          <p className="whitespace-nowrap"> #Rig </p> <XIcon size="16" />
         </Badge>
         <Badge variant="secondary">
           <p className="whitespace-nowrap"> Bridgestone </p>
           <XIcon size="16" />
         </Badge>
       </div>
-      <input onFocus={() => setFocus(!focus)} className="flex-grow w-full rounded-md bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50" />
+      <input type={type} ref={ref} onChange={onChange} onKeyDown={(e) => handleKeyDown} {...props} className="flex-grow w-full rounded-md bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50" />
     </div>
   );
 });

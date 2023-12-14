@@ -59,13 +59,14 @@ export function NewPostForm({ userId }: NewPostFormProps) {
 
   async function onSubmit(values: CreatePostSchema) {
     setIsLoading(true);
-    const response = await createPost(values, userId);
-    if (response.errors.length > 0 || response.result === null) {
-      setIsLoading(false);
-      setSubmitPostError(response.errors.map((error) => error.message));
-    } else {
-      router.push(`/post/${response.result.id}`);
-    }
+    console.log(values);
+    // const response = await createPost(values, userId);
+    // if (response.errors.length > 0 || response.result === null) {
+    //   setIsLoading(false);
+    //   setSubmitPostError(response.errors.map((error) => error.message));
+    // } else {
+    //   router.push(`/post/${response.result.id}`);
+    // }
   }
   return (
     <Card>
