@@ -1,8 +1,8 @@
 'use client';
-import { Badge, XIcon } from 'lucide-react';
 import React from 'react';
+import { XIcon } from 'lucide-react';
 import { Dispatch, SetStateAction, forwardRef, useState } from 'react';
-import { InputProps, Input, Button, Textarea } from '~/components/ui';
+import { InputProps, Input, Button, Textarea, Badge } from '~/components/ui';
 
 type InputTagsProps = InputProps & {
   value: string[];
@@ -37,7 +37,7 @@ export const InputTags = forwardRef<HTMLInputElement, InputTagsProps>(({ value, 
   }
 
   return (
-    <div onClick={() => console.log('cliek')} className="flex cursor-text h-10 w-full rounded-md border bg-background px-3 py-2 border-input text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:focus-visible:-visible:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+    <div onClick={() => console.log('cliek')} className="flex gap-2 cursor-text h-10 w-full rounded-md border bg-background px-3 py-2 border-input text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:focus-visible:-visible:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
       {/* {tags.map((tag, index) => (
         <div className="tag-item" key={index}>
           <span className="text">{tag}</span>
@@ -48,6 +48,21 @@ export const InputTags = forwardRef<HTMLInputElement, InputTagsProps>(({ value, 
        */}
       {/* <Textarea> */}
       {/* </Textarea> */}
+      <div className="flex flex-row gap-2">
+        <Badge variant="secondary">
+          <p className="whitespace-nowrap">Trip Report</p> <XIcon size="16" />
+        </Badge>
+        <Badge variant="secondary">
+          <p className="whitespace-nowrap">Other Tag</p> <XIcon size="16" />
+        </Badge>
+        <Badge variant="secondary">
+          <p className="whitespace-nowrap"> Rig </p> <XIcon size="16" />
+        </Badge>
+        <Badge variant="secondary">
+          <p className="whitespace-nowrap"> Bridgestone </p>
+          <XIcon size="16" />
+        </Badge>
+      </div>
       <input onFocus={() => setFocus(!focus)} className="flex-grow w-full rounded-md bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50" />
     </div>
   );
