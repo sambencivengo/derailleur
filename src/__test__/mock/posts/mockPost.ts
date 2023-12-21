@@ -9,4 +9,5 @@ export const mockPost_00: Post = {
   content: "Any help would be greatly appreciated! Looking to get out on the trails ASAP!",
   createdAt: new Date('2023-09-19'),
   updatedAt: new Date('2023-09-19'),
+  tags: []
 };

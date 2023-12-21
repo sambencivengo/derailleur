@@ -1,4 +1,5 @@
-import { Tag } from "@prisma/client";
+import { Tag } from "~/types";
+
 
 export interface Post {
   id: string;
