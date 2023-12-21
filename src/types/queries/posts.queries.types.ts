@@ -1,4 +1,4 @@
-import { Post } from "~/types";
+import { Post, PostWithUserName } from "~/types";
 import { DerailleurResponse } from "~/utils";
 
 export interface CreatePostPayload {
@@ -23,7 +23,11 @@ export type CreatePost = (
   includeTags?: boolean
 ) => Promise<DerailleurResponse<Post>>;
 
-export type GetPostById = (postId: string, userId: string) => Promise<DerailleurResponse<Post>>;
+export type GetPostById = (
+  postId: string,
+  userId: string,
+  includeTags?: boolean
+) => Promise<DerailleurResponse<Post>>;
 
 export type UpdatePost = (
   updatePostPayload: UpdatePostPayload,
@@ -31,3 +35,7 @@ export type UpdatePost = (
   authorId: string,
   includeTags?: boolean
 ) => Promise<DerailleurResponse<Post>>;
+
+export type GetPosts = (
+  includeTags?: boolean
+) => Promise<DerailleurResponse<PostWithUserName[]>>;

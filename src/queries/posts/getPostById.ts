@@ -4,7 +4,7 @@ import { Post, PostWithUserName } from "~/types";
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
 import prisma from "~prisma/prisma";
 
-export async function getPostById(postId: string, userId?: string): Promise<DerailleurResponse<PostWithUserName>> {
+export async function getPostById(postId: string, userId?: string, includeTags?: boolean): Promise<DerailleurResponse<PostWithUserName>> {
   try {
     const post = await prisma.post.findUnique({
       where: {
@@ -17,7 +17,8 @@ export async function getPostById(postId: string, userId?: string): Promise<Dera
           select: {
             username: true
           }
-        }
+        },
+        tags: includeTags
       }
     });
     if (!post) {

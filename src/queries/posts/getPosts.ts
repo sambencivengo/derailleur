@@ -6,16 +6,18 @@ import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } fro
 import prisma from "~prisma/prisma";
 
 
-export async function getPosts(): Promise<DerailleurResponse<PostWithUserName[]>> {
+export async function getPosts(includeTags: boolean = true): Promise<DerailleurResponse<PostWithUserName[]>> {
   try {
     const posts = await prisma.post.findMany({
       // TODO: create optional filters
       include: {
         author: {
           select: {
-            username: true
+            username: true,
+            id: true
           }
-        }
+        },
+        tags: includeTags
       },
     });
     return createSuccessfulResponse(posts);
