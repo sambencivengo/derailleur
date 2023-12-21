@@ -7,7 +7,7 @@ import { CreatePostPayload, Post } from '~/types';
 import { CreatePostSchema, createPostSchema, validateSchema } from '~/schemas';
 
 
-export async function createPost(postPayload: CreatePostPayload, userId: string, postId = uuid()): Promise<DerailleurResponse<Post>> {
+export async function createPost(postPayload: CreatePostPayload, userId: string, postId = uuid(), includeTags: boolean = true,): Promise<DerailleurResponse<Post>> {
 
   const validateResponse = validateSchema<CreatePostSchema>({ body: postPayload, schema: createPostSchema });
   if (validateResponse.result === null || validateResponse.errors.length > 0) {
@@ -34,6 +34,9 @@ export async function createPost(postPayload: CreatePostPayload, userId: string,
             };
           }),
         }
+      },
+      include: {
+        tags: includeTags
       }
     });
     return createSuccessfulResponse(newPost);

@@ -5,7 +5,7 @@ import { Post } from "~/types/models/posts/posts.types";
 import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from "~/utils";
 import prisma from "~prisma/prisma";
 
-export async function updatePost(updatePostPayload: UpdatePostPayload, postId: string, authorId: string): Promise<DerailleurResponse<Post>> {
+export async function updatePost(updatePostPayload: UpdatePostPayload, postId: string, authorId: string, includeTags: boolean = true): Promise<DerailleurResponse<Post>> {
   const { content, title, published } = updatePostPayload;
   try {
     const updatedPost = await prisma.post.update({
@@ -17,6 +17,9 @@ export async function updatePost(updatePostPayload: UpdatePostPayload, postId: s
         content,
         title,
         published,
+      },
+      include: {
+        tags: includeTags
       }
     });
     return createSuccessfulResponse(updatedPost);

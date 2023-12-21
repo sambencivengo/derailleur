@@ -19,7 +19,8 @@ export interface UpdatePostPayload {
 export type CreatePost = (
   postPayload: CreatePostPayload,
   userId: string,
-  postId?: string
+  postId?: string,
+  includeTags?: boolean
 ) => Promise<DerailleurResponse<Post>>;
 
 export type GetPostById = (postId: string, userId: string) => Promise<DerailleurResponse<Post>>;
@@ -27,5 +28,6 @@ export type GetPostById = (postId: string, userId: string) => Promise<Derailleur
 export type UpdatePost = (
   updatePostPayload: UpdatePostPayload,
   userId: string,
-  authorId: string
+  authorId: string,
+  includeTags?: boolean
 ) => Promise<DerailleurResponse<Post>>;
