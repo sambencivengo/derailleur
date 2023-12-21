@@ -8,11 +8,9 @@ import { CreateUser, CreatePostPayload, CreatePost } from "~/types";
 import prisma from "~prisma/prisma";
 
 const testUser_00 = mockUser_00;
-const testUserId_00 = uuid();
 const now = new Date();
 const testContent = "Looking to replace suspension fork that I have on my Rockhopper, any recommendations?";
 const testTitle = "26 inch Fork Replacement";
-const testPostId_00 = uuid();
 const testPostPayload: CreatePostPayload = {
   title: testTitle,
   content: testContent,
@@ -20,6 +18,8 @@ const testPostPayload: CreatePostPayload = {
 };
 
 describe("Create Post Query", function () {
+  const testUserId_00 = uuid();
+  const testPostId_00 = uuid();
 
   beforeAll(async function () {
     await addRecordsToDb<User, CreateUser>(
@@ -66,8 +66,9 @@ describe("Create Post Query", function () {
   });
 });
 
-describe.only("Create Post with Tags", function () {
-
+describe("Create Post with Tags", function () {
+  const testUserId_00 = uuid();
+  const testPostId_00 = uuid();
   beforeAll(async function () {
     await addRecordsToDb<User, CreateUser>(
       {
@@ -81,15 +82,28 @@ describe.only("Create Post with Tags", function () {
   });
 
   const testTags0 = ["BIKEPACKING", "RIG", "TRIP REPORT"];
+  const testTags1 = [...testTags0, "VINTAGE", "STEEL IS REAL"];
 
   it('Successfully creates a post with tags', async function () {
-
     const payload: CreatePostPayload = {
       ...testPostPayload,
       tags: testTags0
     };
-    const response = await createPost(payload, testUserId_00);
-    console.log(response.result!.tags);
+    const response = await createPost(payload, testUserId_00, testPostId_00);
+    const { result, errors } = response;
+    assert.ok(response);
+    checkErrorResponse(errors);
+    assert.ok(result);
+    assert.strictEqual(result.authorId, testUserId_00);
+    assert.strictEqual(result.content, testContent);
+    assert.strictEqual(result.title, testTitle);
+    assert.strictEqual(result.published, false);
+    assert.strictEqual(result.id, testPostId_00);
+    assert.strictEqual(result.tags.length, testTags0.length);
+    const { tags } = result;
+    for (let i = 0, limi = testTags0.length; i < limi; i++) {
+      assert.ok(tags.find((tag) => tag.name === testTags0[i]));
+    }
   });
 
   afterAll(async function () {
