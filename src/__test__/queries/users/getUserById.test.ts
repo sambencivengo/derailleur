@@ -30,7 +30,6 @@ describe("Get User By ID Query", function () {
 
   it('Successfully gets a user by user ID', async () => {
     const response = await getUserById(testUserId_00);
-    console.log(response);
     const result = response.result!;
     assert.ok(response);
     assert.strictEqual(result.username, username);
