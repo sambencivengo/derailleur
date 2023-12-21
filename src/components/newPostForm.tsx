@@ -56,7 +56,7 @@ export function NewPostForm({ userId }: NewPostFormProps) {
       tags: [],
     },
   });
-
+  console.log(form.watch());
   async function onSubmit(values: CreatePostSchema) {
     setIsLoading(true);
     console.log(values);
@@ -115,15 +115,17 @@ export function NewPostForm({ userId }: NewPostFormProps) {
           <FormField
             control={form.control}
             name="tags"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Tags</FormLabel>
-                <FormControl>
-                  <MultiSelect />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Tags</FormLabel>
+                  <FormControl>
+                    <MultiSelect {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
           />
           {submitPostError && (
             <Alert variant="destructive">
