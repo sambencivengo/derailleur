@@ -1,7 +1,7 @@
 import prisma from "~prisma/prisma";
 
-export type UserTable = typeof prisma.users;
-export type PostTable = typeof prisma.posts;
+export type UserTable = typeof prisma.user;
+export type PostTable = typeof prisma.post;
 
 export type Table = UserTable | PostTable;
 

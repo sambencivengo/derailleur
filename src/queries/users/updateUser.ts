@@ -6,7 +6,7 @@ import prisma from "~prisma/prisma";
 
 export async function updateUser(user: UpdateUserPayload, userId: string,): Promise<DerailleurResponse<User>> {
   try {
-    const updatedUser = await prisma.users.update({
+    const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: {
         ...user
@@ -15,9 +15,9 @@ export async function updateUser(user: UpdateUserPayload, userId: string,): Prom
     return (createSuccessfulResponse(updatedUser));
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
-      return createErrorResponse('An error occurred when attempting to update a user', { user, userId, error: JSON.stringify(error) });
+      return createErrorResponse([{ message: 'An error occurred when attempting to update a user', data: { user, userId, error: JSON.stringify(error) } }]);
     }
     const errResponse = { userId, prismaErrorCode: error.code };
-    return createErrorResponse('Unable to update user due to prisma error', errResponse);
+    return createErrorResponse([{ message: 'Unable to update user due to prisma error', data: errResponse }]);
   }
 }

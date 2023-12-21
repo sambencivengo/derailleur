@@ -13,6 +13,10 @@ export function createSuccessfulResponse<T = any>(result: T): DerailleurResponse
   return ({ result, errors: [] });
 }
 
+export function createDerailleurError(message: string, data: string | { [key: string]: any; }): DerailleurError {
+  return ({ data, message });
+}
+
 export function createErrorResponse<T = any>(errors: DerailleurError[]): DerailleurResponse<T> {
   return ({ result: null, errors });
 }
