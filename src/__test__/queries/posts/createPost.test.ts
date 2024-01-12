@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid";
 import { mockUser_00 } from "~/__test__/mock/users/mockUser";
 import { addRecordsToDb, checkErrorResponse, cleanUpTable } from "~/__test__/utils";
 import { createUser, createPost } from "~/queries";
-import { CreateUser, CreatePostPayload, CreatePost } from "~/types";
+import { CreateUser, CreatePostPayload } from "~/types";
 import prisma from "~prisma/prisma";
 
 const testUser_00 = mockUser_00;
@@ -82,7 +82,6 @@ describe("Create Post with Tags", function () {
   });
 
   const testTags0 = ["BIKEPACKING", "RIG", "TRIP REPORT"];
-  const testTags1 = [...testTags0, "VINTAGE", "STEEL IS REAL"];
 
   it('Successfully creates a post with tags', async function () {
     const payload: CreatePostPayload = {
