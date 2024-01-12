@@ -1,14 +1,8 @@
-import { Tag } from "~/types";
 
+import { Post as PrismaPost } from '@prisma/client';
+import { Tag } from '~/types/models/tags';
 
-export interface Post {
-  id: string;
-  title: string;
-  content: string;
-  createdAt: Date;
-  updatedAt: Date;
-  published: boolean;
-  authorId: string;
+export interface Post extends PrismaPost {
   tags: Tag[];
 }
 

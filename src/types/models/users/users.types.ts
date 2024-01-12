@@ -1,8 +1,3 @@
-export interface User {
-  id: string;
-  username: string;
-  location: string | null;
-  favoriteBike: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { User as PrismaUser } from "@prisma/client";
+
+export interface User extends PrismaUser { }
