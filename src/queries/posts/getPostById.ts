@@ -1,6 +1,6 @@
 'use server';
 import { Prisma } from "@prisma/client";
-import { Post, PostWithUserName } from "~/types";
+import { PostWithUserName } from "~/types";
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
 import prisma from "~prisma/prisma";
 
