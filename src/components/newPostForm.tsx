@@ -4,11 +4,10 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { FormWrapper, Spinner } from '~/components';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Alert, AlertDescription, AlertTitle, Badge, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, InputTags, MultiSelect, RadioGroup, RadioGroupItem, Textarea } from '~/components/ui';
+import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, InputTags, MultiSelect, Textarea } from '~/components/ui';
 import { CreatePostSchema } from '~/schemas';
 import { CreatePostPayload } from '~/types';
 import { useRouter } from 'next/navigation';
-import { createPost } from '~/queries';
 import { AlertCircle } from 'lucide-react';
 
 export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
@@ -56,7 +55,6 @@ export function NewPostForm({ userId }: NewPostFormProps) {
       tags: [],
     },
   });
-  console.log(form.watch());
   async function onSubmit(values: CreatePostSchema) {
     setIsLoading(true);
     console.log(values);
