@@ -16,7 +16,7 @@ export async function createPost(postPayload: CreatePostPayload, userId: string,
     });
     return (createErrorResponse(errors));
   }
-  const { content, title, published, tags } = validateResponse.result;
+  const { content, title, tags } = validateResponse.result;
 
   try {
     const newPost = await prisma.post.create({
@@ -25,7 +25,7 @@ export async function createPost(postPayload: CreatePostPayload, userId: string,
         authorId: userId,
         content,
         title,
-        published,
+        published: true, // NOTE: CHANGE WHEN USING PUBLISHED ARGS AND DRAFTS
         tags: {
           connectOrCreate: tags.map((tag) => {
             return {
