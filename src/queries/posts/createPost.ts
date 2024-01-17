@@ -3,11 +3,11 @@ import { v4 as uuid } from 'uuid';
 import { Prisma } from '@prisma/client';
 import prisma from '~prisma/prisma';
 import { DerailleurResponse, createSuccessfulResponse, createErrorResponse, DerailleurError } from '~/utils';
-import { CreatePostPayload, Post } from '~/types';
+import { CreatePostPayload, PostWithTags } from '~/types';
 import { CreatePostSchema, createPostSchema, validateSchema } from '~/schemas';
 
 
-export async function createPost(postPayload: CreatePostPayload, userId: string, postId = uuid(), includeTags: boolean = true,): Promise<DerailleurResponse<Post>> {
+export async function createPost(postPayload: CreatePostPayload, userId: string, postId = uuid(), includeTags: boolean = true,): Promise<DerailleurResponse<PostWithTags>> {
 
   const validateResponse = validateSchema<CreatePostSchema>({ body: postPayload, schema: createPostSchema });
   if (validateResponse.result === null || validateResponse.errors.length > 0) {
@@ -17,7 +17,6 @@ export async function createPost(postPayload: CreatePostPayload, userId: string,
     return (createErrorResponse(errors));
   }
   const { content, title, tags } = validateResponse.result;
-
   try {
     const newPost = await prisma.post.create({
       data: {
@@ -27,10 +26,10 @@ export async function createPost(postPayload: CreatePostPayload, userId: string,
         title,
         published: true, // NOTE: CHANGE WHEN USING PUBLISHED ARGS AND DRAFTS
         tags: {
-          connectOrCreate: tags.map((tag) => {
+          connectOrCreate: tags.map((tagName) => {
             return {
-              where: { name: tag },
-              create: { name: tag },
+              where: { name: tagName },
+              create: { name: tagName },
             };
           }),
         }
