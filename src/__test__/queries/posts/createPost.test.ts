@@ -41,7 +41,7 @@ describe("Create Post Query", function () {
     assert.strictEqual(result.authorId, testUserId_00);
     assert.strictEqual(result.content, testContent);
     assert.strictEqual(result.title, testTitle);
-    assert.strictEqual(result.published, false);
+    assert.strictEqual(result.published, true);
     assert.strictEqual(result.id, testPostId_00);
     assert(now < result.updatedAt);
     assert(now < result.createdAt);
@@ -69,6 +69,7 @@ describe("Create Post Query", function () {
 describe("Create Post with Tags", function () {
   const testUserId_00 = uuid();
   const testPostId_00 = uuid();
+  const testPostId_01 = uuid();
   beforeAll(async function () {
     await addRecordsToDb<User, CreateUser>(
       {
@@ -96,8 +97,29 @@ describe("Create Post with Tags", function () {
     assert.strictEqual(result.authorId, testUserId_00);
     assert.strictEqual(result.content, testContent);
     assert.strictEqual(result.title, testTitle);
-    assert.strictEqual(result.published, false);
+    assert.strictEqual(result.published, true);
     assert.strictEqual(result.id, testPostId_00);
+    assert.strictEqual(result.tags.length, testTags0.length);
+    const { tags } = result;
+    for (let i = 0, limi = testTags0.length; i < limi; i++) {
+      assert.ok(tags.find((tag) => tag.name === testTags0[i]));
+    }
+  });
+  it('Successfully creates a second post with the same tags', async function () {
+    const payload: CreatePostPayload = {
+      ...testPostPayload,
+      tags: testTags0
+    };
+    const response = await createPost(payload, testUserId_00, testPostId_01);
+    const { result, errors } = response;
+    assert.ok(response);
+    checkErrorResponse(errors);
+    assert.ok(result);
+    assert.strictEqual(result.authorId, testUserId_00);
+    assert.strictEqual(result.content, testContent);
+    assert.strictEqual(result.title, testTitle);
+    assert.strictEqual(result.published, true);
+    assert.strictEqual(result.id, testPostId_01);
     assert.strictEqual(result.tags.length, testTags0.length);
     const { tags } = result;
     for (let i = 0, limi = testTags0.length; i < limi; i++) {
@@ -106,6 +128,6 @@ describe("Create Post with Tags", function () {
   });
 
   afterAll(async function () {
-    await cleanUpTable([prisma.user]);
+    await cleanUpTable([prisma.user, prisma.post]);
   });
 });
