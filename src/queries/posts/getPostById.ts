@@ -1,10 +1,10 @@
 'use server';
 import { Prisma } from "@prisma/client";
-import { PostWithUserName } from "~/types";
+import { Post } from "~/types";
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
 import prisma from "~prisma/prisma";
 
-export async function getPostById(postId: string, userId?: string, includeTags?: boolean): Promise<DerailleurResponse<PostWithUserName>> {
+export async function getPostById(postId: string, userId?: string, includeTags?: boolean): Promise<DerailleurResponse<Post>> {
   try {
     const post = await prisma.post.findUnique({
       where: {
