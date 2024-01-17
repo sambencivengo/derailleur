@@ -22,7 +22,7 @@ export async function addRecordsToDb<R, F extends (...args: Parameters<F>) => Pr
       throw e;
     });
   for (let i = 0, limi = responses.length; i < limi; i++) {
-    assert.notStrictEqual(responses[i].result, null, `Unable to creak mock ${mockDataName} records in database`);
+    assert.notStrictEqual(responses[i].result, null, `Unable to create mock ${mockDataName} records in database`);
   };
   mockRecordResponses.push(responses);
   return mockRecordResponses;
