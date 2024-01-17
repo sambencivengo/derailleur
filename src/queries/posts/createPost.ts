@@ -5,9 +5,11 @@ import prisma from '~prisma/prisma';
 import { DerailleurResponse, createSuccessfulResponse, createErrorResponse, DerailleurError } from '~/utils';
 import { CreatePostPayload, PostWithTags } from '~/types';
 import { CreatePostSchema, createPostSchema, validateSchema } from '~/schemas';
+import { PrismaQueryErrorCodes } from '~prisma/prismaErrorCodes';
 
-
-export async function createPost(postPayload: CreatePostPayload, userId: string, postId = uuid(), includeTags: boolean = true,): Promise<DerailleurResponse<PostWithTags>> {
+// NOTE: function is currently recursive so that tags don't collide if created at the exact same time.
+// Refactor to check which attempt and stop after 5,5 etc...
+export async function createPost(postPayload: CreatePostPayload, userId: string, postId = uuid(), includeTags: boolean = true): Promise<DerailleurResponse<PostWithTags>> {
 
   const validateResponse = validateSchema<CreatePostSchema>({ body: postPayload, schema: createPostSchema });
   if (validateResponse.result === null || validateResponse.errors.length > 0) {
@@ -42,6 +44,12 @@ export async function createPost(postPayload: CreatePostPayload, userId: string,
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
       return createErrorResponse([{ message: 'An error occurred when trying create a post', data: { userId, postPayload, error: JSON.stringify(error) } }]);
+    };
+    const errorTarget = error.meta?.target as unknown as string[];
+
+    if (error.code == PrismaQueryErrorCodes.UNIQUE_CONSTRAINT && errorTarget[0] === 'name') {
+      console.warn("Recursive createPost call required due to Tag name collision");
+      await createPost(postPayload, userId, postId, includeTags);
     }
     const errResponse = { userId, postPayload, prismaErrorCode: error.code };
     return createErrorResponse([{ message: 'Unable to create post due to prisma error', data: errResponse }]);

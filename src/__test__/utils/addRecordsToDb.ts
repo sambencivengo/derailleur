@@ -16,11 +16,20 @@ export async function addRecordsToDb<R, F extends (...args: Parameters<F>) => Pr
   const mockRecordResponses: DerailleurResponse<any>[][] = [];
   const { createRecordFunction, newRecordParams, mockDataName = 'MockData' } = args;
 
-  const responses = await Promise.all(newRecordParams.map((params) => createRecordFunction(...params)))
-    .catch((e: any) => {
-      console.error(e);
-      throw e;
-    });
+  // NOTE: Old Promise.all method. Reattempt to figure out a graceful way to recurse
+  // const createRecordPromises: Promise<DerailleurResponse<R>>[] = [];
+  // for (let i = 0, limi = newRecordParams.length; i < limi; i++) {
+  //   const response = createRecordFunction(...newRecordParams[i]);
+  //   createRecordPromises.push(response);
+  // };
+  // const responses = await Promise.all(createRecordPromises);
+
+  const responses: DerailleurResponse<R>[] = [];
+  for (let i = 0, limi = newRecordParams.length; i < limi; i++) {
+    const response = await createRecordFunction(...newRecordParams[i]);
+    responses.push(response);
+  };
+
   for (let i = 0, limi = responses.length; i < limi; i++) {
     assert.notStrictEqual(responses[i].result, null, `Unable to create mock ${mockDataName} records in database`);
   };
