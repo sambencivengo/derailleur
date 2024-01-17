@@ -1,11 +1,11 @@
 'use server';
 import { Prisma } from "@prisma/client";
 import { UpdatePostPayload } from "~/types";
-import { Post } from "~/types/models/posts/posts.types";
+import { PostWithTags } from "~/types/models/posts/posts.types";
 import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from "~/utils";
 import prisma from "~prisma/prisma";
 
-export async function updatePost(updatePostPayload: UpdatePostPayload, postId: string, authorId: string, includeTags: boolean = true): Promise<DerailleurResponse<Post>> {
+export async function updatePost(updatePostPayload: UpdatePostPayload, postId: string, authorId: string, includeTags: boolean = true): Promise<DerailleurResponse<PostWithTags>> {
   const { content, title, published } = updatePostPayload;
   try {
     const updatedPost = await prisma.post.update({

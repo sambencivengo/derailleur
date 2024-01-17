@@ -1,10 +1,15 @@
 
 import { Tag as PrismaTag } from '@prisma/client';
-import { Post } from '~/types/models/posts';
-
+import { PostWithTags } from '~/types/models/posts';
 
 export interface Tag extends PrismaTag { }
 
-export interface TagWithPosts extends Tag {
-  posts: Post[];
+export interface TagWithPostCount extends Tag {
+  _count: {
+    posts: number;
+  };
+}
+
+export interface TagWithPosts extends TagWithPostCount {
+  posts: PostWithTags[];
 }

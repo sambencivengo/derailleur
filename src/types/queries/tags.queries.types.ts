@@ -1,7 +1,7 @@
-import { Post, Tag } from "~/types";
+import { PostWithTags, Tag } from "~/types";
 
 
 export interface GetTagsResult extends Tag {
-  posts: Post[];
+  posts: PostWithTags[];
   _count?: { posts: number; };
 }
