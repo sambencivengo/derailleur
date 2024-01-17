@@ -1,5 +1,4 @@
 import assert from 'assert';
-
 import { v4 as uuid } from 'uuid';
 import { mockUser_00 } from '~/__test__/mock/users/mockUser';
 import { addRecordsToDb, cleanUpTable } from "~/__test__/utils";
@@ -22,7 +21,8 @@ describe("Get Tag With Count By ID ", function () {
   ];
   const testTags01 = [
     "TREK",
-    "COLORADO"
+    "COLORADO",
+    "TRIP REPORT"
   ];
   const testPostPayload00: CreatePostPayload = {
     content: "Test content 00",
@@ -88,10 +88,9 @@ describe("Get Tag With Count By ID ", function () {
       const tag = response.result;
       assert.strictEqual(tag.id, testTag.id);
       assert.strictEqual(tag.name, testTag.name);
-      // assert.strictEqual(tag.)
+      assert.strictEqual(tag._count.posts, tag.name === "TRIP REPORT" ? 4 : 3, `Expected the count of posts on ${tag.name} to be ${tag.name === "TRIP REPORT" ? 4 : 3}`);
     }
   });
-
 
   afterAll(async function () {
     await cleanUpTable([prisma.user, prisma.post, prisma.tag]);
