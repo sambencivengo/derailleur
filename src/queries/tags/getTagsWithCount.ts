@@ -7,12 +7,12 @@ import { TagWithPostCount } from '~/types';
 
 export async function getTagsWithCount(): Promise<DerailleurResponse<TagWithPostCount[]>> {
   try {
-    const tagWithPosts = await prisma.tag.findMany({
+    const tagsWithCount = await prisma.tag.findMany({
       include: {
         _count: true,
       }
     });
-    return createSuccessfulResponse(tagWithPosts);
+    return createSuccessfulResponse(tagsWithCount);
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
       return createErrorResponse([{ message: 'An error occurred when retrieving all tags', data: { error: JSON.stringify(error) } }]);
