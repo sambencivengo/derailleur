@@ -36,7 +36,7 @@ describe("Get Tag With Count By Name ", function () {
     wordInCommon: "PORT",
     tags: [
       "TRIP REPORT",
-      "RIG REPORT",
+      "REPORT",
       "PORTEUR"
     ]
   };
@@ -103,11 +103,11 @@ describe("Get Tag With Count By Name ", function () {
   for (let i = 0, limi = arrayOfArrayOfTestTags00.length; i < limi; i++) {
     const arrayOfTagsInCommon = arrayOfArrayOfTestTags00[i];
     it(`Successfully queries tags by name (${arrayOfTagsInCommon.wordInCommon}) in common and returns multiple matching tags and their post count`, async function () {
-      const response = await getTagWithCountByName(testTagsInCommon02.wordInCommon);
+      const response = await getTagWithCountByName(arrayOfTagsInCommon.wordInCommon);
       assert.ok(response.result);
       checkErrorResponse(response.errors);
-      const tag = response.result;
-      console.log(tag);
+      const tags = response.result;
+      assert.strictEqual(tags.length, arrayOfTagsInCommon.tags.length, "Result tags length does not match expected length");
     });
   }
 
