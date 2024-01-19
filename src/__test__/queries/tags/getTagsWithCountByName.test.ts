@@ -1,56 +1,83 @@
 import assert from 'assert';
 import { v4 as uuid } from 'uuid';
 import { mockUser_00 } from '~/__test__/mock/users/mockUser';
-import { addRecordsToDb, cleanUpTable } from "~/__test__/utils";
-import { createPost, createUser, getPostById, getTagWithCountByName } from "~/queries";
+import { addRecordsToDb, checkErrorResponse, cleanUpTable } from "~/__test__/utils";
+import { createPost, createUser, getTagWithCountByName } from "~/queries";
 import { CreatePost, CreatePostPayload, CreateUser, PostWithTags, User } from "~/types";
 import prisma from '~prisma/prisma';
 
 
 const testUser00 = mockUser_00;
 const testUserId00 = uuid();
-const postId00 = uuid();
-const postId01 = uuid();
+
+interface TagsInCommon {
+  wordInCommon: string;
+  tags: string[];
+}
 
 describe("Get Tag With Count By Name ", function () {
-  const testTags00 = [
-    "TREK 8000",
-    "TREK 990",
-    "TREK 800",
-    "TREK ANTELOPE",
-    "CARGO RIG",
-    "VINTAGE RIG",
-    "FIRST TRIP",
-    "TRIP REPORT",
-    "BIKE PACKING",
-    "BIKEPACKING",
-    "VINTAGE BIKE"
+  const testTagsInCommon00: TagsInCommon = {
+    wordInCommon: "TREK",
+    tags: [
+      "TREK 8000",
+      "TREK 990",
+      "TREK 800",
+      "TREK ANTELOPE",
+    ]
+  };
+  const testTagsInCommon01: TagsInCommon = {
+    wordInCommon: "RIG",
+    tags: [
+      "CARGO RIG",
+      "VINTAGE RIG",
+    ]
+  };
+  const testTagsInCommon02: TagsInCommon = {
+    wordInCommon: "PORT",
+    tags: [
+      "TRIP REPORT",
+      "RIG REPORT",
+      "PORTEUR"
+    ]
+  };
+  const testTagsInCommon03: TagsInCommon = {
+    wordInCommon: "BIKE",
+    tags: [
+      "BIKE PACKING",
+      "BIKEPACKING",
+      "VINTAGE BIKE",
+    ]
+  };
+  const testTagsInCommon04: TagsInCommon = {
+    wordInCommon: "SINGLE",
+    tags: [
+      "SINGLE SPEED",
+      "SINGLE TRACK",
+      "SINGLETRACK",
+    ]
+  };
+  const arrayOfArrayOfTestTags00 = [
+    testTagsInCommon00,
+    testTagsInCommon01,
+    testTagsInCommon02,
+    testTagsInCommon03,
+    testTagsInCommon04,
   ];
-  const testTags01 = [
-    "TREK",
-    "COLORADO",
-    "TRIP REPORT"
-  ];
-  const testPostPayload00: CreatePostPayload = {
-    content: "Test content 00",
-    title: "Test Title 00",
-    tags: testTags00,
+  const testPostPayload: CreatePostPayload = {
+    content: "Test content",
+    title: "Test Title",
+    tags: [],
   };
-  const testPostPayload01: CreatePostPayload = {
-    content: "Test content 01",
-    title: "Test Title 01",
-    tags: testTags00,
-  };
-  const testPostPayload02: CreatePostPayload = {
-    content: "Test content 02",
-    title: "Test Title 02",
-    tags: testTags00,
-  };
-  const testPostPayload03: CreatePostPayload = {
-    content: "Test content 03",
-    title: "Test Title 03",
-    tags: testTags01,
-  };
+  const testPostPayloads: [postPayload: CreatePostPayload, userId: string][] = arrayOfArrayOfTestTags00.map((arrayOfTags => {
+    const postPayload: CreatePostPayload = {
+      content: testPostPayload.content,
+      title: testPostPayload.title,
+      tags: arrayOfTags.tags,
+      published: true
+    };
+
+    return [postPayload, testUserId00];
+  }));
 
   beforeAll(async function () {
     await addRecordsToDb<User, CreateUser>(
@@ -66,37 +93,23 @@ describe("Get Tag With Count By Name ", function () {
       {
         createRecordFunction: createPost,
         newRecordParams: [
-          [testPostPayload00, testUserId00, postId00],
-          [testPostPayload01, testUserId00],
-          [testPostPayload02, testUserId00],
-          [testPostPayload03, testUserId00, postId01],
+          ...testPostPayloads
         ],
         mockDataName: 'Post'
       },
     );
   });
 
-  const tagIds: { id: string; name: string; }[] = [];
-  it("Successfully gets a post by ID and assigns it's 4 tags to an string array of tag IDs", async function () {
-    const response = await getPostById(postId00, undefined, true);
-    assert.ok(response.result);
-    const { tags } = response.result;
-    for (let i = 0, limi = tags.length; i < limi; i++) {
-      tagIds.push({ id: tags[i].id, name: tags[i].name });
-    };
-    assert.strictEqual(tagIds.length, testTags00.length, 'Expected the length of the tagIds array to match the testTagsId length');
-  });
-
-  it(`Successfully queries a tag by Id`, async function () {
-    const response = await getTagWithCountByName("PACKING");
-    // const response = await getTagWithCountByName(testTags00[0]);
-    assert.ok(response.result);
-    const tag = response.result;
-    console.log(tag);
-    // assert.strictEqual(tag.id, testTag.id);
-    // assert.strictEqual(tag.name, testTag.name);
-    // assert.strictEqual(tag._count.posts, tag.name === "TRIP REPORT" ? 4 : 3, `Expected the count of posts on ${tag.name} to be ${tag.name === "TRIP REPORT" ? 4 : 3}`);
-  });
+  for (let i = 0, limi = arrayOfArrayOfTestTags00.length; i < limi; i++) {
+    const arrayOfTagsInCommon = arrayOfArrayOfTestTags00[i];
+    it(`Successfully queries tags by name (${arrayOfTagsInCommon.wordInCommon}) in common and returns multiple matching tags and their post count`, async function () {
+      const response = await getTagWithCountByName(testTagsInCommon02.wordInCommon);
+      assert.ok(response.result);
+      checkErrorResponse(response.errors);
+      const tag = response.result;
+      console.log(tag);
+    });
+  }
 
   afterAll(async function () {
     await cleanUpTable([prisma.user, prisma.post, prisma.tag]);

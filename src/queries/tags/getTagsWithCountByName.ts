@@ -2,6 +2,7 @@
 import { Prisma } from '@prisma/client';
 import prisma from '~prisma/prisma';
 import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from '~/utils';
+import { TagWithPostCount } from '~/types';
 
 interface TagNameContainsQuery {
   name: {
@@ -9,7 +10,7 @@ interface TagNameContainsQuery {
   };
 }
 
-export async function getTagWithCountByName(name: string): Promise<DerailleurResponse<any>> {
+export async function getTagWithCountByName(name: string): Promise<DerailleurResponse<TagWithPostCount[]>> {
   const arrayOfNames: TagNameContainsQuery[] = name.split(" ").map((word) => {
     return (
       {
@@ -26,6 +27,9 @@ export async function getTagWithCountByName(name: string): Promise<DerailleurRes
         OR: [
           ...arrayOfNames,
         ]
+      },
+      include: {
+        _count: true
       }
     });
 
