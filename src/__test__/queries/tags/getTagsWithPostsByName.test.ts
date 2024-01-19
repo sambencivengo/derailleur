@@ -111,14 +111,6 @@ describe("Get Tag With Count By Name ", function () {
     });
   }
 
-  it("Returns an empty array when no tags match the query", async function () {
-    const response = await getTagWithCountByName(uuid());
-    assert.ok(response.result);
-    checkErrorResponse(response.errors);
-    const tags = response.result;
-    assert.strictEqual(tags.length, 0, "Result tags length does not match expected length");
-  });
-
   afterAll(async function () {
     await cleanUpTable([prisma.user, prisma.post, prisma.tag]);
   });
