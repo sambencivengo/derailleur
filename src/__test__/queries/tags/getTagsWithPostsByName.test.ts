@@ -2,7 +2,7 @@ import assert from 'assert';
 import { v4 as uuid } from 'uuid';
 import { mockUser_00 } from '~/__test__/mock/users/mockUser';
 import { addRecordsToDb, checkErrorResponse, cleanUpTable } from "~/__test__/utils";
-import { createPost, createUser, getTagWithCountByName } from "~/queries";
+import { createPost, createUser, getTagsWithPostsByName } from "~/queries";
 import { CreatePost, CreatePostPayload, CreateUser, PostWithTags, User } from "~/types";
 import prisma from '~prisma/prisma';
 
@@ -103,13 +103,22 @@ describe("Get Tag With Count By Name ", function () {
   for (let i = 0, limi = arrayOfArrayOfTestTags00.length; i < limi; i++) {
     const arrayOfTagsInCommon = arrayOfArrayOfTestTags00[i];
     it(`Successfully queries tags by name (${arrayOfTagsInCommon.wordInCommon}) in common and returns multiple matching tags and their post count`, async function () {
-      const response = await getTagWithCountByName(arrayOfTagsInCommon.wordInCommon);
+      const response = await getTagsWithPostsByName(arrayOfTagsInCommon.wordInCommon);
       assert.ok(response.result);
       checkErrorResponse(response.errors);
       const tags = response.result;
       assert.strictEqual(tags.length, arrayOfTagsInCommon.tags.length, "Result tags length does not match expected length");
     });
   }
+
+  it("Returns an empty array when no tags match the query", async function () {
+    const response = await getTagsWithPostsByName(uuid());
+    assert.ok(response.result);
+    checkErrorResponse(response.errors);
+    const tags = response.result;
+    assert.strictEqual(tags.length, 0, "Result tags length does not match expected length");
+  });
+
 
   afterAll(async function () {
     await cleanUpTable([prisma.user, prisma.post, prisma.tag]);

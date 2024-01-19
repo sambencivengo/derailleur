@@ -119,6 +119,7 @@ describe("Get Tag With Count By Name ", function () {
     assert.strictEqual(tags.length, 0, "Result tags length does not match expected length");
   });
 
+
   afterAll(async function () {
     await cleanUpTable([prisma.user, prisma.post, prisma.tag]);
   });
