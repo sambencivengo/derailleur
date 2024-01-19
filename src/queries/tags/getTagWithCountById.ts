@@ -10,10 +10,10 @@ const tagWithCountOnly = Prisma.validator<Prisma.TagDefaultArgs>()({
     _count: true
   }
 });
-type TagWithCount = Prisma.TagGetPayload<typeof tagWithCountOnly>;
+// type TagWithCount = Prisma.TagGetPayload<typeof tagWithCountOnly>;
 
 
-export async function getTagWithCountById(tagId: string): Promise<DerailleurResponse<TagWithCount>> {
+export async function getTagWithCountById(tagId: string): Promise<DerailleurResponse<TagWithPostCount>> {
   try {
     const tag: TagWithPostCount | null = await prisma.tag.findUnique({
       where: {
