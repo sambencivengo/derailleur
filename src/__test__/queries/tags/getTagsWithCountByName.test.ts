@@ -1,5 +1,3 @@
-
-
 import assert from 'assert';
 import { v4 as uuid } from 'uuid';
 import { mockUser_00 } from '~/__test__/mock/users/mockUser';
@@ -18,10 +16,15 @@ describe("Get Tag With Count By Name ", function () {
   const testTags00 = [
     "TREK 8000",
     "TREK 990",
+    "TREK 800",
+    "TREK ANTELOPE",
     "CARGO RIG",
     "VINTAGE RIG",
     "FIRST TRIP",
-    "TRIP REPORT"
+    "TRIP REPORT",
+    "BIKE PACKING",
+    "BIKEPACKING",
+    "VINTAGE BIKE"
   ];
   const testTags01 = [
     "TREK",
@@ -84,19 +87,9 @@ describe("Get Tag With Count By Name ", function () {
     assert.strictEqual(tagIds.length, testTags00.length, 'Expected the length of the tagIds array to match the testTagsId length');
   });
 
-  // it(`Successfully queries a tag by Id`, async function () {
-  //   for (let i = 0, limi = tagIds.length; i < limi; i++) {
-  //     const testTag = tagIds[i];
-  //     const response = await getTagWithCountByName(testTag.name);
-  //     assert.ok(response.result);
-  //     const tag = response.result;
-  //     assert.strictEqual(tag.id, testTag.id);
-  //     assert.strictEqual(tag.name, testTag.name);
-  //     assert.strictEqual(tag._count.posts, tag.name === "TRIP REPORT" ? 4 : 3, `Expected the count of posts on ${tag.name} to be ${tag.name === "TRIP REPORT" ? 4 : 3}`);
-  //   }
-  // });
   it(`Successfully queries a tag by Id`, async function () {
-    const response = await getTagWithCountByName(testTags00[0]);
+    const response = await getTagWithCountByName("PACKING");
+    // const response = await getTagWithCountByName(testTags00[0]);
     assert.ok(response.result);
     const tag = response.result;
     console.log(tag);

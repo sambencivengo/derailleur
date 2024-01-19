@@ -20,9 +20,14 @@ export async function getTagWithCountByName(name: string): Promise<DerailleurRes
     );
   });
 
-  console.log(arrayOfNames);
   try {
-    const tagWithPosts = await prisma.tag.findMany({});
+    const tagWithPosts = await prisma.tag.findMany({
+      where: {
+        OR: [
+          ...arrayOfNames,
+        ]
+      }
+    });
 
     if (!tagWithPosts) {
       return createErrorResponse([{ data: { name }, message: "Unable to find tags by name" }]);
@@ -30,7 +35,7 @@ export async function getTagWithCountByName(name: string): Promise<DerailleurRes
     return createSuccessfulResponse(tagWithPosts);
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
-      return createErrorResponse([{ message: 'An error occurred when retrieving a tags by name', data: { name, error: JSON.stringify(error) } }]);
+      return createErrorResponse([{ message: 'An error occurred when retrieving tags by name', data: { name, error: JSON.stringify(error) } }]);
     }
     const errResponse = { name, prismaErrorCode: error.code };
     return createErrorResponse([{ message: 'Unable to create post due to prisma error', data: errResponse }]);
