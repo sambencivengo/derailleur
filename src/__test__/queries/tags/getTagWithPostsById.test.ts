@@ -12,7 +12,7 @@ const testUserId00 = uuid();
 const postId00 = uuid();
 const postId01 = uuid();
 
-describe("Get Tag With Count By ID ", function () {
+describe("Get Tag With Posts By ID ", function () {
   const testTags00 = [
     "BIKEPACKING",
     "RIG",
