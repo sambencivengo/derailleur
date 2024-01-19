@@ -85,6 +85,7 @@ describe("Get Tags with Posts", function () {
     );
   });
 
+
   it("Successfully gets tags from the database with each tag's post count and array of posts", async function () {
     const response = await getTagsWithPosts();
     assert.ok(response.result);
@@ -95,7 +96,16 @@ describe("Get Tags with Posts", function () {
       const resultTag = tags[i];
       const foundTestTag = arrayOfTestTags00.find((tag) => tag.name === resultTag.name)!;
       assert.strictEqual(resultTag._count.posts, foundTestTag.expectedCount, 'Result tag posts count does not match expected count');
-      console.log(resultTag);
+      assert.strictEqual(resultTag.posts.length, foundTestTag.expectedCount, 'Result tag posts array length does not expected count');
+      for (let j = 0, limj = resultTag.posts.length; j < limj; j++) {
+        const resultTagPost = resultTag.posts[j];
+        assert.strictEqual(typeof resultTagPost.id, 'string', 'Result post ID type did not match expected type');
+        assert.strictEqual(typeof resultTagPost.authorId, 'string', 'Result authorId type did not match expected type');
+        assert.strictEqual(typeof resultTagPost.content, 'string', 'Result content type did not match expected type');
+        assert.strictEqual(typeof resultTagPost.published, 'boolean', 'Result published type did not match expected type');
+        assert.strictEqual(typeof resultTagPost.title, 'string', 'Result title type did not match expected type');
+        assert.ok(Array.isArray(resultTagPost.tags), 'Result tags type did is not an array');
+      }
     }
   });
 
