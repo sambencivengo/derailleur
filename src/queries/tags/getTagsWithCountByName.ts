@@ -33,9 +33,6 @@ export async function getTagWithCountByName(name: string): Promise<DerailleurRes
       }
     });
 
-    if (!tagWithPosts) {
-      return createErrorResponse([{ data: { name }, message: "Unable to find tags by name" }]);
-    }
     return createSuccessfulResponse(tagWithPosts);
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
