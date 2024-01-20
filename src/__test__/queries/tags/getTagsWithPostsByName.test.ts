@@ -108,6 +108,12 @@ describe("Get Tag With Count By Name ", function () {
       checkErrorResponse(response.errors);
       const tags = response.result;
       assert.strictEqual(tags.length, arrayOfTagsInCommon.tags.length, "Result tags length does not match expected length");
+      for (let j = 0, limj = tags.length; j < limj; j++) {
+        const tag = tags[j];
+        assert.ok(Array.isArray(tag.posts), "Expected posts on tag result to be an array");
+        assert.ok(tag.posts.length > 0, "Expected posts array on tag to greater than zero");
+        assert.ok(tag._count.posts > 0, "Expected posts count on tag to greater than zero");
+      }
     });
   }
 
