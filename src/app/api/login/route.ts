@@ -16,37 +16,11 @@ export const POST = async (req: Request) => {
 
   const { password, username } = validateResponse.result;
 
-  if (username === 'sammy') {
+  if (process.env.NODE_ENV === 'development' && username === 'sammy') {
     await createKeyForDevAccount(password, username);
-
-    const key = await auth.useKey("username", username.toLowerCase(), password);
-    const session = await auth.createSession({
-      userId: key.userId,
-      attributes: {}
-    });
-    const authRequest = auth.handleRequest(req.method, context);
-    authRequest.setSession(session);
-    return (createNextResponse({ result: 'success', status: 201 }));
+    return (await useKeyAndCreateSession(username, password, req));
   } else {
-    try {
-      const key = await auth.useKey("username", username.toLowerCase(), password);
-      const session = await auth.createSession({
-        userId: key.userId,
-        attributes: {}
-      });
-      const authRequest = auth.handleRequest(req.method, context);
-      authRequest.setSession(session);
-      return (createNextResponse({ result: 'success', status: 201 }));
-    } catch (e) {
-      if (
-        e instanceof LuciaError &&
-        (e.message === "AUTH_INVALID_KEY_ID" ||
-          e.message === "AUTH_INVALID_PASSWORD")
-      ) {
-        return (createNextResponse({ errors: [{ message: "Incorrect username or password", data: {} }], status: 401 }));
-      }
-      return (createNextResponse({ errors: [{ message: "An unknown error occurred", data: {} }], status: 500 }));
-    }
+    return (await useKeyAndCreateSession(username, password, req));
   }
 };
 
@@ -81,3 +55,25 @@ async function createKeyForDevAccount(password: string, username: string = 'samm
     }
   }
 };
+
+async function useKeyAndCreateSession(username: string, password: string, req: Request) {
+  try {
+    const key = await auth.useKey("username", username.toLowerCase(), password);
+    const session = await auth.createSession({
+      userId: key.userId,
+      attributes: {}
+    });
+    const authRequest = auth.handleRequest(req.method, context);
+    authRequest.setSession(session);
+    return (createNextResponse({ result: 'success', status: 201 }));
+  } catch (e) {
+    if (
+      e instanceof LuciaError &&
+      (e.message === "AUTH_INVALID_KEY_ID" ||
+        e.message === "AUTH_INVALID_PASSWORD")
+    ) {
+      return (createNextResponse({ errors: [{ message: "Incorrect username or password", data: {} }], status: 401 }));
+    }
+    return (createNextResponse({ errors: [{ message: "An unknown error occurred", data: {} }], status: 500 }));
+  }
+}
