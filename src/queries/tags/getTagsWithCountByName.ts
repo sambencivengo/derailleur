@@ -10,7 +10,7 @@ interface TagNameContainsQuery {
   };
 }
 
-export async function getTagWithCountByName(name: string): Promise<DerailleurResponse<TagWithPostCount[]>> {
+export async function getTagsWithCountByName(name: string): Promise<DerailleurResponse<TagWithPostCount[]>> {
   const arrayOfNames: TagNameContainsQuery[] = name.split(" ").map((word) => {
     return (
       {
