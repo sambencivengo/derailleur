@@ -4,11 +4,14 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { FormWrapper, Spinner } from '~/components';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, InputTags, MultiSelect, Textarea } from '~/components/ui';
+import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, MultiSelect, Textarea } from '~/components/ui';
 import { CreatePostSchema } from '~/schemas';
-import { CreatePostPayload } from '~/types';
+import { CreatePostPayload, TagWithPostCount } from '~/types';
 import { useRouter } from 'next/navigation';
 import { AlertCircle } from 'lucide-react';
+import { createPost } from '~/queries';
+
+export type Framework = Record<'value' | 'label', string>;
 
 export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
   title: z
@@ -46,6 +49,8 @@ export function NewPostForm({ userId }: NewPostFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const router = useRouter();
 
+  const [selected, setSelected] = React.useState<TagWithPostCount[]>([]);
+
   const form = useForm<CreatePostSchema>({
     resolver: zodResolver(createPostSchema),
     defaultValues: {
@@ -56,15 +61,15 @@ export function NewPostForm({ userId }: NewPostFormProps) {
     },
   });
   async function onSubmit(values: CreatePostSchema) {
+    const valuesWithTags: CreatePostPayload = { ...values, tags: selected.map((tag) => tag.name) };
     setIsLoading(true);
-    console.log(values);
-    // const response = await createPost(values, userId);
-    // if (response.errors.length > 0 || response.result === null) {
-    //   setIsLoading(false);
-    //   setSubmitPostError(response.errors.map((error) => error.message));
-    // } else {
-    //   router.push(`/post/${response.result.id}`);
-    // }
+    const response = await createPost(valuesWithTags, userId);
+    if (response.errors.length > 0 || response.result === null) {
+      setIsLoading(false);
+      setSubmitPostError(response.errors.map((error) => error.message));
+    } else {
+      router.push(`/post/${response.result.id}`);
+    }
   }
   return (
     <Card>
@@ -100,25 +105,12 @@ export function NewPostForm({ userId }: NewPostFormProps) {
           <FormField
             control={form.control}
             name="tags"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Tags</FormLabel>
-                <FormControl>
-                  <InputTags {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="tags"
             render={({ field }) => {
               return (
                 <FormItem>
                   <FormLabel>Tags</FormLabel>
                   <FormControl>
-                    <MultiSelect {...field} />
+                    <MultiSelect {...field} selected={selected} setSelected={setSelected} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

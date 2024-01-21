@@ -33,9 +33,10 @@ export async function createPost(postPayload: CreatePostPayload, userId: string,
           published: true, // NOTE: CHANGE WHEN USING PUBLISHED ARGS AND DRAFTS
           tags: {
             connectOrCreate: tags.map((tagName) => {
+              const upperCaseTagName = tagName.toUpperCase();
               return {
-                where: { name: tagName },
-                create: { name: tagName },
+                where: { name: upperCaseTagName },
+                create: { name: upperCaseTagName },
               };
             }),
           }

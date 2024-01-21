@@ -15,14 +15,14 @@ export async function getTagsWithCountByName(name: string): Promise<DerailleurRe
     return (
       {
         name: {
-          contains: word
+          contains: word.toUpperCase()
         }
       }
     );
   });
 
   try {
-    const tagWithPosts = await prisma.tag.findMany({
+    const tagsWithCount = await prisma.tag.findMany({
       where: {
         OR: [
           ...arrayOfNames,
@@ -32,8 +32,8 @@ export async function getTagsWithCountByName(name: string): Promise<DerailleurRe
         _count: true
       }
     });
-
-    return createSuccessfulResponse(tagWithPosts);
+    console.log(tagsWithCount);
+    return createSuccessfulResponse(tagsWithCount);
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
       return createErrorResponse([{ message: 'An error occurred when retrieving tags by name', data: { name, error: JSON.stringify(error) } }]);
