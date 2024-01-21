@@ -1,10 +1,11 @@
-
+import { v4 as uuid } from 'uuid';
 import * as context from "next/headers";
 import { LuciaError } from "lucia";
 import { auth } from "~/auth";
 import { LogInSchema, userLogInSchema, validateSchema } from "~/schemas";
-import { createErrorResponse, createNextResponse } from "~/utils";
+import { createNextResponse } from "~/utils";
 import prisma from "~prisma/prisma";
+import { createUser } from '~/queries';
 
 export const POST = async (req: Request) => {
 
@@ -17,42 +18,44 @@ export const POST = async (req: Request) => {
   const { password, username } = validateResponse.result;
 
   if (process.env.NODE_ENV === 'development' && username === 'sammy') {
-    await createKeyForDevAccount(password, username);
+    const userId = uuid();
+    const existingSeededUser = await prisma.user.findUnique({
+      where: {
+        username
+      }
+    });
+
+    if (!existingSeededUser) {
+      console.log("Seeded user not found, creating user");
+      await createUser({ username }, userId);
+    }
+
+    await createKeyForDevAccount(password, username, userId);
     return (await useKeyAndCreateSession(username, password, req));
   } else {
     return (await useKeyAndCreateSession(username, password, req));
   }
 };
 
-async function createKeyForDevAccount(password: string, username: string = 'sammy') {
-  const existingSeededUser = await prisma.user.findUnique({
+async function createKeyForDevAccount(password: string, username: string = 'sammy', userId: string) {
+
+  const existingKey = await prisma.key.findFirst({
     where: {
-      username
+      user_id: userId
     }
   });
 
-  if (!existingSeededUser) {
-    return (createErrorResponse([{ data: { username, password }, message: "❌ Dev User was not found. Database seed was unsuccessful ❌" }]));
+  if (!existingKey) {
+    console.log("Dev User found without key, creating key 🔑");
+    await auth.createKey({
+      password,
+      providerId: 'username',
+      providerUserId: username.toLowerCase(),
+      userId,
+    });
   }
   else {
-    const existingKey = await prisma.key.findFirst({
-      where: {
-        user_id: existingSeededUser.id
-      }
-    });
-
-    if (!existingKey) {
-      console.log("Dev User found without key, creating key 🔑");
-      await auth.createKey({
-        password,
-        providerId: 'username',
-        providerUserId: username.toLowerCase(),
-        userId: existingSeededUser.id,
-      });
-    }
-    else {
-      console.log("Dev User found with key 🔑");
-    }
+    console.log("Dev User found with key 🔑");
   }
 };
 
