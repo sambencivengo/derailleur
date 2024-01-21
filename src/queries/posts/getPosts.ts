@@ -1,12 +1,12 @@
 'use server';
 
 import { Prisma } from "@prisma/client";
-import { PostWithUserName } from "~/types";
+import { Post } from "~/types";
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
 import prisma from "~prisma/prisma";
 
 
-export async function getPosts(includeTags: boolean = true): Promise<DerailleurResponse<PostWithUserName[]>> {
+export async function getPosts(includeTags: boolean = true): Promise<DerailleurResponse<Post[]>> {
   try {
     const posts = await prisma.post.findMany({
       // TODO: create optional filters
