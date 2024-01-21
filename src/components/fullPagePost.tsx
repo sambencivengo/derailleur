@@ -2,12 +2,12 @@
 
 import moment from 'moment';
 import React from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Button } from '~/components/ui';
-import { PostWithUserName } from '~/types';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '~/components/ui';
 import Link from 'next/link';
+import { Post } from '~/types';
 
 interface PostProps {
-  post: PostWithUserName;
+  post: Post;
 }
 export function FullPagePost({ post }: PostProps) {
   const {

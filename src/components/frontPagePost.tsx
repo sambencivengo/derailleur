@@ -17,7 +17,7 @@ export function FrontPagePost({ post }: FrontPagePostProps) {
   const renderTagBadges = tags.map((tag, idx) => {
     console.log(tag.name);
     return (
-      <Link href={`/posts/${tag.name}`}>
+      <Link href={`/tags/${tag.name.toLowerCase().split(' ').join('-')}`}>
         <Badge variant={'secondary'} key={idx}>
           {`#${tag.name}`}
         </Badge>
