@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import moment from 'moment';
-import { Card, CardHeader, CardTitle, CardDescription } from '~/components/ui';
-import { PostWithUserName } from '~/types';
+import { Card, CardHeader, CardTitle, CardDescription, CardFooter, Badge } from '~/components/ui';
+import { Post } from '~/types';
 
 interface FrontPagePostProps {
-  post: PostWithUserName;
+  post: Post;
 }
 export function FrontPagePost({ post }: FrontPagePostProps) {
   const {
@@ -12,7 +12,18 @@ export function FrontPagePost({ post }: FrontPagePostProps) {
     authorId,
     createdAt,
     id,
+    tags,
   } = post;
+  const renderTagBadges = tags.map((tag, idx) => {
+    console.log(tag.name);
+    return (
+      <Link href={`/posts/${tag.name}`}>
+        <Badge variant={'secondary'} key={idx}>
+          {`#${tag.name}`}
+        </Badge>
+      </Link>
+    );
+  });
 
   return (
     <Card className="h-auto">
@@ -32,6 +43,9 @@ export function FrontPagePost({ post }: FrontPagePostProps) {
           <CardDescription> {moment(createdAt).fromNow()}</CardDescription>
         </div>
       </CardHeader>
+      <CardFooter>
+        <div className="flex flex-grow gap-3">{renderTagBadges}</div>
+      </CardFooter>
     </Card>
   );
 }

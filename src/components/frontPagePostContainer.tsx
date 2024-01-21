@@ -4,11 +4,11 @@ import { AlertCircle } from 'lucide-react';
 import React from 'react';
 import { FrontPagePost } from '~/components';
 import { Alert, AlertTitle, AlertDescription } from '~/components/ui';
-import { PostWithUserName } from '~/types';
+import { Post } from '~/types';
 import { DerailleurResponse } from '~/utils';
 
 interface FrontPagePostContainerProps {
-  postsResponse: DerailleurResponse<PostWithUserName[]>;
+  postsResponse: DerailleurResponse<Post[]>;
 }
 
 export function FrontPagePostContainer({ postsResponse }: FrontPagePostContainerProps) {
