@@ -13,7 +13,8 @@ const tagWithPosts = Prisma.validator<Prisma.TagDefaultArgs>()({
       include: {
         author: {
           select: { username: true }
-        }
+        },
+        tags: true
       },
     }
   }
@@ -22,7 +23,6 @@ type TagWithPosts = Prisma.TagGetPayload<typeof tagWithPosts>;
 
 export async function getTagWithPostsByName(name: string): Promise<DerailleurResponse<TagWithPosts>> {
   try {
-
     const tag = await prisma.tag.findUnique({
       where: {
         name

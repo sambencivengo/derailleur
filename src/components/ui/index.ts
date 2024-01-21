@@ -10,7 +10,6 @@ export * from "./badge";
 export * from "./radio-group";
 export * from './toggle';
 export * from './toggle-group';
-export * from './inputTags';
 export * from './select';
 export * from './command';
 export * from './multiSelect';

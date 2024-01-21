@@ -1,12 +1,14 @@
 'use server';
 
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, ChevronLeft } from 'lucide-react';
+import Link from 'next/link';
+import { FrontPagePost } from '~/components';
 import { Alert, AlertTitle, AlertDescription } from '~/components/ui';
 import { getTagWithPostsByName } from '~/queries';
 
 export default async function Page({ params }: { params: { tag: string } }) {
   const { tag } = params;
-  const tagNameWithoutHyphens = tag.split('-').join(' ');
+  const tagNameWithoutHyphens = tag.split('-').join(' ').toUpperCase();
   const tagWithPosts = await getTagWithPostsByName(tagNameWithoutHyphens);
   if (tagWithPosts.errors.length > 0 || tagWithPosts.result === null) {
     return (
@@ -21,9 +23,17 @@ export default async function Page({ params }: { params: { tag: string } }) {
   }
   return (
     <main>
-      {/* {tagWithPosts.result[0].posts.map((post) => {
-        return <FullPagePost post={post} />;
-      })} */}
+      <div className="flex flex-col space-y-2">
+        {tagWithPosts.result.posts.map((post, idx) => {
+          return <FrontPagePost post={post} key={idx} />;
+        })}
+        <Link href={'/'}>
+          <div className="flex flex-row">
+            <ChevronLeft className="text-primary" />
+            <p className="text-primary"> Back to all posts...</p>
+          </div>
+        </Link>
+      </div>
     </main>
   );
 }
