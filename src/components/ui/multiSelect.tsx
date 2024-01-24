@@ -4,28 +4,35 @@ import * as React from 'react';
 import { X } from 'lucide-react';
 import { Badge, Command, CommandGroup, CommandItem, InputProps } from '~/components/ui';
 import { Command as CommandPrimitive } from 'cmdk';
-import { getTagsWithCountByName } from '~/queries';
 import { TagWithPostCount } from '~/types';
 
 type MultiSelectProps = InputProps & {
-  value: string[];
   onChange: React.Dispatch<React.SetStateAction<string[]>>;
   selected: TagWithPostCount[];
   setSelected: React.Dispatch<React.SetStateAction<TagWithPostCount[]>>;
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchAndSetTags(value: string): Promise<void>;
+  tags: TagWithPostCount[];
 };
 
-export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(({ type, selected, setSelected, ...props }, ref) => {
+export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(({ type, selected, setSelected, fetchAndSetTags, tags, setOpen, open, ...props }, ref) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
   const handleUnselect = React.useCallback((tag: TagWithPostCount) => {
     setSelected((prev) => prev.filter((s) => s.name !== tag.name));
   }, []);
-  const [tags, setTags] = React.useState<TagWithPostCount[]>([]);
 
+  let typingTimer: string | number | NodeJS.Timeout | undefined;
+  const selectables = tags.filter((tag) => !selected.includes(tag));
+  console.log(tags);
   const handleKeyDown = React.useCallback(async (e: React.KeyboardEvent<HTMLDivElement>) => {
     const input = inputRef.current;
     if (input) {
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(() => fetchAndSetTags(input.value), 500);
+      if (selectables.length > 0) setOpen(true);
+
       if (e.key === 'Delete' || e.key === 'Backspace') {
         if (input.value === '') {
           setSelected((prev) => {
@@ -43,19 +50,17 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
           const tagIsAlreadySelected = selected.find((tag) => tag.name === trimmedValue);
           if (tagIsAlreadySelected) {
             setInputValue('');
+            if (selectables.length === 0) setOpen(false);
           } else {
             setSelected((prev) => {
               const newSelected = [...prev, { id: trimmedValue, _count: { posts: 0 }, name: trimmedValue }];
               return newSelected;
             });
             setInputValue('');
+            if (selectables.length === 0) setOpen(false);
           }
         }
       }
-
-      // This is not a default behaviour of the <input /> field
-      const response = await getTagsWithCountByName(input.value);
-      setTags(response.result!);
 
       if (e.key === 'Escape') {
         input.blur();
@@ -63,8 +68,7 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
     }
   }, []);
 
-  const selectables = tags.filter((tag) => !selected.includes(tag));
-
+  console.log('SELECTABLES', selectables);
   return (
     <Command onKeyDown={handleKeyDown} className="overflow-visible bg-transparent">
       <div className="group bg-background border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
@@ -103,15 +107,17 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
               }
               setInputValue('');
             }}
-            onFocus={() => setOpen(true)}
+            onFocus={() => {
+              if (selectables.length > 0) setOpen(true);
+            }}
             placeholder="Add tags..."
             className="uppercase placeholder:initial ml-2 bg-background outline-none placeholder:text-muted-foreground flex-1"
           />
         </div>
       </div>
       <div className="relative mt-2">
-        {open && selectables.length > 0 ? (
-          <div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
+        {open ? (
+          <div className="absolute w-full z-100 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
             <CommandGroup className="h-full overflow-auto">
               {selectables.map((tag, idx) => {
                 return (

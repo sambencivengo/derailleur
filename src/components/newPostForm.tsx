@@ -1,15 +1,15 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { FormWrapper, Spinner } from '~/components';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, MultiSelect, Textarea } from '~/components/ui';
+import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, MultiSelect, Textarea } from '~/components/ui';
 import { CreatePostSchema } from '~/schemas';
 import { CreatePostPayload, TagWithPostCount } from '~/types';
 import { useRouter } from 'next/navigation';
 import { AlertCircle } from 'lucide-react';
-import { createPost } from '~/queries';
+import { createPost, getTagsWithCountByName } from '~/queries';
 
 export type Framework = Record<'value' | 'label', string>;
 
@@ -47,6 +47,8 @@ interface NewPostFormProps {
 export function NewPostForm({ userId }: NewPostFormProps) {
   const [submitPostError, setSubmitPostError] = React.useState<string[] | null>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [tags, setTags] = React.useState<TagWithPostCount[]>([]);
+  const [open, setOpen] = React.useState(false);
   const router = useRouter();
 
   const [selected, setSelected] = React.useState<TagWithPostCount[]>([]);
@@ -61,7 +63,11 @@ export function NewPostForm({ userId }: NewPostFormProps) {
     },
   });
   async function onSubmit(values: CreatePostSchema) {
-    const valuesWithTags: CreatePostPayload = { ...values, tags: selected.map((tag) => tag.name) };
+    form.setValue(
+      'tags',
+      selected.map((tag) => tag.name)
+    );
+    const valuesWithTags: CreatePostPayload = { ...values };
     setIsLoading(true);
     const response = await createPost(valuesWithTags, userId);
     if (response.errors.length > 0 || response.result === null) {
@@ -71,6 +77,19 @@ export function NewPostForm({ userId }: NewPostFormProps) {
       router.push(`/post/${response.result.id}`);
     }
   }
+
+  async function fetchAndSetTags(value: string): Promise<void> {
+    // fetch and set tags
+    const response = await getTagsWithCountByName(value);
+    if (response.errors.length > 0 && response.result !== null) {
+      setTags(response.result);
+      setOpen(true);
+    } else {
+      setTags([]);
+      setOpen(false);
+    }
+  }
+
   return (
     <Card>
       <CardHeader>Create a new post...</CardHeader>
@@ -110,13 +129,61 @@ export function NewPostForm({ userId }: NewPostFormProps) {
                 <FormItem>
                   <FormLabel>Tags</FormLabel>
                   <FormControl>
-                    <MultiSelect {...field} selected={selected} setSelected={setSelected} />
+                    <MultiSelect {...field} selected={selected} setSelected={setSelected} fetchAndSetTags={fetchAndSetTags} tags={tags} setOpen={setOpen} open={open} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               );
             }}
           />
+
+          {/* <FormField
+            control={form.control}
+            name="tags"
+            render={({ field }) => {
+              console.log(field.value);
+              return (
+                <FormItem>
+                  <FormLabel>Tags</FormLabel>
+                  <FormControl>
+                    <Command>
+                      <CommandInput onFocus={() => setShowCommandList(true)} onBlur={() => setShowCommandList(false)} />
+                      {showCommandList && (
+                        <CommandList>
+                          <CommandEmpty>No results found.</CommandEmpty>
+                          <CommandGroup>
+                            <CommandItem
+                              onSelect={() => {
+                                setShowCommandList(false);
+                              }}
+                            >
+                              Profile
+                            </CommandItem>
+                            <CommandItem
+                              onSelect={() => {
+                                setShowCommandList(false);
+                              }}
+                            >
+                              Billing
+                            </CommandItem>
+                            <CommandItem
+                              onSelect={() => {
+                                setShowCommandList(false);
+                              }}
+                            >
+                              Settings
+                            </CommandItem>
+                          </CommandGroup>
+                        </CommandList>
+                      )}
+                    </Command>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          /> */}
+
           {submitPostError && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />

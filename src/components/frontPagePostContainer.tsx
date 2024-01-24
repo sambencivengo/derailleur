@@ -1,4 +1,4 @@
-'use client';
+'use server';
 
 import { AlertCircle } from 'lucide-react';
 import React from 'react';
@@ -11,7 +11,7 @@ interface FrontPagePostContainerProps {
   postsResponse: DerailleurResponse<Post[]>;
 }
 
-export function FrontPagePostContainer({ postsResponse }: FrontPagePostContainerProps) {
+export async function FrontPagePostContainer({ postsResponse }: FrontPagePostContainerProps) {
   if (postsResponse.result === null || postsResponse.errors.length > 0) {
     return (
       <Alert variant="destructive">
