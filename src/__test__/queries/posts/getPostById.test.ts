@@ -16,13 +16,14 @@ describe("Get Post By ID", function () {
   const now = new Date();
   const testUserId_00 = uuid();
   const testPostId_00 = uuid();
+  const testPassword = "testPassword1234!";
 
   beforeAll(async function () {
     await addRecordsToDb<User, CreateUser>(
       {
         createRecordFunction: createUser,
         newRecordParams: [
-          [{ username: testUser_00.username }, testUserId_00],
+          [{ username: testUser_00.username, password: testPassword }, testUserId_00],
         ],
         mockDataName: 'User'
       },

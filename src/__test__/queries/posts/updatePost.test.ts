@@ -14,14 +14,15 @@ describe("Update Post Query", function () {
   const testUserId_01 = uuid();
   const now = new Date();
   const testPostId_00 = uuid();
+  const testPassword = "testPassword1234!";
 
   beforeAll(async function () {
     await addRecordsToDb<User, CreateUser>(
       {
         createRecordFunction: createUser,
         newRecordParams: [
-          [{ username: testUser_00.username, }, testUserId_00],
-          [{ username: testUser_01.username, }, testUserId_01],
+          [{ username: testUser_00.username, password: testPassword }, testUserId_00],
+          [{ username: testUser_01.username, password: testPassword }, testUserId_01],
         ],
         mockDataName: 'User'
       },
