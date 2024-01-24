@@ -1,10 +1,11 @@
-
+'use server';
+import * as argon2 from 'argon2';
 import { v4 as uuid } from 'uuid';
-import * as context from "next/headers";
 import { createUser } from '~/queries';
 import { auth } from '~/auth';
 import { SignUpSchema, userSignUpSchema, validateSchema } from '~/schemas';
 import { createNextResponse } from '~/utils';
+import { cookies } from 'next/headers';
 
 export const POST = async (req: Request) => {
   const body = await req.json();
@@ -13,37 +14,26 @@ export const POST = async (req: Request) => {
   if (validateResponse.result === null || validateResponse.errors.length > 0) {
     return (createNextResponse({ errors: validateResponse.errors, status: 400 }));
   }
-
   const { password, username } = validateResponse.result;
 
   try {
+    const hashedPassword = await argon2.hash(password);
     const userId = uuid();
     // Abstracted Prisma Query that does not use Lucia
     const userResponse = await createUser({
       username,
+      password: hashedPassword
     }, userId);
     if (userResponse.errors.length > 0 || userResponse.result === null) {
       return (createNextResponse({ errors: userResponse.errors, status: 401 }));
     }
 
-    // Lucia Auth call using the prisma adapter
-    await auth.createKey({
-      password,
-      providerId: 'username',
-      providerUserId: username.toLowerCase(),
-      userId,
-    });
-
-    const session = await auth.createSession({
-      userId: userId,
-      attributes: {}
-    });
-    const authRequest = auth.handleRequest(req.method, context);
-    authRequest.setSession(session);
+    const session = await auth.createSession(userId, {});
+    const sessionCookie = auth.createSessionCookie(session.id);
+    cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 
     return (createNextResponse({ result: 'success', status: 200 }));
   } catch (e) {
-    // NOTE: handle prismaQuery catches
     return (createNextResponse({ errors: [{ message: "An unknown error occurred", data: {} }], status: 500 }));
   }
 };
