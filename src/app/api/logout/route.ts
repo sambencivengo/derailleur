@@ -1,25 +1,24 @@
-
-import * as context from "next/headers";
-import type { NextRequest } from "next/server";
-import { auth } from "~/auth/auth";
+'use server';
+import { cookies } from "next/headers";
+import { getUserSession } from "~/auth";
+import { auth } from "~/auth";
+import { createNextResponse } from "~/utils";
 
 export const POST = async (request: Request) => {
-  const authRequest = auth.handleRequest(request.method, context);
-  // check if user is authenticated
-  const session = await authRequest.validate();
-  if (!session) {
-    return new Response(null, {
-      status: 401
-    });
+
+  const userAndSession = await getUserSession();
+  if (!userAndSession) {
+    return (createNextResponse({ errors: [{ data: {}, message: 'Unauthorized' }], status: 410 }));
   }
-  // make sure to invalidate the current session!
-  await auth.invalidateSession(session.sessionId);
-  // delete session cookie
-  authRequest.setSession(null);
+
+  await auth.invalidateSession(userAndSession.sessionId);
+  const sessionCookie = auth.createBlankSessionCookie();
+  cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+
   return new Response(null, {
     status: 302,
     headers: {
-      Location: "/login" // redirect to login page
+      Location: "/" // redirect to login page
     }
   });
 };

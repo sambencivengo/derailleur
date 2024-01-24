@@ -9,7 +9,6 @@ import { cookies } from 'next/headers';
 
 export const POST = async (req: Request) => {
   const body = await req.json();
-
   const validateResponse = validateSchema<SignUpSchema>({ body, schema: userSignUpSchema });
   if (validateResponse.result === null || validateResponse.errors.length > 0) {
     return (createNextResponse({ errors: validateResponse.errors, status: 400 }));

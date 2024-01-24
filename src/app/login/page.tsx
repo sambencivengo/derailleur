@@ -1,11 +1,9 @@
 'use server';
-import { redirect } from 'next/navigation';
-import { getPageSession } from '~/auth';
+import { getUserSessionAndRedirect } from '~/auth';
 import { LogInForm } from '~/components';
 
 export default async function Page() {
-  const session = await getPageSession();
-  if (session) redirect('/');
+  await getUserSessionAndRedirect();
 
   return (
     <main>
