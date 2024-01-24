@@ -26,7 +26,17 @@ export const auth = new Lucia(
       attributes: {
         secure: process.env.NODE_ENV === "production",
       }
-    }
+    },
+    getSessionAttributes: (attributes) => {
+      return {
+        ipCountry: attributes.country
+      };
+    },
+    getUserAttributes: (attributes) => {
+      return {
+        username: attributes.username
+      };
+    },
     // {
     // adapter: prisma(prismaClient),
     // env: process.env.NODE_ENV === "development" ? "DEV" : "PROD",
@@ -47,5 +57,15 @@ export const auth = new Lucia(
 declare module "lucia" {
   interface Register {
     Lucia: typeof auth;
+    DatabaseSessionAttributes: DatabaseSessionAttributes;
+    DatabaseUserAttributes: DatabaseUserAttributes;
   }
+}
+
+
+interface DatabaseSessionAttributes {
+  country: string;
+}
+interface DatabaseUserAttributes {
+  username: string;
 }

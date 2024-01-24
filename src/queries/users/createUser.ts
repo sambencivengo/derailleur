@@ -10,7 +10,6 @@ import { CreateUserPayload, User } from "~/types";
 export async function createUser(user: CreateUserPayload, userId = uuid()): Promise<DerailleurResponse<User>> {
 
   // NOTE: Create User Schema validation is in API call
-
   try {
     const newUser = await prisma.user.create({
       data: {
