@@ -28,14 +28,14 @@ export const auth = new Lucia(
       }
     },
     getSessionAttributes: (attributes) => {
-      return {
-        ipCountry: attributes.country
-      };
+      return ({});
     },
     getUserAttributes: (attributes) => {
-      return {
-        username: attributes.username
-      };
+      return (
+        {
+          username: attributes.username
+        }
+      );
     },
     // {
     // adapter: prisma(prismaClient),
@@ -64,7 +64,6 @@ declare module "lucia" {
 
 
 interface DatabaseSessionAttributes {
-  country: string;
 }
 interface DatabaseUserAttributes {
   username: string;

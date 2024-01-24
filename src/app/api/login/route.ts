@@ -1,11 +1,10 @@
-import { v4 as uuid } from 'uuid';
-import * as context from "next/headers";
-import { LuciaError } from "lucia";
-import { auth } from "~/auth";
+'use server';
+import * as argon2 from 'argon2';
 import { LogInSchema, userLogInSchema, validateSchema } from "~/schemas";
 import { createNextResponse } from "~/utils";
-import prisma from "~prisma/prisma";
-import { createUser } from '~/queries';
+import { getUserByUsername } from '~/queries';
+import { cookies } from 'next/headers';
+import { auth } from '~/auth';
 
 export const POST = async (req: Request) => {
 
@@ -17,66 +16,22 @@ export const POST = async (req: Request) => {
 
   const { password, username } = validateResponse.result;
 
-  if (process.env.NODE_ENV === 'development' && username === 'sammy') {
-    const userId = uuid();
-    const existingSeededUser = await prisma.user.findUnique({
-      where: {
-        username
-      }
-    });
+  const getUserByUsernameResponse = await getUserByUsername(username);
 
-    if (!existingSeededUser) {
-      console.log("Seeded user not found, creating user");
-      await createUser({ username }, userId);
-    }
-
-    await createKeyForDevAccount(password, username, userId);
-    return (await useKeyAndCreateSession(username, password, req));
-  } else {
-    return (await useKeyAndCreateSession(username, password, req));
+  if (getUserByUsernameResponse.result === null || getUserByUsernameResponse.errors.length > 0) {
+    return (createNextResponse({ errors: getUserByUsernameResponse.errors, status: 400 }));
   }
+
+  const user = getUserByUsernameResponse.result;
+  const validPassword = await argon2.verify(user.hashedPassword, password);
+
+  if (!validPassword) {
+    return (createNextResponse({ errors: [{ data: {}, message: "Incorrect username or password" }], status: 403 }));
+  }
+
+  const session = await auth.createSession(user.id, {});
+  const sessionCookie = auth.createSessionCookie(session.id);
+  cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+
+  return (createNextResponse({ result: 'success', status: 201 }));
 };
-
-async function createKeyForDevAccount(password: string, username: string = 'sammy', userId: string) {
-
-  const existingKey = await prisma.key.findFirst({
-    where: {
-      user_id: userId
-    }
-  });
-
-  if (!existingKey) {
-    console.log("Dev User found without key, creating key 🔑");
-    await auth.createKey({
-      password,
-      providerId: 'username',
-      providerUserId: username.toLowerCase(),
-      userId,
-    });
-  }
-  else {
-    console.log("Dev User found with key 🔑");
-  }
-};
-
-async function useKeyAndCreateSession(username: string, password: string, req: Request) {
-  try {
-    const key = await auth.useKey("username", username.toLowerCase(), password);
-    const session = await auth.createSession({
-      userId: key.userId,
-      attributes: {}
-    });
-    const authRequest = auth.handleRequest(req.method, context);
-    authRequest.setSession(session);
-    return (createNextResponse({ result: 'success', status: 201 }));
-  } catch (e) {
-    if (
-      e instanceof LuciaError &&
-      (e.message === "AUTH_INVALID_KEY_ID" ||
-        e.message === "AUTH_INVALID_PASSWORD")
-    ) {
-      return (createNextResponse({ errors: [{ message: "Incorrect username or password", data: {} }], status: 401 }));
-    }
-    return (createNextResponse({ errors: [{ message: "An unknown error occurred", data: {} }], status: 500 }));
-  }
-}
