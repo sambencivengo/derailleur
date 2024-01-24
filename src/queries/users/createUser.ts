@@ -1,5 +1,4 @@
 'use server';
-import * as argon2 from "argon2";
 import { Prisma } from "@prisma/client";
 import { v4 as uuid } from 'uuid';
 import prisma from "~prisma/prisma";
@@ -12,14 +11,13 @@ export async function createUser(createUserPayload: CreateUserPayload, userId = 
 
   // NOTE: Create User Schema validation is in API call
   const { password, username, favoriteBike, location } = createUserPayload;
-  const hashedPassword = await argon2.hash(password);
 
   try {
     const newUser = await prisma.user.create({
       data: {
         id: userId,
         username,
-        hashedPassword,
+        hashedPassword: password,
         favoriteBike,
         location,
       },

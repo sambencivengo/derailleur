@@ -42,7 +42,7 @@ export const getUserSession = cache(async (): Promise<UserAndSession | null> => 
 	});
 });
 
-export const getUserSessionAndRedirect = async (pageRoute: string = '/') => {
+export const getUserSessionAndRedirect = async (pageRoute: string = '/', restricted: boolean = false) => {
 	const userSession = await getUserSession();
-	if (userSession) redirect(pageRoute);
+	if (restricted ? !userSession : userSession) redirect(pageRoute);
 };

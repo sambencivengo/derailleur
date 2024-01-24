@@ -18,11 +18,11 @@ export const POST = async (req: Request) => {
   try {
     const hashedPassword = await argon2.hash(password);
     const userId = uuid();
-    // Abstracted Prisma Query that does not use Lucia
     const userResponse = await createUser({
       username,
       password: hashedPassword
     }, userId);
+
     if (userResponse.errors.length > 0 || userResponse.result === null) {
       return (createNextResponse({ errors: userResponse.errors, status: 401 }));
     }

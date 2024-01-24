@@ -1,10 +1,10 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { FormWrapper, Spinner } from '~/components';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, MultiSelect, Textarea } from '~/components/ui';
+import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, MultiSelect, Textarea } from '~/components/ui';
 import { CreatePostSchema } from '~/schemas';
 import { CreatePostPayload, TagWithPostCount } from '~/types';
 import { useRouter } from 'next/navigation';
@@ -42,7 +42,7 @@ export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
 });
 
 interface NewPostFormProps {
-  userId: string;
+  userId?: string;
 }
 export function NewPostForm({ userId }: NewPostFormProps) {
   const [submitPostError, setSubmitPostError] = React.useState<string[] | null>(null);
@@ -69,7 +69,7 @@ export function NewPostForm({ userId }: NewPostFormProps) {
     );
     const valuesWithTags: CreatePostPayload = { ...values };
     setIsLoading(true);
-    const response = await createPost(valuesWithTags, userId);
+    const response = await createPost(valuesWithTags, userId ?? 'testing123');
     if (response.errors.length > 0 || response.result === null) {
       setIsLoading(false);
       setSubmitPostError(response.errors.map((error) => error.message));
