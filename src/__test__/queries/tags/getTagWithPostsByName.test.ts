@@ -87,7 +87,6 @@ describe("Get Tag With Posts By Name ", function () {
       assert.ok(response.result);
 
       const tag = response.result;
-      console.log(tag);
       assert.strictEqual(tag.id, testTag.id);
       assert.strictEqual(tag.name, testTag.name);
       assert.strictEqual(tag._count.posts, tag.name === "TRIP REPORT" ? 4 : 3, `Expected the count of posts on ${tag.name} to be ${tag.name === "TRIP REPORT" ? 4 : 3}`);

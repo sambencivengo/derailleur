@@ -128,6 +128,6 @@ describe("Create Post with Tags", function () {
   });
 
   afterAll(async function () {
-    await cleanUpTable([prisma.user, prisma.post]);
+    await cleanUpTable([prisma.user, prisma.post, prisma.tag]);
   });
 });

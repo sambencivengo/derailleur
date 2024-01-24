@@ -32,7 +32,6 @@ export async function getTagsWithCountByName(name: string): Promise<DerailleurRe
         _count: true
       }
     });
-    console.log(tagsWithCount);
     return createSuccessfulResponse(tagsWithCount);
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
