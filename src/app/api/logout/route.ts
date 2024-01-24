@@ -1,7 +1,7 @@
 
 import * as context from "next/headers";
 import type { NextRequest } from "next/server";
-import { auth } from "~/auth/lucia";
+import { auth } from "~/auth/auth";
 
 export const POST = async (request: Request) => {
   const authRequest = auth.handleRequest(request.method, context);

@@ -1,2 +1,2 @@
 export * from './getPageSession';
-export * from './lucia';
+export * from './auth';
