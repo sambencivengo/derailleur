@@ -1,2 +1,2 @@
-export * from './getPageSession';
+export * from './getUserSession';
 export * from './auth';

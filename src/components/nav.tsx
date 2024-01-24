@@ -1,12 +1,13 @@
 'use server';
 import React from 'react';
 import { LogInButton, NewPostButton, SignUpButton, ToggleDarkModeButton } from '~/components';
-import { getPageSession } from '~/auth';
+// import { getPageSession } from '~/auth';
 import { LogOutButton } from '~/components/logOutButton';
 import Link from 'next/link';
+import { getUserSession } from '~/auth';
 
 export async function Nav() {
-  const session = await getPageSession();
+  const user = await getUserSession();
 
   return (
     <header>
@@ -18,7 +19,7 @@ export async function Nav() {
             </Link>
           </div>
           <div className="flex space-x-3">
-            {session ? (
+            {user ? (
               <div className="grid grid-flow-col content-center space-x-3">
                 <NewPostButton />
                 <LogOutButton />
