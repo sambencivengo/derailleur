@@ -1,3 +1,5 @@
 import { User as PrismaUser } from "@prisma/client";
 
-export interface User extends PrismaUser { }
+export interface UserWithHashedPassword extends PrismaUser { }
+
+export interface User extends Omit<PrismaUser, 'hashedPassword'> { }

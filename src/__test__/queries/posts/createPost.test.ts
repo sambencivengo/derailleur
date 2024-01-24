@@ -8,6 +8,7 @@ import { CreateUser, CreatePostPayload } from "~/types";
 import prisma from "~prisma/prisma";
 
 const testUser_00 = mockUser_00;
+const testPassword = "testPassword1234!";
 const now = new Date();
 const testContent = "Looking to replace suspension fork that I have on my Rockhopper, any recommendations?";
 const testTitle = "26 inch Fork Replacement";
@@ -20,13 +21,12 @@ const testPostPayload: CreatePostPayload = {
 describe("Create Post Query", function () {
   const testUserId_00 = uuid();
   const testPostId_00 = uuid();
-
   beforeAll(async function () {
     await addRecordsToDb<User, CreateUser>(
       {
         createRecordFunction: createUser,
         newRecordParams: [
-          [{ username: testUser_00.username }, testUserId_00],
+          [{ username: testUser_00.username, password: testPassword }, testUserId_00],
         ],
         mockDataName: 'User'
       },
@@ -75,7 +75,7 @@ describe("Create Post with Tags", function () {
       {
         createRecordFunction: createUser,
         newRecordParams: [
-          [{ username: testUser_00.username }, testUserId_00],
+          [{ username: testUser_00.username, password: testPassword }, testUserId_00],
         ],
         mockDataName: 'User'
       },
