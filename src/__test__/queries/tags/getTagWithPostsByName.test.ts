@@ -8,6 +8,7 @@ import prisma from '~prisma/prisma';
 
 
 const testUser00 = mockUser_00;
+const testPassword = "testPassword1234!";
 const testUserId00 = uuid();
 const postId00 = uuid();
 const postId01 = uuid();
@@ -50,7 +51,7 @@ describe("Get Tag With Posts By Name ", function () {
       {
         createRecordFunction: createUser,
         newRecordParams: [
-          [{ username: testUser00.username }, testUserId00],
+          [{ username: testUser00.username, password: testPassword }, testUserId00],
         ],
         mockDataName: 'User'
       },

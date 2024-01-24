@@ -11,6 +11,7 @@ const testUser00 = mockUser_00;
 const testUserId00 = uuid();
 const postId00 = uuid();
 const postId01 = uuid();
+const testPassword = "testPassword1234!";
 
 describe("Get Tag With Count By ID ", function () {
   const testTags00 = [
@@ -50,7 +51,7 @@ describe("Get Tag With Count By ID ", function () {
       {
         createRecordFunction: createUser,
         newRecordParams: [
-          [{ username: testUser00.username }, testUserId00],
+          [{ username: testUser00.username, password: testPassword }, testUserId00],
         ],
         mockDataName: 'User'
       },

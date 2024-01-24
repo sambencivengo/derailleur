@@ -9,6 +9,7 @@ import prisma from '~prisma/prisma';
 
 const testUser00 = mockUser_00;
 const testUserId00 = uuid();
+const testPassword = "testPassword1234!";
 
 interface TagsInCommon {
   wordInCommon: string;
@@ -84,7 +85,7 @@ describe("Get Tag With Count By Name ", function () {
       {
         createRecordFunction: createUser,
         newRecordParams: [
-          [{ username: testUser00.username }, testUserId00],
+          [{ username: testUser00.username, password: testPassword }, testUserId00],
         ],
         mockDataName: 'User'
       },
