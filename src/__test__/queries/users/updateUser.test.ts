@@ -11,12 +11,15 @@ describe("Update User Query", function () {
   const now = new Date();
   const testUsername_00 = 'testUsername_00';
   const testUsername_01 = 'testUsername_01';
+  const testPassword = "testPassword1234!";
   const testUserFavoriteBike_00 = 'Trek Single Track 990';
   const newUser_00: CreateUserPayload = {
     username: testUsername_00,
+    password: testPassword
   };
   const newUser_01: CreateUserPayload = {
     username: testUsername_01,
+    password: testPassword
   };
 
   beforeAll(async function () {
