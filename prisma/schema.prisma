@@ -12,6 +12,7 @@ datasource db {
 
 model User {
   id String @id @unique
+  hashedPassword String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   username String @unique @db.VarChar(30)
@@ -26,7 +27,6 @@ model Session {
   userId String
   expiresAt DateTime
   user User @relation(references: [id], fields: [userId], onDelete: Cascade)
-  hashedPassword String
   @@index([userId])
 }
 

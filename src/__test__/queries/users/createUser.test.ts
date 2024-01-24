@@ -10,6 +10,10 @@ describe.only('Create User Query', function () {
   const testUsername = 'sammy_single_track';
   const now = new Date();
   const testUserId = uuid();
+  const testPassword = 'testPassword1234!';
+  const passwordOnlyPayload = {
+    password: testPassword
+  };
 
   it("Successfully creates a new user with all fields", async function () {
     const testFavBike = "1991 Trek Single Track 990";
@@ -17,7 +21,8 @@ describe.only('Create User Query', function () {
     const testCreateUser: CreateUserPayload = {
       username: testUsername,
       favoriteBike: testFavBike,
-      location: testLocation
+      location: testLocation,
+      password: testPassword
     };
     const response = await createUser(testCreateUser, testUserId);
     const result = response.result!;
@@ -33,7 +38,7 @@ describe.only('Create User Query', function () {
   });
   it("Successfully creates a new user with location and favorite bike undefined", async function () {
     const username = 'testUsername_01';
-    const response = await createUser({ username });
+    const response = await createUser({ username, ...passwordOnlyPayload });
     const result = response.result!;
     const errors = response.errors;
     assert.ok(response);
@@ -45,7 +50,7 @@ describe.only('Create User Query', function () {
     checkErrorResponse(errors);
   });
   it("Fails to create a user due to username conflict", async function () {
-    const response = await createUser({ username: testUsername });
+    const response = await createUser({ username: testUsername, ...passwordOnlyPayload });
     const { errors, result } = response;
     assert.ok(response);
     assert.strictEqual(result, null);
@@ -53,7 +58,7 @@ describe.only('Create User Query', function () {
   });
   it("Fails to create a user due to username being greater than 30 characters", async function () {
     const username = 'x'.repeat(31);
-    const response = await createUser({ username });
+    const response = await createUser({ username, ...passwordOnlyPayload });
     const { result, errors } = response;
     assert.ok(response);
     assert.strictEqual(result, null);
@@ -63,7 +68,7 @@ describe.only('Create User Query', function () {
   });
   it("Fails to create a user due to being supplied a non-unique uuid()", async function () {
     const username = 'testUsername_02';
-    const response = await createUser({ username }, testUserId);
+    const response = await createUser({ username, ...passwordOnlyPayload }, testUserId);
     const { result, errors } = response;
     assert.ok(response);
     assert.strictEqual(result, null);

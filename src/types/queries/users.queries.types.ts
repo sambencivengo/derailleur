@@ -4,6 +4,7 @@ import { DerailleurResponse } from "~/utils";
 
 export interface CreateUserPayload {
   username: string;
+  password: string;
   favoriteBike?: string | null;
   location?: string | null;
 }
