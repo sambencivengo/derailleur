@@ -42,7 +42,7 @@ export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
 });
 
 interface NewPostFormProps {
-  userId?: string;
+  userId: string;
 }
 export function NewPostForm({ userId }: NewPostFormProps) {
   const [submitPostError, setSubmitPostError] = React.useState<string[] | null>(null);
@@ -69,7 +69,7 @@ export function NewPostForm({ userId }: NewPostFormProps) {
     );
     const valuesWithTags: CreatePostPayload = { ...values };
     setIsLoading(true);
-    const response = await createPost(valuesWithTags, userId ?? 'testing123');
+    const response = await createPost(valuesWithTags, userId);
     if (response.errors.length > 0 || response.result === null) {
       setIsLoading(false);
       setSubmitPostError(response.errors.map((error) => error.message));

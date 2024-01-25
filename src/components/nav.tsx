@@ -15,7 +15,7 @@ export async function Nav() {
         <div className="flex items-center justify-between p-2 border-b-2">
           <div>
             <Link href="/">
-              <h1 className="text-2xl italic">DERAILLEUR</h1>
+              <h1 className="text-2xl italic font-bold">DERAILLEUR</h1>
             </Link>
           </div>
           <div className="flex space-x-3">
