@@ -37,19 +37,6 @@ export const auth = new Lucia(
         }
       );
     },
-    // {
-    // adapter: prisma(prismaClient),
-    // env: process.env.NODE_ENV === "development" ? "DEV" : "PROD",
-    // middleware: nextjs_future(),
-    // sessionCookie: {
-    //   expires: false
-    // },
-
-    // getUserAttributes: (data) => {
-    //   return {
-    //     username: data.username
-    //   };
-    // }
   }
 );
 
