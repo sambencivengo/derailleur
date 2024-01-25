@@ -1,12 +1,3 @@
-
-// auth/lucia.ts
-// import { lucia } from "lucia";
-// import { prisma } from "@lucia-auth/adapter-prisma";
-// import { nextjs_future } from "lucia/middleware";
-
-
-
-// auth/lucia.ts
 import { Lucia } from "lucia";
 import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
 
@@ -27,7 +18,7 @@ export const auth = new Lucia(
         secure: process.env.NODE_ENV === "production",
       }
     },
-    getSessionAttributes: (attributes) => {
+    getSessionAttributes: () => {
       return ({});
     },
     getUserAttributes: (attributes) => {
