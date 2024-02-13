@@ -1,5 +1,4 @@
 'use server';
-import React from 'react';
 import { DesktopNav } from '~/components';
 import Link from 'next/link';
 import { getUserSession } from '~/auth';
