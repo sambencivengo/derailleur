@@ -50,7 +50,7 @@ export async function createPost(postPayload: CreatePostPayload, userId: string,
     } catch (error: any) {
       if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
         return createErrorResponse([{ message: 'An error occurred when trying create a post', data: { userId, postPayload, error: JSON.stringify(error) } }]);
-      };
+      }
 
       const errorTarget = error.meta?.target as unknown as string[];
       if (error.code == PrismaQueryErrorCodes.UNIQUE_CONSTRAINT && errorTarget[0] === 'name') {

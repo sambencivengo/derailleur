@@ -1,7 +1,6 @@
 'use server';
 import React from 'react';
 import { LogInButton, NewPostButton, SignUpButton, ToggleDarkModeButton } from '~/components';
-// import { getPageSession } from '~/auth';
 import { LogOutButton } from '~/components/logOutButton';
 import Link from 'next/link';
 import { getUserSession } from '~/auth';
