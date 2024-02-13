@@ -1,6 +1,6 @@
 'use server';
 import { getUserSessionAndRedirect } from '~/auth';
-import { LogInForm } from '~/components';
+import { LogInForm, TextHeading } from '~/components';
 
 export default async function Page() {
   await getUserSessionAndRedirect();
@@ -9,7 +9,7 @@ export default async function Page() {
     <main>
       <div className="flex justify-center">
         <div className="flex-col space-y-3">
-          <h1>Log in</h1>
+          <TextHeading heading="Log in" className="italic" />
           <LogInForm />
         </div>
       </div>
