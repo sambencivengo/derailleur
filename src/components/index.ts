@@ -1,7 +1,7 @@
 export * from './signUpForm';
 export * from './logInForm';
 export * from './logInForm';
-export * from './nav';
+export * from './navBar';
 export * from './themeProvider';
 export * from './toggleDarkModeButton';
 export * from './logInButton';
@@ -15,3 +15,4 @@ export * from './newPostButton';
 export * from './mobileNav';
 export * from './newPostForm';
 export * from './textHeading';
+export * from "./desktopNav";

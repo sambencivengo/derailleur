@@ -4,14 +4,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { cache } from "react";
 import { auth } from "~/auth";
+import { UserAndSession } from "~/types";
 
-interface UserAndSession {
-	username: string;
-	userId: string;
-	sessionId: string;
-	expiresAt: Date;
-	fresh: boolean;
-}
 
 export const getUserSession = cache(async (): Promise<UserAndSession | null> => {
 	const sessionId = cookies().get(auth.sessionCookieName)?.value ?? null;
