@@ -12,4 +12,5 @@ export * from './frontPagePostContainer';
 export * from './frontPagePost';
 export * from './fullPagePost';
 export * from './newPostButton';
+export * from './mobileNav';
 export * from './newPostForm';
