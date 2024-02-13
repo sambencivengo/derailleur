@@ -20,7 +20,7 @@ export async function NavBar() {
 
           <DesktopNav user={user} />
 
-          <div className="flex md:hidden pr-2">{<MobileNav />}</div>
+          <MobileNav />
         </div>
       </nav>
     </header>
