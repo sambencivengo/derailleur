@@ -12,8 +12,8 @@ export async function Nav() {
   return (
     <header>
       <nav>
-        <div className="flex items-center justify-between h-12 p-2 border-b-2">
-          <div>
+        <div className="flex items-center justify-between h-12 px-2 border-b-2">
+          <div className="pl-2">
             <Link href="/">
               <h1 className="text-2xl italic font-bold">DERAILLEUR</h1>
             </Link>
@@ -33,7 +33,7 @@ export async function Nav() {
             <ToggleDarkModeButton />
           </div>
           {/* MOBILE NAV */}
-          <div className="flex md:hidden">{<MobileNav />}</div>
+          <div className="flex md:hidden pr-2">{<MobileNav />}</div>
         </div>
       </nav>
     </header>
