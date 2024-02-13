@@ -4,7 +4,7 @@ import { LogInButton, NewPostButton, SignUpButton, ToggleDarkModeButton } from '
 import { LogOutButton } from '~/components/logOutButton';
 import Link from 'next/link';
 import { getUserSession } from '~/auth';
-import { MobileNav } from '~/components/mobileNav';
+import { TextHeading, MobileNav } from '~/components';
 
 export async function Nav() {
   const user = await getUserSession();
@@ -15,7 +15,7 @@ export async function Nav() {
         <div className="flex items-center justify-between h-12 px-2 border-b-2">
           <div className="pl-2">
             <Link href="/">
-              <h1 className="text-2xl italic font-bold">DERAILLEUR</h1>
+              <TextHeading heading="DERAILLEUR" className="italic text-2xl" />
             </Link>
           </div>
           <div className="hidden md:flex gap-3">
