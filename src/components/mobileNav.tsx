@@ -1,7 +1,6 @@
 'use server';
 import { ChevronLeftSquare } from 'lucide-react';
-import Link from 'next/link';
-import { LogInButton, LogOutButton, NewPostButton, TextHeading, ToggleDarkModeButton } from '~/components';
+import { LogInButton, LogOutButton, NewPostButton, SignUpButton, ToggleDarkModeButton } from '~/components';
 import { Separator, Sheet, SheetClose, SheetContent, SheetTrigger } from '~/components/ui';
 import { UserAndSession } from '~/types';
 
@@ -20,12 +19,15 @@ export const MobileNav = ({ user }: MobileNavProps) => {
             <div className="flex flex-col gap-1">
               {user ? (
                 <>
+                  <Separator className="bg-primary" />
                   <SheetClose asChild>
                     <NewPostButton forMobile={true} />
                   </SheetClose>
+                  <Separator className="bg-primary" />
                   <SheetClose asChild>
                     <LogOutButton forMobile={true} />
                   </SheetClose>
+                  <Separator className="bg-primary" />
                 </>
               ) : (
                 <>
@@ -35,9 +37,7 @@ export const MobileNav = ({ user }: MobileNavProps) => {
                   </SheetClose>
                   <Separator className="bg-primary" />
                   <SheetClose asChild>
-                    <Link href="/signup" className="rounded-sm h-10 flex justify-center items-center">
-                      <TextHeading heading="Sign Up" className="italic text-2xl" />
-                    </Link>
+                    <SignUpButton forMobile={true} />
                   </SheetClose>
                   <Separator className="bg-primary" />
                 </>
