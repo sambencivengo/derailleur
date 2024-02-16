@@ -14,3 +14,4 @@ export * from './select';
 export * from './command';
 export * from './multiSelect';
 export * from './sheet';
+export * from "./separator";

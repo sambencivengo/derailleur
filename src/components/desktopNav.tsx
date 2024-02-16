@@ -1,5 +1,4 @@
-import { NewPostButton, LogInButton, SignUpButton, ToggleDarkModeButton } from '~/components';
-import { LogOutButton } from '~/components/logOutButton';
+import { LogOutButton, NewPostButton, LogInButton, SignUpButton, ToggleDarkModeButton } from '~/components';
 import { UserAndSession } from '~/types';
 
 interface DesktopNavProps {

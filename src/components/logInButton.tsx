@@ -1,11 +1,15 @@
-'use client';
+'use server';
 import Link from 'next/link';
 import React from 'react';
+import { cn } from '~/lib/utils';
 
-export const LogInButton: React.FC = () => {
+interface LogInButtonProps {
+  forMobile?: boolean;
+}
+export const LogInButton = ({ forMobile }: LogInButtonProps) => {
   return (
-    <Link className="text-primary italic hover:underline" href={'/login'}>
-      Log in
+    <Link href={'/login'} className={cn(forMobile ? 'rounded-sm h-10 flex justify-center items-center text-2xl font-bold' : 'text-primary hover:underline', 'italic')}>
+      Log In
     </Link>
   );
 };

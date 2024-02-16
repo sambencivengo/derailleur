@@ -6,7 +6,6 @@ import { TextHeading, MobileNav } from '~/components';
 
 export async function NavBar() {
   const user = await getUserSession();
-
   return (
     <header>
       <nav>
@@ -19,7 +18,7 @@ export async function NavBar() {
 
           <DesktopNav user={user} />
 
-          <MobileNav />
+          <MobileNav user={user} />
         </div>
       </nav>
     </header>

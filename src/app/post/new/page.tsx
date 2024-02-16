@@ -9,7 +9,6 @@ export default async function Page() {
   if (!userWithSession) {
     redirect('/');
   } else {
-    console.log(userWithSession);
     return (
       <main>
         <NewPostForm userId={userWithSession.userId} />

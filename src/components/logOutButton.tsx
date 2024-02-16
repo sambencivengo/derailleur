@@ -2,9 +2,12 @@
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import { cn } from '~/lib/utils';
 
-export const LogOutButton: React.FC = () => {
+interface LogOutButtonProps {
+  forMobile?: boolean;
+}
+export const LogOutButton = ({ forMobile }: LogOutButtonProps) => {
   const router = useRouter();
   const logOut = async () => {
     axios
@@ -18,9 +21,11 @@ export const LogOutButton: React.FC = () => {
         console.log(error);
       });
   };
+
   return (
-    <Link className="text-primary italic hover:underline" href={''} onClick={logOut}>
-      Log out
+    <Link className={cn(forMobile ? 'rounded-sm h-10 flex justify-center items-center text-2xl font-bold' : 'text-primary hover:underline', 'italic')} href={''} onClick={logOut}>
+      Log Out
     </Link>
   );
 };
+1;
