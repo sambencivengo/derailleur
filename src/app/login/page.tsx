@@ -9,7 +9,7 @@ export default async function Page() {
     <main>
       <div className="flex justify-center">
         <div className="flex-col space-y-3">
-          <TextHeading heading="Log in" className="italic" />
+          <TextHeading heading="Log In" className="italic" />
           <LogInForm />
         </div>
       </div>
