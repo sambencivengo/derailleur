@@ -7,7 +7,7 @@
     "docker:down": "docker-compose -f docker/docker-compose.yml down",
     "docker:container": "docker exec -it $cid psql -U user derailleur",
     "docker:db": "npm run migrate:docker:deploy",
-    "dev": "next dev",
+    "dev": "npm run prisma:seed & next dev",
     "dev-lint": "next lint && next dev",
     "build": "next build",
     "start": "next start",
@@ -16,7 +16,8 @@
     "migrate:create": "npx prisma migrate dev --name",
     "migrate:docker:deploy": "npx prisma migrate deploy",
     "prisma:client": "npx prisma generate",
-    "prisma:studio": "npx prisma studio"
+    "prisma:studio": "npx prisma studio",
+    "prisma:seed": "npx prisma db seed"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
@@ -60,6 +61,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@types/cors": "^2.8.14",
     "@types/express": "^4.17.17",
     "@types/jest": "^29.5.5",

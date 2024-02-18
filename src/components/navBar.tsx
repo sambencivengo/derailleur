@@ -7,7 +7,7 @@ import { TextHeading, MobileNav } from '~/components';
 export async function NavBar() {
   const user = await getUserSession();
   return (
-    <header className="w-full sticky md:absolute top-0 bg-background">
+    <header className="w-full sticky md:relative top-0 bg-background">
       <nav>
         <div className="flex items-center justify-between h-12 px-2 border-b-2">
           <div className="pl-2">
