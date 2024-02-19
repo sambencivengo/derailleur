@@ -20,7 +20,7 @@ export function FullPagePost({ post }: PostProps) {
   } = post;
 
   return (
-    <Card className="h-auto">
+    <Card className="h-auto hyphens-auto">
       <CardHeader>
         <CardTitle>
           <Link className="hover:text-primary" href={`/post/${id}`}>
