@@ -3,7 +3,7 @@
 import { AlertCircle, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import { PostPreview, TextHeading } from '~/components';
-import { Alert, AlertTitle, AlertDescription } from '~/components/ui';
+import { Alert, AlertTitle, AlertDescription, Badge } from '~/components/ui';
 import { getTagWithPostsByName } from '~/queries';
 
 export default async function Page({ params }: { params: { tag: string } }) {
@@ -24,7 +24,11 @@ export default async function Page({ params }: { params: { tag: string } }) {
   return (
     <main>
       <div className="flex flex-col space-y-2">
-        <TextHeading heading={`#${tag}`} className="text-3xl" />
+        <div>
+          <Badge className="w-auto">
+            <TextHeading heading={`#${tag.toUpperCase()}`} className="text-3xl" />
+          </Badge>
+        </div>
         <Link href={'/'}>
           <div className="flex flex-row">
             <ChevronLeft className="text-primary" />
