@@ -1,5 +1,5 @@
 import React from 'react';
-import { FrontPagePostContainer } from '~/components';
+import { PostPreviewContainer } from '~/components';
 import { getPosts } from '~/queries';
 
 export default async function Home({
@@ -13,7 +13,7 @@ export default async function Home({
 
   return (
     <main>
-      <FrontPagePostContainer postsResponse={posts} />
+      <PostPreviewContainer postsResponse={posts} />
     </main>
   );
 }

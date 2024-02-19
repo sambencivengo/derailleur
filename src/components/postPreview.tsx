@@ -3,10 +3,10 @@ import moment from 'moment';
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter, Badge } from '~/components/ui';
 import { Post } from '~/types';
 
-interface FrontPagePostProps {
+interface PostPreviewProps {
   post: Post;
 }
-export function FrontPagePost({ post }: FrontPagePostProps) {
+export function PostPreview({ post }: PostPreviewProps) {
   const {
     author: { username },
     authorId,

@@ -2,7 +2,7 @@
 
 import { AlertCircle, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
-import { FrontPagePost } from '~/components';
+import { PostPreview } from '~/components';
 import { Alert, AlertTitle, AlertDescription } from '~/components/ui';
 import { getTagWithPostsByName } from '~/queries';
 
@@ -25,7 +25,7 @@ export default async function Page({ params }: { params: { tag: string } }) {
     <main>
       <div className="flex flex-col space-y-2">
         {tagWithPosts.result.posts.map((post, idx) => {
-          return <FrontPagePost post={post} key={idx} />;
+          return <PostPreview post={post} key={idx} />;
         })}
         <Link href={'/'}>
           <div className="flex flex-row">

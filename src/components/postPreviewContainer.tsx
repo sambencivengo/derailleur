@@ -2,16 +2,16 @@
 
 import { AlertCircle } from 'lucide-react';
 import React from 'react';
-import { FrontPagePost } from '~/components';
+import { PostPreview } from '~/components';
 import { Alert, AlertTitle, AlertDescription } from '~/components/ui';
 import { Post } from '~/types';
 import { DerailleurResponse } from '~/utils';
 
-interface FrontPagePostContainerProps {
+interface PostPreviewContainerProps {
   postsResponse: DerailleurResponse<Post[]>;
 }
 
-export async function FrontPagePostContainer({ postsResponse }: FrontPagePostContainerProps) {
+export async function PostPreviewContainer({ postsResponse }: PostPreviewContainerProps) {
   if (postsResponse.result === null || postsResponse.errors.length > 0) {
     return (
       <Alert variant="destructive">
@@ -27,7 +27,7 @@ export async function FrontPagePostContainer({ postsResponse }: FrontPagePostCon
   return (
     <div className="space-y-2">
       {postsResponse.result!.map((post, idx) => {
-        return <FrontPagePost post={post} key={idx} />;
+        return <PostPreview post={post} key={idx} />;
       })}
     </div>
   );
