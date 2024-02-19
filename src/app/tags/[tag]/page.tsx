@@ -2,7 +2,7 @@
 
 import { AlertCircle, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
-import { PostPreview } from '~/components';
+import { PostPreview, TextHeading } from '~/components';
 import { Alert, AlertTitle, AlertDescription } from '~/components/ui';
 import { getTagWithPostsByName } from '~/queries';
 
@@ -24,15 +24,16 @@ export default async function Page({ params }: { params: { tag: string } }) {
   return (
     <main>
       <div className="flex flex-col space-y-2">
-        {tagWithPosts.result.posts.map((post, idx) => {
-          return <PostPreview post={post} key={idx} />;
-        })}
+        <TextHeading heading={`#${tag}`} className="text-3xl" />
         <Link href={'/'}>
           <div className="flex flex-row">
             <ChevronLeft className="text-primary" />
             <p className="text-primary"> Back to all posts...</p>
           </div>
         </Link>
+        {tagWithPosts.result.posts.map((post, idx) => {
+          return <PostPreview post={post} key={idx} />;
+        })}
       </div>
     </main>
   );

@@ -7,9 +7,6 @@ const tagWithPosts = Prisma.validator<Prisma.TagDefaultArgs>()({
   include: {
     _count: true,
     posts: {
-      where: {
-        published: true
-      },
       include: {
         author: {
           select: { username: true }
