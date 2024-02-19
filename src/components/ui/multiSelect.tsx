@@ -22,10 +22,8 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
   const handleUnselect = React.useCallback((tag: TagWithPostCount) => {
     setSelected((prev) => prev.filter((s) => s.name !== tag.name));
   }, []);
-
   let typingTimer: string | number | NodeJS.Timeout | undefined;
   const selectables = tags.filter((tag) => !selected.includes(tag));
-  console.log(tags);
   const handleKeyDown = React.useCallback(async (e: React.KeyboardEvent<HTMLDivElement>) => {
     const input = inputRef.current;
     if (input) {
@@ -67,8 +65,6 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
       }
     }
   }, []);
-
-  console.log('SELECTABLES', selectables);
   return (
     <Command onKeyDown={handleKeyDown} className="overflow-visible bg-transparent">
       <div className="group bg-background border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">

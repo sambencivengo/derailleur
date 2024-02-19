@@ -63,12 +63,8 @@ export function NewPostForm({ userId }: NewPostFormProps) {
     },
   });
   async function onSubmit(values: CreatePostSchema) {
-    form.setValue(
-      'tags',
-      selected.map((tag) => tag.name)
-    );
-    const valuesWithTags: CreatePostPayload = { ...values };
     setIsLoading(true);
+    const valuesWithTags: CreatePostPayload = { ...values, tags: selected.map((tag) => tag.name) };
     const response = await createPost(valuesWithTags, userId);
     if (response.errors.length > 0 || response.result === null) {
       setIsLoading(false);
