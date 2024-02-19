@@ -35,10 +35,10 @@ export function FullPagePost({ post }: PostProps) {
             </Link>
           </CardDescription>
           <CardDescription>
-            {moment(createdAt).fromNow()}{' '}
-            <Link href="" className="underline hover:text-primary text-red-500" onClick={() => console.log('MISSING')}>
-              favorite (NOT WORKING)
-            </Link>
+            {moment(createdAt).fromNow()} {/* NOTE: FAVORITE IS YET TO BE BUILT */}
+            {/* <Link href="" className="underline hover:text-primary text-red-500" onClick={() => console.log('MISSING')}>
+              favorite
+            </Link> */}
           </CardDescription>
         </div>
         <CardContent>
