@@ -4,9 +4,36 @@ import { v4 as uuid } from 'uuid';
 import { faker } from '@faker-js/faker';
 import moment from "moment";
 
+
 function generateRandomNumberInLimit(min: number = 1, max: number = 10) {
   return Math.floor(Math.random() * (max - min) + min);
 };
+
+const TAGS = [
+  "BIKEPACKING",
+  "RIG",
+  "VINTAGE MOUNTAIN BIKE",
+  "VINTAGE",
+  "RAT BIKE",
+  "TOURING",
+  "BIKEPACK",
+  "LONG TRIP",
+  "WEEKENDER",
+  "STEEL",
+  "ALUMINUM",
+  "26 AINT DEAD",
+  '26"',
+];
+
+function createRandomNumberOfTags(numberOfTags: number = 3) {
+  const tagsPayload: Array<string> = [];
+  for (let i = 0, limi = numberOfTags; i < limi; i++) {
+    const TAGS_INDEX = generateRandomNumberInLimit(0, TAGS.length);
+    tagsPayload.push(TAGS[TAGS_INDEX]);
+  };
+  return (tagsPayload);
+}
+
 
 const prisma = new PrismaClient();
 const MIN_USERS = 20;
@@ -49,19 +76,22 @@ async function seed() {
   } else {
     for (let i = 0, limi = RANDOM_NUMBER_OF_USERS; i < limi; i++) {
       const RANDOM_NUMBER_OF_POSTS = generateRandomNumberInLimit(MIN_POSTS_PER_USER, MAX_POSTS_PER_USER);
-
-      const postsPayloadArray: {
-        id: string;
-        title: string;
-        content: string;
-        createdAt: string;
-      }[] = [];
+      const tagsPayload = createRandomNumberOfTags(generateRandomNumberInLimit(1, 6));
+      const postsPayloadArray = [];
       for (let j = 0, limj = RANDOM_NUMBER_OF_POSTS; j < limj; j++) {
         postsPayloadArray.push({
           id: uuid(),
           title: faker.lorem.lines({ min: 1, max: 1 }),
           content: faker.lorem.lines({ min: 3, max: 20 }),
-          createdAt: moment().subtract(Math.floor(Math.random() * 200), 'days').toISOString()
+          createdAt: moment().subtract(Math.floor(Math.random() * 200), 'days').toISOString(),
+          tags: {
+            connectOrCreate: tagsPayload.map((name) => {
+              return ({
+                where: { name },
+                create: { name },
+              });
+            })
+          }
         });
       };
 
