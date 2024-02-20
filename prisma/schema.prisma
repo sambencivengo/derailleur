@@ -19,6 +19,7 @@ model User {
   location String?
   favoriteBike String?
   posts Post[]
+  comments Comment[]
   sessions Session[]
 }
 
@@ -40,6 +41,19 @@ model Post {
   author User @relation(references: [id], fields: [authorId], onDelete: Cascade)
   authorId String
   tags Tag[]
+  comments Comment[]
+}
+
+model Comment {
+  id String @id @unique
+  content String
+  author User @relation(references: [id], fields: [authorId], onDelete: Cascade)
+  authorId String
+  post Post @relation(references: [id], fields: [postId], onDelete: Cascade)
+  postId String
+  parentComment Comment? @relation("ParentComments", fields: [parentCommentId], references: [id])
+  parentCommentId String?
+  replies Comment[] @relation("ParentComments")
 }
 
 model Tag {
