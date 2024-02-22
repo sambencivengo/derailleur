@@ -18,6 +18,11 @@ export async function getPostById(postId: string, userId?: string, includeTags?:
             username: true
           }
         },
+        _count: {
+          select: {
+            comments: true
+          }
+        },
         tags: includeTags
       }
     });

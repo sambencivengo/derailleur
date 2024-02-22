@@ -15,6 +15,11 @@ export async function getPosts(includeTags: boolean = true): Promise<DerailleurR
           select: {
             username: true,
             id: true
+          },
+        },
+        _count: {
+          select: {
+            comments: true,
           }
         },
         tags: includeTags
