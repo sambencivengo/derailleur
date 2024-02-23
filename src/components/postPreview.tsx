@@ -17,10 +17,8 @@ export function PostPreview({ post }: PostPreviewProps) {
   } = post;
   const renderTagBadges = tags.map((tag, idx) => {
     return (
-      <Link href={`/tags/${tag.name.toLowerCase().split(' ').join('-')}`}>
-        <Badge variant={'secondary'} key={idx}>
-          {`#${tag.name}`}
-        </Badge>
+      <Link key={idx} href={`/tags/${tag.name.toLowerCase().split(' ').join('-')}`}>
+        <Badge variant={'secondary'}>{`#${tag.name}`}</Badge>
       </Link>
     );
   });
