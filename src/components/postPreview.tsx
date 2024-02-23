@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import moment from 'moment';
-import { Card, CardHeader, CardTitle, CardDescription, CardFooter, Badge } from '~/components/ui';
+import { Card, CardHeader, CardTitle, CardDescription, CardFooter, Badge, CardContent } from '~/components/ui';
 import { Post } from '~/types';
 import { MessageSquare } from 'lucide-react';
 
@@ -27,14 +27,20 @@ export function PostPreview({ post }: PostPreviewProps) {
 
   return (
     <Card className="h-auto">
-      <CardHeader className="h-auto gap-y-2">
-        <CardTitle className="text-base line-clamp-2">
-          <Link className="hover:text-primary" href={`/post/${id}`}>
-            {post.title}
-          </Link>
-        </CardTitle>
-        <div className="flex flex-row justify-between">
-          <div className="flex flex-row gap-x-1">
+      <CardContent className="p-0 gap-4">
+        <CardHeader className="h-auto gap-y-2">
+          <div className="flex flex-row justify-between items-center">
+            <CardTitle className="text-base line-clamp-2">
+              <Link className="hover:text-primary" href={`/post/${id}`}>
+                {post.title}
+              </Link>
+            </CardTitle>
+            <Link className="relative bottom-[5px] md:bottom-0 flex flex-col items-center hover:text-primary" href={`/post/${id}`}>
+              <MessageSquare />
+              <p className="absolute top-[80%] text-sm">{post._count.comments}</p>
+            </Link>
+          </div>
+          <div className="flex flex-row gap-1">
             <CardDescription>
               by{' '}
               <Link className="underline hover:text-primary" href={`/user/${authorId}`}>
@@ -43,15 +49,11 @@ export function PostPreview({ post }: PostPreviewProps) {
             </CardDescription>
             <CardDescription> {moment(createdAt).fromNow()}</CardDescription>
           </div>
-          <Link className="relative flex flex-col justify-center items-center hover:text-primary" href={`/post/${id}`}>
-            <MessageSquare />
-            <p className="absolute top-[80%] text-sm">{post._count.comments}</p>
-          </Link>
-        </div>
-      </CardHeader>
-      <CardFooter>
-        <div className="flex flex-wrap gap-3">{renderTagBadges}</div>
-      </CardFooter>
+        </CardHeader>
+        <CardFooter className="mt-2">
+          <div className="flex flex-wrap gap-3">{renderTagBadges}</div>
+        </CardFooter>
+      </CardContent>
     </Card>
   );
 }
