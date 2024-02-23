@@ -1,8 +1,9 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient, Post } from "@prisma/client";
 import * as argon2 from 'argon2';
 import { v4 as uuid } from 'uuid';
 import { faker } from '@faker-js/faker';
 import moment from "moment";
+import { User } from "~/types";
 
 
 function generateRandomNumberInLimit(min: number = 1, max: number = 10) {
@@ -111,8 +112,72 @@ async function seed() {
       createUserPromises.push(createUserPromise);
     }
 
-    await Promise.all(createUserPromises);
-    console.log(`🌱 ${createUserPromises.length} Users seeded with dev account🌱`);
+    const users: Array<User> = await Promise.all(createUserPromises);
+
+    console.log(`🌱 ${users.length} Users seeded with dev account🌱`);
+
+    const posts: Array<Post> = await prisma.post.findMany();
+
+    const commentPromises = [];
+    const replyPromises = [];
+    const childReplyPromises = [];
+    for (let i = 0, limi = posts.length; i < limi; i++) {
+      const commentsPerPost = generateRandomNumberInLimit(3, 15);
+      const post = posts[i];
+
+      for (let j = 0, limj = commentsPerPost; j < limj; j++) {
+        const userIndex = generateRandomNumberInLimit(0, users.length - 1);
+        const parentCommentId = uuid();
+        const commentPromise = prisma.comment.create({
+          data: {
+            content: faker.lorem.sentences({ min: 1, max: 5 }),
+            id: parentCommentId,
+            authorId: users[userIndex].id,
+            postId: post.id,
+          }
+        });
+        commentPromises.push(commentPromise);
+
+        const repliesPerComment = generateRandomNumberInLimit(0, 5);
+        for (let k = 0, limk = repliesPerComment; k < limk; k++) {
+          const userIndex = generateRandomNumberInLimit(0, users.length - 1);
+          const replyId = uuid();
+          const replyPromise = prisma.comment.create({
+            data: {
+              content: faker.lorem.sentences({ min: 1, max: 5 }),
+              id: replyId,
+              authorId: users[userIndex].id,
+              postId: post.id,
+              parentCommentId
+            }
+          });
+          replyPromises.push(replyPromise);
+
+          // Loop again while creating a reply to create x number of child replies
+          const repliesPerReply = generateRandomNumberInLimit(0, 2);
+          for (let l = 0, liml = repliesPerReply; l < liml; l++) {
+            const userIndex = generateRandomNumberInLimit(0, users.length - 1);
+            const childReplyPromise = prisma.comment.create({
+              data: {
+                content: faker.lorem.sentences({ min: 1, max: 5 }),
+                id: uuid(),
+                authorId: users[userIndex].id,
+                postId: post.id,
+                parentCommentId: replyId
+              }
+            });
+            childReplyPromises.push(childReplyPromise);
+          }
+        }
+      }
+    }
+
+    const comments = await Promise.all(commentPromises);
+    const replies = await Promise.all(replyPromises);
+    const childReplies = await Promise.all(childReplyPromises);
+    console.log(`🌱 ${comments.length} Comments have been seeded 🌱`);
+    console.log(`🌱 ${replies.length} Replies have been seeded 🌱`);
+    console.log(`🌱 ${childReplies.length} Child Replies have been seeded 🌱`);
   }
 };
 seed()
