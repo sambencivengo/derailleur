@@ -116,6 +116,7 @@ describe("Create Post with Tags", function () {
     checkErrorResponse(errors);
     assert.ok(result);
     assert.strictEqual(result.authorId, testUserId_00);
+    assert.strictEqual(result.author.username, testUser_00.username);
     assert.strictEqual(result.content, testContent);
     assert.strictEqual(result.title, testTitle);
     assert.strictEqual(result.published, true);
