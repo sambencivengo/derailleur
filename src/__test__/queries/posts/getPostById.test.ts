@@ -1,11 +1,11 @@
 
 import assert from "assert";
+import prisma from "~prisma/prisma";
 import { v4 as uuid } from "uuid";
 import { mockUser_00 } from "~/__test__/mock/users/mockUser";
 import { addRecordsToDb, checkErrorResponse, cleanUpTable } from "~/__test__/utils";
 import { createPost, createUser, getPostById } from "~/queries";
-import { CreatePost, CreateUser, PostWithTags, User } from "~/types";
-import prisma from "~prisma/prisma";
+import { CreatePost, CreateUser, PostWithAuthorNameAndTags, User } from "~/types";
 
 
 
@@ -28,7 +28,7 @@ describe("Get Post By ID", function () {
         mockDataName: 'User'
       },
     );
-    await addRecordsToDb<PostWithTags, CreatePost>(
+    await addRecordsToDb<PostWithAuthorNameAndTags, CreatePost>(
       {
         createRecordFunction: createPost,
         newRecordParams: [
