@@ -1,7 +1,5 @@
-import { PostWithTags, Tag } from "~/types";
+import { TagWithPostCount } from "~/types";
+import { DerailleurResponse } from "~/utils";
 
-
-export interface GetTagsResult extends Tag {
-  posts: PostWithTags[];
-  _count?: { posts: number; };
-}
+// NOTE: GetTagById is currently not in use
+export type GetTagById = (tagId: string, includePosts: boolean) => Promise<DerailleurResponse<TagWithPostCount>>;

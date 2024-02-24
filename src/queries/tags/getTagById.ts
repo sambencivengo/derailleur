@@ -31,7 +31,7 @@ const tagWithPosts = Prisma.validator<Prisma.TagDefaultArgs>()({
 type TagWithPosts = Prisma.TagGetPayload<typeof tagWithPosts>;
 
 
-export async function getTagById(tagId: string, includePosts: boolean): Promise<DerailleurResponse<TagWithCount | TagWithPosts>> {
+export const getTagById: GetTagById = async (tagId: string, includePosts: boolean): Promise<DerailleurResponse<TagWithCount | TagWithPosts>> => {
   const postsQuery = includePosts ? tagWithPosts : tagWithCountOnly;
 
   try {
@@ -53,4 +53,4 @@ export async function getTagById(tagId: string, includePosts: boolean): Promise<
     const errResponse = { tagId, prismaErrorCode: error.code };
     return createErrorResponse([{ message: 'Unable to create post due to prisma error', data: errResponse }]);
   }
-}
+};
