@@ -114,7 +114,7 @@ async function seed() {
 
     const users: Array<User> = await Promise.all(createUserPromises);
 
-    console.log(`🌱 ${users.length} Users seeded with dev account🌱`);
+    console.log(`🌱 ${users.length} Users seeded with dev account 🌱`);
 
     const posts: Array<Post> = await prisma.post.findMany();
 
