@@ -1,29 +1,15 @@
 'use server';
 
 import { Prisma } from "@prisma/client";
-import { Post } from "~/types";
+import { GetPosts, PostWithAuthorNameTagsAndCommentCount, postWithAuthorNameTagsAndCommentCountQuery } from "~/types";
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
 import prisma from "~prisma/prisma";
 
 
-export async function getPosts(includeTags: boolean = true): Promise<DerailleurResponse<Post[]>> {
+export const getPosts: GetPosts = async (): Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount[]>> => {
   try {
     const posts = await prisma.post.findMany({
-      // TODO: create optional filters
-      include: {
-        author: {
-          select: {
-            username: true,
-            id: true
-          },
-        },
-        _count: {
-          select: {
-            comments: true,
-          }
-        },
-        tags: includeTags
-      },
+      ...postWithAuthorNameTagsAndCommentCountQuery
     });
     return createSuccessfulResponse(posts);
   } catch (error: any) {
@@ -33,4 +19,4 @@ export async function getPosts(includeTags: boolean = true): Promise<DerailleurR
     const errResponse = { error: JSON.stringify(error), prismaErrorCode: error.code };
     return createErrorResponse([{ message: 'Unable to find post by ID due to prisma error', data: errResponse }]);
   }
-}
+};

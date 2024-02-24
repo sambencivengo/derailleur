@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid";
 import { mockUser_00 } from "~/__test__/mock/users/mockUser";
 import { addRecordsToDb, checkErrorResponse, cleanUpTable } from "~/__test__/utils";
 import { createComment, createPost, createUser, getPosts } from "~/queries";
-import { CreateComment, CreatePost, CreateUser, PostWithTags, User, Comment } from "~/types";
+import { CreateComment, CreatePost, CreateUser, User, Comment, PostWithAuthorNameAndTags } from "~/types";
 import prisma from "~prisma/prisma";
 
 
@@ -25,7 +25,7 @@ describe("Get Posts", function () {
         mockDataName: 'User'
       },
     );
-    await addRecordsToDb<PostWithTags, CreatePost>(
+    await addRecordsToDb<PostWithAuthorNameAndTags, CreatePost>(
       {
         createRecordFunction: createPost,
         newRecordParams: [
