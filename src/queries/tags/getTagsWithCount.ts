@@ -2,15 +2,12 @@
 import { Prisma } from '@prisma/client';
 import prisma from '~prisma/prisma';
 import { createSuccessfulResponse, createErrorResponse, DerailleurResponse } from '~/utils';
-import { TagWithPostCount } from '~/types';
-
+import { TagWithPostCount, tagWithPostCountQuery } from '~/types';
 
 export async function getTagsWithCount(): Promise<DerailleurResponse<TagWithPostCount[]>> {
   try {
     const tagsWithCount = await prisma.tag.findMany({
-      include: {
-        _count: true,
-      }
+      ...tagWithPostCountQuery
     });
     return createSuccessfulResponse(tagsWithCount);
   } catch (error: any) {

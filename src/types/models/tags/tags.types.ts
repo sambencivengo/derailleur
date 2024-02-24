@@ -1,15 +1,14 @@
+import { Prisma, Tag as PrismaTag } from '@prisma/client';
 
-import { Tag as PrismaTag } from '@prisma/client';
-import { PostWithTags } from '~/types/models/posts';
+export const tagWithPostCountQuery = Prisma.validator<Prisma.TagDefaultArgs>()({
+  include: {
+    _count: {
+      select: {
+        posts: true
+      }
+    },
+  }
+});
 
 export interface Tag extends PrismaTag { }
-
-export interface TagWithPostCount extends Tag {
-  _count: {
-    posts: number;
-  };
-}
-
-export interface TagWithPosts extends TagWithPostCount {
-  posts: PostWithTags[];
-}
+export type TagWithPostCount = Prisma.TagGetPayload<typeof tagWithPostCountQuery>;
