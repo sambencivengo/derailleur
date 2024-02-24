@@ -1,4 +1,3 @@
-
 import { Prisma, Post as PrismaPost } from '@prisma/client';
 
 // NOTE: Post will always have the number of comments and the username of the author included
@@ -32,7 +31,6 @@ export const postWithAuthorNameAndTags = Prisma.validator<Prisma.PostDefaultArgs
     }
   }
 });
-
 
 export interface Post extends PrismaPost { }
 export type PostWithAuthorName = Prisma.PostGetPayload<typeof postWithAuthorNameQuery>;
