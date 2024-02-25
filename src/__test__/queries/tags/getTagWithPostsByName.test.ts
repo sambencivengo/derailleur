@@ -2,8 +2,8 @@ import assert from 'assert';
 import { v4 as uuid } from 'uuid';
 import { mockUser_00 } from '~/__test__/mock/users/mockUser';
 import { addRecordsToDb, cleanUpTable } from "~/__test__/utils";
-import { createPost, createUser, getPostById, getTagWithPostsByName } from "~/queries";
-import { CreatePost, CreatePostPayload, CreateUser, PostWithTags, User } from "~/types";
+import { createPost, createUser, getTagWithPostsByName } from "~/queries";
+import { CreatePost, CreatePostPayload, CreateUser, PostWithAuthorNameAndTags, User } from "~/types";
 import prisma from '~prisma/prisma';
 
 
@@ -56,7 +56,7 @@ describe("Get Tag With Posts By Name ", function () {
         mockDataName: 'User'
       },
     );
-    await addRecordsToDb<PostWithTags, CreatePost>(
+    await addRecordsToDb<PostWithAuthorNameAndTags, CreatePost>(
       {
         createRecordFunction: createPost,
         newRecordParams: [
@@ -72,9 +72,16 @@ describe("Get Tag With Posts By Name ", function () {
 
   const tagNames: { id: string; name: string; }[] = [];
   it("Successfully gets a post by name and assigns it's 4 tags to an string array of tag IDs", async function () {
-    const response = await getPostById(postId00, undefined, true);
-    assert.ok(response.result);
-    const { tags } = response.result;
+    const post = await prisma.post.findUnique({
+      where: {
+        id: postId00
+      },
+      include: {
+        tags: true
+      }
+    });
+    assert.ok(post);
+    const { tags } = post;
     for (let i = 0, limi = tags.length; i < limi; i++) {
       tagNames.push({ id: tags[i].id, name: tags[i].name });
     };
