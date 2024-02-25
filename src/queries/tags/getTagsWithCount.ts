@@ -4,7 +4,7 @@ import prisma from '~prisma/prisma';
 import { createSuccessfulResponse, createErrorResponse, DerailleurResponse } from '~/utils';
 import { TagWithPostCount, tagWithPostCountQuery } from '~/types';
 
-export async function getTagsWithCount(): Promise<DerailleurResponse<TagWithPostCount[]>> {
+export const getTagsWithCount = async (): Promise<DerailleurResponse<TagWithPostCount[]>> => {
   try {
     const tagsWithCount = await prisma.tag.findMany({
       ...tagWithPostCountQuery
@@ -17,4 +17,4 @@ export async function getTagsWithCount(): Promise<DerailleurResponse<TagWithPost
     const errResponse = { prismaErrorCode: error.code };
     return createErrorResponse([{ message: 'Unable to get tags due to a prisma error', data: errResponse }]);
   }
-}
+};
