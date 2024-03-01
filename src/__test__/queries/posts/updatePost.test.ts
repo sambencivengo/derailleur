@@ -4,7 +4,7 @@ import { mockPost_00 } from "~/__test__/mock/posts/mockPost";
 import { mockUser_00, mockUser_01 } from "~/__test__/mock/users/mockUser";
 import { addRecordsToDb, checkErrorResponse, cleanUpTable } from "~/__test__/utils";
 import { createUser, createPost, updatePost } from "~/queries";
-import { CreateUser, PostWithTags, CreatePost, UpdatePostPayload, User } from "~/types";
+import { CreateUser, CreatePost, UpdatePostPayload, User, PostWithAuthorNameAndTags } from "~/types";
 import prisma from "~prisma/prisma";
 
 describe("Update Post Query", function () {
@@ -27,7 +27,7 @@ describe("Update Post Query", function () {
         mockDataName: 'User'
       },
     );
-    await addRecordsToDb<PostWithTags, CreatePost>(
+    await addRecordsToDb<PostWithAuthorNameAndTags, CreatePost>(
       {
         createRecordFunction: createPost,
         newRecordParams: [

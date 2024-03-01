@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid";
 import { mockUser_00 } from "~/__test__/mock/users/mockUser";
 import { addRecordsToDb, checkErrorResponse, cleanUpTable } from "~/__test__/utils";
 import { createComment, createPost, createUser } from "~/queries";
-import { CreateUser, CreatePostPayload, CreatePost, PostWithTags } from "~/types";
+import { CreateUser, CreatePostPayload, CreatePost, PostWithAuthorNameAndTags } from "~/types";
 import { faker } from '@faker-js/faker';
 import prisma from "~prisma/prisma";
 
@@ -31,7 +31,7 @@ describe("Create Comment Query", function () {
         mockDataName: 'User'
       },
     );
-    await addRecordsToDb<PostWithTags, CreatePost>(
+    await addRecordsToDb<PostWithAuthorNameAndTags, CreatePost>(
       {
         createRecordFunction: createPost,
         newRecordParams: [
