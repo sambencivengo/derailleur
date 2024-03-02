@@ -2,7 +2,7 @@
 import { Prisma } from '@prisma/client';
 import prisma from '~prisma/prisma';
 import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from '~/utils';
-import { TagWithPosts } from '~/types';
+import { GetTagsWithPostsByName, TagWithPosts, tagWithPostsQuery } from '~/types';
 
 interface TagNameContainsQuery {
   name: {
@@ -10,7 +10,7 @@ interface TagNameContainsQuery {
   };
 }
 
-export async function getTagsWithPostsByName(name: string): Promise<DerailleurResponse<TagWithPosts[]>> {
+export const getTagsWithPostsByName: GetTagsWithPostsByName = async (name: string): Promise<DerailleurResponse<TagWithPosts[]>> => {
   const arrayOfNames: TagNameContainsQuery[] = name.split(" ").map((word) => {
     return (
       {
@@ -28,14 +28,7 @@ export async function getTagsWithPostsByName(name: string): Promise<DerailleurRe
           ...arrayOfNames,
         ]
       },
-      include: {
-        _count: true,
-        posts: {
-          include: {
-            tags: true
-          }
-        }
-      }
+      ...tagWithPostsQuery
     });
 
     return createSuccessfulResponse(tagsWithPosts);
@@ -46,4 +39,4 @@ export async function getTagsWithPostsByName(name: string): Promise<DerailleurRe
     const errResponse = { name, prismaErrorCode: error.code };
     return createErrorResponse([{ message: 'Unable to create post due to prisma error', data: errResponse }]);
   }
-}
+};

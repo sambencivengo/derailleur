@@ -2,32 +2,16 @@
 import { Prisma } from '@prisma/client';
 import prisma from '~prisma/prisma';
 import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from '~/utils';
+import { GetTagWithPostsById, TagWithPosts, tagWithPostsQuery } from '~/types';
 
-const tagWithPosts = Prisma.validator<Prisma.TagDefaultArgs>()({
-  include: {
-    _count: true,
-    posts: {
-      where: {
-        published: true
-      },
-      include: {
-        author: {
-          select: { username: true }
-        }
-      },
-    }
-  }
-});
-type TagWithPosts = Prisma.TagGetPayload<typeof tagWithPosts>;
-
-export async function getTagWithPostsById(tagId: string): Promise<DerailleurResponse<TagWithPosts>> {
+export const getTagWithPostsById: GetTagWithPostsById = async (tagId: string): Promise<DerailleurResponse<TagWithPosts>> => {
   try {
 
     const tag = await prisma.tag.findUnique({
       where: {
         id: tagId
       },
-      ...tagWithPosts
+      ...tagWithPostsQuery
     });
 
     if (!tag) {
@@ -41,4 +25,4 @@ export async function getTagWithPostsById(tagId: string): Promise<DerailleurResp
     const errResponse = { tagId, prismaErrorCode: error.code };
     return createErrorResponse([{ message: 'Unable to create post due to prisma error', data: errResponse }]);
   }
-}
+};
