@@ -1,44 +1,41 @@
 'use server';
 
-import { AlertCircle, ChevronLeft } from 'lucide-react';
-import Link from 'next/link';
-import { PostPreview, TextHeading } from '~/components';
-import { Alert, AlertTitle, AlertDescription, Badge } from '~/components/ui';
-import { getTagWithPostsByName } from '~/queries';
+import { Suspense } from 'react';
+import { TagPageHeading, TagPagePostsContainer } from '~/components';
+import { Skeleton } from '~/components/ui';
 
 export default async function Page({ params }: { params: { tag: string } }) {
   const { tag } = params;
-  const tagNameWithoutHyphens = tag.split('-').join(' ').toUpperCase();
-  const tagWithPostsResponse = await getTagWithPostsByName(tagNameWithoutHyphens);
-  if (tagWithPostsResponse.errors.length > 0 || tagWithPostsResponse.result === null) {
-    return (
-      <Alert variant="destructive">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Error</AlertTitle>
-        {tagWithPostsResponse.errors.map((error, idx) => {
-          return <AlertDescription key={idx}>{error.message}</AlertDescription>;
-        })}
-      </Alert>
-    );
-  }
+
   return (
     <main>
       <div className="flex flex-col space-y-2">
-        <div>
-          <Badge className="w-auto">
-            <TextHeading heading={`#${tag.toUpperCase()}`} className="text-3xl" />
-          </Badge>
-        </div>
-        <Link href={'/'}>
-          <div className="flex flex-row">
-            <ChevronLeft className="text-primary" />
-            <p className="text-primary"> Back to all posts...</p>
-          </div>
-        </Link>
-        {tagWithPostsResponse.result.posts.map((post, idx) => {
-          return <PostPreview post={post} key={idx} />;
-        })}
+        <Suspense fallback={<TagPageHeadingSkeleton />}>
+          <TagPageHeading tagName={tag} />
+        </Suspense>
+
+        <Suspense fallback={<TagPagePostsContainerSkeleton />}>
+          <TagPagePostsContainer tagName={tag} />
+        </Suspense>
       </div>
     </main>
+  );
+}
+
+function TagPageHeadingSkeleton() {
+  return (
+    <div className="flex flex-row gap-2 items-center">
+      <Skeleton className="w-28 h-10" />
+      <Skeleton className="w-16 h-6" />
+    </div>
+  );
+}
+function TagPagePostsContainerSkeleton() {
+  return (
+    <div className="flex flex-col gap-y-2">
+      {[...Array(10)].map((_, i) => (
+        <Skeleton className="h-32 w-full" />
+      ))}
+    </div>
   );
 }

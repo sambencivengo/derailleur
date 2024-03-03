@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
-import { PostPreviewContainer, SkeletonPostPreview } from '~/components';
+import { PostPreviewContainer } from '~/components';
+import { Skeleton } from '~/components/ui';
 
 export default async function Home() {
   return (
@@ -8,5 +9,15 @@ export default async function Home() {
         <PostPreviewContainer />
       </Suspense>
     </main>
+  );
+}
+
+function SkeletonPostPreview() {
+  return (
+    <div className="space-y-2">
+      {[...Array(10)].map((_, i) => (
+        <Skeleton className="h-32 w-full" />
+      ))}
+    </div>
   );
 }
