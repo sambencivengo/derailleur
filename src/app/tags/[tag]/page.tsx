@@ -9,13 +9,13 @@ import { getTagWithPostsByName } from '~/queries';
 export default async function Page({ params }: { params: { tag: string } }) {
   const { tag } = params;
   const tagNameWithoutHyphens = tag.split('-').join(' ').toUpperCase();
-  const tagWithPosts = await getTagWithPostsByName(tagNameWithoutHyphens);
-  if (tagWithPosts.errors.length > 0 || tagWithPosts.result === null) {
+  const tagWithPostsResponse = await getTagWithPostsByName(tagNameWithoutHyphens);
+  if (tagWithPostsResponse.errors.length > 0 || tagWithPostsResponse.result === null) {
     return (
       <Alert variant="destructive">
         <AlertCircle className="h-4 w-4" />
         <AlertTitle>Error</AlertTitle>
-        {tagWithPosts.errors.map((error, idx) => {
+        {tagWithPostsResponse.errors.map((error, idx) => {
           return <AlertDescription key={idx}>{error.message}</AlertDescription>;
         })}
       </Alert>
@@ -35,7 +35,7 @@ export default async function Page({ params }: { params: { tag: string } }) {
             <p className="text-primary"> Back to all posts...</p>
           </div>
         </Link>
-        {tagWithPosts.result.posts.map((post, idx) => {
+        {tagWithPostsResponse.result.posts.map((post, idx) => {
           return <PostPreview post={post} key={idx} />;
         })}
       </div>

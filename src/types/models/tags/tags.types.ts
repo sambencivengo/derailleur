@@ -15,6 +15,11 @@ export const tagWithPostsQuery = Prisma.validator<Prisma.TagDefaultArgs>()({
     posts: {
       include: {
         tags: true,
+        _count: {
+          select: {
+            comments: true
+          }
+        },
         author: {
           select: { username: true }
         }
