@@ -15,3 +15,4 @@ export * from './command';
 export * from './multiSelect';
 export * from './sheet';
 export * from "./separator";
+export * from './skeleton';

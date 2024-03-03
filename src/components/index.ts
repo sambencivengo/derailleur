@@ -17,3 +17,4 @@ export * from './newPostForm';
 export * from './textHeading';
 export * from "./desktopNav";
 export * from './logOutButton';
+export * from './skeletonPostPreview';
