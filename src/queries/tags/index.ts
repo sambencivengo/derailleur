@@ -4,3 +4,4 @@ export * from './getTagsWithPostsByName';
 export * from './getTagsWithCount';
 export * from './getTagWithPostsById';
 export * from './getTagWithPostsByName';
+export * from './getTagWithCountByName';
