@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import moment from 'moment';
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter, Badge, CardContent } from '~/components/ui';
-import { Post } from '~/types';
+import { PostWithAuthorNameTagsAndCommentCount } from '~/types';
 import { MessageSquare } from 'lucide-react';
 
 interface PostPreviewProps {
-  post: Post;
+  post: PostWithAuthorNameTagsAndCommentCount;
 }
 export function PostPreview({ post }: PostPreviewProps) {
   const {
