@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 import { Prisma } from '@prisma/client';
 import prisma from '~prisma/prisma';
 import { DerailleurResponse, createSuccessfulResponse, createErrorResponse, DerailleurError } from '~/utils';
-import { CreatePost, CreatePostPayload, PostWithAuthorNameAndTags, postWithAuthorNameAndTags } from '~/types';
+import { CreatePost, CreatePostPayload, PostWithAuthorNameAndTags, postWithAuthorNameAndTagsQuery } from '~/types';
 import { CreatePostSchema, createPostSchema, validateSchema } from '~/schemas';
 import { PrismaQueryErrorCodes } from '~prisma/prismaErrorCodes';
 
@@ -42,7 +42,7 @@ export const createPost: CreatePost = async (postPayload: CreatePostPayload, use
             }),
           }
         },
-        ...postWithAuthorNameAndTags
+        ...postWithAuthorNameAndTagsQuery
       });
       return createSuccessfulResponse(newPost);
 

@@ -23,7 +23,7 @@ export const postWithAuthorNameTagsAndCommentCountQuery = Prisma.validator<Prism
   }
 });
 
-export const postWithAuthorNameAndTags = Prisma.validator<Prisma.PostDefaultArgs>()({
+export const postWithAuthorNameAndTagsQuery = Prisma.validator<Prisma.PostDefaultArgs>()({
   include: {
     tags: true,
     author: {
@@ -35,4 +35,4 @@ export const postWithAuthorNameAndTags = Prisma.validator<Prisma.PostDefaultArgs
 export interface Post extends PrismaPost { }
 export type PostWithAuthorName = Prisma.PostGetPayload<typeof postWithAuthorNameQuery>;
 export type PostWithAuthorNameTagsAndCommentCount = Prisma.PostGetPayload<typeof postWithAuthorNameTagsAndCommentCountQuery>;
-export type PostWithAuthorNameAndTags = Prisma.PostGetPayload<typeof postWithAuthorNameAndTags>;
+export type PostWithAuthorNameAndTags = Prisma.PostGetPayload<typeof postWithAuthorNameAndTagsQuery>;

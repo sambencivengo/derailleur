@@ -25,7 +25,7 @@ export type CreatePost = (
 
 export type GetPostById = (
   postId: string,
-  userId: string,
+  userId?: string,
 ) => Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount>>;
 
 export type UpdatePost = (

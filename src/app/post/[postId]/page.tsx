@@ -1,6 +1,7 @@
 'use server';
 
 import { AlertCircle } from 'lucide-react';
+import { Suspense } from 'react';
 import { FullPagePost } from '~/components';
 import { Alert, AlertTitle, AlertDescription } from '~/components/ui';
 import { getPostById } from '~/queries';
@@ -21,7 +22,11 @@ export default async function Page({ params }: { params: { postId: string } }) {
   }
   return (
     <main>
-      <FullPagePost post={post.result} />
+      {/* TODO: Suspence fallback */}
+      <Suspense>
+        <FullPagePost postId={postId} />
+      </Suspense>
+      {/* COMMENTS HERE */}
     </main>
   );
 }

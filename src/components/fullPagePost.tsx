@@ -1,15 +1,30 @@
-'use client';
+'use server';
 
 import moment from 'moment';
 import React from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '~/components/ui';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Alert, AlertDescription, AlertTitle } from '~/components/ui';
 import Link from 'next/link';
-import { Post } from '~/types';
+import { AlertCircle, MessageSquare } from 'lucide-react';
+import { getPostById } from '~/queries';
 
-interface PostProps {
-  post: Post;
+interface FullPagePostProps {
+  postId: string;
 }
-export function FullPagePost({ post }: PostProps) {
+export async function FullPagePost({ postId }: FullPagePostProps) {
+  const post = await getPostById(postId);
+
+  if (post.errors.length > 0 || post.result === null) {
+    return (
+      <Alert variant="destructive">
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Error</AlertTitle>
+        {post.errors.map((error, idx) => {
+          return <AlertDescription key={idx}>{error.message}</AlertDescription>;
+        })}
+      </Alert>
+    );
+  }
+
   const {
     authorId,
     author: { username },
@@ -17,7 +32,8 @@ export function FullPagePost({ post }: PostProps) {
     content,
     createdAt,
     title,
-  } = post;
+    _count,
+  } = post.result;
 
   return (
     <Card className="h-auto hyphens-auto">
@@ -45,6 +61,12 @@ export function FullPagePost({ post }: PostProps) {
           <p>{content}</p>
         </CardContent>
       </CardHeader>
+      <CardFooter>
+        <div className="relative bottom-[5px] md:bottom-0 flex flex-col items-center hover:text-primary">
+          <MessageSquare />
+          <CardContent>{_count.comments}</CardContent>
+        </div>
+      </CardFooter>
     </Card>
   );
 }

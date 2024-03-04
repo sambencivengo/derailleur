@@ -11,7 +11,6 @@ export const getPostById: GetPostById = async (postId: string, userId?: string):
       where: {
         id: postId,
         authorId: userId
-
       },
       ...postWithAuthorNameTagsAndCommentCountQuery
     });
