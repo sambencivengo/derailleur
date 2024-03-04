@@ -48,33 +48,35 @@ async function seed() {
   const hashedSimplePassword = await argon2.hash('password');
   const createUserPromises: Array<Prisma.Prisma__UserClient<any>> = [];
 
-  async function checkForAndCreateDevUser() {
-    if (devUserExists !== null) {
-      console.log('💻 Dev account has already been seeded 💻');
-    } else {
-      console.log('💻 Creating dev account 💻');
-      await prisma.user.create({
-        data: {
-          hashedPassword: hashedSimplePassword,
-          id: DEV_USER_ID,
-          username: 'sammy',
-          location: 'Colorado',
-          favoriteBike: '1991 Trek Single Track 990',
-        }
-      });
-    };
-  }
-
   const amountOfUsers = await prisma.user.count();
   const devUserExists = await prisma.user.findUnique({
     where: {
       id: DEV_USER_ID
     }
   });
-  await checkForAndCreateDevUser();
+  if (devUserExists !== null) {
+    console.log('💻 Dev account has already been seeded 💻');
+  } else {
+    console.log('💻 Creating dev account 💻');
+    createUserPromises.push(prisma.user.create({
+      data: {
+        hashedPassword: hashedSimplePassword,
+        id: DEV_USER_ID,
+        username: 'sammy',
+        location: 'Colorado',
+        favoriteBike: '1991 Trek Single Track 990',
+      }
+    }));
+  };
+
   if (amountOfUsers >= MIN_USERS) {
     console.log(`🌳 Users have already been seeded 🌳, Number of users: ${amountOfUsers}`);
   } else {
+
+    await prisma.tag.createMany({
+      data: TAGS.map((name) => ({ name }))
+    });
+
     for (let i = 0, limi = RANDOM_NUMBER_OF_USERS; i < limi; i++) {
       const RANDOM_NUMBER_OF_POSTS = generateRandomNumberInLimit(MIN_POSTS_PER_USER, MAX_POSTS_PER_USER);
       const tagsPayload = createRandomNumberOfTags(generateRandomNumberInLimit(1, 6));
@@ -95,9 +97,7 @@ async function seed() {
           }
         });
       };
-
       const hashedSimplePassword = await argon2.hash('password');
-
       const createUserPromise = prisma.user.create({
         data: {
           id: uuid(),
@@ -111,7 +111,6 @@ async function seed() {
 
       createUserPromises.push(createUserPromise);
     }
-
     const users: Array<User> = await Promise.all(createUserPromises);
 
     console.log(`🌱 ${users.length} Users seeded with dev account 🌱`);
