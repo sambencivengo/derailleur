@@ -2,7 +2,7 @@
 
 import { AlertCircle } from 'lucide-react';
 import { Suspense } from 'react';
-import { FullPagePost } from '~/components';
+import { FullPagePost, FullPagePostCommentsContainer } from '~/components';
 import { Alert, AlertTitle, AlertDescription, Skeleton } from '~/components/ui';
 import { getPostById } from '~/queries';
 
@@ -22,15 +22,27 @@ export default async function Page({ params }: { params: { postId: string } }) {
   }
   return (
     <main>
-      {/* TODO: Suspence fallback */}
       <Suspense fallback={<SkeletonFullPagePost />}>
         <FullPagePost postId={postId} />
       </Suspense>
       {/* COMMENTS HERE */}
+      <Suspense fallback={<SkeletonCommentPreview />}>
+        <FullPagePostCommentsContainer postId={postId} />
+      </Suspense>
     </main>
   );
 }
 
 function SkeletonFullPagePost() {
   return <Skeleton className="h-52 w-full" />;
+}
+
+function SkeletonCommentPreview() {
+  return (
+    <div className="space-y-2">
+      {[...Array(10)].map((_, i) => (
+        <Skeleton className="h-32 w-full" />
+      ))}
+    </div>
+  );
 }
