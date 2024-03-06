@@ -47,6 +47,8 @@ model Post {
 model Comment {
   id String @id @unique
   content String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
   author User @relation(references: [id], fields: [authorId], onDelete: Cascade)
   authorId String
   post Post @relation(references: [id], fields: [postId], onDelete: Cascade)
