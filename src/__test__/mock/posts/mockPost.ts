@@ -1,7 +1,7 @@
 import { mockUser_00 } from "~/__test__/mock/users/mockUser";
-import { PostWithTags } from "~/types";
 
-export const mockPost_00: PostWithTags = {
+
+export const mockPost_00 = {
   id: 'testPostId_00',
   authorId: mockUser_00.id,
   published: false,
