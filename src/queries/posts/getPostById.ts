@@ -19,8 +19,6 @@ export const getPostById: GetPostById = async (postId: string, userId?: string):
     }
     return createSuccessfulResponse(post);
 
-
-
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
       return createErrorResponse([{ message: 'An error occurred when trying find post by ID', data: { userId, postId, error: JSON.stringify(error) } }]);

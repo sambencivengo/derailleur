@@ -10,7 +10,6 @@ export const createComment: CreateComment = async (createCommentPayload: CreateC
   // TODO: validateSchema and form schema creation
   const { content, postId, parentId } = createCommentPayload;
   try {
-    console.log({ content, postId, parentId, commentId });
     const newComment = await prisma.comment.create({
       data: {
         authorId: userId,

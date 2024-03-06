@@ -28,7 +28,6 @@ export async function FullPagePostCommentsContainer({ postId }: FullPagePostComm
   return (
     <div className="flex flex-col gap-y-4 border-2">
       {comments.map((comment, idx) => {
-        console.log('###', comment.parentCommentId);
         return (
           <div key={idx} className="border-primary border-2">
             <div>{comment.authorId}</div>
