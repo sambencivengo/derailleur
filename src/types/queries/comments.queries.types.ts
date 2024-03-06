@@ -13,3 +13,4 @@ export interface CreateCommentPayload {
   content: string;
 }
 
+export type GetParentComments = (postId?: string, take?: number, cursor?: string, userId?: string) => Promise<DerailleurResponse<Comment[]>>;

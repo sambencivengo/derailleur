@@ -6,7 +6,7 @@ import { v4 as uuid } from 'uuid';
 import { mockUser_00 } from "~/__test__/mock/users/mockUser";
 import { addRecordsToDb, checkErrorResponse, cleanUpTable } from "~/__test__/utils";
 import { createUser, createPost } from "~/queries";
-import { getComments } from '~/queries/comments/getComments';
+import { getParentComments } from '~/queries/comments/getParentComments';
 import { CreateUser, PostWithAuthorNameAndTags, CreatePost, User } from "~/types";
 import prisma from '~prisma/prisma';
 
@@ -52,20 +52,19 @@ describe("Get Comments", function () {
   const take = 10;
   let cursor: string;
   it("Successfully gets the first 10 parent comments from a specific post", async function () {
-    const response = await getComments(testPostId00, take);
+    const response = await getParentComments(testPostId00, take);
     checkErrorResponse(response.errors, false);
     assert.ok(response.result);
     const { result } = response;
     assert.strictEqual(result.length, take);
     cursor = result[result.length - 1].id;
-
     for (let i = 0, limi = result.length; i < limi; i++) {
       assert.strictEqual(result[i].id, i.toString());
     }
   });
 
   it("Successfully gets the next 10 parent comments from a specific post", async function () {
-    const response = await getComments(testPostId00, take, cursor);
+    const response = await getParentComments(testPostId00, take, cursor);
     checkErrorResponse(response.errors, false);
     assert.ok(response.result);
     const { result } = response;
