@@ -133,6 +133,7 @@ async function seed() {
             id: parentCommentId,
             authorId: users[userIndex].id,
             postId: post.id,
+            createdAt: moment().subtract(Math.floor(Math.random() * 200), 'days').toISOString(),
           }
         });
         commentPromises.push(commentPromise);
@@ -147,7 +148,9 @@ async function seed() {
               id: replyId,
               authorId: users[userIndex].id,
               postId: post.id,
-              parentCommentId
+              parentCommentId,
+              createdAt: moment().subtract(Math.floor(Math.random() * 200), 'days').toISOString(),
+
             }
           });
           replyPromises.push(replyPromise);
@@ -162,7 +165,9 @@ async function seed() {
                 id: uuid(),
                 authorId: users[userIndex].id,
                 postId: post.id,
-                parentCommentId: replyId
+                parentCommentId: replyId,
+                createdAt: moment().subtract(Math.floor(Math.random() * 200), 'days').toISOString(),
+
               }
             });
             childReplyPromises.push(childReplyPromise);

@@ -13,4 +13,5 @@ export interface CreateCommentPayload {
   content: string;
 }
 
-export type GetParentComments = (postId?: string, take?: number, cursor?: string, userId?: string) => Promise<DerailleurResponse<Comment[]>>;
+// NOTE: Currently getting all comments and replies
+export type GetComments = (postId?: string, take?: number, cursor?: string, userId?: string) => Promise<DerailleurResponse<any[]>>;

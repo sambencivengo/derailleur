@@ -1,4 +1,5 @@
-import prisma from '~prisma/prisma';
+import { Comment, QueryError } from '~/components';
+import { getComments } from '~/queries/comments/getComments';
 
 interface FullPagePostCommentsContainerProps {
   postId: string;
@@ -9,34 +10,19 @@ export async function FullPagePostCommentsContainer({ postId }: FullPagePostComm
   // Parent comments belong to this postId and have no parent themselves
 
   // TODO: dummy get
-  const comments = await prisma.comment.findMany({
-    where: {
-      postId,
-      parentCommentId: {
-        equals: null,
-      },
-    },
-    include: {
-      _count: {
-        select: {
-          replies: true,
-        },
-      },
-    },
-  });
+  const response = await getComments(postId);
 
+  const { errors, result } = response;
+  if (errors.length > 0 || result === null) {
+    return <QueryError errors={errors} />;
+  }
   return (
-    <div className="flex flex-col gap-y-4 border-2">
-      {comments.map((comment, idx) => {
-        return (
-          <div key={idx} className="border-primary border-2">
-            <div>{comment.authorId}</div>
-            <div>{comment.content}</div>
-            <div>{comment._count.replies}</div>
-            <div>Has a parent? {comment.parentCommentId ? 'yes' : 'no'}</div>
-          </div>
-        );
-      })}
-    </div>
+    <>
+      <div className="flex flex-col">
+        {result.map((comment, idx) => {
+          return <Comment key={idx} comment={comment} />;
+        })}
+      </div>
+    </>
   );
 }
