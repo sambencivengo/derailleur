@@ -15,9 +15,7 @@ export async function Comment({ comment }: CommentProps) {
       </CardHeader>
       <CardContent>
         <p>{content}</p>
-        <CardDescription>
-          <p>{moment(createdAt).format('LLL')}</p>
-        </CardDescription>
+        <CardDescription>{moment(createdAt).format('LLL')}</CardDescription>
       </CardContent>
       <CardFooter className="flex flex-col gap-y-2">
         {replies &&
