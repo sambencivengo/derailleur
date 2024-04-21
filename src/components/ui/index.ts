@@ -16,3 +16,5 @@ export * from './multiSelect';
 export * from './sheet';
 export * from "./separator";
 export * from './skeleton';
+export * from "./dialog";
+export * from './accordion';

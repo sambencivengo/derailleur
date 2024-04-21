@@ -19,6 +19,7 @@ export * from "./desktopNav";
 export * from './logOutButton';
 export * from './tagPageHeading';
 export * from './tagPagePostsContainer';
+export * from './commentReplyForm';
 export * from './fullPagePostCommentsContainer';
 export * from './queryError';
 export * from './comment';
