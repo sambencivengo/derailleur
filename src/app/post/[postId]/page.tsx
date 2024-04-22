@@ -2,6 +2,7 @@
 
 import { AlertCircle } from 'lucide-react';
 import { Suspense } from 'react';
+import { getUserSession } from '~/auth';
 import { FullPagePost, FullPagePostCommentsContainer } from '~/components';
 import { Alert, AlertTitle, AlertDescription, Skeleton, Separator } from '~/components/ui';
 import { getPostById } from '~/queries';
@@ -9,6 +10,7 @@ import { getPostById } from '~/queries';
 export default async function Page({ params }: { params: { postId: string } }) {
   const { postId } = params;
   const post = await getPostById(postId);
+  const user = await getUserSession();
   if (post.errors.length > 0 || post.result === null) {
     return (
       <Alert variant="destructive">
@@ -23,12 +25,12 @@ export default async function Page({ params }: { params: { postId: string } }) {
   return (
     <main className="flex flex-col gap-y-2">
       <Suspense fallback={<SkeletonFullPagePost />}>
-        <FullPagePost postId={postId} />
+        <FullPagePost userId={user ? user.userId : null} postId={postId} />
       </Suspense>
       <Separator />
       {/* COMMENTS HERE */}
       <Suspense fallback={<SkeletonCommentPreview />}>
-        <FullPagePostCommentsContainer postId={postId} />
+        <FullPagePostCommentsContainer userId={user ? user.userId : null} postId={postId} />
       </Suspense>
     </main>
   );
