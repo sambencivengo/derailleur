@@ -1,8 +1,11 @@
+'use server';
+import { getUserSession } from '~/auth';
 import { Comment, QueryError } from '~/components';
 import { getComments } from '~/queries/comments/getComments';
 
 interface FullPagePostCommentsContainerProps {
   postId: string;
+  userId: string | null;
 }
 
 export async function FullPagePostCommentsContainer({ postId }: FullPagePostCommentsContainerProps) {
@@ -10,6 +13,7 @@ export async function FullPagePostCommentsContainer({ postId }: FullPagePostComm
   // Parent comments belong to this postId and have no parent themselves
 
   // TODO: dummy get
+  const user = await getUserSession();
   const response = await getComments(postId);
 
   const { errors, result } = response;
@@ -20,7 +24,7 @@ export async function FullPagePostCommentsContainer({ postId }: FullPagePostComm
     <>
       <div className="flex flex-col">
         {result.map((comment, idx) => {
-          return <Comment key={idx} comment={comment} />;
+          return <Comment key={idx} comment={comment} userId={user ? user.userId : null} />;
         })}
       </div>
     </>

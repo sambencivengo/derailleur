@@ -24,7 +24,7 @@ export const createCommentSchema: z.ZodType<CreateCommentPayload> = z.object({
 
 interface CommentReplyFormProps {
   postId: string;
-  parentCommentId: string;
+  parentCommentId?: string;
   userId: string | null;
 }
 export function CommentReplyForm({ parentCommentId, postId, userId }: CommentReplyFormProps) {
@@ -43,7 +43,6 @@ export function CommentReplyForm({ parentCommentId, postId, userId }: CommentRep
   async function onSubmit(values: CreateCommentPayload) {
     setIsLoading(true);
     const response = await createComment(values, postId, userId ?? '', parentCommentId);
-    console.log(response.result);
     if (response.errors.length > 0 || response.result === null) {
       setIsLoading(false);
       setSubmitCommentError(response.errors);

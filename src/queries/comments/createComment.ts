@@ -6,9 +6,10 @@ import prisma from "~prisma/prisma";
 import { Prisma } from "@prisma/client";
 import { Comment, CreateComment, CreateCommentPayload } from '~/types';
 
-export const createComment: CreateComment = async (createCommentPayload: CreateCommentPayload, userId: string, commentId = uuid()): Promise<DerailleurResponse<Comment>> => {
+export const createComment: CreateComment = async (createCommentPayload: CreateCommentPayload, postId: string, userId: string, parentId?: string, commentId = uuid()): Promise<DerailleurResponse<Comment>> => {
   // TODO: validateSchema and form schema creation
-  const { content, postId, parentId } = createCommentPayload;
+  const { content } = createCommentPayload;
+
   try {
     const newComment = await prisma.comment.create({
       data: {
@@ -16,9 +17,18 @@ export const createComment: CreateComment = async (createCommentPayload: CreateC
         content,
         id: commentId,
         postId: postId,
-        parentCommentId: parentId
+        parentCommentId: parentId ?? null
+      },
+      include: {
+        author: {
+          select: {
+            username: true,
+            id: true
+          }
+        },
       }
     });
+    console.log(newComment);
     return (createSuccessfulResponse(newComment));
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {

@@ -6,13 +6,16 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, 
 import Link from 'next/link';
 import { AlertCircle, MessageSquare } from 'lucide-react';
 import { getPostById } from '~/queries';
+import { CommentReplyForm } from '~/components';
+import { getUserSession } from '~/auth';
 
 interface FullPagePostProps {
   postId: string;
+  userId: string | null;
 }
 export async function FullPagePost({ postId }: FullPagePostProps) {
   const post = await getPostById(postId);
-
+  const user = await getUserSession();
   if (post.errors.length > 0 || post.result === null) {
     return (
       <Alert variant="destructive">
@@ -28,7 +31,6 @@ export async function FullPagePost({ postId }: FullPagePostProps) {
   const {
     authorId,
     author: { username },
-    id,
     content,
     createdAt,
     title,
@@ -39,7 +41,7 @@ export async function FullPagePost({ postId }: FullPagePostProps) {
     <Card className="h-auto hyphens-auto">
       <CardHeader>
         <CardTitle>
-          <Link className="hover:text-primary" href={`/post/${id}`}>
+          <Link className="hover:text-primary" href={`/post/${postId}`}>
             {title}
           </Link>
         </CardTitle>
@@ -65,6 +67,9 @@ export async function FullPagePost({ postId }: FullPagePostProps) {
         <div className="relative bottom-[5px] md:bottom-0 flex flex-col items-center hover:text-primary">
           <MessageSquare />
           <CardContent>{_count.comments}</CardContent>
+        </div>
+        <div>
+          <CommentReplyForm postId={postId} userId={user ? user.userId : null} />
         </div>
       </CardFooter>
     </Card>
