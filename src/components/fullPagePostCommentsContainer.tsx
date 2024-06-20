@@ -15,7 +15,6 @@ export async function FullPagePostCommentsContainer({ postId }: FullPagePostComm
   // TODO: dummy get
   const user = await getUserSession();
   const response = await getComments(postId);
-
   const { errors, result } = response;
   if (errors.length > 0 || result === null) {
     return <QueryError errors={errors} />;
