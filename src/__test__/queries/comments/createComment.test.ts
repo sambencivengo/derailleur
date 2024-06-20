@@ -47,7 +47,7 @@ describe("Create Comment Query", function () {
   const commentId00 = uuid();
   it("Successfully creates a comment on a post", async function () {
     const commentContent = faker.lorem.words(20);
-    const response = await createComment({ content: commentContent, postId: testPostId_00 }, testUserId_00, commentId00);
+    const response = await createComment({ content: commentContent }, testPostId_00, testUserId_00, undefined, commentId00);
     const { errors } = response;
     checkErrorResponse(errors, false);
     const result = response.result!;
@@ -60,14 +60,14 @@ describe("Create Comment Query", function () {
   });
 
   it("Unsuccessfully creates a comment with a non-unique comment ID", async function () {
-    const response = await createComment({ content: commentContent, postId: testPostId_00 }, testUserId_00, commentId00);
+    const response = await createComment({ content: commentContent }, testPostId_00, testUserId_00, undefined, commentId00);
     const { errors, result } = response;
     assert.strictEqual(result, null);
     checkErrorResponse(errors, true);
   });
   it("Unsuccessfully creates a comment on a post when an invalid post ID is supplied", async function () {
     const commentId = uuid();
-    const response = await createComment({ content: commentContent, postId: 'nonExistentCommentId' }, testUserId_00, commentId);
+    const response = await createComment({ content: commentContent }, 'nonExistentPostId', testUserId_00, undefined, commentId);
     const { errors, result } = response;
     assert.strictEqual(result, null);
     checkErrorResponse(errors, true);
@@ -76,7 +76,7 @@ describe("Create Comment Query", function () {
   it("Successfully creates a comment replying to an existing comment on a post", async function () {
     const commentContent = faker.lorem.words(20);
     const replyCommentId00 = uuid();
-    const comment00Response = await createComment({ content: commentContent, postId: testPostId_00, parentId: commentId00 }, testUserId_00, replyCommentId00);
+    const comment00Response = await createComment({ content: commentContent }, testPostId_00, testUserId_00, commentId00, replyCommentId00);
     const replyErrors = comment00Response.errors;
     checkErrorResponse(replyErrors, false);
     assert.ok(comment00Response.result);
@@ -91,7 +91,7 @@ describe("Create Comment Query", function () {
   it("Unsuccessfully creates a comment replying to an existing comment on a post when an invalid postID is supplied", async function () {
     const commentContent = faker.lorem.words(20);
     const replyCommentId01 = uuid();
-    const comment01Response = await createComment({ content: commentContent, postId: 'nonExistentCommentId', parentId: commentId00 }, testUserId_00, replyCommentId01);
+    const comment01Response = await createComment({ content: commentContent }, 'nonExistentPostId', testUserId_00, commentId00, replyCommentId01);
     const replyErrors = comment01Response.errors;
     checkErrorResponse(replyErrors, true);
   });
@@ -99,7 +99,7 @@ describe("Create Comment Query", function () {
   it("Successfully creates a comment replying to an existing comment that already has at least one reply on a post", async function () {
     const commentContent = faker.lorem.words(20);
     const replyCommentId02 = uuid();
-    const comment02Response = await createComment({ content: commentContent, postId: testPostId_00, parentId: commentId00 }, testUserId_00, replyCommentId02);
+    const comment02Response = await createComment({ content: commentContent }, testPostId_00, testUserId_00, commentId00, replyCommentId02);
     const replyErrors = comment02Response.errors;
     checkErrorResponse(replyErrors, false);
     assert.ok(comment02Response.result);
