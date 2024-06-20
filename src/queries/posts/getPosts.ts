@@ -9,7 +9,10 @@ import prisma from "~prisma/prisma";
 export const getPosts: GetPosts = async (): Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount[]>> => {
   try {
     const posts = await prisma.post.findMany({
-      ...postWithAuthorNameTagsAndCommentCountQuery
+      ...postWithAuthorNameTagsAndCommentCountQuery,
+      orderBy: {
+        createdAt: 'desc'
+      }
     });
     return createSuccessfulResponse(posts);
   } catch (error: any) {
