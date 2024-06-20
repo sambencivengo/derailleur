@@ -30,7 +30,7 @@ export default async function Page({ params }: { params: { postId: string } }) {
       <Separator />
       {/* COMMENTS HERE */}
       <Suspense fallback={<SkeletonCommentPreview />}>
-        <FullPagePostCommentsContainer userId={user ? user.userId : null} postId={postId} />
+        <FullPagePostCommentsContainer userId={user ? user.userId : undefined} postId={postId} />
       </Suspense>
     </main>
   );
