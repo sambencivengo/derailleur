@@ -1,6 +1,5 @@
 import React from 'react';
 import { PostPreviewContainer } from '~/components';
-import { getPosts } from '~/queries';
 
 export default async function Home({
   searchParams,
@@ -9,11 +8,9 @@ export default async function Home({
     tags?: string[];
   };
 }) {
-  const posts = await getPosts();
-
   return (
     <main>
-      <PostPreviewContainer postsResponse={posts} />
+      <PostPreviewContainer />
     </main>
   );
 }
