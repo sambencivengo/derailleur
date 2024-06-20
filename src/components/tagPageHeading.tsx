@@ -1,10 +1,10 @@
 'use server';
 
-import Link from 'next/link';
-import { AlertCircle, ChevronLeft } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { TextHeading } from '~/components';
 import { Alert, AlertTitle, AlertDescription, Badge } from '~/components/ui';
 import { getTagWithCountByName } from '~/queries';
+import { BackToAllPostsLink } from '~/components/backToAllPostsLink';
 
 interface TagPageHeadingProps {
   tagName: string;
@@ -34,12 +34,7 @@ export async function TagPageHeading({ tagName }: TagPageHeadingProps) {
         </Badge>
         <p className="font-bold italic">{_count.posts} posts</p>
       </div>
-      <Link href={'/'}>
-        <div className="flex flex-row">
-          <ChevronLeft className="text-primary" />
-          <p className="text-primary"> Back to all posts...</p>
-        </div>
-      </Link>
+      <BackToAllPostsLink />
     </div>
   );
 }
