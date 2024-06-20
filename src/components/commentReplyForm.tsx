@@ -7,10 +7,11 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { FormWrapper } from '~/components/formWrapper';
 import { QueryError } from '~/components/queryError';
+import { Comment } from '~/components/comment';
 import { Spinner } from '~/components/spinner';
 import { Button, FormControl, FormField, FormItem, FormMessage, Textarea } from '~/components/ui';
 import { createComment } from '~/queries';
-import { CreateCommentPayload } from '~/types';
+import { CreateCommentPayload, Comment as CommentType } from '~/types';
 import { DerailleurError } from '~/utils';
 
 export const createCommentSchema: z.ZodType<CreateCommentPayload> = z.object({
@@ -30,7 +31,7 @@ interface CommentReplyFormProps {
 export function CommentReplyForm({ parentCommentId, postId, userId }: CommentReplyFormProps) {
   const [isReplying, setIsReplying] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [newReply, setNewReply] = React.useState<any | null>(null);
+  const [newReply, setNewReply] = React.useState<CommentType | null>(null);
   const [submitCommentError, setSubmitCommentError] = React.useState<DerailleurError[] | null>(null);
 
   const form = useForm<CreateCommentPayload>({
@@ -69,7 +70,7 @@ export function CommentReplyForm({ parentCommentId, postId, userId }: CommentRep
           Reply
         </Link>
       )}
-      {isReplying && (
+      {isReplying && newReply === null && (
         <div className="w-full">
           <FormWrapper form={form} onSubmit={onSubmit}>
             <FormField
@@ -91,6 +92,7 @@ export function CommentReplyForm({ parentCommentId, postId, userId }: CommentRep
           {submitCommentError && <QueryError errors={submitCommentError} />}
         </div>
       )}
+      {newReply && <Comment comment={{ ...newReply, _count: { replies: 0 }, author: { id: newReply.authorId, username: 'test' }, replies: [], parentCommentId: parentCommentId ?? '' }} level={0} userId={userId} />}
     </div>
   );
 }
