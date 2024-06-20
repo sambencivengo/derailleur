@@ -2,7 +2,6 @@
 import { getUserSession } from '~/auth';
 import { Comment, QueryError } from '~/components';
 import { getComments } from '~/queries/comments/getComments';
-import { CommentWithAuthorUsernameIDAndReplies } from '~/types';
 
 interface FullPagePostCommentsContainerProps {
   postId: string;
