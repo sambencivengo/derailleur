@@ -6,8 +6,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, 
 import Link from 'next/link';
 import { AlertCircle, MessageSquare } from 'lucide-react';
 import { getPostById } from '~/queries';
-import { CommentReplyForm } from '~/components';
 import { getUserSession } from '~/auth';
+import { CommentReplyForm } from '~/components';
 
 interface FullPagePostProps {
   postId: string;
@@ -61,12 +61,17 @@ export async function FullPagePost({ postId }: FullPagePostProps) {
         </div>
         <CardContent>
           <p>{content}</p>
+          {/* TODO: Image container when image links are supplied. Eventually use an AWS S3 bucket */}
+          <div>
+            <img alt="placeHolder Bike Image" width={1000} height={1000} src="https://i.imgur.com/WwpJY2t.jpeg" />
+          </div>
         </CardContent>
       </CardHeader>
       <CardFooter>
         <div className="relative bottom-[5px] md:bottom-0 flex flex-col items-center hover:text-primary">
           <MessageSquare />
           <CardContent>{_count.comments}</CardContent>
+          <p>PLACEHOLDER FOR VARIOUS LINKS, SHARE, REPLY, SAVE ETC.</p>
         </div>
         <div>
           <CommentReplyForm postId={postId} userId={user ? user.userId : null} />
