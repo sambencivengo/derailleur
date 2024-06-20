@@ -19,8 +19,8 @@ export const postWithAuthorNameTagsAndCommentCountQuery = Prisma.validator<Prism
     },
     author: {
       select: { username: true }
-    }
-  }
+    },
+  },
 });
 
 export const postWithAuthorNameAndTagsQuery = Prisma.validator<Prisma.PostDefaultArgs>()({
