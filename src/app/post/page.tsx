@@ -1,10 +1,10 @@
 import React from 'react';
-import { PostPreviewContainer } from '~/components';
+import { PostPreviewsContainer } from '~/components';
 
 export default async function Home() {
   return (
     <main>
-      <PostPreviewContainer />
+      <PostPreviewsContainer />
     </main>
   );
 }

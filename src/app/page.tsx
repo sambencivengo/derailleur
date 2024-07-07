@@ -1,12 +1,12 @@
 import React, { Suspense } from 'react';
-import { PostPreviewContainer } from '~/components';
+import { PostPreviewsContainer } from '~/components';
 import { Skeleton } from '~/components/ui';
 
 export default async function Home() {
   return (
     <main>
       <Suspense fallback={<SkeletonPostPreview />}>
-        <PostPreviewContainer />
+        <PostPreviewsContainer />
       </Suspense>
     </main>
   );

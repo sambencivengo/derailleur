@@ -8,7 +8,7 @@ export * from './logInButton';
 export * from './formWrapper';
 export * from './signUpButton';
 export * from "./spinner";
-export * from './postPreviewContainer';
+export * from './postPreviewsContainer';
 export * from './postPreview';
 export * from './fullPagePost';
 export * from './newPostButton';

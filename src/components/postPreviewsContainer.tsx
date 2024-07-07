@@ -6,7 +6,7 @@ import { PostPreview } from '~/components';
 import { Alert, AlertTitle, AlertDescription } from '~/components/ui';
 import { getPosts } from '~/queries';
 
-export async function PostPreviewContainer() {
+export async function PostPreviewsContainer() {
   const posts = await getPosts();
 
   if (posts.result === null || posts.errors.length > 0) {
