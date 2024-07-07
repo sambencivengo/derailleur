@@ -6,7 +6,7 @@ import { NavBar, ThemeProvider } from '~/components';
 
 export const metadata: Metadata = {
   title: 'Derailleur',
-  description: 'A application for bike enthusiasts',
+  description: 'An application for bike enthusiasts',
 };
 
 export const fontSans = FontSans({
