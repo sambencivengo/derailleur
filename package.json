@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "docker:up": "docker-compose -f docker/docker-compose.yml up -d",
+    "database": "cd docker && sh ./buildDerailleurDatabase.sh",
+    "docker:db": "docker-compose -f docker/docker-compose.yml up -d && npm run migrate:docker:deploy",
     "docker:down": "docker-compose -f docker/docker-compose.yml down",
     "docker:container": "docker exec -it $cid psql -U user derailleur",
-    "docker:db": "npm run migrate:docker:deploy",
     "dev": "npm run prisma:seed & next dev",
     "dev-lint": "next lint && next dev",
     "build": "next build",
