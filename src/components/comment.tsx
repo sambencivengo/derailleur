@@ -21,7 +21,6 @@ export async function Comment({ comment, userId, level }: CommentProps) {
     id,
     _count: { replies: repliesCount },
   } = comment;
-  console.log({ repliesCount, level });
   return (
     <Card className="w-full">
       <CardHeader>
