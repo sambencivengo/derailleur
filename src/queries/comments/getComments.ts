@@ -1,11 +1,11 @@
 'use server';
 
 import { Prisma } from "@prisma/client";
-import { commentWithAuthorUsernameIDAndReplies } from "~/types";
+import { CommentWithAuthorUsernameIDAndReplies, commentWithAuthorUsernameIDAndReplies } from "~/types";
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
 import prisma from "~prisma/prisma";
 
-export const getComments = async (postId?: string, parentCommentId?: string): Promise<DerailleurResponse> => {
+export const getComments = async (postId?: string, parentCommentId?: string): Promise<DerailleurResponse<CommentWithAuthorUsernameIDAndReplies[]>> => {
   try {
     const comments = await prisma.comment.findMany({
       where: {

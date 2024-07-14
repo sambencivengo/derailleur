@@ -61,6 +61,6 @@ export const commentWithAuthorUsernameIDAndReplies = Prisma.validator<Prisma.Com
 });
 
 
-export type CommentWithAuthorUsernameIDAndReplies = Prisma.PostGetPayload<typeof commentWithAuthorUsernameIDAndReplies>;
+export type CommentWithAuthorUsernameIDAndReplies = Prisma.CommentGetPayload<typeof commentWithAuthorUsernameIDAndReplies>;
 
-export interface Comment extends PrismaComment { }
+export interface Comment extends PrismaComment { };
