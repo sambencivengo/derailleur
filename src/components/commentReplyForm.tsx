@@ -21,6 +21,9 @@ export const createCommentSchema: z.ZodType<CreateCommentPayload> = z.object({
       required_error: 'Content is required',
       invalid_type_error: 'Content must be a string',
     })
+    .min(10, {
+      message: 'Comment must be at least 10 characters.',
+    })
     .trim(),
 });
 
@@ -52,13 +55,13 @@ export function CommentReplyForm({ parentCommentId, postId, userId }: CommentRep
     } else {
       const { authorId, content, createdAt, parentCommentId, postId } = result;
       setNewReply({ content, createdAt, parentCommentId: parentCommentId!, userId: authorId, username: 'sammy', postId });
+      setIsReplying(false);
       setIsLoading(false);
     }
   }
 
   return (
     <div className="w-full">
-      {newReply && <SubmittedCommentReply content={newReply.content} createdAt={newReply.createdAt} parentCommentId={newReply.parentCommentId} postId={newReply.postId} userId={newReply.userId} username={newReply.username} />}
       {userId ? (
         <Button
           variant="link"
@@ -74,6 +77,7 @@ export function CommentReplyForm({ parentCommentId, postId, userId }: CommentRep
           Reply
         </Link>
       )}
+      {newReply && <SubmittedCommentReply content={newReply.content} createdAt={newReply.createdAt} parentCommentId={newReply.parentCommentId} postId={newReply.postId} userId={newReply.userId} username={newReply.username} />}
       {isReplying && (
         <div className="w-full">
           <FormWrapper form={form} onSubmit={onSubmit}>

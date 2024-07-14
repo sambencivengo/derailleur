@@ -32,9 +32,10 @@ export function Comment({ comment, userId, level }: CommentProps) {
         <div className="flex flex-row gap-x-2">
           <CardDescription>{moment(createdAt).format('LLL')}</CardDescription>
         </div>
-        <CommentReplyForm parentCommentId={id} postId={postId} userId={userId} />
       </CardContent>
       <CardFooter className="flex flex-col p-0 pl-5 pr-1 pb-1 gap-y-2">
+        <CommentReplyForm parentCommentId={id} postId={postId} userId={userId} />
+
         {level >= 4 && repliesCount > 0 && (
           <Link href={`/post/${postId}/comment/${comment.id}`} className="text-primary hover:underline">
             ...load more comments
