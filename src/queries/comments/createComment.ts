@@ -34,6 +34,6 @@ export const createComment: CreateComment = async (createCommentPayload: CreateC
       return createErrorResponse([{ message: 'An error occurred when trying create a comment', data: { userId, createCommentPayload, error: JSON.stringify(error) } }]);
     }
     const errResponse = { userId, createCommentPayload, prismaErrorCode: error.code };
-    return createErrorResponse([{ message: 'Unable to create post due to prisma error', data: errResponse }]);
+    return createErrorResponse([{ message: 'Unable to create comment due to prisma error', data: errResponse }]);
   }
 };

@@ -1,6 +1,5 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import React from 'react';
@@ -10,7 +9,7 @@ import { SubmittedCommentReply, SubmittedCommentReplyProps } from '~/components/
 import { FormWrapper } from '~/components/formWrapper';
 import { QueryError } from '~/components/queryError';
 import { Spinner } from '~/components/spinner';
-import { Alert, AlertDescription, AlertTitle, Button, FormControl, FormField, FormItem, FormMessage, Textarea } from '~/components/ui';
+import { Button, FormControl, FormField, FormItem, FormMessage, Textarea } from '~/components/ui';
 import { createComment } from '~/queries';
 import { CreateCommentPayload } from '~/types';
 import { DerailleurError } from '~/utils';
@@ -21,8 +20,8 @@ export const createCommentSchema: z.ZodType<CreateCommentPayload> = z.object({
       required_error: 'Content is required',
       invalid_type_error: 'Content must be a string',
     })
-    .min(10, {
-      message: 'Comment must be at least 10 characters.',
+    .min(1, {
+      message: 'Comment must be at least 1 character',
     })
     .trim(),
 });
@@ -100,20 +99,12 @@ export function CommentReplyForm({ parentCommentId, postId, userId }: CommentRep
                 </FormItem>
               )}
             />
-            {submitCommentError && (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Error</AlertTitle>
-                {submitCommentError.map(({ message }) => {
-                  return <AlertDescription key={message}></AlertDescription>;
-                })}
-              </Alert>
-            )}
+            {submitCommentError && <QueryError errors={submitCommentError} />}
+
             <div className="flex">
               <Button type="submit">{isLoading ? <Spinner /> : 'Submit'}</Button>
             </div>
           </FormWrapper>
-          {submitCommentError && <QueryError errors={submitCommentError} />}
         </div>
       )}
     </div>
