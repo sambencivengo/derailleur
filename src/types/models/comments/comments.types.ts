@@ -60,7 +60,19 @@ export const commentWithAuthorUsernameIDAndReplies = Prisma.validator<Prisma.Com
   }
 });
 
+export const submittedCommentWithAuthorUsernameAndId = Prisma.validator<Prisma.CommentDefaultArgs>()({
+  include: {
+    author: {
+      select: {
+        username: true,
+        id: true
+      }
+    },
+  }
+});
+
 
 export type CommentWithAuthorUsernameIDAndReplies = Prisma.CommentGetPayload<typeof commentWithAuthorUsernameIDAndReplies>;
+export type SubmittedCommentWithAuthorUsernameAndId = Prisma.CommentGetPayload<typeof submittedCommentWithAuthorUsernameAndId>;
 
 export interface Comment extends PrismaComment { };

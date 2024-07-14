@@ -53,8 +53,15 @@ export function CommentReplyForm({ parentCommentId, postId, userId }: CommentRep
       setIsLoading(false);
       setSubmitCommentError(response.errors);
     } else {
-      const { authorId, content, createdAt, parentCommentId, postId } = result;
-      setNewReply({ content, createdAt, parentCommentId: parentCommentId!, userId: authorId, username: 'sammy', postId });
+      const {
+        authorId,
+        content,
+        createdAt,
+        parentCommentId,
+        postId,
+        author: { username },
+      } = result;
+      setNewReply({ content, createdAt, parentCommentId: parentCommentId!, userId: authorId, username, postId });
       setIsReplying(false);
       setIsLoading(false);
     }
