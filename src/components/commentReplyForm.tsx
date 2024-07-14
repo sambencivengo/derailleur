@@ -1,14 +1,16 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { SubmittedCommentReply, SubmittedCommentReplyProps } from '~/components/comment';
 import { FormWrapper } from '~/components/formWrapper';
 import { QueryError } from '~/components/queryError';
 import { Spinner } from '~/components/spinner';
-import { Button, FormControl, FormField, FormItem, FormMessage, Textarea } from '~/components/ui';
+import { Alert, AlertDescription, AlertTitle, Button, FormControl, FormField, FormItem, FormMessage, Textarea } from '~/components/ui';
 import { createComment } from '~/queries';
 import { CreateCommentPayload } from '~/types';
 import { DerailleurError } from '~/utils';
@@ -31,6 +33,7 @@ export function CommentReplyForm({ parentCommentId, postId, userId }: CommentRep
   const [isReplying, setIsReplying] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [submitCommentError, setSubmitCommentError] = React.useState<DerailleurError[] | null>(null);
+  const [newReply, setNewReply] = React.useState<SubmittedCommentReplyProps | null>(null);
 
   const form = useForm<CreateCommentPayload>({
     resolver: zodResolver(createCommentSchema),
@@ -42,16 +45,20 @@ export function CommentReplyForm({ parentCommentId, postId, userId }: CommentRep
   async function onSubmit(values: CreateCommentPayload) {
     setIsLoading(true);
     const response = await createComment(values, postId, userId ?? '', parentCommentId);
-    if (response.errors.length > 0 || response.result === null) {
+    const { errors, result } = response;
+    if (errors.length > 0 || result === null) {
       setIsLoading(false);
       setSubmitCommentError(response.errors);
     } else {
+      const { authorId, content, createdAt, parentCommentId, postId } = result;
+      setNewReply({ content, createdAt, parentCommentId: parentCommentId!, userId: authorId, username: 'sammy', postId });
       setIsLoading(false);
     }
   }
 
   return (
     <div className="w-full">
+      {newReply && <SubmittedCommentReply content={newReply.content} createdAt={newReply.createdAt} parentCommentId={newReply.parentCommentId} postId={newReply.postId} userId={newReply.userId} username={newReply.username} />}
       {userId ? (
         <Button
           variant="link"
@@ -82,6 +89,15 @@ export function CommentReplyForm({ parentCommentId, postId, userId }: CommentRep
                 </FormItem>
               )}
             />
+            {submitCommentError && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error</AlertTitle>
+                {submitCommentError.map(({ message }) => {
+                  return <AlertDescription key={message}></AlertDescription>;
+                })}
+              </Alert>
+            )}
             <div className="flex">
               <Button type="submit">{isLoading ? <Spinner /> : 'Submit'}</Button>
             </div>

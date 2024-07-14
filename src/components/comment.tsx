@@ -11,7 +11,7 @@ interface CommentProps {
   level: number;
 }
 
-export async function Comment({ comment, userId, level }: CommentProps) {
+export function Comment({ comment, userId, level }: CommentProps) {
   const {
     content,
     createdAt,
@@ -21,6 +21,7 @@ export async function Comment({ comment, userId, level }: CommentProps) {
     id,
     _count: { replies: repliesCount },
   } = comment;
+
   return (
     <Card className="w-full">
       <CardHeader>
@@ -45,6 +46,32 @@ export async function Comment({ comment, userId, level }: CommentProps) {
             return <Comment key={idx} comment={comment} userId={userId} level={level + 1} />;
           })}
       </CardFooter>
+    </Card>
+  );
+}
+
+export interface SubmittedCommentReplyProps {
+  username: string;
+  userId: string;
+  parentCommentId: string;
+  content: string;
+  createdAt: Date;
+  postId: string;
+}
+
+export function SubmittedCommentReply({ parentCommentId, userId, username, content, createdAt, postId }: SubmittedCommentReplyProps) {
+  return (
+    <Card className="w-full">
+      <CardHeader>
+        <p className="font-bold">{username}</p>
+      </CardHeader>
+      <CardContent className="w-full">
+        <p>{content}</p>
+        <div className="flex flex-row gap-x-2">
+          <CardDescription>{moment(createdAt).format('LLL')}</CardDescription>
+        </div>
+        <CommentReplyForm parentCommentId={parentCommentId} postId={postId} userId={userId} />
+      </CardContent>
     </Card>
   );
 }
