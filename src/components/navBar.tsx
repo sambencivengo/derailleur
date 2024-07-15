@@ -12,7 +12,7 @@ export async function NavBar() {
         <div className="flex items-center justify-between h-12 px-2 border-b-2">
           <div className="pl-2">
             <Link href="/">
-              <TextHeading heading="DERAILLEUR" className="italic text-2xl" />
+              <TextHeading heading="DERAILLEUR" className="text-2xl" italicAnimate={true} />
             </Link>
           </div>
 
