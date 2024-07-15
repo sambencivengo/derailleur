@@ -41,6 +41,7 @@ model Post {
   author User @relation(references: [id], fields: [authorId], onDelete: Cascade)
   authorId String
   tags Tag[]
+  images String[]
   comments Comment[]
 }
 
