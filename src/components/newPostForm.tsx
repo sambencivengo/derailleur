@@ -38,7 +38,7 @@ export function NewPostForm({ userId }: NewPostFormProps) {
   // NOTE: validate url function from https://www.freecodecamp.org/news/check-if-a-javascript-string-is-a-url/
   const isValidUrl = (urlString: string) => {
     var urlPattern = new RegExp(
-      '^(https?:\\/\\/)?' + // validate protocol
+      '^((http|https)?:\\/\\/)' + // validate protocol
         '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // validate domain name
         '((\\d{1,3}\\.){3}\\d{1,3}))' + // validate OR ip (v4) address
         '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // validate port and path
@@ -126,7 +126,7 @@ export function NewPostForm({ userId }: NewPostFormProps) {
                 <FormItem>
                   <div className="flex flex-col gap-2">
                     <FormLabel>Image Link(s)</FormLabel>
-                    <FormLabel className="text-">Separate each link with a comma</FormLabel>
+                    <FormLabel className="text-gray-500">Links must start with either "https://" or "http://" and separated with a comma</FormLabel>
                   </div>
                   <FormControl>
                     <Input {...field} />

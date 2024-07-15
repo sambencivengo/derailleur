@@ -34,7 +34,7 @@ function TagPagePostsContainerSkeleton() {
   return (
     <div className="flex flex-col gap-y-2">
       {[...Array(10)].map((_, i) => (
-        <Skeleton className="h-32 w-full" />
+        <Skeleton key={i} className="h-32 w-full" />
       ))}
     </div>
   );

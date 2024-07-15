@@ -8,6 +8,7 @@ import { AlertCircle, MessageSquare } from 'lucide-react';
 import { getPostById } from '~/queries';
 import { getUserSession } from '~/auth';
 import { CommentReplyForm } from '~/components';
+import { ImageWrapper } from '~/components/imageWrapper';
 
 interface FullPagePostProps {
   postId: string;
@@ -35,6 +36,7 @@ export async function FullPagePost({ postId }: FullPagePostProps) {
     createdAt,
     title,
     _count,
+    images,
   } = post.result;
 
   return (
@@ -61,9 +63,13 @@ export async function FullPagePost({ postId }: FullPagePostProps) {
         </div>
         <CardContent>
           <p>{content}</p>
-          {/* TODO: Image container when image links are supplied. Eventually use an AWS S3 bucket */}
           <div>
-            <img alt="placeHolder Bike Image" width={1000} height={1000} src="https://i.imgur.com/WwpJY2t.jpeg" />
+            {images.length > 0 &&
+              images.map((imageLink, idx) => (
+                <div className="w-full relative pt-[50%]">
+                  <ImageWrapper fallbackSrc="" imageSrc={imageLink} key={idx} />
+                </div>
+              ))}
           </div>
         </CardContent>
       </CardHeader>
