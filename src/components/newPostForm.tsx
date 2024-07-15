@@ -1,45 +1,16 @@
 'use client';
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { FormWrapper, Spinner } from '~/components';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, MultiSelect, Textarea } from '~/components/ui';
-import { CreatePostSchema } from '~/schemas';
+import { createPostSchema, CreatePostSchema } from '~/schemas/postSchemas';
 import { CreatePostPayload, TagWithPostCount } from '~/types';
-import { useRouter } from 'next/navigation';
 import { AlertCircle } from 'lucide-react';
 import { createPost, getTagsWithCountByName } from '~/queries';
 
 export type Framework = Record<'value' | 'label', string>;
-
-export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
-  title: z
-    .string({
-      required_error: 'Post title is required',
-      invalid_type_error: 'Post title must be a string',
-    })
-    .min(10, {
-      message: 'Post title must be at least 10 characters.',
-    })
-    .trim(),
-  content: z
-    .string({
-      required_error: 'Post content is required',
-      invalid_type_error: 'Post content must be a string',
-    })
-    .min(20, {
-      message: 'Post content must be at least 20 characters.',
-    })
-    .trim(),
-  published: z
-    .boolean({
-      required_error: 'Published is required',
-      invalid_type_error: 'Published must be either true or false',
-    })
-    .optional(),
-  tags: z.array(z.string()),
-});
 
 interface NewPostFormProps {
   userId: string;
@@ -59,18 +30,48 @@ export function NewPostForm({ userId }: NewPostFormProps) {
       content: '',
       published: true, // TODO: change this when drafts are implemented
       title: '',
+      images: '',
       tags: [],
     },
   });
+
+  // NOTE: validate url function from https://www.freecodecamp.org/news/check-if-a-javascript-string-is-a-url/
+  const isValidUrl = (urlString: string) => {
+    var urlPattern = new RegExp(
+      '^(https?:\\/\\/)?' + // validate protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // validate domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // validate OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // validate port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // validate query string
+        '(\\#[-a-z\\d_]*)?$',
+      'i'
+    ); // validate fragment locator
+    return !!urlPattern.test(urlString);
+  };
+
   async function onSubmit(values: CreatePostSchema) {
-    setIsLoading(true);
-    const valuesWithTags: CreatePostPayload = { ...values, tags: selected.map((tag) => tag.name) };
-    const response = await createPost(valuesWithTags, userId);
-    if (response.errors.length > 0 || response.result === null) {
-      setIsLoading(false);
-      setSubmitPostError(response.errors.map((error) => error.message));
+    const { images = '' } = values;
+    const arrayOfImagesContainsInvalidUrl =
+      images.length > 0
+        ? images
+            .split(',')
+            .map((imageLink) => isValidUrl(imageLink))
+            .includes(false)
+        : false;
+
+    if (arrayOfImagesContainsInvalidUrl) {
+      form.setError('images', { message: 'Image links must be valid URLs' });
+      return;
     } else {
-      router.push(`/post/${response.result.id}`);
+      setIsLoading(true);
+      const valuesWithTags: CreatePostPayload = { ...values, tags: selected.map((tag) => tag.name) };
+      const response = await createPost(valuesWithTags, userId);
+      if (response.errors.length > 0 || response.result === null) {
+        setIsLoading(false);
+        setSubmitPostError(response.errors.map((error) => error.message));
+      } else {
+        router.push(`/post/${response.result.id}`);
+      }
     }
   }
 
@@ -119,6 +120,24 @@ export function NewPostForm({ userId }: NewPostFormProps) {
           />
           <FormField
             control={form.control}
+            name="images"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <div className="flex flex-col gap-2">
+                    <FormLabel>Image Link(s)</FormLabel>
+                    <FormLabel className="text-">Separate each link with a comma</FormLabel>
+                  </div>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          <FormField
+            control={form.control}
             name="tags"
             render={({ field }) => {
               return (
@@ -132,53 +151,6 @@ export function NewPostForm({ userId }: NewPostFormProps) {
               );
             }}
           />
-
-          {/* <FormField
-            control={form.control}
-            name="tags"
-            render={({ field }) => {
-              console.log(field.value);
-              return (
-                <FormItem>
-                  <FormLabel>Tags</FormLabel>
-                  <FormControl>
-                    <Command>
-                      <CommandInput onFocus={() => setShowCommandList(true)} onBlur={() => setShowCommandList(false)} />
-                      {showCommandList && (
-                        <CommandList>
-                          <CommandEmpty>No results found.</CommandEmpty>
-                          <CommandGroup>
-                            <CommandItem
-                              onSelect={() => {
-                                setShowCommandList(false);
-                              }}
-                            >
-                              Profile
-                            </CommandItem>
-                            <CommandItem
-                              onSelect={() => {
-                                setShowCommandList(false);
-                              }}
-                            >
-                              Billing
-                            </CommandItem>
-                            <CommandItem
-                              onSelect={() => {
-                                setShowCommandList(false);
-                              }}
-                            >
-                              Settings
-                            </CommandItem>
-                          </CommandGroup>
-                        </CommandList>
-                      )}
-                    </Command>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          /> */}
 
           {submitPostError && (
             <Alert variant="destructive">
