@@ -50,9 +50,9 @@ export function NewPostForm({ userId }: NewPostFormProps) {
   };
 
   async function onSubmit(values: CreatePostSchema) {
-    const { images = '' } = values;
+    const { images } = values;
     const arrayOfImagesContainsInvalidUrl =
-      images.length > 0
+      images !== undefined && images.length > 0
         ? images
             .split(',')
             .map((imageLink) => isValidUrl(imageLink))

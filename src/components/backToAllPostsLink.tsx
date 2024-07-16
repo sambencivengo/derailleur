@@ -6,10 +6,10 @@ interface BackToAllPostsLinkProps {
 }
 export function BackToAllPostsLink({ postId }: BackToAllPostsLinkProps) {
   return (
-    <Link href={`/post/${postId}`}>
+    <Link href={postId !== undefined ? `/post/${postId}` : '/'}>
       <div className="flex flex-row">
         <ChevronLeft className="text-primary" />
-        <p className="text-primary">Back to {postId ? 'post and comments' : 'all posts'}...</p>
+        <p className="text-primary">Back to {postId !== undefined ? 'post and comments' : 'all posts'}...</p>
       </div>
     </Link>
   );

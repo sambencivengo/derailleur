@@ -1,25 +1,27 @@
 import moment from 'moment';
 import Link from 'next/link';
 import React from 'react';
-import { CommentReplyForm } from '~/components/commentReplyForm';
+import { CommentLinks } from '~/components/commentLinks';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from '~/components/ui';
-import { CommentWithAuthorUsernameIDAndReplies } from '~/types';
+import { CommentWithAuthorUsernameIDAndReplies, SubmittedCommentWithAuthorUsernameAndId, UserAndSession } from '~/types';
 
 interface CommentProps {
   comment: CommentWithAuthorUsernameIDAndReplies;
-  userId: string | null;
+  user: UserAndSession | null;
   level: number;
 }
 
-export function Comment({ comment, userId, level }: CommentProps) {
+export function Comment({ comment, user, level }: CommentProps) {
+  const [newCommentsOnComment, setNewCommentsOnComment] = React.useState<Array<SubmittedCommentWithAuthorUsernameAndId>>([]);
+
   const {
     content,
     createdAt,
     replies,
     author,
     postId,
-    id,
     _count: { replies: repliesCount },
+    id,
   } = comment;
 
   return (
@@ -34,17 +36,17 @@ export function Comment({ comment, userId, level }: CommentProps) {
         </div>
       </CardContent>
       <CardFooter className="flex flex-col p-0 pl-5 pr-1 pb-1 gap-y-2">
-        <CommentReplyForm parentCommentId={id} postId={postId} userId={userId} />
-
+        <CommentLinks parentCommentId={id} postId={postId} user={user} setNewComments={setNewCommentsOnComment} />
         {level >= 4 && repliesCount > 0 && (
-          <Link href={`/post/${postId}/comment/${comment.id}`} className="text-primary hover:underline">
+          <Link href={`/post/${postId}/comment/${id}`} className="text-primary hover:underline">
             ...load more comments
           </Link>
         )}
+        {newCommentsOnComment.length > 0 && newCommentsOnComment.map(({ author, content, createdAt, id, postId }, idx) => <SubmittedCommentReply key={idx} username={author.username} postId={postId} user={user} content={content} createdAt={createdAt} commentId={id} />)}
         {level < 4 &&
           replies.length > 0 &&
           replies.map((comment: any, idx: number) => {
-            return <Comment key={idx} comment={comment} userId={userId} level={level + 1} />;
+            return <Comment key={idx} comment={comment} user={user} level={level + 1} />;
           })}
       </CardFooter>
     </Card>
@@ -53,14 +55,16 @@ export function Comment({ comment, userId, level }: CommentProps) {
 
 export interface SubmittedCommentReplyProps {
   username: string;
-  userId: string;
-  parentCommentId: string;
+  user: UserAndSession | null;
+  commentId: string;
   content: string;
   createdAt: Date;
   postId: string;
 }
 
-export function SubmittedCommentReply({ parentCommentId, userId, username, content, createdAt, postId }: SubmittedCommentReplyProps) {
+export function SubmittedCommentReply({ user, username, content, createdAt, postId, commentId }: SubmittedCommentReplyProps) {
+  const [newCommentsOnComment, setNewCommentsOnComment] = React.useState<Array<SubmittedCommentWithAuthorUsernameAndId>>([]);
+
   return (
     <Card className="w-full">
       <CardHeader>
@@ -71,8 +75,11 @@ export function SubmittedCommentReply({ parentCommentId, userId, username, conte
         <div className="flex flex-row gap-x-2">
           <CardDescription>{moment(createdAt).format('LLL')}</CardDescription>
         </div>
-        <CommentReplyForm parentCommentId={parentCommentId} postId={postId} userId={userId} />
       </CardContent>
+      <CardFooter className="flex flex-col p-0 pl-5 pr-1 pb-1 gap-y-2">
+        <CommentLinks parentCommentId={commentId} postId={postId} user={user} setNewComments={setNewCommentsOnComment} />
+        {newCommentsOnComment.length > 0 && newCommentsOnComment.map(({ author, content, createdAt, id, postId }, idx) => <SubmittedCommentReply key={idx} username={author.username} postId={postId} user={user} content={content} createdAt={createdAt} commentId={id} />)}
+      </CardFooter>
     </Card>
   );
 }
