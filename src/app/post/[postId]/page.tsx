@@ -7,7 +7,7 @@ import { getComments } from '~/queries/comments/getComments';
 export default async function Page({ params }: { params: { postId: string } }) {
   const { postId } = params;
   const user = await getUserSession();
-  const postResponse = await getPostById(postId);
+  const postResponse = await getPostById(postId, user !== null ? user.userId : undefined);
   const commentsResponse = await getComments(postId);
   const { errors: postErrors, result: postResult } = postResponse;
   const { errors: commentsErrors, result: commentsResult } = commentsResponse;

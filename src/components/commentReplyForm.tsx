@@ -48,7 +48,6 @@ export function CommentReplyForm({ parentCommentId, postId, userId, isReplying, 
     async (values: CreateCommentPayload) => {
       async function onSubmit(values: CreateCommentPayload) {
         setIsLoading(true);
-        console.log('in submission', { parentCommentId });
         const response = await createComment(values, postId, userId ?? '', parentCommentId === null ? undefined : parentCommentId);
         const { errors, result } = response;
         if (errors.length > 0 || result === null) {

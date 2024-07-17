@@ -10,9 +10,19 @@ export const getPostById: GetPostById = async (postId: string, userId?: string):
     const post = await prisma.post.findUnique({
       where: {
         id: postId,
-        authorId: userId
       },
-      ...postWithAuthorNameTagsAndCommentCountQuery
+      include: {
+
+        ...postWithAuthorNameTagsAndCommentCountQuery.include,
+        savedBy: {
+          where: {
+            userId
+          },
+          select: {
+            userId: true
+          }
+        },
+      }
     });
     if (!post) {
       return createErrorResponse([{ message: "Unable to find post with by provided ID", data: { userId, postId } }]);

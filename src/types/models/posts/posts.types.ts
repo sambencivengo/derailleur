@@ -17,6 +17,11 @@ export const postWithAuthorNameTagsAndCommentCountQuery = Prisma.validator<Prism
         comments: true
       }
     },
+    savedBy: {
+      select: {
+        userId: true
+      }
+    },
     author: {
       select: { username: true }
     },
