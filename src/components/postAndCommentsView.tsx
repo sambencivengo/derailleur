@@ -18,7 +18,7 @@ export function PostAndCommentsView({ post, user, comments }: PostAndCommentsVie
       <Suspense fallback={<SkeletonFullPagePost />}>
         <PostView post={post} />
       </Suspense>
-      <PostLinks numberOfComments={post._count.comments + newCommentOnPost.length} postId={post.id} user={user} setNewComments={setNewCommentOnPost} />
+      <PostLinks numberOfComments={post._count.comments + newCommentOnPost.length} postId={post.id} postAuthorId={post.authorId} user={user} setNewComments={setNewCommentOnPost} />
       <Suspense fallback={<SkeletonCommentPreview />}>
         <CommentsView user={user} comments={comments} newCommentsOnPost={newCommentOnPost} />
       </Suspense>

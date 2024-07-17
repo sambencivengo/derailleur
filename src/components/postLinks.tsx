@@ -9,11 +9,12 @@ import { SubmittedCommentWithAuthorUsernameAndId, UserAndSession } from '~/types
 interface PostLinksProps {
   user: UserAndSession | null;
   postId: string;
+  postAuthorId: string;
   numberOfComments: number;
   setNewComments: React.Dispatch<React.SetStateAction<Array<SubmittedCommentWithAuthorUsernameAndId>>>;
 }
 
-export function PostLinks({ user, postId, numberOfComments, setNewComments }: PostLinksProps) {
+export function PostLinks({ user, postId, numberOfComments, setNewComments, postAuthorId }: PostLinksProps) {
   const [isReplying, setIsReplying] = React.useState<boolean>(false);
   const router = useRouter();
 
@@ -33,9 +34,11 @@ export function PostLinks({ user, postId, numberOfComments, setNewComments }: Po
         <Button variant="link" onClick={() => {}}>
           Save
         </Button>
-        <Button variant="link" onClick={() => {}}>
-          Edit
-        </Button>
+        {user !== null && user.userId === postAuthorId && (
+          <Button variant="link" onClick={() => {}}>
+            Edit
+          </Button>
+        )}
         <Button variant="link" onClick={() => {}}>
           {numberOfComments} comment{numberOfComments > 1 ? 's' : ''}
         </Button>
