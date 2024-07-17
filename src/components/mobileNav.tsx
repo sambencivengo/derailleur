@@ -2,6 +2,7 @@
 import { ChevronLeftSquare } from 'lucide-react';
 import { LogInButton, LogOutButton, NewPostButton, SignUpButton, ToggleDarkModeButton } from '~/components';
 import { Separator, Sheet, SheetClose, SheetContent, SheetTrigger } from '~/components/ui';
+import { UserProfileButton } from '~/components/userProfileButton';
 import { UserAndSession } from '~/types';
 
 interface MobileNavProps {
@@ -17,8 +18,11 @@ export const MobileNav = ({ user }: MobileNavProps) => {
         <SheetContent className="pt-10">
           <div className="flex flex-col justify-between  h-full py-4 ">
             <div className="flex flex-col gap-1">
-              {user ? (
+              {user !== null ? (
                 <>
+                  <SheetClose asChild>
+                    <UserProfileButton userName={user.username} forMobile={true} />
+                  </SheetClose>
                   <Separator className="bg-primary" />
                   <SheetClose asChild>
                     <NewPostButton forMobile={true} />
