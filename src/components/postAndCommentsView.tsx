@@ -16,16 +16,11 @@ export function PostAndCommentsView({ post, user, comments }: PostAndCommentsVie
   const [newCommentOnPost, setNewCommentOnPost] = React.useState<Array<SubmittedCommentWithAuthorUsernameAndId>>([]);
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
   const [successfullyEditedPost, setSuccessfullyEditedPost] = React.useState<PostWithAuthorNameTagsAndCommentCount | null>(null);
-  const postIsSaved =
-    user === null
-      ? false
-      : post.savedBy.find(({ userId }) => {
-          return userId === user.userId;
-        }) !== undefined;
+
   return (
     <main className="flex flex-col">
       <Suspense fallback={<SkeletonFullPagePost />}>{renderEditedOrExistingPost(user, setIsEditing, isEditing, setSuccessfullyEditedPost, successfullyEditedPost, post)}</Suspense>
-      <PostLinks postIsSaved={postIsSaved} setIsEditing={setIsEditing} numberOfComments={post._count.comments + newCommentOnPost.length} postId={post.id} postAuthorId={post.authorId} user={user} setNewComments={setNewCommentOnPost} />
+      <PostLinks postIsSaved={post.savedBy.length >= 1} setIsEditing={setIsEditing} numberOfComments={post._count.comments + newCommentOnPost.length} postId={post.id} postAuthorId={post.authorId} user={user} setNewComments={setNewCommentOnPost} />
       <Suspense fallback={<SkeletonCommentPreview />}>
         <CommentsView user={user} comments={comments} newCommentsOnPost={newCommentOnPost} />
       </Suspense>
