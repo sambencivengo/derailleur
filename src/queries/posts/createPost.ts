@@ -12,7 +12,6 @@ import { PrismaQueryErrorCodes } from '~prisma/prismaErrorCodes';
 
 export const createPost: CreatePost = async (postPayload: CreatePostPayload, userId: string, postId = uuid(), attemptsLeft: number = 3): Promise<DerailleurResponse<PostWithAuthorNameAndTags>> => {
 
-  console.log({ postPayload });
   if (attemptsLeft < 1) {
     return (createErrorResponse([{ data: { postPayload, userId, postId }, message: "Create Post recursive attempts exhausted" }]));
   }
@@ -24,12 +23,12 @@ export const createPost: CreatePost = async (postPayload: CreatePostPayload, use
       });
       return (createErrorResponse(errors));
     }
-    const { content, title, tags, images = '' } = validateResponse.result;
+    const { content, title, tags, images } = validateResponse.result;
     try {
       const newPost = await prisma.post.create({
         data: {
           id: postId,
-          images: images.split(',').map((image => image)),
+          images: images !== undefined ? images.split(',').map((image => image)) : [],
           authorId: userId,
           content,
           title,

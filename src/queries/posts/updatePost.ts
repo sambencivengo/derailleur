@@ -5,7 +5,7 @@ import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } fro
 import prisma from "~prisma/prisma";
 
 export const updatePost: UpdatePost = async (updatePostPayload: UpdatePostPayload, postId: string, authorId: string): Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount>> => {
-  const { content, title, published } = updatePostPayload;
+  const { content, title, published, tags, images } = updatePostPayload;
   try {
     const updatedPost = await prisma.post.update({
       where: {
@@ -16,6 +16,16 @@ export const updatePost: UpdatePost = async (updatePostPayload: UpdatePostPayloa
         content,
         title,
         published,
+        images: images !== undefined ? images.split(',').map((image => image)) : [],
+        tags: {
+          connectOrCreate: tags.map((tagName) => {
+            const upperCaseTagName = tagName.toUpperCase();
+            return {
+              where: { name: upperCaseTagName },
+              create: { name: upperCaseTagName },
+            };
+          }),
+        },
       },
       ...postWithAuthorNameTagsAndCommentCountQuery
     });
