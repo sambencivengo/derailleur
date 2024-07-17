@@ -10,8 +10,8 @@ interface HeadingProps {
 export const TextHeading = ({ heading, className, italicAnimate = false }: HeadingProps) => {
   const headingLetters = italicAnimate
     ? heading.split('').map((letter) => {
-        return <p className="hover:italic hover:bg-primary">{letter}</p>;
+        return <p className="hover:italic">{letter}</p>;
       })
     : heading;
-  return <div className={cn('text-xl font-bold flex flex-row', className)}>{headingLetters}</div>;
+  return <div className={cn('text-xl font-bold flex flex-row', italicAnimate ? 'hover:bg-primary' : '', className)}>{headingLetters}</div>;
 };

@@ -23,16 +23,18 @@ export function CommentLinks({ user, postId, setNewComments, parentCommentId, is
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
       <div className="w-full h-full flex flex-row items-center">
-        <Button
-          variant="link"
-          className=""
-          onClick={() => {
-            user === null ? router.push('/login') : setIsReplying(true);
-          }}
-        >
-          Reply
-        </Button>
-        {isUsersComment && (
+        {!isReplying && (
+          <Button
+            variant="link"
+            className=""
+            onClick={() => {
+              user === null ? router.push('/login') : setIsReplying(true);
+            }}
+          >
+            Reply
+          </Button>
+        )}
+        {isUsersComment && !isReplying && (
           <Button variant="link" onClick={() => setIsEditing(true)}>
             Edit
           </Button>
