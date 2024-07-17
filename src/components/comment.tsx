@@ -1,12 +1,12 @@
 'use client';
 
-import moment from 'moment';
 import Link from 'next/link';
 import React from 'react';
 import { CommentLinks } from '~/components/commentLinks';
 import { EditCommentForm } from '~/components/editCommentForm';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from '~/components/ui';
 import { CommentWithAuthorUsernameIDAndReplies, SubmittedCommentWithAuthorUsernameAndId, UserAndSession } from '~/types';
+import { determineDateToShow } from '~/utils/dateUtils';
 
 interface CommentProps {
   user: UserAndSession | null;
@@ -21,9 +21,10 @@ interface CommentProps {
   postId: string;
   repliesCount: number;
   commentId: string;
+  updatedAt: Date;
 }
 
-export function Comment({ author, commentId, content, createdAt, postId, replies, repliesCount, user, level }: CommentProps) {
+export function Comment({ author, commentId, content, createdAt, updatedAt, postId, replies, repliesCount, user, level }: CommentProps) {
   const [newCommentsOnComment, setNewCommentsOnComment] = React.useState<Array<SubmittedCommentWithAuthorUsernameAndId>>([]);
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
   const [successfullyEditedComment, setSuccessfullyEditedComment] = React.useState<SubmittedCommentWithAuthorUsernameAndId | null>(null);
@@ -47,7 +48,7 @@ export function Comment({ author, commentId, content, createdAt, postId, replies
           <CardContent className="w-full">
             <p>{successfullyEditedComment === null ? content : successfullyEditedComment.content}</p>
             <div className="flex flex-row gap-x-2">
-              <CardDescription>{moment(createdAt).format('LLL')}</CardDescription>
+              <CardDescription>{determineDateToShow(createdAt, updatedAt)}</CardDescription>
             </div>
           </CardContent>
         </>
@@ -59,11 +60,11 @@ export function Comment({ author, commentId, content, createdAt, postId, replies
             ...load more comments
           </Link>
         )}
-        {newCommentsOnComment.length > 0 && newCommentsOnComment.map(({ author, content, createdAt, id, postId }, idx) => <Comment key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} replies={[]} repliesCount={0} user={user} level={0} />)}
+        {newCommentsOnComment.length > 0 && newCommentsOnComment.map(({ author, content, createdAt, id, postId, updatedAt }, idx) => <Comment updatedAt={updatedAt} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} replies={[]} repliesCount={0} user={user} level={0} />)}
         {level < 4 &&
           replies.length > 0 &&
-          replies.map(({ _count: { replies: repliesCount }, author, content, createdAt, id, postId, replies }, idx: number) => {
-            return <Comment key={idx} author={author} commentId={id} content={content} postId={postId} createdAt={createdAt} user={user} replies={replies} repliesCount={repliesCount} level={level + 1} />;
+          replies.map(({ _count: { replies: repliesCount }, author, content, createdAt, id, postId, replies, updatedAt }, idx: number) => {
+            return <Comment updatedAt={updatedAt} key={idx} author={author} commentId={id} content={content} postId={postId} createdAt={createdAt} user={user} replies={replies} repliesCount={repliesCount} level={level + 1} />;
           })}
       </CardFooter>
     </Card>

@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, 
 import Link from 'next/link';
 import { ImageWrapper } from '~/components/imageWrapper';
 import { PostWithAuthorNameTagsAndCommentCount } from '~/types';
+import { determineDateToShow } from '~/utils/dateUtils';
 
 interface PostViewProps {
   post: PostWithAuthorNameTagsAndCommentCount;
@@ -20,6 +21,7 @@ export function PostView({ post }: PostViewProps) {
     images,
     id,
     tags,
+    updatedAt,
   } = post;
   const renderTagBadges = tags.map((tag, idx) => {
     return (
@@ -44,9 +46,7 @@ export function PostView({ post }: PostViewProps) {
               {username}
             </Link>
           </CardDescription>
-          <CardDescription>
-            {moment(createdAt).fromNow()} {/* NOTE: FAVORITE IS YET TO BE BUILT */}
-          </CardDescription>
+          <CardDescription>{determineDateToShow(createdAt, updatedAt)}</CardDescription>
         </div>
         <CardContent>
           <p>{content}</p>
