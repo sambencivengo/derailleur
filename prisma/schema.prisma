@@ -21,6 +21,7 @@ model User {
   posts Post[]
   comments Comment[]
   sessions Session[]
+  saved UserSavedPosts[]
 }
 
 model Session {
@@ -43,6 +44,16 @@ model Post {
   tags Tag[]
   images String[]
   comments Comment[]
+  savedBy UserSavedPosts[]
+}
+
+model UserSavedPosts {
+  id String @id @unique
+  createdAt DateTime @default(now())
+  post Post @relation(fields: [postId], references: [id])
+  postId String
+  user User @relation(fields: [userId], references: [id])
+  userId String
 }
 
 model Comment {
