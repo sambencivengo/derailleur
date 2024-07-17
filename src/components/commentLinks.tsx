@@ -10,11 +10,13 @@ interface CommentLinksProps {
   user: UserAndSession | null;
   postId: string;
   setNewComments: React.Dispatch<React.SetStateAction<Array<SubmittedCommentWithAuthorUsernameAndId>>>;
+  isEditing: boolean;
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   parentCommentId: string | null;
   isUsersComment: boolean;
 }
 
-export function CommentLinks({ user, postId, setNewComments, parentCommentId, isUsersComment }: CommentLinksProps) {
+export function CommentLinks({ user, postId, setNewComments, parentCommentId, isUsersComment, isEditing, setIsEditing }: CommentLinksProps) {
   const [isReplying, setIsReplying] = React.useState<boolean>(false);
   const router = useRouter();
 
@@ -31,12 +33,12 @@ export function CommentLinks({ user, postId, setNewComments, parentCommentId, is
           Reply
         </Button>
         {isUsersComment && (
-          <Button variant="link" onClick={() => {}}>
+          <Button variant="link" onClick={() => setIsEditing(true)}>
             Edit
           </Button>
         )}
       </div>
-      {user !== null && <CommentReplyForm parentCommentId={parentCommentId} postId={postId} userId={user.userId} isReplying={isReplying} setIsReplying={setIsReplying} setNewComments={setNewComments} />}
+      {user !== null && isEditing !== true && <CommentReplyForm parentCommentId={parentCommentId} postId={postId} userId={user.userId} isReplying={isReplying} setIsReplying={setIsReplying} setNewComments={setNewComments} />}
     </div>
   );
 }

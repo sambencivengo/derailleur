@@ -66,7 +66,6 @@ export function CommentReplyForm({ parentCommentId, postId, userId, isReplying, 
 
   return (
     <div className="w-full mb-2">
-      {/* {newReply && <SubmittedCommentReply content={newReply.content} createdAt={newReply.createdAt} parentCommentId={newReply.parentCommentId} postId={newReply.postId} userId={newReply.userId} username={newReply.username} />} */}
       {isReplying && (
         <div className="w-full">
           <FormWrapper form={form} onSubmit={callOnSubmit}>
@@ -83,7 +82,7 @@ export function CommentReplyForm({ parentCommentId, postId, userId, isReplying, 
               )}
             />
             {submitCommentError && <QueryError errors={submitCommentError} />}
-            <div className="flex flex-row gap-2 items-center">
+            <div className="flex flex-row gap-2 justify-end">
               <Button type="submit">{isLoading ? <Spinner /> : 'Submit'}</Button>
               <Button size={'sm'} variant={'ghost'} onClick={() => setIsReplying(false)}>
                 <X />
