@@ -8,6 +8,7 @@ import { FormWrapper } from '~/components/formWrapper';
 import { QueryError } from '~/components/queryError';
 import { Spinner } from '~/components/spinner';
 import { Button, FormControl, FormField, FormItem, FormMessage, Textarea } from '~/components/ui';
+import { useToast } from '~/components/ui/use-toast';
 import { createComment } from '~/queries';
 import { CreateCommentPayload, SubmittedCommentWithAuthorUsernameAndId } from '~/types';
 import { DerailleurError } from '~/utils';
@@ -35,7 +36,7 @@ interface CommentReplyFormProps {
 export function CommentReplyForm({ parentCommentId, postId, userId, isReplying, setIsReplying, setNewComments }: CommentReplyFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [submitCommentError, setSubmitCommentError] = React.useState<DerailleurError[] | null>(null);
-
+  const { toast } = useToast();
   const form = useForm<CreateCommentPayload>({
     resolver: zodResolver(createCommentSchema),
     defaultValues: {
@@ -55,6 +56,10 @@ export function CommentReplyForm({ parentCommentId, postId, userId, isReplying, 
           setSubmitCommentError(response.errors);
         } else {
           setNewComments((existingComments) => [result, ...existingComments]);
+          toast({
+            title: 'Comment submitted!',
+            className: 'bg-green-400',
+          });
           setIsReplying(false);
           setIsLoading(false);
         }

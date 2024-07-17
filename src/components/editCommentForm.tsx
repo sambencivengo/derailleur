@@ -8,6 +8,7 @@ import { FormWrapper } from '~/components/formWrapper';
 import { QueryError } from '~/components/queryError';
 import { Spinner } from '~/components/spinner';
 import { Button, FormControl, FormField, FormItem, FormMessage, Textarea } from '~/components/ui';
+import { useToast } from '~/components/ui/use-toast';
 import { updateComment } from '~/queries/comments/updateComment';
 import { SubmittedCommentWithAuthorUsernameAndId, UpdateCommentPayload } from '~/types';
 import { DerailleurError } from '~/utils';
@@ -35,7 +36,7 @@ interface EditCommentFormProps {
 export function EditCommentForm({ commentId, userId, content: existingContent, setIsEditing, setSuccessfullyEditedComment }: EditCommentFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [updateCommentError, setUpdateCommentError] = React.useState<DerailleurError[] | null>(null);
-
+  const { toast } = useToast();
   const form = useForm<UpdateCommentPayload>({
     resolver: zodResolver(editCommentSchema),
     defaultValues: {
@@ -53,6 +54,10 @@ export function EditCommentForm({ commentId, userId, content: existingContent, s
           setIsLoading(false);
           setUpdateCommentError(response.errors);
         } else {
+          toast({
+            title: 'Comment edited!',
+            className: 'bg-green-400',
+          });
           setSuccessfullyEditedComment(result);
           setIsEditing(false);
           setIsLoading(false);

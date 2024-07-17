@@ -9,6 +9,7 @@ import { createPostSchema, CreatePostSchema } from '~/schemas/postSchemas';
 import { CreatePostPayload, TagWithPostCount } from '~/types';
 import { AlertCircle } from 'lucide-react';
 import { createPost, getTagsWithCountByName } from '~/queries';
+import { useToast } from '~/components/ui/use-toast';
 
 export type Framework = Record<'value' | 'label', string>;
 
@@ -21,6 +22,7 @@ export function NewPostForm({ userId }: NewPostFormProps) {
   const [tags, setTags] = React.useState<TagWithPostCount[]>([]);
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
+  const { toast } = useToast();
 
   const [selected, setSelected] = React.useState<TagWithPostCount[]>([]);
 
@@ -48,7 +50,6 @@ export function NewPostForm({ userId }: NewPostFormProps) {
     ); // validate fragment locator
     return !!urlPattern.test(urlString);
   };
-
   async function onSubmit(values: CreatePostSchema) {
     const { images } = values;
     const arrayOfImagesContainsInvalidUrl =
@@ -70,6 +71,10 @@ export function NewPostForm({ userId }: NewPostFormProps) {
         setIsLoading(false);
         setSubmitPostError(response.errors.map((error) => error.message));
       } else {
+        toast({
+          title: 'Post submitted!',
+          className: 'bg-green-400',
+        });
         router.push(`/post/${response.result.id}`);
       }
     }
@@ -151,7 +156,6 @@ export function NewPostForm({ userId }: NewPostFormProps) {
               );
             }}
           />
-
           {submitPostError && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />

@@ -8,6 +8,7 @@ import { createPostSchema, CreatePostSchema } from '~/schemas/postSchemas';
 import { PostWithAuthorNameTagsAndCommentCount, TagWithPostCount, UpdatePostPayload, UserAndSession } from '~/types';
 import { AlertCircle } from 'lucide-react';
 import { getTagsWithCountByName, updatePost } from '~/queries';
+import { useToast } from '~/components/ui/use-toast';
 
 export type Framework = Record<'value' | 'label', string>;
 
@@ -26,6 +27,7 @@ export function EditPostForm({ user, postId, content, title, existingTags, image
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [tags, setTags] = React.useState<TagWithPostCount[]>([]);
   const [open, setOpen] = React.useState(false);
+  const { toast } = useToast();
 
   const [selected, setSelected] = React.useState<TagWithPostCount[]>([]);
   useEffect(() => {
@@ -76,9 +78,7 @@ export function EditPostForm({ user, postId, content, title, existingTags, image
       return;
     } else {
       setIsLoading(true);
-      console.log(values);
       const valuesWithTags: UpdatePostPayload = { ...values, images: images === '' ? undefined : images, tags: selected.map((tag) => tag.name), existingTags: existingTags };
-      console.log(valuesWithTags, { valuesWithTags });
       const response = await updatePost(valuesWithTags, postId, user.userId);
       if (response.errors.length > 0 || response.result === null) {
         setIsLoading(false);
@@ -86,6 +86,10 @@ export function EditPostForm({ user, postId, content, title, existingTags, image
         setIsEditing(false);
       } else {
         setSuccessfullyEditedPost(response.result);
+        toast({
+          title: 'Post edited!',
+          className: 'bg-green-400',
+        });
         setIsEditing(false);
         setIsLoading(false);
       }
