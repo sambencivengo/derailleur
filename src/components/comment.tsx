@@ -38,13 +38,13 @@ export function Comment({ comment, user, level }: CommentProps) {
         </div>
       </CardContent>
       <CardFooter className="flex flex-col p-0 pl-5 pr-1 pb-1 gap-y-2">
-        <CommentLinks parentCommentId={id} postId={postId} user={user} setNewComments={setNewCommentsOnComment} />
+        <CommentLinks parentCommentId={id} postId={postId} user={user} setNewComments={setNewCommentsOnComment} isUsersComment={user !== null && user.userId === comment.authorId} />
         {level >= 4 && repliesCount > 0 && (
           <Link href={`/post/${postId}/comment/${id}`} className="text-primary hover:underline">
             ...load more comments
           </Link>
         )}
-        {newCommentsOnComment.length > 0 && newCommentsOnComment.map(({ author, content, createdAt, id, postId }, idx) => <SubmittedCommentReply key={idx} username={author.username} postId={postId} user={user} content={content} createdAt={createdAt} commentId={id} />)}
+        {newCommentsOnComment.length > 0 && newCommentsOnComment.map(({ author, content, createdAt, id, postId, authorId }, idx) => <SubmittedCommentReply key={idx} authorId={authorId} username={author.username} postId={postId} user={user} content={content} createdAt={createdAt} commentId={id} />)}
         {level < 4 &&
           replies.length > 0 &&
           replies.map((comment: any, idx: number) => {
@@ -59,12 +59,13 @@ export interface SubmittedCommentReplyProps {
   username: string;
   user: UserAndSession | null;
   commentId: string;
+  authorId: string;
   content: string;
   createdAt: Date;
   postId: string;
 }
 
-export function SubmittedCommentReply({ user, username, content, createdAt, postId, commentId }: SubmittedCommentReplyProps) {
+export function SubmittedCommentReply({ user, username, content, createdAt, postId, commentId, authorId }: SubmittedCommentReplyProps) {
   const [newCommentsOnComment, setNewCommentsOnComment] = React.useState<Array<SubmittedCommentWithAuthorUsernameAndId>>([]);
 
   return (
@@ -79,8 +80,8 @@ export function SubmittedCommentReply({ user, username, content, createdAt, post
         </div>
       </CardContent>
       <CardFooter className="flex flex-col p-0 pl-5 pr-1 pb-1 gap-y-2">
-        <CommentLinks parentCommentId={commentId} postId={postId} user={user} setNewComments={setNewCommentsOnComment} />
-        {newCommentsOnComment.length > 0 && newCommentsOnComment.map(({ author, content, createdAt, id, postId }, idx) => <SubmittedCommentReply key={idx} username={author.username} postId={postId} user={user} content={content} createdAt={createdAt} commentId={id} />)}
+        <CommentLinks parentCommentId={commentId} postId={postId} user={user} setNewComments={setNewCommentsOnComment} isUsersComment={user !== null && user.userId === authorId} />
+        {newCommentsOnComment.length > 0 && newCommentsOnComment.map(({ author, content, createdAt, id, postId, authorId }, idx) => <SubmittedCommentReply key={idx} authorId={authorId} username={author.username} postId={postId} user={user} content={content} createdAt={createdAt} commentId={id} />)}
       </CardFooter>
     </Card>
   );

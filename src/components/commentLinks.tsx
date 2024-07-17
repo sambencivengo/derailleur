@@ -11,9 +11,10 @@ interface CommentLinksProps {
   postId: string;
   setNewComments: React.Dispatch<React.SetStateAction<Array<SubmittedCommentWithAuthorUsernameAndId>>>;
   parentCommentId: string | null;
+  isUsersComment: boolean;
 }
 
-export function CommentLinks({ user, postId, setNewComments, parentCommentId }: CommentLinksProps) {
+export function CommentLinks({ user, postId, setNewComments, parentCommentId, isUsersComment }: CommentLinksProps) {
   const [isReplying, setIsReplying] = React.useState<boolean>(false);
   const router = useRouter();
 
@@ -29,13 +30,11 @@ export function CommentLinks({ user, postId, setNewComments, parentCommentId }: 
         >
           Reply
         </Button>
-
-        <Button variant="link" onClick={() => {}}>
-          Save
-        </Button>
-        <Button variant="link" onClick={() => {}}>
-          Edit
-        </Button>
+        {isUsersComment && (
+          <Button variant="link" onClick={() => {}}>
+            Edit
+          </Button>
+        )}
       </div>
       {user !== null && <CommentReplyForm parentCommentId={parentCommentId} postId={postId} userId={user.userId} isReplying={isReplying} setIsReplying={setIsReplying} setNewComments={setNewComments} />}
     </div>

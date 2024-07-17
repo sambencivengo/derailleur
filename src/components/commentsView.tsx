@@ -11,8 +11,8 @@ export function CommentsView({ user, comments, newCommentsOnPost }: CommentsView
   return (
     <div className="flex flex-col">
       {newCommentsOnPost.length > 0 &&
-        newCommentsOnPost.map(({ author: { username }, content, createdAt, id, parentCommentId, postId }, idx) => {
-          return <SubmittedCommentReply commentId={id} key={idx} content={content} createdAt={createdAt} postId={postId} user={user} username={username} />;
+        newCommentsOnPost.map(({ author, content, createdAt, id, postId }, idx) => {
+          return <SubmittedCommentReply commentId={id} authorId={author.id} key={idx} content={content} createdAt={createdAt} postId={postId} user={user} username={author.username} />;
         })}
       {comments.map((comment, idx) => {
         return <Comment key={idx} comment={comment} user={user} level={0} />;
