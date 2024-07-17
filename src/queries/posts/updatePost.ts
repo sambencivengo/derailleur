@@ -5,7 +5,16 @@ import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } fro
 import prisma from "~prisma/prisma";
 
 export const updatePost: UpdatePost = async (updatePostPayload: UpdatePostPayload, postId: string, authorId: string): Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount>> => {
-  const { content, title, published, tags, images } = updatePostPayload;
+  const { content, title, published, tags, images, existingTags } = updatePostPayload;
+
+  const tagsToDelete: Array<{ name: string, id: string; }> = [];
+  for (let i = 0; i < existingTags.length; i++) {
+    const existingTag = existingTags[i];
+    if (!tags.includes(existingTag.name)) {
+      tagsToDelete.push(existingTag);
+    }
+  }
+
   try {
     const updatedPost = await prisma.post.update({
       where: {
@@ -17,7 +26,11 @@ export const updatePost: UpdatePost = async (updatePostPayload: UpdatePostPayloa
         title,
         published,
         images: images !== undefined ? images.split(',').map((image => image)) : [],
-        tags: {
+        tags:
+        {
+          disconnect: existingTags.map(({ id }) => {
+            return { id };
+          }),
           connectOrCreate: tags.map((tagName) => {
             const upperCaseTagName = tagName.toUpperCase();
             return {

@@ -13,7 +13,9 @@ export interface UpdatePostPayload {
   title: string;
   content: string;
   published?: boolean;
+  images?: string;
   tags: string[];
+  existingTags: { id: string, name: string; }[];
 }
 
 // Query Function Types
@@ -31,7 +33,7 @@ export type GetPostById = (
 
 export type UpdatePost = (
   updatePostPayload: UpdatePostPayload,
-  userId: string,
+  postId: string,
   authorId: string,
 ) => Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount>>;
 

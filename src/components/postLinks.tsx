@@ -12,9 +12,10 @@ interface PostLinksProps {
   postAuthorId: string;
   numberOfComments: number;
   setNewComments: React.Dispatch<React.SetStateAction<Array<SubmittedCommentWithAuthorUsernameAndId>>>;
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function PostLinks({ user, postId, numberOfComments, setNewComments, postAuthorId }: PostLinksProps) {
+export function PostLinks({ user, postId, numberOfComments, setNewComments, postAuthorId, setIsEditing }: PostLinksProps) {
   const [isReplying, setIsReplying] = React.useState<boolean>(false);
   const router = useRouter();
 
@@ -35,7 +36,7 @@ export function PostLinks({ user, postId, numberOfComments, setNewComments, post
           Save
         </Button>
         {user !== null && user.userId === postAuthorId && (
-          <Button variant="link" onClick={() => {}}>
+          <Button variant="link" onClick={() => setIsEditing(true)}>
             Edit
           </Button>
         )}

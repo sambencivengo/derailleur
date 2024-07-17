@@ -8,7 +8,7 @@ export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
       required_error: 'Post title is required',
       invalid_type_error: 'Post title must be a string',
     })
-    .min(10, {
+    .min(5, {
       message: 'Post title must be at least 5 characters.',
     })
     .trim(),

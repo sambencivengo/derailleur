@@ -77,6 +77,7 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                   className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
+                      e.preventDefault();
                       handleUnselect(tag);
                     }
                   }}
@@ -84,7 +85,10 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
                     e.preventDefault();
                     e.stopPropagation();
                   }}
-                  onClick={() => handleUnselect(tag)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleUnselect(tag);
+                  }}
                 >
                   <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
                 </button>
