@@ -58,7 +58,7 @@ export function Comment({ author, commentId, content, createdAt, updatedAt, post
         {isEditing ? null : <CommentLinks commentId={commentId} showContextLink={showContextLink} isEditing={isEditing} setIsEditing={setIsEditing} parentCommentId={commentId} postId={postId} user={user} setNewComments={setNewCommentsOnComment} isUsersComment={user !== null && user.userId === author.id} />}
         {level >= 4 && repliesCount > 0 && (
           <Link href={`/post/${postId}/comment/${commentId}`} className="text-primary hover:underline">
-            ...load more comments
+            ...continue comment thread
           </Link>
         )}
         {newCommentsOnComment.length > 0 && newCommentsOnComment.map(({ author, content, createdAt, id, postId, updatedAt }, idx) => <Comment updatedAt={updatedAt} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} replies={[]} repliesCount={0} user={user} level={0} />)}

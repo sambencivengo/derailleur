@@ -48,7 +48,7 @@ export function CommentLinks({ showContextLink = false, user, postId, setNewComm
               router.push(`/post/${postId}/comment/${commentId}`);
             }}
           >
-            View Full Post
+            Context
           </Button>
         )}
         {}
