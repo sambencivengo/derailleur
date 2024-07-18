@@ -1,4 +1,5 @@
 import { PostWithAuthorNameAndTags, PostWithAuthorNameTagsAndCommentCount } from "~/types";
+import { SavedPostWithPostAuthorNameTagsAndCommentCount } from "~/types/models/savedPosts";
 import { DerailleurResponse } from "~/utils";
 
 export interface CreatePostPayload {
@@ -42,3 +43,4 @@ export type GetPosts = (username?: string) => Promise<DerailleurResponse<PostWit
 export type UnsavePost = (postId: string, userId: string) => Promise<DerailleurResponse<string>>;
 export type SavePost = (postId: string, userId: string, savedPostId?: string) => Promise<DerailleurResponse<string>>;
 export type GetSavedPost = (postId: string, userId: string) => Promise<DerailleurResponse<boolean>>;
+export type GetSavedPosts = (userId: string) => Promise<DerailleurResponse<SavedPostWithPostAuthorNameTagsAndCommentCount[]>>;
