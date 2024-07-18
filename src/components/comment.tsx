@@ -5,7 +5,7 @@ import React from 'react';
 import { CommentLinks } from '~/components/commentLinks';
 import { EditCommentForm } from '~/components/editCommentForm';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from '~/components/ui';
-import { CommentWithAuthorUsernameIDAndReplies, SubmittedCommentWithAuthorUsernameAndId, UserAndSession } from '~/types';
+import { CommentWithAuthorUsernameIDAndReplies, CommentWithUserNameAndId, UserAndSession } from '~/types';
 import { determineDateToShow } from '~/utils/dateUtils';
 
 interface CommentProps {
@@ -25,9 +25,9 @@ interface CommentProps {
 }
 
 export function Comment({ author, commentId, content, createdAt, updatedAt, postId, replies, repliesCount, user, level }: CommentProps) {
-  const [newCommentsOnComment, setNewCommentsOnComment] = React.useState<Array<SubmittedCommentWithAuthorUsernameAndId>>([]);
+  const [newCommentsOnComment, setNewCommentsOnComment] = React.useState<Array<CommentWithUserNameAndId>>([]);
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
-  const [successfullyEditedComment, setSuccessfullyEditedComment] = React.useState<SubmittedCommentWithAuthorUsernameAndId | null>(null);
+  const [successfullyEditedComment, setSuccessfullyEditedComment] = React.useState<CommentWithUserNameAndId | null>(null);
 
   return (
     <Card className="w-full">
@@ -46,10 +46,10 @@ export function Comment({ author, commentId, content, createdAt, updatedAt, post
             <p className="font-bold">{author.username}</p>
           </CardHeader>
           <CardContent className="w-full">
-            <p>{successfullyEditedComment === null ? content : successfullyEditedComment.content}</p>
             <div className="flex flex-row gap-x-2">
               <CardDescription>{determineDateToShow(createdAt, updatedAt)}</CardDescription>
             </div>
+            <p>{successfullyEditedComment === null ? content : successfullyEditedComment.content}</p>
           </CardContent>
         </>
       )}
