@@ -11,9 +11,10 @@ interface ProfileLayoutProps {
 export default async function ProfileLayout({ children, params }: ProfileLayoutProps) {
   const user = await getUserSession();
   const { username } = params;
+  const userIsLoggedIn = user !== null && user.username === username;
   return (
     <div>
-      <TextHeading heading={user !== null && user.username === username ? `Hey, @${username}` : username} className="text-2xl" />
+      <TextHeading heading={userIsLoggedIn ? `Hey, @${username}` : username} className="text-2xl" />
 
       <div className="flex flex-row gap-5 text-lg">
         <Link className={cn('text-primary hover:underline', 'italic')} href={`/user/${username}/posts`}>
@@ -22,9 +23,11 @@ export default async function ProfileLayout({ children, params }: ProfileLayoutP
         <Link className={cn('text-primary hover:underline', 'italic')} href={`/user/${username}/comments`}>
           Comments
         </Link>
-        <Link className={cn('text-primary hover:underline', 'italic')} href={`/user/${username}/saved`}>
-          Saved
-        </Link>
+        {userIsLoggedIn && (
+          <Link className={cn('text-primary hover:underline', 'italic')} href={`/user/${username}/saved`}>
+            Saved
+          </Link>
+        )}
       </div>
       {children}
     </div>
