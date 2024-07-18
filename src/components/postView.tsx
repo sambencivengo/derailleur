@@ -41,7 +41,8 @@ export function PostView({ post }: PostViewProps) {
         <div className="flex flex-row space-x-1">
           <CardDescription>
             by {''}
-            <Link className="underline hover:text-primary" href={`/user/${authorId}`}>
+            {/* TODO: update to go to user/${authorId}, not the posts endpoint. Query both and do a user profile context*/}
+            <Link className="underline hover:text-primary" href={`/user/${authorId}/posts`}>
               {username}
             </Link>
           </CardDescription>

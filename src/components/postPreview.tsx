@@ -40,7 +40,7 @@ export function PostPreview({ post }: PostPreviewProps) {
           <div className="flex flex-row gap-1">
             <CardDescription>
               by{' '}
-              <Link className="underline hover:text-primary" href={`/user/${username}`}>
+              <Link className="underline hover:text-primary" href={`/user/${username}/posts`}>
                 {username}
               </Link>
             </CardDescription>
