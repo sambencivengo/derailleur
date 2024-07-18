@@ -25,7 +25,7 @@ export default async function Page({ params }: { params: { username: string } })
         <Separator />
         <div className="space-y-2 flex flex-col">
           {result.map(({ author, content, createdAt, id, postId, updatedAt }, idx) => {
-            return <Comment key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} replies={[]} updatedAt={updatedAt} repliesCount={0} user={user} level={0} />;
+            return <Comment showContextLink={true} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} replies={[]} updatedAt={updatedAt} repliesCount={0} user={user} level={0} />;
           })}
         </div>
       </div>

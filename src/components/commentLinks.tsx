@@ -14,9 +14,11 @@ interface CommentLinksProps {
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   parentCommentId: string | null;
   isUsersComment: boolean;
+  commentId: string;
+  showContextLink?: boolean;
 }
 
-export function CommentLinks({ user, postId, setNewComments, parentCommentId, isUsersComment, isEditing, setIsEditing }: CommentLinksProps) {
+export function CommentLinks({ showContextLink = false, user, postId, setNewComments, parentCommentId, isUsersComment, isEditing, commentId, setIsEditing }: CommentLinksProps) {
   const [isReplying, setIsReplying] = React.useState<boolean>(false);
   const router = useRouter();
 
@@ -39,6 +41,17 @@ export function CommentLinks({ user, postId, setNewComments, parentCommentId, is
             Edit
           </Button>
         )}
+        {showContextLink && (
+          <Button
+            variant="link"
+            onClick={() => {
+              router.push(`/post/${postId}/comment/${commentId}`);
+            }}
+          >
+            View Full Post
+          </Button>
+        )}
+        {}
       </div>
       {user !== null && isEditing !== true && <CommentReplyForm parentCommentId={parentCommentId} postId={postId} userId={user.userId} isReplying={isReplying} setIsReplying={setIsReplying} setNewComments={setNewComments} />}
     </div>

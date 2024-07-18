@@ -22,9 +22,10 @@ interface CommentProps {
   repliesCount: number;
   commentId: string;
   updatedAt: Date;
+  showContextLink?: boolean;
 }
 
-export function Comment({ author, commentId, content, createdAt, updatedAt, postId, replies, repliesCount, user, level }: CommentProps) {
+export function Comment({ author, commentId, content, createdAt, updatedAt, postId, replies, repliesCount, user, showContextLink = false, level }: CommentProps) {
   const [newCommentsOnComment, setNewCommentsOnComment] = React.useState<Array<CommentWithUserNameAndId>>([]);
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
   const [successfullyEditedComment, setSuccessfullyEditedComment] = React.useState<CommentWithUserNameAndId | null>(null);
@@ -54,7 +55,7 @@ export function Comment({ author, commentId, content, createdAt, updatedAt, post
         </>
       )}
       <CardFooter className="flex flex-col p-0 pl-5 pr-1 pb-1 gap-y-2">
-        {isEditing ? null : <CommentLinks isEditing={isEditing} setIsEditing={setIsEditing} parentCommentId={commentId} postId={postId} user={user} setNewComments={setNewCommentsOnComment} isUsersComment={user !== null && user.userId === author.id} />}
+        {isEditing ? null : <CommentLinks commentId={commentId} showContextLink={showContextLink} isEditing={isEditing} setIsEditing={setIsEditing} parentCommentId={commentId} postId={postId} user={user} setNewComments={setNewCommentsOnComment} isUsersComment={user !== null && user.userId === author.id} />}
         {level >= 4 && repliesCount > 0 && (
           <Link href={`/post/${postId}/comment/${commentId}`} className="text-primary hover:underline">
             ...load more comments
