@@ -4,9 +4,9 @@ import { v4 as uuid } from 'uuid';
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
 import prisma from "~prisma/prisma";
 import { Prisma } from "@prisma/client";
-import { CreateComment, CreateCommentPayload, SubmittedCommentWithAuthorUsernameAndId } from '~/types';
+import { CreateComment, CreateCommentPayload, CommentWithUserNameAndId } from '~/types';
 
-export const createComment: CreateComment = async (createCommentPayload: CreateCommentPayload, postId: string, userId: string, parentId?: string, commentId = uuid()): Promise<DerailleurResponse<SubmittedCommentWithAuthorUsernameAndId>> => {
+export const createComment: CreateComment = async (createCommentPayload: CreateCommentPayload, postId: string, userId: string, parentId?: string, commentId = uuid()): Promise<DerailleurResponse<CommentWithUserNameAndId>> => {
   // TODO: validateSchema and form schema creation
   const { content } = createCommentPayload;
 

@@ -10,7 +10,7 @@ import { Spinner } from '~/components/spinner';
 import { Button, FormControl, FormField, FormItem, FormMessage, Textarea } from '~/components/ui';
 import { useToast } from '~/components/ui/use-toast';
 import { updateComment } from '~/queries/comments/updateComment';
-import { SubmittedCommentWithAuthorUsernameAndId, UpdateCommentPayload } from '~/types';
+import { CommentWithUserNameAndId, UpdateCommentPayload } from '~/types';
 import { DerailleurError } from '~/utils';
 
 // TODO: extend the existing schema for editing comments
@@ -31,7 +31,7 @@ interface EditCommentFormProps {
   userId: string;
   content: string;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
-  setSuccessfullyEditedComment: React.Dispatch<React.SetStateAction<SubmittedCommentWithAuthorUsernameAndId | null>>;
+  setSuccessfullyEditedComment: React.Dispatch<React.SetStateAction<CommentWithUserNameAndId | null>>;
 }
 export function EditCommentForm({ commentId, userId, content: existingContent, setIsEditing, setSuccessfullyEditedComment }: EditCommentFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);

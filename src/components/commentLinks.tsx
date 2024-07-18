@@ -4,12 +4,12 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import { CommentReplyForm } from '~/components/commentReplyForm';
 import { Button } from '~/components/ui';
-import { SubmittedCommentWithAuthorUsernameAndId, UserAndSession } from '~/types';
+import { CommentWithUserNameAndId, UserAndSession } from '~/types';
 
 interface CommentLinksProps {
   user: UserAndSession | null;
   postId: string;
-  setNewComments: React.Dispatch<React.SetStateAction<Array<SubmittedCommentWithAuthorUsernameAndId>>>;
+  setNewComments: React.Dispatch<React.SetStateAction<Array<CommentWithUserNameAndId>>>;
   isEditing: boolean;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   parentCommentId: string | null;

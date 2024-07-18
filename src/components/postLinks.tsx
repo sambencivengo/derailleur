@@ -6,7 +6,7 @@ import { CommentReplyForm } from '~/components/commentReplyForm';
 import { Button } from '~/components/ui';
 import { useToast } from '~/components/ui/use-toast';
 import { savePost, unsavePost } from '~/queries';
-import { SubmittedCommentWithAuthorUsernameAndId, UserAndSession } from '~/types';
+import { CommentWithUserNameAndId, UserAndSession } from '~/types';
 import { DerailleurResponse } from '~/utils';
 
 interface PostLinksProps {
@@ -14,7 +14,7 @@ interface PostLinksProps {
   postId: string;
   postAuthorId: string;
   numberOfComments: number;
-  setNewComments: React.Dispatch<React.SetStateAction<Array<SubmittedCommentWithAuthorUsernameAndId>>>;
+  setNewComments: React.Dispatch<React.SetStateAction<Array<CommentWithUserNameAndId>>>;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   postIsSaved: boolean;
 }

@@ -1,10 +1,10 @@
 import { Comment } from '~/components/comment';
-import { CommentWithAuthorUsernameIDAndReplies, SubmittedCommentWithAuthorUsernameAndId, UserAndSession } from '~/types';
+import { CommentWithAuthorUsernameIDAndReplies, CommentWithUserNameAndId, UserAndSession } from '~/types';
 
 interface CommentsViewProps {
   user: UserAndSession | null;
   comments: CommentWithAuthorUsernameIDAndReplies[];
-  newCommentsOnPost: Array<SubmittedCommentWithAuthorUsernameAndId>;
+  newCommentsOnPost: Array<CommentWithUserNameAndId>;
 }
 
 export function CommentsView({ user, comments, newCommentsOnPost }: CommentsViewProps) {

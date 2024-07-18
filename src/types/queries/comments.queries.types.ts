@@ -1,13 +1,13 @@
-import { SubmittedCommentWithAuthorUsernameAndId } from "~/types";
+import { CommentWithUserNameAndId } from "~/types";
 import { DerailleurResponse } from "~/utils";
 
 export type CreateComment = (
   createCommentPayload: CreateCommentPayload, postId: string, userId: string, parentId?: string, commentId?: string
-) => Promise<DerailleurResponse<SubmittedCommentWithAuthorUsernameAndId>>;
+) => Promise<DerailleurResponse<CommentWithUserNameAndId>>;
 
 export type UpdateComment = (
   updateCommentPayload: UpdateCommentPayload, commentId: string, userId: string,
-) => Promise<DerailleurResponse<SubmittedCommentWithAuthorUsernameAndId>>;
+) => Promise<DerailleurResponse<CommentWithUserNameAndId>>;
 
 export interface CreateCommentPayload {
   content: string;

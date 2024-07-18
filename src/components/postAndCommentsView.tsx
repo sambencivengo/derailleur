@@ -5,7 +5,7 @@ import { EditPostForm } from '~/components/editPostForm';
 import { PostLinks } from '~/components/postLinks';
 import { PostView } from '~/components/postView';
 import { Skeleton } from '~/components/ui';
-import { CommentWithAuthorUsernameIDAndReplies, PostWithAuthorNameTagsAndCommentCount, SubmittedCommentWithAuthorUsernameAndId, UserAndSession } from '~/types';
+import { CommentWithAuthorUsernameIDAndReplies, PostWithAuthorNameTagsAndCommentCount, CommentWithUserNameAndId, UserAndSession } from '~/types';
 
 interface PostAndCommentsViewProps {
   post: PostWithAuthorNameTagsAndCommentCount;
@@ -13,7 +13,7 @@ interface PostAndCommentsViewProps {
   comments: CommentWithAuthorUsernameIDAndReplies[];
 }
 export function PostAndCommentsView({ post, user, comments }: PostAndCommentsViewProps) {
-  const [newCommentOnPost, setNewCommentOnPost] = React.useState<Array<SubmittedCommentWithAuthorUsernameAndId>>([]);
+  const [newCommentOnPost, setNewCommentOnPost] = React.useState<Array<CommentWithUserNameAndId>>([]);
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
   const [successfullyEditedPost, setSuccessfullyEditedPost] = React.useState<PostWithAuthorNameTagsAndCommentCount | null>(null);
 

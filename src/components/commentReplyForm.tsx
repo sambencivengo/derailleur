@@ -10,7 +10,7 @@ import { Spinner } from '~/components/spinner';
 import { Button, FormControl, FormField, FormItem, FormMessage, Textarea } from '~/components/ui';
 import { useToast } from '~/components/ui/use-toast';
 import { createComment } from '~/queries';
-import { CreateCommentPayload, SubmittedCommentWithAuthorUsernameAndId } from '~/types';
+import { CreateCommentPayload, CommentWithUserNameAndId } from '~/types';
 import { DerailleurError } from '~/utils';
 
 export const createCommentSchema: z.ZodType<CreateCommentPayload> = z.object({
@@ -31,7 +31,7 @@ interface CommentReplyFormProps {
   userId: string;
   isReplying: boolean;
   setIsReplying: React.Dispatch<React.SetStateAction<boolean>>;
-  setNewComments: React.Dispatch<React.SetStateAction<Array<SubmittedCommentWithAuthorUsernameAndId>>>;
+  setNewComments: React.Dispatch<React.SetStateAction<Array<CommentWithUserNameAndId>>>;
 }
 export function CommentReplyForm({ parentCommentId, postId, userId, isReplying, setIsReplying, setNewComments }: CommentReplyFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
