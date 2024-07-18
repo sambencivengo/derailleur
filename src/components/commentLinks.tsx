@@ -23,8 +23,8 @@ export function CommentLinks({ showContextLink = false, user, postId, setNewComm
   const router = useRouter();
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
-      <div className="w-full h-full flex flex-row items-center">
+    <div className="w-full flex flex-col items-center justify-center">
+      <div className="w-full flex flex-row items-center">
         {!isReplying && (
           <Button
             variant="link"
@@ -51,7 +51,6 @@ export function CommentLinks({ showContextLink = false, user, postId, setNewComm
             Context
           </Button>
         )}
-        {}
       </div>
       {user !== null && isEditing !== true && <CommentReplyForm parentCommentId={parentCommentId} postId={postId} userId={user.userId} isReplying={isReplying} setIsReplying={setIsReplying} setNewComments={setNewComments} />}
     </div>
