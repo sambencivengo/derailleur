@@ -2,7 +2,6 @@ import { QueryError } from '~/components/queryError';
 
 export function RideWithGPSIFrame({ url }: { url: string }) {
   const extractedRouteNumber = extractRideWithGpsRouteId(url);
-  console.log({ extractedRouteNumber }, !Number(extractedRouteNumber));
   if (!Number(extractedRouteNumber) || Number(extractedRouteNumber) <= 0) {
     return <QueryError errors={[{ data: url, message: `Unable to create embedded route. There may be an issue with your share link: ${url}` }]} />;
   } else {
