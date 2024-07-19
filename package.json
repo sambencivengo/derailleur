@@ -9,7 +9,7 @@
     "docker:container": "docker exec -it $cid psql -U user derailleur",
     "dev": "npm run prisma:seed & next dev",
     "dev-lint": "next lint && next dev",
-    "build": "npx prisma generate && next build",
+    "build": "npx prisma generate && npx prisma migrate deploy && next build",
     "start": "next start",
     "lint": "next lint",
     "test": "npx prisma migrate deploy && jest -i",
