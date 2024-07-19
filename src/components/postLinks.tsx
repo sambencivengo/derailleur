@@ -50,42 +50,43 @@ export function PostLinks({ user, postId, numberOfComments, setNewComments, post
       });
     }
   }
-
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
-      <div className="w-full h-full flex flex-row items-center">
-        <Button
-          variant="link"
-          className=""
-          onClick={() => {
-            user === null ? router.push('/login') : setIsReplying(true);
-          }}
-        >
-          Reply
-        </Button>
-
-        <Button
-          variant="link"
-          onClick={() => {
-            if (user === null) {
-              router.push('/login');
-            } else {
-              handleSavePost(user.userId);
-            }
-          }}
-        >
-          {saved ? 'Unsave' : 'Save'}
-        </Button>
-        {user !== null && user.userId === postAuthorId && (
-          <Button variant="link" onClick={() => setIsEditing(true)}>
-            Edit
+    <>
+      <div className="w-full h-full flex flex-col mt-2">
+        <div className="w-full h-full flex flex-row items-center">
+          <Button
+            variant="link"
+            className=""
+            onClick={() => {
+              user === null ? router.push('/login') : setIsReplying(true);
+            }}
+          >
+            Reply
           </Button>
-        )}
-        <Button variant="link" onClick={() => {}}>
-          {numberOfComments} comment{numberOfComments > 1 ? 's' : ''}
-        </Button>
+
+          <Button
+            variant="link"
+            onClick={() => {
+              if (user === null) {
+                router.push('/login');
+              } else {
+                handleSavePost(user.userId);
+              }
+            }}
+          >
+            {saved ? 'Unsave' : 'Save'}
+          </Button>
+          {user !== null && user.userId === postAuthorId && (
+            <Button variant="link" onClick={() => setIsEditing(true)}>
+              Edit
+            </Button>
+          )}
+          <Button variant="link" onClick={() => {}}>
+            {numberOfComments} comment{numberOfComments > 1 ? 's' : ''}
+          </Button>
+        </div>
+        {user !== null && <CommentReplyForm parentCommentId={null} postId={postId} userId={user.userId} isReplying={isReplying} setIsReplying={setIsReplying} setNewComments={setNewComments} />}
       </div>
-      {user !== null && <CommentReplyForm parentCommentId={null} postId={postId} userId={user.userId} isReplying={isReplying} setIsReplying={setIsReplying} setNewComments={setNewComments} />}
-    </div>
+    </>
   );
 }
