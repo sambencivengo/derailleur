@@ -41,6 +41,7 @@ model Post {
   published Boolean @default(false)
   author User @relation(references: [id], fields: [authorId], onDelete: Cascade)
   authorId String
+  route String?
   tags Tag[]
   images String[]
   comments Comment[]
