@@ -184,12 +184,16 @@ async function seed() {
     console.log(`🌱 ${childReplies.length} Child Replies have been seeded 🌱`);
   }
 };
-seed()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e: any) => {
-    console.error('❌ Unable to seed database ❌', e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
+if (process.env.NODE_ENV === 'production') {
+  seed()
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (e: any) => {
+      console.error('❌ Unable to seed database ❌', e);
+      await prisma.$disconnect();
+      process.exit(1);
+    });
+} else {
+  // Do nothing
+}

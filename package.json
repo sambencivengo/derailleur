@@ -37,6 +37,7 @@
     "@radix-ui/react-toggle-group": "^1.0.4",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
+    "@vercel/postgres": "^0.9.0",
     "argon2": "^0.31.1",
     "axios": "^1.6.2",
     "class-variance-authority": "^0.7.0",

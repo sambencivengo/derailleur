@@ -15,8 +15,8 @@ export default async function Home() {
 function SkeletonPostPreview() {
   return (
     <div className="space-y-2">
-      {[...Array(10)].map((_, i) => (
-        <Skeleton className="h-32 w-full" />
+      {[...Array(10)].map((_, idx) => (
+        <Skeleton key={idx} className="h-32 w-full" />
       ))}
     </div>
   );
