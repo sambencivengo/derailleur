@@ -1,34 +1,28 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Derailleur
 
-## Getting Started
+An upcoming forum/platform for all kinds of bicycle enthusiasts.
 
-First, run the development server:
+Currently deployed [here](https://derailleur.vercel.app/).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+### Description
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This platform is intended to provide a one-stop-shop for all things cycling with a focus on bicycle touring & bikepacking, alt-cycling, rebuilding or refurbishing vintage frames and more.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+User's can create accounts and with those accounts they can create posts about recent trips, bike builds, mechanical questions, etc.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+On each post, the user can add tags (like hashtags) that will help other user's find similar posts.
 
-## Learn More
+If you desire, you can upload a route from [Ride WithGPS](https://ridewithgps.com/). If one does this, the route will be embedded in their post along with receiving a special ROUTE tag.
 
-To learn more about Next.js, take a look at the following resources:
+User's can save posts they like and contribute to the conversation by commenting on posts or replying to other comments. Post and replies can be edited by their creator wherever they are found on the application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Tech
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- [Next.js](https://nextjs.org/)
+- [Prisma](https://www.prisma.io/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [Lucia Auth](https://lucia-auth.com/)
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+If you have any questions about the application, or just want to chat, you can email me at [sambencivengo\@gmail.com](mailto:sambencivengo@gmail.com?subject=Derailler).
