@@ -7,6 +7,7 @@ export interface CreatePostPayload {
   content: string;
   published?: boolean;
   images?: string;
+  route?: string;
   tags: string[];
 }
 

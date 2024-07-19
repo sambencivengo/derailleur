@@ -8,10 +8,8 @@ import { CreatePostSchema, createPostSchema, validateSchema } from '~/schemas';
 import { PrismaQueryErrorCodes } from '~prisma/prismaErrorCodes';
 
 // NOTE: function is currently recursive so that tags don't collide if created at the exact same time.
-// Refactor to check which attempt and stop after 3,5 etc...
 
 export const createPost: CreatePost = async (postPayload: CreatePostPayload, userId: string, postId = uuid(), attemptsLeft: number = 3): Promise<DerailleurResponse<PostWithAuthorNameAndTags>> => {
-
   if (attemptsLeft < 1) {
     return (createErrorResponse([{ data: { postPayload, userId, postId }, message: "Create Post recursive attempts exhausted" }]));
   }
@@ -23,7 +21,7 @@ export const createPost: CreatePost = async (postPayload: CreatePostPayload, use
       });
       return (createErrorResponse(errors));
     }
-    const { content, title, tags, images } = validateResponse.result;
+    const { content, title, tags, images, route } = validateResponse.result;
     try {
       const newPost = await prisma.post.create({
         data: {
@@ -32,6 +30,7 @@ export const createPost: CreatePost = async (postPayload: CreatePostPayload, use
           authorId: userId,
           content,
           title,
+          route,
           published: true, // NOTE: CHANGE WHEN USING PUBLISHED ARGS AND DRAFTS
           tags: {
             connectOrCreate: tags.map((tagName) => {

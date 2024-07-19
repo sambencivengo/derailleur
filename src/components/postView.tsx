@@ -1,10 +1,12 @@
 'use client';
 import React from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Badge } from '~/components/ui';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Badge, Separator } from '~/components/ui';
 import Link from 'next/link';
 import { ImageWrapper } from '~/components/imageWrapper';
 import { PostWithAuthorNameTagsAndCommentCount } from '~/types';
 import { determineDateToShow } from '~/utils/dateUtils';
+import { RideWithGPSIFrame } from '~/components/rideWithGPSIFrame';
+import { RouteTag } from '~/components/routeTag';
 
 interface PostViewProps {
   post: PostWithAuthorNameTagsAndCommentCount;
@@ -18,6 +20,7 @@ export function PostView({ post }: PostViewProps) {
     createdAt,
     title,
     images,
+    route,
     id,
     tags,
     updatedAt,
@@ -30,14 +33,20 @@ export function PostView({ post }: PostViewProps) {
     );
   });
 
+  console.log(images.length, images);
+
   return (
     <Card className="h-auto hyphens-auto">
       <CardHeader>
         <CardTitle>
-          <Link className="hover:text-primary" href={`/post/${id}`}>
-            {title}
-          </Link>
+          <div className="flex h-full flex-row items-center gap-2">
+            <Link className="hover:text-primary" href={`/post/${id}`}>
+              {title}
+            </Link>
+          </div>
         </CardTitle>
+        <Separator />
+
         <div className="flex flex-row space-x-1">
           <CardDescription>
             by {''}
@@ -60,8 +69,22 @@ export function PostView({ post }: PostViewProps) {
           </div>
         </CardContent>
       </CardHeader>
+      {route && (
+        <div>
+          <CardHeader>
+            <CardTitle>Route</CardTitle>
+            <Separator />
+          </CardHeader>
+          <CardContent className="px-0 sm:px-2 md:px-4 flex flex-col gap-2">
+            <RideWithGPSIFrame url={route} />
+          </CardContent>
+        </div>
+      )}
       <CardFooter>
-        <div className="flex flex-wrap gap-2">{renderTagBadges}</div>
+        <div className="flex flex-wrap gap-2">
+          <RouteTag route={route} />
+          {renderTagBadges}
+        </div>
       </CardFooter>
     </Card>
   );

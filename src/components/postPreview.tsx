@@ -3,6 +3,7 @@ import moment from 'moment';
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter, Badge, CardContent } from '~/components/ui';
 import { PostWithAuthorNameTagsAndCommentCount } from '~/types';
 import { MessageSquare } from 'lucide-react';
+import { RouteTag } from '~/components/routeTag';
 
 interface PostPreviewProps {
   post: PostWithAuthorNameTagsAndCommentCount;
@@ -13,6 +14,7 @@ export function PostPreview({ post }: PostPreviewProps) {
     createdAt,
     id,
     tags,
+    route,
   } = post;
   const renderTagBadges = tags.map((tag, idx) => {
     return (
@@ -48,7 +50,10 @@ export function PostPreview({ post }: PostPreviewProps) {
           </div>
         </CardHeader>
         <CardFooter className="mt-2">
-          <div className="flex flex-wrap gap-3">{renderTagBadges}</div>
+          <div className="flex flex-wrap gap-3">
+            <RouteTag route={route} />
+            {renderTagBadges}
+          </div>
         </CardFooter>
       </CardContent>
     </Card>

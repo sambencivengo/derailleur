@@ -1,4 +1,5 @@
 import { Prisma, Tag as PrismaTag } from '@prisma/client';
+import { postWithAuthorNameTagsAndCommentCountQuery } from '~/types/models/posts';
 
 export const tagWithPostCountQuery = Prisma.validator<Prisma.TagDefaultArgs>()({
   include: {
@@ -13,17 +14,7 @@ export const tagWithPostsQuery = Prisma.validator<Prisma.TagDefaultArgs>()({
   include: {
     _count: true,
     posts: {
-      include: {
-        tags: true,
-        _count: {
-          select: {
-            comments: true
-          }
-        },
-        author: {
-          select: { username: true }
-        }
-      }
+      ...postWithAuthorNameTagsAndCommentCountQuery
     }
   },
 });
