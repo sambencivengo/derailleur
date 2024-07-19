@@ -1,6 +1,7 @@
 'use server';
 import { ChevronLeftSquare } from 'lucide-react';
 import { LogInButton, LogOutButton, NewPostButton, SignUpButton, ToggleDarkModeButton } from '~/components';
+import { MobileAddPostButton } from '~/components/mobileAddPostButton';
 import { Separator, Sheet, SheetClose, SheetContent, SheetTrigger } from '~/components/ui';
 import { UserProfileButton } from '~/components/userProfileButton';
 import { UserAndSession } from '~/types';
@@ -10,7 +11,8 @@ interface MobileNavProps {
 }
 export const MobileNav = ({ user }: MobileNavProps) => {
   return (
-    <div className="flex md:hidden pr-2">
+    <div className="flex md:hidden pr-2 gap-2">
+      <MobileAddPostButton />
       <Sheet>
         <SheetTrigger>
           <ChevronLeftSquare size={30} />
