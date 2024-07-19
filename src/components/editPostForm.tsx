@@ -1,14 +1,15 @@
 'use client';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { FormWrapper, Spinner } from '~/components';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, MultiSelect, Textarea } from '~/components/ui';
+import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, Label, MultiSelect, Textarea } from '~/components/ui';
 import { createPostSchema, CreatePostSchema } from '~/schemas/postSchemas';
 import { PostWithAuthorNameTagsAndCommentCount, TagWithPostCount, UpdatePostPayload, UserAndSession } from '~/types';
 import { AlertCircle } from 'lucide-react';
 import { getTagsWithCountByName, updatePost } from '~/queries';
 import { useToast } from '~/components/ui/use-toast';
+import { Switch } from '~/components/ui/switch';
 
 export type Framework = Record<'value' | 'label', string>;
 
@@ -27,16 +28,27 @@ export function EditPostForm({ user, postId, content, title, existingTags, image
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [tags, setTags] = React.useState<TagWithPostCount[]>([]);
   const [open, setOpen] = React.useState(false);
+  const [showRouteInput, setShowRouteInput] = React.useState<boolean>(false);
   const { toast } = useToast();
 
   const [selected, setSelected] = React.useState<TagWithPostCount[]>([]);
-  useEffect(() => {
+  React.useEffect(() => {
+    if (showRouteInput) {
+      form.setValue('route', '');
+    } else {
+      form.setValue('route', undefined);
+      form.clearErrors('route');
+    }
+  }, [showRouteInput, setShowRouteInput, setSelected]);
+
+  React.useEffect(() => {
     setSelected(
       existingTags.map((tag) => {
         return { id: tag.name, _count: { posts: 0 }, name: tag.name };
       })
     );
   }, [setSelected, existingTags]);
+
   const form = useForm<CreatePostSchema>({
     resolver: zodResolver(createPostSchema),
     defaultValues: {
@@ -139,6 +151,36 @@ export function EditPostForm({ user, postId, content, title, existingTags, image
               </FormItem>
             )}
           />
+
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="airplane-mode"
+              onCheckedChange={(e) => {
+                setShowRouteInput(e);
+              }}
+            />
+            <Label htmlFor="airplane-mode">Add Ride With GPS Route</Label>
+          </div>
+          {showRouteInput && (
+            <FormField
+              control={form.control}
+              name="route"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <div className="flex flex-col gap-2">
+                      <FormLabel>Ride With GPS Route Link</FormLabel>
+                      <FormLabel className="text-gray-500">Route links should look like this: "https://ridewithgps.com/routes/38157234"</FormLabel>
+                    </div>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+          )}
           <FormField
             control={form.control}
             name="images"

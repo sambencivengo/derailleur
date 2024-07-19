@@ -17,6 +17,7 @@ export interface UpdatePostPayload {
   published?: boolean;
   images?: string;
   tags: string[];
+  route?: string;
   existingTags: { id: string, name: string; }[];
 }
 
