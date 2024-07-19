@@ -14,7 +14,7 @@ export const getTagWithPostsByName: GetTagWithPostsByName = async (name: string)
     });
 
     if (!tag) {
-      return createErrorResponse([{ data: { name }, message: "Unable to find tag" }]);
+      return createErrorResponse([{ data: { name }, message: "Unable to find tag's posts" }]);
     }
     return createSuccessfulResponse(tag);
   } catch (error: any) {

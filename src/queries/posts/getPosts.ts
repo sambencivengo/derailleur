@@ -6,7 +6,7 @@ import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } fro
 import prisma from "~prisma/prisma";
 
 
-export const getPosts: GetPosts = async (username?: string): Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount[]>> => {
+export const getPosts: GetPosts = async (username?: string, route: boolean = false): Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount[]>> => {
   try {
     const posts = await prisma.post.findMany({
       ...postWithAuthorNameTagsAndCommentCountQuery,
@@ -16,7 +16,10 @@ export const getPosts: GetPosts = async (username?: string): Promise<DerailleurR
       where: {
         author: {
           username: username
-        }
+        },
+        route: route ? {
+          not: null
+        } : {}
       },
     });
     return createSuccessfulResponse(posts);

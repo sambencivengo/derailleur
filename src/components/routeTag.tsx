@@ -6,7 +6,7 @@ import { Badge } from '~/components/ui/badge';
 export function RouteTag({ route }: { route: string | null }) {
   return (
     route !== null && (
-      <Link href={`/tags/route`}>
+      <Link href={'/post/routes'}>
         <Badge variant={'default'}>{'ROUTE'}</Badge>
       </Link>
     )

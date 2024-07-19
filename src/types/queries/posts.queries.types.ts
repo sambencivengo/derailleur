@@ -39,7 +39,7 @@ export type UpdatePost = (
   authorId: string,
 ) => Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount>>;
 
-export type GetPosts = (username?: string) => Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount[]>>;
+export type GetPosts = (username?: string, route?: boolean) => Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount[]>>;
 
 export type UnsavePost = (postId: string, userId: string) => Promise<DerailleurResponse<string>>;
 export type SavePost = (postId: string, userId: string, savedPostId?: string) => Promise<DerailleurResponse<string>>;
