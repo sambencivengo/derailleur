@@ -4,12 +4,13 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { FormWrapper, Spinner } from '~/components';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, MultiSelect, Textarea } from '~/components/ui';
+import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, Label, MultiSelect, Textarea } from '~/components/ui';
 import { createPostSchema, CreatePostSchema } from '~/schemas/postSchemas';
 import { CreatePostPayload, TagWithPostCount } from '~/types';
 import { AlertCircle } from 'lucide-react';
 import { createPost, getTagsWithCountByName } from '~/queries';
 import { useToast } from '~/components/ui/use-toast';
+import { Switch } from '~/components/ui/switch';
 
 export type Framework = Record<'value' | 'label', string>;
 
@@ -21,6 +22,7 @@ export function NewPostForm({ userId }: NewPostFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [tags, setTags] = React.useState<TagWithPostCount[]>([]);
   const [open, setOpen] = React.useState(false);
+  const [showRouteInput, setShowRouteInput] = React.useState<boolean>(false);
   const router = useRouter();
   const { toast } = useToast();
 
@@ -32,10 +34,18 @@ export function NewPostForm({ userId }: NewPostFormProps) {
       content: '',
       published: true, // TODO: change this when drafts are implemented
       title: '',
-      images: '',
       tags: [],
     },
   });
+
+  React.useEffect(() => {
+    if (showRouteInput) {
+      form.setValue('route', '');
+    } else {
+      form.setValue('route', undefined);
+      form.clearErrors('route');
+    }
+  }, [showRouteInput, setShowRouteInput, setSelected]);
 
   // NOTE: validate url function from https://www.freecodecamp.org/news/check-if-a-javascript-string-is-a-url/
   const isValidUrl = (urlString: string) => {
@@ -52,6 +62,7 @@ export function NewPostForm({ userId }: NewPostFormProps) {
   };
   async function onSubmit(values: CreatePostSchema) {
     const { images } = values;
+    // TODO: move to zod validation
     const arrayOfImagesContainsInvalidUrl =
       images !== undefined && images.length > 0
         ? images
@@ -102,7 +113,7 @@ export function NewPostForm({ userId }: NewPostFormProps) {
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Title</FormLabel>
+                <FormLabel required={true}>Title</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -115,7 +126,7 @@ export function NewPostForm({ userId }: NewPostFormProps) {
             name="content"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Content</FormLabel>
+                <FormLabel required={true}>Content</FormLabel>
                 <FormControl>
                   <Textarea {...field} />
                 </FormControl>
@@ -123,6 +134,36 @@ export function NewPostForm({ userId }: NewPostFormProps) {
               </FormItem>
             )}
           />
+
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="airplane-mode"
+              onCheckedChange={(e) => {
+                setShowRouteInput(e);
+              }}
+            />
+            <Label htmlFor="airplane-mode">Add Ride With GPS Route</Label>
+          </div>
+          {showRouteInput && (
+            <FormField
+              control={form.control}
+              name="route"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <div className="flex flex-col gap-2">
+                      <FormLabel>Ride With GPS Route Link</FormLabel>
+                      <FormLabel className="text-gray-500">Route links should look like this: "https://ridewithgps.com/routes/38157234"</FormLabel>
+                    </div>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+          )}
           <FormField
             control={form.control}
             name="images"
