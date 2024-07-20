@@ -60,16 +60,17 @@ export function PostView({ post }: PostViewProps) {
         </div>
         <CardContent>
           <p>{content}</p>
-          <ScrollArea className="bg-gray-100 h-[400px] rounded-md border ">
-            <div className="p-4 flex flex-col gap-4">
-              {images.length > 0 &&
-                images.map((imageLink, idx) => (
+          {images.length > 0 && (
+            <ScrollArea className="bg-gray-100 h-[400px] rounded-md border ">
+              <div className="p-4 flex flex-col gap-4">
+                {images.map((imageLink, idx) => (
                   <div key={idx} className="w-full relative pt-[50%]">
                     <ImageWrapper fallbackSrc="" imageSrc={imageLink} />
                   </div>
                 ))}
-            </div>
-          </ScrollArea>
+              </div>
+            </ScrollArea>
+          )}
         </CardContent>
       </CardHeader>
       {route && (
