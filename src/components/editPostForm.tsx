@@ -189,10 +189,10 @@ export function EditPostForm({ user, postId, content, title, existingTags, image
                 <FormItem>
                   <div className="flex flex-col gap-2">
                     <FormLabel>Image Link(s)</FormLabel>
-                    <FormLabel className="text-gray-500">Links must start with either "https://" or "http://" and separated with a comma</FormLabel>
+                    <FormLabel className="text-gray-500">Links must start with either "https://" or "http://" and separated with a comma and should end with the image format e.g. ".jpeg" ".png"</FormLabel>
                   </div>
                   <FormControl>
-                    <Input {...field} />
+                    <Input placeholder="https://i.imgur.com/WwpJY2t.jpeg" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
