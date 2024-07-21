@@ -2,15 +2,28 @@
 import { Prisma } from '@prisma/client';
 import prisma from '~prisma/prisma';
 import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from '~/utils';
-import { GetTagWithPostsByName, TagWithPosts, tagWithPostsQuery } from '~/types';
+import { GetTagWithPostsByName, postWithAuthorNameTagsAndCommentCountQuery, TagWithPosts, tagWithPostsQuery } from '~/types';
 
-export const getTagWithPostsByName: GetTagWithPostsByName = async (name: string): Promise<DerailleurResponse<TagWithPosts>> => {
+export const getTagWithPostsByName: GetTagWithPostsByName = async (name: string, userId?: string): Promise<DerailleurResponse<TagWithPosts>> => {
   try {
     const tag = await prisma.tag.findUnique({
       where: {
         name
       },
-      ...tagWithPostsQuery
+      include: {
+        ...tagWithPostsQuery.include,
+        posts: {
+          include: {
+            ...postWithAuthorNameTagsAndCommentCountQuery.include,
+            savedBy: {
+              where: {
+                userId
+              }
+            }
+          }
+        }
+
+      }
     });
 
     if (!tag) {
