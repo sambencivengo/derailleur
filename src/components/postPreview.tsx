@@ -18,7 +18,7 @@ interface PostPreviewProps {
   user: UserAndSession | null;
 }
 export function PostPreview({ post, user }: PostPreviewProps) {
-  const [liked, setLiked] = React.useState<boolean>(post.likes.length === 1);
+  const [liked, setLiked] = React.useState<boolean>(post.likes.length === 1 && user !== null);
   const [saved, setSaved] = React.useState<boolean>(post.savedBy.length !== 0);
   const [numberOfLikes, setNumberOfLikes] = React.useState(post._count.likes);
   const router = useRouter();

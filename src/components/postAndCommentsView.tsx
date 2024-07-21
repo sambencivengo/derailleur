@@ -19,7 +19,7 @@ export function PostAndCommentsView({ post, user, comments }: PostAndCommentsVie
   return (
     <main className="flex flex-col">
       <Suspense fallback={<SkeletonFullPagePost />}>{renderEditedOrExistingPost(user, setIsEditing, isEditing, setSuccessfullyEditedPost, successfullyEditedPost, post)}</Suspense>
-      <PostLinks likesCount={post._count.likes} postIsLiked={post.likes.length >= 1} postIsSaved={post.savedBy.length >= 1} setIsEditing={setIsEditing} numberOfComments={post._count.comments + newCommentOnPost.length} postId={post.id} postAuthorId={post.authorId} user={user} setNewComments={setNewCommentOnPost} />
+      <PostLinks likesCount={post._count.likes} postIsLiked={post.likes.length >= 1 && user !== null} postIsSaved={post.savedBy.length >= 1} setIsEditing={setIsEditing} numberOfComments={post._count.comments + newCommentOnPost.length} postId={post.id} postAuthorId={post.authorId} user={user} setNewComments={setNewCommentOnPost} />
       <Suspense fallback={<SkeletonCommentPreview />}>
         <CommentsView user={user} comments={comments} newCommentsOnPost={newCommentOnPost} />
       </Suspense>
