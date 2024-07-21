@@ -1,11 +1,15 @@
 'use client';
 
+import { Heart, MessageSquare } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { CommentReplyForm } from '~/components/commentReplyForm';
 import { Button } from '~/components/ui';
 import { useToast } from '~/components/ui/use-toast';
 import { savePost, unsavePost } from '~/queries';
+import { likePost } from '~/queries/posts/likePost';
+import { unlikePost } from '~/queries/posts/unlikePost';
 import { CommentWithUserNameAndId, UserAndSession } from '~/types';
 import { DerailleurResponse } from '~/utils';
 
@@ -17,13 +21,17 @@ interface PostLinksProps {
   setNewComments: React.Dispatch<React.SetStateAction<Array<CommentWithUserNameAndId>>>;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   postIsSaved: boolean;
+  postIsLiked: boolean;
+  likesCount: number;
 }
 
-export function PostLinks({ user, postId, numberOfComments, setNewComments, postAuthorId, setIsEditing, postIsSaved }: PostLinksProps) {
+export function PostLinks({ likesCount, postIsLiked, user, postId, numberOfComments, setNewComments, postAuthorId, setIsEditing, postIsSaved }: PostLinksProps) {
   const [isReplying, setIsReplying] = React.useState<boolean>(false);
   const router = useRouter();
   const { toast } = useToast();
   const [saved, setSaved] = React.useState<boolean>(postIsSaved);
+  const [numberOfLikes, setNumberOfLikes] = React.useState(likesCount);
+  const [liked, setLiked] = React.useState<boolean>(postIsLiked);
 
   async function handleSavePost(userId: string) {
     let response: DerailleurResponse<string>;
@@ -50,10 +58,55 @@ export function PostLinks({ user, postId, numberOfComments, setNewComments, post
       });
     }
   }
+
+  // TODO: dry up this function, used in both postLinks.tsx and here
+  async function handleLikePost(userId: string) {
+    let response: DerailleurResponse<string>;
+    console.log;
+    if (liked) {
+      setLiked(false);
+      setNumberOfLikes((prev) => prev - 1);
+      response = await unlikePost(postId, userId);
+    } else {
+      setNumberOfLikes((prev) => prev + 1);
+      setLiked(true);
+      response = await likePost(postId, userId);
+    }
+    const { errors, result } = response;
+    if (errors.length > 0 || result === null) {
+      setLiked((prev) => !prev);
+      toast({
+        title: liked ? 'Unable to unlike post' : 'Unable to like post',
+        description: errors.map((error) => error.message),
+        variant: 'destructive',
+      });
+    } else {
+      setLiked(!liked);
+    }
+  }
   return (
     <>
       <div className="w-full h-full flex flex-col mt-2">
-        <div className="w-full h-full flex flex-row items-center">
+        <div className="w-full h-full flex flex-wrap items-center">
+          <div className="flex flex-row gap-2 items-center">
+            <Button
+              className="h-6 w-6 hover:bg-opacity-0"
+              size={'icon'}
+              variant={'link'}
+              onClick={() => {
+                if (user === null) {
+                  router.push('/login');
+                } else {
+                  handleLikePost(user.userId);
+                }
+              }}
+            >
+              {liked ? <Heart className={'text-primary'} fill={'#f97316'} /> : <Heart className={'text-primary'} />}
+            </Button>
+            <Button variant={'link'}>
+              {numberOfLikes} like{numberOfLikes > 1 || numberOfLikes === 0 ? 's' : ''}
+            </Button>
+          </div>
           <Button
             variant="link"
             className=""
@@ -81,8 +134,12 @@ export function PostLinks({ user, postId, numberOfComments, setNewComments, post
               Edit
             </Button>
           )}
-          <Button variant="link" onClick={() => {}}>
-            {numberOfComments} comment{numberOfComments > 1 ? 's' : ''}
+
+          <Button variant="link" className="flex-row gap-1 ">
+            <Link className="" href={''}>
+              {numberOfComments}
+            </Link>
+            <MessageSquare className="top-[1px]" />
           </Button>
         </div>
         {user !== null && <CommentReplyForm parentCommentId={null} postId={postId} userId={user.userId} isReplying={isReplying} setIsReplying={setIsReplying} setNewComments={setNewComments} />}

@@ -22,6 +22,8 @@ model User {
   comments Comment[]
   sessions Session[]
   saved UserSavedPosts[]
+  likedPosts UserLikedPosts[]
+  likedComments UserLikedComments[]
 }
 
 model Session {
@@ -46,6 +48,24 @@ model Post {
   images String[]
   comments Comment[]
   savedBy UserSavedPosts[]
+  likes UserLikedPosts[]
+}
+
+model UserLikedPosts {
+  id String @id @unique
+  createdAt DateTime @default(now())
+  post Post @relation(fields: [postId], references: [id])
+  postId String
+  user User @relation(fields: [userId], references: [id])
+  userId String
+}
+model UserLikedComments {
+  id String @id @unique
+  createdAt DateTime @default(now())
+  comment Comment @relation(fields: [commentId], references: [id])
+  commentId String
+  user User @relation(fields: [userId], references: [id])
+  userId String
 }
 
 model UserSavedPosts {
@@ -69,6 +89,7 @@ model Comment {
   parentComment Comment? @relation("ParentComments", fields: [parentCommentId], references: [id])
   parentCommentId String?
   replies Comment[] @relation("ParentComments")
+  likes UserLikedComments[]
 }
 
 model Tag {

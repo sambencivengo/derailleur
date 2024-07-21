@@ -14,10 +14,16 @@ export const postWithAuthorNameTagsAndCommentCountQuery = Prisma.validator<Prism
     tags: true,
     _count: {
       select: {
-        comments: true
-      }
+        comments: true,
+        likes: true
+      },
     },
     savedBy: {
+      select: {
+        userId: true
+      }
+    },
+    likes: {
       select: {
         userId: true
       }

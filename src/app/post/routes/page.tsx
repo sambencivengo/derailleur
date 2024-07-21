@@ -1,12 +1,14 @@
 'use server';
 
 import { Suspense } from 'react';
+import { getUserSession } from '~/auth';
 import { PostPreview, TextHeading } from '~/components';
 import { BackToAllPostsLink } from '~/components/backToAllPostsLink';
 import { Badge, Skeleton } from '~/components/ui';
 import { getPosts } from '~/queries';
 
 export default async function Page() {
+  const user = await getUserSession();
   const postsWithRoutesResponse = await getPosts(undefined, true);
   const { errors, result } = postsWithRoutesResponse;
   if (errors.length > 0 || result === null) {
@@ -25,7 +27,7 @@ export default async function Page() {
           <Suspense fallback={<RoutePostsContainerSkeleton />}>
             <div className="space-y-2">
               {result.map((post, idx) => {
-                return <PostPreview post={post} key={idx} />;
+                return <PostPreview user={user} post={post} key={idx} />;
               })}
             </div>
           </Suspense>

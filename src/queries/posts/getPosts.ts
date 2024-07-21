@@ -26,7 +26,12 @@ export const getPosts: GetPosts = async (username?: string, route: boolean = fal
           where: {
             userId
           }
-        }
+        },
+        likes: {
+          where: {
+            userId
+          }
+        },
       }
     });
     return createSuccessfulResponse(posts);

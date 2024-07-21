@@ -40,9 +40,11 @@ export type UpdatePost = (
   authorId: string,
 ) => Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount>>;
 
-export type GetPosts = (username?: string, route?: boolean) => Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount[]>>;
+export type GetPosts = (username?: string, route?: boolean, userId?: string) => Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount[]>>;
 
 export type UnsavePost = (postId: string, userId: string) => Promise<DerailleurResponse<string>>;
 export type SavePost = (postId: string, userId: string, savedPostId?: string) => Promise<DerailleurResponse<string>>;
+export type UnlikePost = (postId: string, userId: string) => Promise<DerailleurResponse<string>>;
+export type LikePost = (postId: string, userId: string, savedPostId?: string) => Promise<DerailleurResponse<string>>;
 export type GetSavedPost = (postId: string, userId: string) => Promise<DerailleurResponse<boolean>>;
 export type GetSavedPosts = (userId: string) => Promise<DerailleurResponse<SavedPostWithPostAuthorNameTagsAndCommentCount[]>>;

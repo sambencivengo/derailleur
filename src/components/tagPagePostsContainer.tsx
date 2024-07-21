@@ -2,11 +2,13 @@ import { AlertCircle } from 'lucide-react';
 import { PostPreview } from '~/components';
 import { Alert, AlertTitle, AlertDescription } from '~/components/ui';
 import { getTagWithPostsByName } from '~/queries';
+import { UserAndSession } from '~/types';
 
 interface TagPagePostsContainerProps {
   tagName: string;
+  user: UserAndSession | null;
 }
-export async function TagPagePostsContainer({ tagName }: TagPagePostsContainerProps) {
+export async function TagPagePostsContainer({ tagName, user }: TagPagePostsContainerProps) {
   const tagNameWithoutHyphens = tagName.split('-').join(' ').toUpperCase();
   const tagNameWithPostCountResponse = await getTagWithPostsByName(tagNameWithoutHyphens);
   if (tagNameWithPostCountResponse.errors.length > 0 || tagNameWithPostCountResponse.result === null) {
@@ -22,6 +24,6 @@ export async function TagPagePostsContainer({ tagName }: TagPagePostsContainerPr
   }
   const { result } = tagNameWithPostCountResponse;
   return result.posts.map((post, idx) => {
-    return <PostPreview post={post} key={idx} />;
+    return <PostPreview user={user} post={post} key={idx} />;
   });
 }

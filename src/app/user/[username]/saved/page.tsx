@@ -13,6 +13,7 @@ export default async function Page({ params }: { params: { username: string } })
   } else {
     const { userId } = user;
     const { errors, result } = await getSavedPosts(userId);
+
     if (result === null || errors.length > 0) {
       return <QueryError errors={errors} />;
     } else if (result.length === 0) {
@@ -28,7 +29,7 @@ export default async function Page({ params }: { params: { username: string } })
           <Separator />
           <div className="space-y-2">
             {result.map(({ post }, idx) => {
-              return <PostPreview post={post} key={idx} />;
+              return <PostPreview user={user} post={post} key={idx} />;
             })}
           </div>
         </div>

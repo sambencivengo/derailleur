@@ -11,6 +11,8 @@ export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
     })
     .min(5, {
       message: 'Post title must be at least 5 characters.',
+    }).max(130, {
+      message: 'Post title cannot be more than 130 characters.',
     })
     .trim(),
   content: z

@@ -184,7 +184,7 @@ async function seed() {
     console.log(`🌱 ${childReplies.length} Child Replies have been seeded 🌱`);
   }
 };
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV !== 'production') {
   seed()
     .then(async () => {
       await prisma.$disconnect();

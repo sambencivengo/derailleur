@@ -34,8 +34,6 @@ export function PostView({ post }: PostViewProps) {
     );
   });
 
-  console.log(images.length, images);
-
   return (
     <Card className="h-auto hyphens-auto">
       <CardHeader>

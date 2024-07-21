@@ -1,11 +1,13 @@
 'use server';
 
 import { Suspense } from 'react';
+import { getUserSession } from '~/auth';
 import { TagPageHeading, TagPagePostsContainer } from '~/components';
 import { Skeleton } from '~/components/ui';
 
 export default async function Page({ params }: { params: { tag: string } }) {
   const { tag } = params;
+  const user = await getUserSession();
 
   return (
     <main>
@@ -15,7 +17,7 @@ export default async function Page({ params }: { params: { tag: string } }) {
         </Suspense>
 
         <Suspense fallback={<TagPagePostsContainerSkeleton />}>
-          <TagPagePostsContainer tagName={tag} />
+          <TagPagePostsContainer user={user} tagName={tag} />
         </Suspense>
       </div>
     </main>

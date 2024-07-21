@@ -41,6 +41,12 @@ export const createPost: CreatePost = async (postPayload: CreatePostPayload, use
               };
             }),
           },
+          likes: {
+            create: {
+              id: uuid(),
+              userId
+            }
+          }
         },
         ...postWithAuthorNameAndTagsQuery
       });

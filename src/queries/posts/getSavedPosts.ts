@@ -15,7 +15,15 @@ export const getSavedPosts: GetSavedPosts = async (userId: string): Promise<Dera
       },
       include: {
         post: {
-          ...postWithAuthorNameTagsAndCommentCountQuery,
+          include: {
+            ...postWithAuthorNameTagsAndCommentCountQuery.include,
+            likes: {
+              where: {
+                userId
+              }
+            },
+          }
+
         }
       }
     });
