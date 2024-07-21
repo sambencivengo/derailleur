@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: 'An application for bike enthusiasts',
 };
 
-export const fontSans = FontSans({
+const fontSans = FontSans({
   subsets: ['latin'],
   variable: '--font-sans',
 });
