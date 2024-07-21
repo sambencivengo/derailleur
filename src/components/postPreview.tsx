@@ -132,18 +132,18 @@ export function PostPreview({ post, user }: PostPreviewProps) {
             >
               {liked ? <Heart className={'text-primary'} fill={'#f97316'} /> : <Heart className={'text-primary'} />}
             </Button>
-            <Button variant={'link'}>
-              <Link href={`/post/${id}`}>
+            <Link href={`/post/${id}`}>
+              <Button variant={'link'}>
                 {numberOfLikes} like{numberOfLikes > 1 || numberOfLikes === 0 ? 's' : ''}
-              </Link>
-            </Button>
-          </div>
-          <Button variant="link" className="flex-row gap-1 ">
-            <Link className="text-[16px]" href={`/post/${id}`}>
-              {post._count.comments}
+              </Button>
             </Link>
-            <MessageSquare className="top-[1px]" />
-          </Button>
+          </div>
+          <Link className="text-[16px]" href={`/post/${id}`}>
+            <Button variant="link" className="flex-row gap-1 ">
+              {post._count.comments}
+              <MessageSquare className="top-[1px]" />
+            </Button>
+          </Link>
 
           <Button
             onClick={() => {
