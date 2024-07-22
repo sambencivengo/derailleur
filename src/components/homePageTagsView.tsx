@@ -21,7 +21,7 @@ export async function HomePageTagsView() {
         <CardContent className="flex flex-wrap justify-center items-center gap-4">
           {result.map((tag, idx) => (
             <Link className="flex items-center gap-2" key={idx} href={`/tags/${tag.name.toLowerCase().split(' ').join('-')}`}>
-              <Badge className="bg-background text-black">{`#${tag.name}`}</Badge>
+              <Badge className="bg-background text-foreground">{`#${tag.name}`}</Badge>
             </Link>
           ))}
         </CardContent>
