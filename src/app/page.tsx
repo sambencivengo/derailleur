@@ -2,6 +2,7 @@ import Link from 'next/link';
 import React, { Suspense } from 'react';
 import { getUserSession } from '~/auth';
 import { PostPreviewsContainer } from '~/components';
+import { HomePageTagsView } from '~/components/homePageTagsView';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, Separator, Skeleton } from '~/components/ui';
 
 export default async function Home() {
@@ -13,6 +14,7 @@ export default async function Home() {
       </CardTitle>
     );
   });
+
   return (
     <main>
       <Suspense fallback={<SkeletonPostPreview />}>
@@ -51,6 +53,8 @@ export default async function Home() {
             <Separator className="mt-5 mb-5" />
           </>
         )}
+        {<HomePageTagsView />}
+        <Separator className="mt-5 mb-5" />
         <PostPreviewsContainer />
       </Suspense>
     </main>

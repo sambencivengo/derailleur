@@ -4,10 +4,16 @@ import prisma from '~prisma/prisma';
 import { createSuccessfulResponse, createErrorResponse, DerailleurResponse } from '~/utils';
 import { TagWithPostCount, tagWithPostCountQuery } from '~/types';
 
-export const getTagsWithCount = async (): Promise<DerailleurResponse<TagWithPostCount[]>> => {
+export const getTagsWithCount = async (limit?: number, orderBy: 'asc' | 'desc' = 'desc'): Promise<DerailleurResponse<TagWithPostCount[]>> => {
   try {
     const tagsWithCount = await prisma.tag.findMany({
-      ...tagWithPostCountQuery
+      ...tagWithPostCountQuery,
+      take: limit,
+      orderBy: {
+        posts: {
+          _count: orderBy
+        }
+      }
     });
     return createSuccessfulResponse(tagsWithCount);
   } catch (error: any) {
