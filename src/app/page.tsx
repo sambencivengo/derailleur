@@ -6,6 +6,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, Separator, S
 
 export default async function Home() {
   const user = await getUserSession();
+  const arrayOfCardTitles = new Array(9).fill(null).map((_, idx) => {
+    return (
+      <CardTitle key={idx} className="w-full italic">
+        WELCOME TO DERAILLEUR
+      </CardTitle>
+    );
+  });
   return (
     <main>
       <Suspense fallback={<SkeletonPostPreview />}>
@@ -14,27 +21,9 @@ export default async function Home() {
             <Card className="w-full bg-secondary-background overflow-hidden">
               <CardHeader className="overflow-hidden px-0">
                 <div className="overflow-hidden items-center flex flex-row bg-primary gap-4 group">
-                  <div className="items-center flex flex-row  whitespace-nowrap animate-marquee gap-4 group-hover:paused">
-                    <CardTitle className="w-full italic">WELCOME TO DERAILLEUR</CardTitle>
-                    <CardTitle className="w-full italic">WELCOME TO DERAILLEUR</CardTitle>
-                    <CardTitle className="w-full italic">WELCOME TO DERAILLEUR</CardTitle>
-                    <CardTitle className="w-full italic">WELCOME TO DERAILLEUR</CardTitle>
-                    <CardTitle className="w-full italic">WELCOME TO DERAILLEUR</CardTitle>
-                    <CardTitle className="w-full italic">WELCOME TO DERAILLEUR</CardTitle>
-                    <CardTitle className="w-full italic">WELCOME TO DERAILLEUR</CardTitle>
-                    <CardTitle className="w-full italic">WELCOME TO DERAILLEUR</CardTitle>
-                    <CardTitle className="w-full italic">WELCOME TO DERAILLEUR</CardTitle>
-                  </div>
+                  <div className="items-center flex flex-row  whitespace-nowrap animate-marquee gap-4 group-hover:paused">{arrayOfCardTitles}</div>
                   <div className="items-center flex flex-row whitespace-nowrap aria-hidden:true animate-marquee2 gap-4 group-hover:paused" aria-hidden="true">
-                    <CardTitle className="w-full italic">WELCOME TO DERAILLEUR</CardTitle>
-                    <CardTitle className="w-full italic">WELCOME TO DERAILLEUR</CardTitle>
-                    <CardTitle className="w-full italic">WELCOME TO DERAILLEUR</CardTitle>
-                    <CardTitle className="w-full italic">WELCOME TO DERAILLEUR</CardTitle>
-                    <CardTitle className="w-full italic">WELCOME TO DERAILLEUR</CardTitle>
-                    <CardTitle className="w-full italic">WELCOME TO DERAILLEUR</CardTitle>
-                    <CardTitle className="w-full italic">WELCOME TO DERAILLEUR</CardTitle>
-                    <CardTitle className="w-full italic">WELCOME TO DERAILLEUR</CardTitle>
-                    <CardTitle className="w-full italic">WELCOME TO DERAILLEUR</CardTitle>
+                    {arrayOfCardTitles}
                   </div>
                 </div>
                 <CardDescription className="text-center">A forum for bikepacking, xbiking, bike touring, and so much more...</CardDescription>
