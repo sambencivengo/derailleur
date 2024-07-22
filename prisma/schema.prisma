@@ -47,6 +47,7 @@ model Post {
   tags Tag[]
   images String[]
   comments Comment[]
+  category PostCategory @default(POST)
   savedBy UserSavedPosts[]
   likes UserLikedPosts[]
 }
@@ -96,4 +97,11 @@ model Tag {
   id String @id @unique @default(uuid())
   name String @unique
   posts Post[]
+}
+
+enum PostCategory {
+  POST
+  ROUTE
+  RIDE
+	@@map("Post_Category")
 }
