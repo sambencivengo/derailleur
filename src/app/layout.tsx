@@ -23,7 +23,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <Toaster />
           <NavBar />
-          <div className="my-5 px-5 lg:px-56 md:px-24 sm:px-14">{children}</div>
+          <div className="my-5 px-5 lg:px-56 xl:px-96 md:px-24 sm:px-14">{children}</div>
         </ThemeProvider>
       </body>
     </html>
