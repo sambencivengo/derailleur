@@ -31,7 +31,7 @@ export default async function Home() {
                 <CardDescription className="text-center">A forum for bikepacking, xbiking, bike touring, and so much more...</CardDescription>
               </CardHeader>
               <CardContent className="text-center">
-                <p>As a user, you can create posts about your bike, a trip you recently went on, ask or talk about general cycling related topics, and even share a Ride With GPS for feedback or just to show off!</p>
+                <p>As a user, you can create posts about your bike, a trip you recently went on, ask or talk about general cycling related topics, and even share a Ride With GPS route for feedback or just to show off!</p>
               </CardContent>
               <CardContent className="text-center">
                 <p>
