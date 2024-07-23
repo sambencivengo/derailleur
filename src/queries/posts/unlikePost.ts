@@ -14,7 +14,6 @@ export const unlikePost: UnlikePost = async (postId: string, userId: string,): P
         userId
       }
     });
-    console.log(response);
     return createSuccessfulResponse('success');
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {

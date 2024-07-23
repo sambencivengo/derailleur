@@ -51,7 +51,6 @@ export function PostPreview({ post, user }: PostPreviewProps) {
   // TODO: dry up this function, used in both postLinks.tsx and here
   async function handleLikePost(userId: string) {
     let response: DerailleurResponse<string>;
-    console.log;
     if (liked) {
       setLiked(false);
       setNumberOfLikes((prev) => prev - 1);

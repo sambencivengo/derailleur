@@ -27,7 +27,6 @@ export const getComment = async (commentId: string, postId?: string,): Promise<D
 
 export const getParentComment = async (parentCommentId: string): Promise<DerailleurResponse<{ comment: CommentWithUserNameAndId | null; }>> => {
   try {
-    console.log({ parentCommentId });
     const comment = await prisma.comment.findFirst({
       where: {
         id: parentCommentId

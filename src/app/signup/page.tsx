@@ -4,7 +4,6 @@ import { getUserSessionAndRedirect } from '~/auth';
 import { SignUpForm, TextHeading } from '~/components';
 
 export default async function Page() {
-  console.log('HERER');
   await getUserSessionAndRedirect();
   return (
     <div className="flex justify-center gap-y-2">
