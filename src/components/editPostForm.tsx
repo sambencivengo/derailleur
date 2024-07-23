@@ -81,7 +81,6 @@ export function EditPostForm({ user, postId, content, title, existingTags, rideW
       form.setError('images', { message: 'Image links must be valid URLs' });
       return;
     } else {
-      console.log(values);
       setIsLoading(true);
       const valuesWithTags: UpdatePostPayload = { ...values, images: images === '' ? undefined : images, tags: selected.map((tag) => tag.name), existingTags: existingTags };
       const response = await updatePost(valuesWithTags, postId, user.userId);
