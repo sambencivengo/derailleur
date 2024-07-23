@@ -26,7 +26,7 @@ export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
     .trim(),
   rideWithGPSLink: z.string({
     invalid_type_error: 'Post content must be a string',
-  }).refine((data: string) => (RIDE_WITH_GPS_ROUTE_REGEX.test(data)), { message: 'Route input must be a valid Ride With GPS route link eg: https://ridewithgps.com/routes/ or https://ridewithgps.com/trips/' }).optional(),
+  }).refine((data: string) => (RIDE_WITH_GPS_ROUTE_REGEX.test(data)), { message: 'Route input must be a valid Ride With GPS route link eg: https://ridewithgps.com/routes/ or https://ridewithgps.com/trips/' }).optional().or(z.literal('')),
   images: z.optional(z.string().trim()),
   published: z
     .boolean({

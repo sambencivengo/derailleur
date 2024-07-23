@@ -18,7 +18,7 @@ export interface UpdatePostPayload {
   published?: boolean;
   images?: string;
   tags: string[];
-  route?: string;
+  rideWithGPSLink?: string;
   existingTags: { id: string, name: string; }[];
 }
 

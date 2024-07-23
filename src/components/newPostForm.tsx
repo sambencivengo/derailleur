@@ -46,7 +46,7 @@ export function NewPostForm({ userId }: NewPostFormProps) {
       form.setValue('rideWithGPSLink', '');
       form.clearErrors('rideWithGPSLink');
     }
-  }, [showRideWithGpsLinkInput, setShowRideWithGpsLinkInput, setSelected]);
+  }, [showRideWithGpsLinkInput, setShowRideWithGpsLinkInput]);
 
   // NOTE: validate url function from https://www.freecodecamp.org/news/check-if-a-javascript-string-is-a-url/
   const isValidUrl = (urlString: string) => {
@@ -61,6 +61,7 @@ export function NewPostForm({ userId }: NewPostFormProps) {
     ); // validate fragment locator
     return !!urlPattern.test(urlString);
   };
+
   async function onSubmit(values: CreatePostSchema) {
     const { images } = values;
     // TODO: move to zod validation

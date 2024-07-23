@@ -20,26 +20,18 @@ interface EditPostFormProps {
   title: string;
   images: Array<string>;
   existingTags: Array<{ id: string; name: string }>;
+  rideWithGPSLink: string | null;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   setSuccessfullyEditedPost: React.Dispatch<React.SetStateAction<PostWithAuthorNameTagsAndCommentCount | null>>;
 }
-export function EditPostForm({ user, postId, content, title, existingTags, images, setIsEditing, setSuccessfullyEditedPost }: EditPostFormProps) {
+export function EditPostForm({ user, postId, content, title, existingTags, rideWithGPSLink, images, setIsEditing, setSuccessfullyEditedPost }: EditPostFormProps) {
   const [editPostError, setEditPostError] = React.useState<string[] | null>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [tags, setTags] = React.useState<TagWithPostCount[]>([]);
   const [open, setOpen] = React.useState(false);
-  const [showRouteInput, setShowRouteInput] = React.useState<boolean>(false);
+  const [showRideWithGpsLinkInput, setShowRideWithGpsLinkInput] = React.useState<boolean>(rideWithGPSLink === null ? false : true);
   const { toast } = useToast();
-
   const [selected, setSelected] = React.useState<TagWithPostCount[]>([]);
-  React.useEffect(() => {
-    if (showRouteInput) {
-      form.setValue('route', '');
-    } else {
-      form.setValue('route', undefined);
-      form.clearErrors('route');
-    }
-  }, [showRouteInput, setShowRouteInput, setSelected]);
 
   React.useEffect(() => {
     setSelected(
@@ -57,6 +49,7 @@ export function EditPostForm({ user, postId, content, title, existingTags, image
       title,
       images: images.join(','),
       tags: existingTags.map((tag) => tag.name),
+      rideWithGPSLink: rideWithGPSLink === null ? '' : rideWithGPSLink,
     },
   });
 
@@ -76,7 +69,6 @@ export function EditPostForm({ user, postId, content, title, existingTags, image
 
   async function onSubmit(values: CreatePostSchema) {
     const { images } = values;
-    console.log(selected);
     const arrayOfImagesContainsInvalidUrl =
       images !== undefined && images.length > 0
         ? images
@@ -89,6 +81,7 @@ export function EditPostForm({ user, postId, content, title, existingTags, image
       form.setError('images', { message: 'Image links must be valid URLs' });
       return;
     } else {
+      console.log(values);
       setIsLoading(true);
       const valuesWithTags: UpdatePostPayload = { ...values, images: images === '' ? undefined : images, tags: selected.map((tag) => tag.name), existingTags: existingTags };
       const response = await updatePost(valuesWithTags, postId, user.userId);
@@ -154,23 +147,23 @@ export function EditPostForm({ user, postId, content, title, existingTags, image
 
           <div className="flex items-center space-x-2">
             <Switch
-              id="airplane-mode"
+              checked={rideWithGPSLink === null || !showRideWithGpsLinkInput ? false : true}
               onCheckedChange={(e) => {
-                setShowRouteInput(e);
+                setShowRideWithGpsLinkInput(e);
               }}
             />
             <Label htmlFor="airplane-mode">Add Ride With GPS Route</Label>
           </div>
-          {showRouteInput && (
+          {showRideWithGpsLinkInput && (
             <FormField
               control={form.control}
-              name="route"
+              name="rideWithGPSLink"
               render={({ field }) => {
                 return (
                   <FormItem>
                     <div className="flex flex-col gap-2">
-                      <FormLabel>Ride With GPS Route Link</FormLabel>
-                      <FormLabel className="text-gray-500">Route links should look like this: "https://ridewithgps.com/routes/38157234"</FormLabel>
+                      <FormLabel>Ride With GPS Route or Trip Link</FormLabel>
+                      <FormLabel className="text-gray-500">Route or Trip links should look like this: "https://ridewithgps.com/routes/38157234" or "https://ridewithgps.com/trips/80760584"</FormLabel>
                     </div>
                     <FormControl>
                       <Input {...field} />

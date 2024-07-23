@@ -6,16 +6,15 @@ const TRIP_BASE = 'https://ridewithgps.com/trips/';
 
 export function RideWithGPSIFrame({ url, category }: { url: string; category: PostCategory }) {
   let base: string = '';
-  let type: 'routes' | 'trip' | '' = '';
+  let type: 'route' | 'trip' | '' = '';
   if (category === PostCategory.ROUTE) {
     base = ROUTE_BASE;
-    type = 'routes';
+    type = 'route';
   } else if (category === PostCategory.TRIP) {
     base = TRIP_BASE;
     type = 'trip';
   }
   const extractedRouteNumber = extractRideWithGpsRouteId(url, base);
-
   if (!Number(extractedRouteNumber) || Number(extractedRouteNumber) <= 0) {
     return <QueryError errors={[{ data: url, message: `Unable to create embedded route. There may be an issue with your share link: ${url}` }]} />;
   } else {

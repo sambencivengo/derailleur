@@ -1,11 +1,12 @@
 'use server';
 import { Prisma } from "@prisma/client";
+import { determinePostCategory } from "~/queries/posts/utils";
 import { PostWithAuthorNameTagsAndCommentCount, UpdatePost, UpdatePostPayload, postWithAuthorNameTagsAndCommentCountQuery } from "~/types";
 import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from "~/utils";
 import prisma from "~prisma/prisma";
 
 export const updatePost: UpdatePost = async (updatePostPayload: UpdatePostPayload, postId: string, authorId: string): Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount>> => {
-  const { content, title, published, tags, route, images, existingTags } = updatePostPayload;
+  const { content, title, published, tags, rideWithGPSLink, images, existingTags } = updatePostPayload;
 
   const tagsToDelete: Array<{ name: string, id: string; }> = [];
   for (let i = 0; i < existingTags.length; i++) {
@@ -14,7 +15,6 @@ export const updatePost: UpdatePost = async (updatePostPayload: UpdatePostPayloa
       tagsToDelete.push(existingTag);
     }
   }
-
   try {
     const updatedPost = await prisma.post.update({
       where: {
@@ -24,7 +24,8 @@ export const updatePost: UpdatePost = async (updatePostPayload: UpdatePostPayloa
       data: {
         content,
         title,
-        route,
+        category: determinePostCategory(rideWithGPSLink),
+        rideWithGPSLink: rideWithGPSLink === '' ? null : rideWithGPSLink,
         published,
         images: images !== undefined ? images.split(',').map((image => image)) : [],
         tags:

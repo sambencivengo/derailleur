@@ -1,12 +1,12 @@
 'use server';
 
-import { Prisma } from "@prisma/client";
+import { PostCategory, Prisma } from "@prisma/client";
 import { GetPosts, PostWithAuthorNameTagsAndCommentCount, postWithAuthorNameTagsAndCommentCountQuery } from "~/types";
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
 import prisma from "~prisma/prisma";
 
 
-export const getPosts: GetPosts = async (username?: string, route: boolean = false, userId?: string): Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount[]>> => {
+export const getPosts: GetPosts = async (username?: string, category?: PostCategory, userId?: string): Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount[]>> => {
   try {
     const posts = await prisma.post.findMany({
       orderBy: {
@@ -16,8 +16,8 @@ export const getPosts: GetPosts = async (username?: string, route: boolean = fal
         author: {
           username: username
         },
-        route: route ? {
-          not: null
+        category: category ? {
+          equals: category
         } : {},
       },
       include: {

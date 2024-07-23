@@ -6,6 +6,7 @@ import { DerailleurResponse, createSuccessfulResponse, createErrorResponse, Dera
 import { CreatePost, CreatePostPayload, PostWithAuthorNameAndTags, postWithAuthorNameAndTagsQuery } from '~/types';
 import { CreatePostSchema, createPostSchema, validateSchema } from '~/schemas';
 import { PrismaQueryErrorCodes } from '~prisma/prismaErrorCodes';
+import { determinePostCategory } from '~/queries/posts/utils';
 
 // NOTE: function is currently recursive so that tags don't collide if created at the exact same time.
 
@@ -21,7 +22,8 @@ export const createPost: CreatePost = async (postPayload: CreatePostPayload, use
       });
       return (createErrorResponse(errors));
     }
-    const { content, title, tags, images, route } = validateResponse.result;
+    const { content, title, tags, images, rideWithGPSLink } = validateResponse.result;
+
     try {
       const newPost = await prisma.post.create({
         data: {
@@ -30,7 +32,8 @@ export const createPost: CreatePost = async (postPayload: CreatePostPayload, use
           authorId: userId,
           content,
           title,
-          route,
+          category: determinePostCategory(rideWithGPSLink),
+          rideWithGPSLink: rideWithGPSLink === '' ? undefined : rideWithGPSLink,
           published: true, // NOTE: CHANGE WHEN USING PUBLISHED ARGS AND DRAFTS
           tags: {
             connectOrCreate: tags.map((tagName) => {

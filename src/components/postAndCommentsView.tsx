@@ -44,7 +44,7 @@ function SkeletonCommentPreview() {
 function renderEditedOrExistingPost(user: UserAndSession | null, setIsEditing: React.Dispatch<React.SetStateAction<boolean>>, isEditing: boolean, setSuccessfullyEditedPost: React.Dispatch<React.SetStateAction<PostWithAuthorNameTagsAndCommentCount | null>>, successfullyEditedPost: PostWithAuthorNameTagsAndCommentCount | null, post: PostWithAuthorNameTagsAndCommentCount) {
   const postToRender = successfullyEditedPost === null ? post : successfullyEditedPost;
   if (isEditing && user !== null) {
-    return <EditPostForm setSuccessfullyEditedPost={setSuccessfullyEditedPost} setIsEditing={setIsEditing} user={user} postId={postToRender.id} content={postToRender.content} title={postToRender.title} images={postToRender.images} existingTags={postToRender.tags} />;
+    return <EditPostForm setSuccessfullyEditedPost={setSuccessfullyEditedPost} setIsEditing={setIsEditing} rideWithGPSLink={post.rideWithGPSLink} user={user} postId={postToRender.id} content={postToRender.content} title={postToRender.title} images={postToRender.images} existingTags={postToRender.tags} />;
   } else {
     return <PostView post={postToRender} />;
   }
