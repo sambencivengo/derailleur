@@ -8,13 +8,12 @@ import prisma from "~prisma/prisma";
 
 export const unsavePost: UnsavePost = async (postId: string, userId: string,): Promise<DerailleurResponse<string>> => {
   try {
-    const result = await prisma.userSavedPosts.deleteMany({
+    await prisma.userSavedPosts.deleteMany({
       where: {
         postId,
         userId
       }
     });
-    console.log(result);
     return createSuccessfulResponse('success');
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {

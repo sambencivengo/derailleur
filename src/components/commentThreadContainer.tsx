@@ -29,7 +29,6 @@ export function CommentThreadContainer({ postId, comment, user }: CommentThreadC
       } else if (result.comment === null) {
       } else {
         const { comment: parentCommentResult } = result;
-        console.log(parentCommentResult);
         setCommentsToRender((value) => [{ ...parentCommentResult, _count: { replies: 0, author: 0, parentComment: 0, post: 0, likes: 0 }, replies: value }]);
         setParentCommentId(parentCommentResult.parentCommentId);
       }

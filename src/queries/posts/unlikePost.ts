@@ -8,7 +8,7 @@ import prisma from "~prisma/prisma";
 
 export const unlikePost: UnlikePost = async (postId: string, userId: string,): Promise<DerailleurResponse<string>> => {
   try {
-    const response = await prisma.userLikedPosts.deleteMany({
+    await prisma.userLikedPosts.deleteMany({
       where: {
         postId,
         userId

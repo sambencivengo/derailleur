@@ -62,7 +62,6 @@ export function PostLinks({ likesCount, postIsLiked, user, postId, numberOfComme
   // TODO: dry up this function, used in both postLinks.tsx and here
   async function handleLikePost(userId: string) {
     let response: DerailleurResponse<string>;
-    console.log;
     if (liked) {
       setLiked(false);
       setNumberOfLikes((prev) => prev - 1);
