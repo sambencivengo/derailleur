@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { CreatePostPayload } from "~/types";
 
-const RIDE_WITH_GPS_ROUTE_REGEX = /^https:\/\/ridewithgps\.com\/routes\/\d+$/;
+const RIDE_WITH_GPS_ROUTE_REGEX = /^https:\/\/ridewithgps\.com\/(routes|trips)\/\d+$/;
 
 export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
   title: z
@@ -24,9 +24,9 @@ export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
       message: 'Post content must be at least 10 characters.',
     })
     .trim(),
-  route: z.string({
+  rideWithGPSLink: z.string({
     invalid_type_error: 'Post content must be a string',
-  }).refine((data: string) => (RIDE_WITH_GPS_ROUTE_REGEX.test(data)), { message: 'Route input must be a valid Ride With GPS route link eg: https://ridewithgps.com/routes/38157234' }).optional(),
+  }).refine((data: string) => (RIDE_WITH_GPS_ROUTE_REGEX.test(data)), { message: 'Route input must be a valid Ride With GPS route link eg: https://ridewithgps.com/routes/ or https://ridewithgps.com/trips/' }).optional(),
   images: z.optional(z.string().trim()),
   published: z
     .boolean({

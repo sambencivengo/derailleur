@@ -6,7 +6,6 @@ import { getTagsWithCount } from '~/queries';
 
 export async function HomePageTagsView() {
   const tagsResponse = await getTagsWithCount(20);
-  tagsResponse!.result!.forEach((tag) => console.log(tag._count.posts, '$$$'));
 
   const { errors, result } = tagsResponse;
   if (errors.length > 0 || result === null) {

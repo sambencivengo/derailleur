@@ -22,7 +22,7 @@ export function NewPostForm({ userId }: NewPostFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [tags, setTags] = React.useState<TagWithPostCount[]>([]);
   const [open, setOpen] = React.useState(false);
-  const [showRouteInput, setShowRouteInput] = React.useState<boolean>(false);
+  const [showRideWithGpsLinkInput, setShowRideWithGpsLinkInput] = React.useState<boolean>(false);
   const router = useRouter();
   const { toast } = useToast();
 
@@ -35,17 +35,18 @@ export function NewPostForm({ userId }: NewPostFormProps) {
       published: true, // TODO: change this when drafts are implemented
       title: '',
       tags: [],
+      rideWithGPSLink: '',
     },
   });
 
   React.useEffect(() => {
-    if (showRouteInput) {
-      form.setValue('route', '');
+    if (showRideWithGpsLinkInput) {
+      form.setValue('rideWithGPSLink', '');
     } else {
-      form.setValue('route', undefined);
-      form.clearErrors('route');
+      form.setValue('rideWithGPSLink', '');
+      form.clearErrors('rideWithGPSLink');
     }
-  }, [showRouteInput, setShowRouteInput, setSelected]);
+  }, [showRideWithGpsLinkInput, setShowRideWithGpsLinkInput, setSelected]);
 
   // NOTE: validate url function from https://www.freecodecamp.org/news/check-if-a-javascript-string-is-a-url/
   const isValidUrl = (urlString: string) => {
@@ -139,21 +140,22 @@ export function NewPostForm({ userId }: NewPostFormProps) {
             <Switch
               id="airplane-mode"
               onCheckedChange={(e) => {
-                setShowRouteInput(e);
+                setShowRideWithGpsLinkInput(e);
               }}
             />
-            <Label htmlFor="airplane-mode">Add Ride With GPS Route</Label>
+            <Label htmlFor="airplane-mode">Add Ride With GPS Route or Trip Link</Label>
           </div>
-          {showRouteInput && (
+
+          {showRideWithGpsLinkInput && (
             <FormField
               control={form.control}
-              name="route"
+              name="rideWithGPSLink"
               render={({ field }) => {
                 return (
                   <FormItem>
                     <div className="flex flex-col gap-2">
-                      <FormLabel>Ride With GPS Route Link</FormLabel>
-                      <FormLabel className="text-gray-500">Route links should look like this: "https://ridewithgps.com/routes/38157234"</FormLabel>
+                      <FormLabel>Ride With GPS Route or Trip Link</FormLabel>
+                      <FormLabel className="text-gray-500">Route or Trip links should look like this: "https://ridewithgps.com/routes/38157234" or "https://ridewithgps.com/trips/80760584"</FormLabel>
                     </div>
                     <FormControl>
                       <Input {...field} />

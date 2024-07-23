@@ -1,3 +1,4 @@
+import { PostCategory } from "@prisma/client";
 import { PostWithAuthorNameAndTags, PostWithAuthorNameTagsAndCommentCount } from "~/types";
 import { SavedPostWithPostAuthorNameTagsAndCommentCount } from "~/types/models/savedPosts";
 import { DerailleurResponse } from "~/utils";
@@ -7,7 +8,7 @@ export interface CreatePostPayload {
   content: string;
   published?: boolean;
   images?: string;
-  route?: string;
+  rideWithGPSLink?: string;
   tags: string[];
 }
 
@@ -40,7 +41,7 @@ export type UpdatePost = (
   authorId: string,
 ) => Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount>>;
 
-export type GetPosts = (username?: string, route?: boolean, userId?: string) => Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount[]>>;
+export type GetPosts = (username?: string, category?: PostCategory, userId?: string) => Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount[]>>;
 
 export type UnsavePost = (postId: string, userId: string) => Promise<DerailleurResponse<string>>;
 export type SavePost = (postId: string, userId: string, savedPostId?: string) => Promise<DerailleurResponse<string>>;

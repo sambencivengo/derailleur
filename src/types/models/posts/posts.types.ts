@@ -5,7 +5,7 @@ export const postWithAuthorNameQuery = Prisma.validator<Prisma.PostDefaultArgs>(
   include: {
     author: {
       select: { username: true }
-    }
+    },
   }
 });
 
@@ -43,7 +43,7 @@ export const postWithAuthorNameAndTagsQuery = Prisma.validator<Prisma.PostDefaul
   }
 });
 
-export interface Post extends PrismaPost { }
+export interface Post extends PrismaPost { };
 export type PostWithAuthorName = Prisma.PostGetPayload<typeof postWithAuthorNameQuery>;
 export type PostWithAuthorNameTagsAndCommentCount = Prisma.PostGetPayload<typeof postWithAuthorNameTagsAndCommentCountQuery>;
 export type PostWithAuthorNameAndTags = Prisma.PostGetPayload<typeof postWithAuthorNameAndTagsQuery>;

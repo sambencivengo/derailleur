@@ -5,13 +5,13 @@ import moment from 'moment';
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter, Badge, CardContent, Button } from '~/components/ui';
 import { PostWithAuthorNameTagsAndCommentCount, UserAndSession } from '~/types';
 import { Heart, MessageSquare } from 'lucide-react';
-import { RouteTag } from '~/components/routeTag';
 import { useRouter } from 'next/navigation';
 import { toast } from '~/components/ui/use-toast';
 import { unsavePost, savePost } from '~/queries';
 import { DerailleurResponse } from '~/utils';
 import { unlikePost } from '~/queries/posts/unlikePost';
 import { likePost } from '~/queries/posts/likePost';
+import { PostCategoryTag } from '~/components/postCategoryTag';
 
 interface PostPreviewProps {
   post: PostWithAuthorNameTagsAndCommentCount;
@@ -79,7 +79,6 @@ export function PostPreview({ post, user }: PostPreviewProps) {
     createdAt,
     id,
     tags,
-    route,
   } = post;
   const renderTagBadges = tags.map((tag, idx) => {
     return (
@@ -88,7 +87,6 @@ export function PostPreview({ post, user }: PostPreviewProps) {
       </Link>
     );
   });
-
   return (
     <Card className="h-auto w-full">
       <CardHeader className="h-auto gap-y-2">
@@ -99,7 +97,7 @@ export function PostPreview({ post, user }: PostPreviewProps) {
             </Link>
           </CardTitle>
           <div className="flex flex-wrap gap-3">
-            <RouteTag route={route} />
+            <PostCategoryTag postCategory={post.category} />
             {renderTagBadges}
           </div>
         </div>

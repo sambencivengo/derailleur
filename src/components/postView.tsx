@@ -6,8 +6,9 @@ import { ImageWrapper } from '~/components/imageWrapper';
 import { PostWithAuthorNameTagsAndCommentCount } from '~/types';
 import { determineDateToShow } from '~/utils/dateUtils';
 import { RideWithGPSIFrame } from '~/components/rideWithGPSIFrame';
-import { RouteTag } from '~/components/routeTag';
 import { ScrollArea } from '~/components/ui/scroll-area';
+import { PostCategory } from '@prisma/client';
+import { PostCategoryTag } from '~/components/postCategoryTag';
 
 interface PostViewProps {
   post: PostWithAuthorNameTagsAndCommentCount;
@@ -21,7 +22,8 @@ export function PostView({ post }: PostViewProps) {
     createdAt,
     title,
     images,
-    route,
+    rideWithGPSLink,
+    category,
     id,
     tags,
     updatedAt,
@@ -71,20 +73,21 @@ export function PostView({ post }: PostViewProps) {
           )}
         </CardContent>
       </CardHeader>
-      {route && (
+      {category !== PostCategory.POST && rideWithGPSLink !== null && (
         <div>
           <CardHeader>
             <CardTitle>Route</CardTitle>
             <Separator />
           </CardHeader>
           <CardContent className="px-0 sm:px-2 md:px-4 flex flex-col gap-2">
-            <RideWithGPSIFrame url={route} />
+            <RideWithGPSIFrame url={rideWithGPSLink} category={post.category} />
           </CardContent>
         </div>
       )}
       <CardFooter>
         <div className="flex flex-wrap gap-2">
-          <RouteTag route={route} />
+          {/* <PostCategoryTag postCategory={route} /> */}
+          <PostCategoryTag postCategory={post.category} />
           {renderTagBadges}
         </div>
       </CardFooter>

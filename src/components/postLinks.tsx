@@ -87,7 +87,7 @@ export function PostLinks({ likesCount, postIsLiked, user, postId, numberOfComme
   return (
     <>
       <div className="w-full h-full flex flex-col mt-2">
-        <div className="w-full h-full flex flex-wrap items-center">
+        <div className="w-full h-full flex flex-wrap justify-center md:justify-start items-center">
           <div className="flex flex-row gap-2 items-center">
             <Button
               className="h-6 w-6 hover:bg-opacity-0"

@@ -43,7 +43,7 @@ model Post {
   published Boolean @default(false)
   author User @relation(references: [id], fields: [authorId], onDelete: Cascade)
   authorId String
-  route String?
+  rideWithGPSLink String?
   tags Tag[]
   images String[]
   comments Comment[]
@@ -102,6 +102,6 @@ model Tag {
 enum PostCategory {
   POST
   ROUTE
-  RIDE
+  TRIP
 	@@map("Post_Category")
 }
