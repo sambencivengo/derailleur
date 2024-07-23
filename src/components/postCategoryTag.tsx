@@ -5,14 +5,14 @@ import { Badge } from '~/components/ui/badge';
 export function PostCategoryTag({ postCategory }: { postCategory: PostCategory }) {
   if (postCategory === PostCategory.ROUTE) {
     return (
-      <Link href={'/post/routes'}>
+      <Link href={'/category/routes'}>
         <Badge variant={'default'}>{postCategory}</Badge>
       </Link>
     );
   }
   if (postCategory === PostCategory.TRIP) {
     return (
-      <Link href={'/post/trips'}>
+      <Link href={'/category/trips'}>
         <Badge variant={'default'}>{postCategory}</Badge>
       </Link>
     );

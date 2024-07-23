@@ -146,7 +146,7 @@ export function EditPostForm({ user, postId, content, title, existingTags, rideW
 
           <div className="flex items-center space-x-2">
             <Switch
-              checked={rideWithGPSLink === null || !showRideWithGpsLinkInput ? false : true}
+              checked={showRideWithGpsLinkInput}
               onCheckedChange={(e) => {
                 setShowRideWithGpsLinkInput(e);
               }}
