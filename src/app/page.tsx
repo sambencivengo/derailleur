@@ -39,7 +39,7 @@ export default async function Home() {
                   <Link href="/signup" className="text-primary underline">
                     sign up
                   </Link>{' '}
-                  and get started!
+                  page and get started!
                 </p>
                 <p>
                   Otherwise,{' '}
