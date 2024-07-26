@@ -53,7 +53,6 @@ export function SignUpForm() {
     await axios
       .post('/api/signup', values)
       .then(() => {
-        setIsLoading(false);
         router.refresh();
         router.push('/');
       })
