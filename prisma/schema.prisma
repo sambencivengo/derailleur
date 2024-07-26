@@ -50,6 +50,7 @@ model Post {
   category PostCategory @default(POST)
   savedBy UserSavedPosts[]
   likes UserLikedPosts[]
+  @@unique([id, createdAt])
 }
 
 model UserLikedPosts {
