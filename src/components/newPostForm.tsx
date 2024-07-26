@@ -77,7 +77,6 @@ export function NewPostForm({ userId }: NewPostFormProps) {
       form.setError('images', { message: 'Image links must be valid URLs' });
       return;
     } else {
-      setIsLoading(true);
       const valuesWithTags: CreatePostPayload = { ...values, tags: selected.map((tag) => tag.name) };
       const response = await createPost(valuesWithTags, userId);
       if (response.errors.length > 0 || response.result === null) {
