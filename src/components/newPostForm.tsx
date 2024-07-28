@@ -63,6 +63,7 @@ export function NewPostForm({ userId }: NewPostFormProps) {
   };
 
   async function onSubmit(values: CreatePostSchema) {
+    setIsLoading(true);
     const { images } = values;
     // TODO: move to zod validation
     const arrayOfImagesContainsInvalidUrl =

@@ -18,9 +18,6 @@ export function PostPreviewsContainer({ initialPosts, user }: PostPreviewsContai
   const [getMorePostsErrors, setGetMorPostsErrors] = React.useState<Array<DerailleurError>>([]);
   const [isLoading, setIstLoading] = React.useState<boolean>(false);
   const [cursor, setCursor] = React.useState<PostCursor | null>(initialPosts.length > 10 ? { createdAt: initialPosts[initialPosts.length - 1].createdAt, postId: initialPosts[initialPosts.length - 1].id } : null);
-  // cursor is 11th post or null if no more posts
-  // when the next set of 11 is queried, if number 11 exists, set to new cursor and show load more button
-  // if cursor
 
   const getMorePosts = React.useCallback(
     async (cursorId: string, cursorDate: string | Date) => {
@@ -56,8 +53,7 @@ export function PostPreviewsContainer({ initialPosts, user }: PostPreviewsContai
         <Button
           className="self-center"
           onClick={() => {
-            const lastPost = posts[posts.length - 1];
-            getMorePosts(lastPost.id, lastPost.createdAt);
+            getMorePosts(cursor.postId, cursor.createdAt);
           }}
         >
           {isLoading ? <Spinner /> : 'Load More...'}
@@ -68,7 +64,7 @@ export function PostPreviewsContainer({ initialPosts, user }: PostPreviewsContai
             <div className="self-center">
               <Wind size={50} />
             </div>
-            <CardTitle>Looks like there is nothing left...</CardTitle>
+            <CardTitle>Looks like there {initialPosts.length > 0 ? ' is nothing left...' : 'are no posts...'}</CardTitle>
             <CardTitle>
               <p>Join the conversation and </p>{' '}
               <Link href={'/post/new'} className="hover:underline text-primary">
