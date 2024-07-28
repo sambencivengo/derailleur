@@ -15,7 +15,7 @@
     "test": "npx prisma migrate deploy && jest -i",
     "migrate:create": "npx prisma migrate dev --name",
     "migrate:docker:deploy": "npx prisma migrate deploy",
-    "prisma:client": "npx prisma generate",
+    "prisma:client generate": "npx prisma generate",
     "prisma:studio": "npx prisma studio",
     "prisma:seed": "npx prisma db seed"
   },
