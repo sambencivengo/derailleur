@@ -5,7 +5,7 @@ import { GetPosts, PostWithAuthorNameTagsAndCommentCount, postWithAuthorNameTags
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
 import prisma from "~prisma/prisma";
 
-interface PostCursor {
+export interface PostCursor {
   postId: string,
   createdAt: string | Date;
 }
@@ -21,8 +21,8 @@ export const getPosts: GetPosts = async (username?: string, category?: PostCateg
           id: cursor.postId,
         }
       } : undefined,
-      take: 10,
-      skip: cursor !== undefined ? 1 : 0,
+      take: 11, // NOTE: Show 10, if there is an 11th, show load more button and use as cursor WITHOUT skip
+      // skip: cursor !== undefined ? 1 : 0,
       where: {
         author: {
           username: username

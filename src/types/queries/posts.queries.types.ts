@@ -1,4 +1,5 @@
 import { PostCategory } from "@prisma/client";
+import { PostCursor } from "~/queries";
 import { PostWithAuthorNameAndTags, PostWithAuthorNameTagsAndCommentCount } from "~/types";
 import { SavedPostWithPostAuthorNameTagsAndCommentCount } from "~/types/models/savedPosts";
 import { DerailleurResponse } from "~/utils";
@@ -41,7 +42,7 @@ export type UpdatePost = (
   authorId: string,
 ) => Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount>>;
 
-export type GetPosts = (username?: string, category?: PostCategory, userId?: string) => Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount[]>>;
+export type GetPosts = (username?: string, category?: PostCategory, userId?: string, cursor?: PostCursor) => Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount[]>>;
 
 export type UnsavePost = (postId: string, userId: string) => Promise<DerailleurResponse<string>>;
 export type SavePost = (postId: string, userId: string, savedPostId?: string) => Promise<DerailleurResponse<string>>;
