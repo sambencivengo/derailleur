@@ -3,7 +3,7 @@
 import { PostCategory } from '@prisma/client';
 import { Suspense } from 'react';
 import { getUserSession } from '~/auth';
-import { PostPreview, TextHeading } from '~/components';
+import { PostPreviewsContainer, TextHeading } from '~/components';
 import { BackToAllPostsLink } from '~/components/backToAllPostsLink';
 import { Badge, Skeleton } from '~/components/ui';
 import { getPosts } from '~/queries';
@@ -32,11 +32,7 @@ export default async function Page({ params }: { params: { category: string } })
           <BackToAllPostsLink />
 
           <Suspense fallback={<RoutePostsContainerSkeleton />}>
-            <div className="space-y-2">
-              {result.map((post, idx) => {
-                return <PostPreview user={user} post={post} key={idx} />;
-              })}
-            </div>
+            <PostPreviewsContainer initialPosts={result} user={user} category={objectCategories[category]} />
           </Suspense>
         </div>
       </main>

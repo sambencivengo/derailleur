@@ -7,15 +7,17 @@ import { getPosts } from '~/queries';
 import { PostCursor, PostWithAuthorNameTagsAndCommentCount, UserAndSession } from '~/types';
 import { DerailleurError } from '~/utils';
 import Link from 'next/link';
+import { PostCategory } from '@prisma/client';
 
 const POST_BATCH_AMOUNT = 10;
 
 interface PostPreviewsContainerProps {
   user: UserAndSession | null;
   initialPosts: Array<PostWithAuthorNameTagsAndCommentCount>;
+  category?: PostCategory;
 }
 
-export function PostPreviewsContainer({ initialPosts, user }: PostPreviewsContainerProps) {
+export function PostPreviewsContainer({ initialPosts, category, user }: PostPreviewsContainerProps) {
   const [posts, setPosts] = React.useState<Array<PostWithAuthorNameTagsAndCommentCount>>(initialPosts.length > POST_BATCH_AMOUNT ? initialPosts.slice(0, POST_BATCH_AMOUNT) : initialPosts);
   const [getMorePostsErrors, setGetMorPostsErrors] = React.useState<Array<DerailleurError>>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -24,7 +26,7 @@ export function PostPreviewsContainer({ initialPosts, user }: PostPreviewsContai
   const getMorePosts = React.useCallback(
     async function (cursorId: string, cursorDate: string | Date) {
       setIsLoading(true);
-      const nextGroupOfPostsResponse = await getPosts(undefined, undefined, undefined, { postId: cursorId, createdAt: cursorDate });
+      const nextGroupOfPostsResponse = await getPosts(undefined, category, undefined, { postId: cursorId, createdAt: cursorDate });
       const { errors, result } = nextGroupOfPostsResponse;
       if (result === null || errors.length > 0) {
         setGetMorPostsErrors(errors);
