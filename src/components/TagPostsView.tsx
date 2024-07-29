@@ -16,7 +16,7 @@ interface TagPagePostsContainerProps {
 export function TagPostsView({ user, initialTagAndPosts, tagNameWithoutHyphens }: TagPagePostsContainerProps) {
   const { posts: initialPosts } = initialTagAndPosts;
   const [posts, setPosts] = React.useState<Array<PostWithAuthorNameTagsAndCommentCount>>(initialPosts.length > POST_BATCH_AMOUNT ? initialPosts.slice(0, POST_BATCH_AMOUNT) : initialPosts);
-  const [getMorePostsErrors, setGetMorPostsErrors] = React.useState<Array<DerailleurError>>([]);
+  const [getMorePostsErrors, setGetMorePostsErrors] = React.useState<Array<DerailleurError>>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [cursor, setCursor] = React.useState<PostCursor | null>(initialPosts.length > POST_BATCH_AMOUNT ? { createdAt: initialPosts[initialPosts.length - 1].createdAt, postId: initialPosts[initialPosts.length - 1].id } : null);
 
@@ -26,7 +26,7 @@ export function TagPostsView({ user, initialTagAndPosts, tagNameWithoutHyphens }
       const nextGroupOfPostsResponse = await getTagWithPostsByName(tagNameWithoutHyphens, undefined, { postId: cursorId, createdAt: cursorDate });
       const { errors, result } = nextGroupOfPostsResponse;
       if (result === null || errors.length > 0) {
-        setGetMorPostsErrors(errors);
+        setGetMorePostsErrors(errors);
         setIsLoading(false);
       } else {
         const { posts } = result;
@@ -40,7 +40,7 @@ export function TagPostsView({ user, initialTagAndPosts, tagNameWithoutHyphens }
         setIsLoading(false);
       }
     },
-    [setPosts, setGetMorPostsErrors, setIsLoading, setCursor]
+    [setPosts, setGetMorePostsErrors, setIsLoading, setCursor]
   );
 
   return (
