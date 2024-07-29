@@ -2,12 +2,16 @@
 
 import { Suspense } from 'react';
 import { getUserSession } from '~/auth';
-import { TagPageHeading, TagPagePostsContainer } from '~/components';
+import { QueryError, TagPageHeading, TagPostsView } from '~/components';
 import { Skeleton } from '~/components/ui';
+import { getTagWithPostsByName } from '~/queries';
 
 export default async function Page({ params }: { params: { tag: string } }) {
   const { tag } = params;
   const user = await getUserSession();
+  const tagNameWithoutHyphens = tag.split('-').join(' ').toUpperCase();
+  const tagNameWithPostCountResponse = await getTagWithPostsByName(tagNameWithoutHyphens);
+  const { errors, result } = tagNameWithPostCountResponse;
 
   return (
     <main>
@@ -15,10 +19,7 @@ export default async function Page({ params }: { params: { tag: string } }) {
         <Suspense fallback={<TagPageHeadingSkeleton />}>
           <TagPageHeading tagName={tag} />
         </Suspense>
-
-        <Suspense fallback={<TagPagePostsContainerSkeleton />}>
-          <TagPagePostsContainer user={user} tagName={tag} />
-        </Suspense>
+        <Suspense fallback={<TagPagePostsContainerSkeleton />}>{errors.length > 0 || result === null ? <QueryError errors={errors} /> : <TagPostsView user={user} tagName={tag} />}</Suspense>
       </div>
     </main>
   );

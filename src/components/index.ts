@@ -18,7 +18,7 @@ export * from './textHeading';
 export * from "./desktopNav";
 export * from './logOutButton';
 export * from './tagPageHeading';
-export * from './tagPagePostsContainer';
+export * from './TagPostsView';
 export * from './commentReplyForm';
 export * from './commentsView';
 export * from './queryError';
