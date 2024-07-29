@@ -19,7 +19,8 @@ export default async function Page({ params }: { params: { tag: string } }) {
         <Suspense fallback={<TagPageHeadingSkeleton />}>
           <TagPageHeading tagName={tag} />
         </Suspense>
-        <Suspense fallback={<TagPagePostsContainerSkeleton />}>{errors.length > 0 || result === null ? <QueryError errors={errors} /> : <TagPostsView user={user} tagName={tag} />}</Suspense>
+        <Suspense fallback={<TagPagePostsContainerSkeleton />}></Suspense>
+        {errors.length > 0 || result === null ? <QueryError errors={errors} /> : <TagPostsView user={user} tagNameWithoutHyphens={tagNameWithoutHyphens} initialTagAndPosts={result} />}
       </div>
     </main>
   );

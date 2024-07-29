@@ -1,8 +1,12 @@
 import { PostCategory } from "@prisma/client";
-import { PostCursor } from "~/queries";
 import { PostWithAuthorNameAndTags, PostWithAuthorNameTagsAndCommentCount } from "~/types";
 import { SavedPostWithPostAuthorNameTagsAndCommentCount } from "~/types/models/savedPosts";
 import { DerailleurResponse } from "~/utils";
+
+export interface PostCursor {
+  postId: string,
+  createdAt: string | Date;
+}
 
 export interface CreatePostPayload {
   title: string;

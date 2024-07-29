@@ -1,14 +1,11 @@
 'use server';
 
 import { PostCategory, Prisma } from "@prisma/client";
-import { GetPosts, PostWithAuthorNameTagsAndCommentCount, postWithAuthorNameTagsAndCommentCountQuery } from "~/types";
+import { GetPosts, PostCursor, PostWithAuthorNameTagsAndCommentCount, postWithAuthorNameTagsAndCommentCountQuery } from "~/types";
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
 import prisma from "~prisma/prisma";
 
-export interface PostCursor {
-  postId: string,
-  createdAt: string | Date;
-}
+
 export const getPosts: GetPosts = async (username?: string, category?: PostCategory, userId?: string, cursor?: PostCursor): Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount[]>> => {
   try {
     const posts = await prisma.post.findMany({

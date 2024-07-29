@@ -1,19 +1,66 @@
-import { PostPreview, QueryError } from '~/components';
+'use client';
+import React from 'react';
+import { PostPreview, QueryError, Spinner } from '~/components';
+import { Button } from '~/components/ui';
 import { getTagWithPostsByName } from '~/queries';
-import { UserAndSession } from '~/types';
+import { PostCursor, PostWithAuthorNameTagsAndCommentCount, TagWithPosts, UserAndSession } from '~/types';
+import { DerailleurError } from '~/utils';
+
+const POST_BATCH_AMOUNT = 10;
 
 interface TagPagePostsContainerProps {
-  tagName: string;
   user: UserAndSession | null;
+  tagNameWithoutHyphens: string;
+  initialTagAndPosts: TagWithPosts;
 }
-export async function TagPostsView({ tagName, user }: TagPagePostsContainerProps) {
-  const tagNameWithoutHyphens = tagName.split('-').join(' ').toUpperCase();
-  const tagNameWithPostCountResponse = await getTagWithPostsByName(tagNameWithoutHyphens);
-  if (tagNameWithPostCountResponse.errors.length > 0 || tagNameWithPostCountResponse.result === null) {
-    return <QueryError errors={tagNameWithPostCountResponse.errors} />;
-  }
-  const { result } = tagNameWithPostCountResponse;
-  return result.posts.map((post, idx) => {
-    return <PostPreview user={user} post={post} key={idx} />;
-  });
+export function TagPostsView({ user, initialTagAndPosts, tagNameWithoutHyphens }: TagPagePostsContainerProps) {
+  const { posts: initialPosts } = initialTagAndPosts;
+  const [posts, setPosts] = React.useState<Array<PostWithAuthorNameTagsAndCommentCount>>(initialPosts.length > POST_BATCH_AMOUNT ? initialPosts.slice(0, POST_BATCH_AMOUNT) : initialPosts);
+  const [getMorePostsErrors, setGetMorPostsErrors] = React.useState<Array<DerailleurError>>([]);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [cursor, setCursor] = React.useState<PostCursor | null>(initialPosts.length > POST_BATCH_AMOUNT ? { createdAt: initialPosts[initialPosts.length - 1].createdAt, postId: initialPosts[initialPosts.length - 1].id } : null);
+
+  const getMorePosts = React.useCallback(
+    async function (cursorId: string, cursorDate: string | Date) {
+      setIsLoading(true);
+      const nextGroupOfPostsResponse = await getTagWithPostsByName(tagNameWithoutHyphens, undefined, { postId: cursorId, createdAt: cursorDate });
+      const { errors, result } = nextGroupOfPostsResponse;
+      if (result === null || errors.length > 0) {
+        setGetMorPostsErrors(errors);
+        setIsLoading(false);
+      } else {
+        const { posts } = result;
+        if (posts.length > POST_BATCH_AMOUNT) {
+          const { createdAt, id } = posts[posts.length - 1];
+          setCursor({ createdAt, postId: id });
+        } else {
+          setCursor(null);
+        }
+        setPosts((prev) => [...prev, ...posts]);
+        setIsLoading(false);
+      }
+    },
+    [setPosts, setGetMorPostsErrors, setIsLoading, setCursor]
+  );
+
+  return (
+    <div className="w-full flex flex-col gap-5">
+      <div>
+        {posts.map((post, idx) => {
+          return <PostPreview user={user} post={post} key={idx} />;
+        })}
+      </div>
+      {getMorePostsErrors.length > 0 && <QueryError errors={getMorePostsErrors} />}
+      {cursor !== null && (
+        <Button
+          className="self-center"
+          onClick={() => {
+            getMorePosts(cursor.postId, cursor.createdAt);
+          }}
+        >
+          {isLoading ? <Spinner /> : 'Load More...'}
+        </Button>
+      )}
+    </div>
+  );
 }

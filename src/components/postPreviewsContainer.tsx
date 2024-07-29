@@ -3,8 +3,8 @@ import React from 'react';
 import { Wind } from 'lucide-react';
 import { PostPreview, QueryError, Spinner } from '~/components';
 import { Button, Card, CardHeader, CardTitle } from '~/components/ui';
-import { getPosts, PostCursor } from '~/queries';
-import { PostWithAuthorNameTagsAndCommentCount, UserAndSession } from '~/types';
+import { getPosts } from '~/queries';
+import { PostCursor, PostWithAuthorNameTagsAndCommentCount, UserAndSession } from '~/types';
 import { DerailleurError } from '~/utils';
 import Link from 'next/link';
 
