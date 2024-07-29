@@ -5,7 +5,11 @@ import { CommentWithAuthorUsernameIDAndReplies, commentWithAuthorUsernameIDAndRe
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
 import prisma from "~prisma/prisma";
 
-export const getComments = async (postId?: string, parentCommentId?: string, username?: string): Promise<DerailleurResponse<CommentWithAuthorUsernameIDAndReplies[]>> => {
+export interface CommentCursor {
+  commentId: string,
+  createdAt: string | Date;
+}
+export const getComments = async (postId?: string, parentCommentId?: string, username?: string, cursor?: CommentCursor): Promise<DerailleurResponse<CommentWithAuthorUsernameIDAndReplies[]>> => {
   try {
     const comments = await prisma.comment.findMany({
       where: {
@@ -15,6 +19,14 @@ export const getComments = async (postId?: string, parentCommentId?: string, use
           username
         }
       },
+      cursor: cursor !== undefined ? {
+        id_createdAt: {
+          createdAt: cursor.createdAt,
+          id: cursor.commentId,
+        }
+      } : undefined,
+      take: 6, // NOTE: Show 10, if there is an 11th, show load more button and use as cursor WITHOUT skip
+      // skip: cursor !== undefined ? 1 : 0,
       ...commentWithAuthorUsernameIDAndReplies,
     });
     return createSuccessfulResponse(comments);

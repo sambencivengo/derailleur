@@ -8,37 +8,39 @@ import { PostWithAuthorNameTagsAndCommentCount, UserAndSession } from '~/types';
 import { DerailleurError } from '~/utils';
 import Link from 'next/link';
 
+const POST_BATCH_AMOUNT = 10;
+
 interface PostPreviewsContainerProps {
   user: UserAndSession | null;
   initialPosts: Array<PostWithAuthorNameTagsAndCommentCount>;
 }
 
 export function PostPreviewsContainer({ initialPosts, user }: PostPreviewsContainerProps) {
-  const [posts, setPosts] = React.useState<Array<PostWithAuthorNameTagsAndCommentCount>>(initialPosts.length > 10 ? initialPosts.slice(0, 10) : initialPosts);
+  const [posts, setPosts] = React.useState<Array<PostWithAuthorNameTagsAndCommentCount>>(initialPosts.length > POST_BATCH_AMOUNT ? initialPosts.slice(0, POST_BATCH_AMOUNT) : initialPosts);
   const [getMorePostsErrors, setGetMorPostsErrors] = React.useState<Array<DerailleurError>>([]);
-  const [isLoading, setIstLoading] = React.useState<boolean>(false);
-  const [cursor, setCursor] = React.useState<PostCursor | null>(initialPosts.length > 10 ? { createdAt: initialPosts[initialPosts.length - 1].createdAt, postId: initialPosts[initialPosts.length - 1].id } : null);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [cursor, setCursor] = React.useState<PostCursor | null>(initialPosts.length > POST_BATCH_AMOUNT ? { createdAt: initialPosts[initialPosts.length - 1].createdAt, postId: initialPosts[initialPosts.length - 1].id } : null);
 
   const getMorePosts = React.useCallback(
-    async (cursorId: string, cursorDate: string | Date) => {
-      setIstLoading(true);
+    async function (cursorId: string, cursorDate: string | Date) {
+      setIsLoading(true);
       const nextGroupOfPostsResponse = await getPosts(undefined, undefined, undefined, { postId: cursorId, createdAt: cursorDate });
       const { errors, result } = nextGroupOfPostsResponse;
       if (result === null || errors.length > 0) {
         setGetMorPostsErrors(errors);
-        setIstLoading(false);
+        setIsLoading(false);
       } else {
-        if (result.length > 10) {
+        if (result.length > POST_BATCH_AMOUNT) {
           const { createdAt, id } = result[result.length - 1];
           setCursor({ createdAt, postId: id });
         } else {
           setCursor(null);
         }
         setPosts((prev) => [...prev, ...result]);
-        setIstLoading(false);
+        setIsLoading(false);
       }
     },
-    [setPosts, setGetMorPostsErrors]
+    [setPosts, setGetMorPostsErrors, setIsLoading, setCursor]
   );
 
   return (

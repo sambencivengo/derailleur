@@ -92,6 +92,7 @@ model Comment {
   parentCommentId String?
   replies Comment[] @relation("ParentComments")
   likes UserLikedComments[]
+  @@unique([id, createdAt])
 }
 
 model Tag {

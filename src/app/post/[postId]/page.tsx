@@ -17,6 +17,6 @@ export default async function Page({ params }: { params: { postId: string } }) {
   } else if (commentsErrors.length > 0 || commentsResult === null) {
     return <QueryError errors={commentsErrors} />;
   } else {
-    return <PostAndCommentsView post={postResult} user={user} comments={commentsResult} />;
+    return <PostAndCommentsView post={postResult} user={user} initialComments={commentsResult} />;
   }
 }

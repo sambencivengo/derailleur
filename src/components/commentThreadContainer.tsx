@@ -53,7 +53,7 @@ export function CommentThreadContainer({ postId, comment, user }: CommentThreadC
       <Suspense fallback={<SkeletonCommentPreview />}>
         {parentCommentErrors.length > 0 && <QueryError errors={parentCommentErrors} />}
         {renderParentCommentLink(parentCommentId)}
-        <CommentsView comments={commentsToRender} newCommentsOnPost={[]} user={user} />
+        <CommentsView initialComments={commentsToRender} newCommentsOnPost={[]} user={user} />
       </Suspense>
     </div>
   );
