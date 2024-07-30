@@ -78,8 +78,8 @@ module.exports = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        'marquee': 'marquee 30s linear infinite',
-        'marquee2': 'marquee 30s linear infinite',
+        'marquee': 'marquee 35s linear infinite',
+        'marquee2': 'marquee 35s linear infinite',
       },
     },
   },
