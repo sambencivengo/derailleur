@@ -43,6 +43,20 @@ export function TagPostsView({ user, initialTagAndPosts, tagNameWithoutHyphens }
     [setPosts, setGetMorePostsErrors, setIsLoading, setCursor]
   );
 
+  const onScroll = React.useCallback(async () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !isLoading) {
+      if (cursor !== null) {
+        getMorePosts(cursor.postId, cursor.createdAt);
+        setIsLoading(true);
+      }
+    }
+  }, [isLoading, setIsLoading, getMorePosts]);
+
+  React.useEffect(() => {
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [onScroll, isLoading]);
+
   return (
     <div className="w-full flex flex-col gap-5">
       <div>

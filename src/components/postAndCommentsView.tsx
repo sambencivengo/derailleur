@@ -50,6 +50,20 @@ export function PostAndCommentsView({ post, user, initialComments }: PostAndComm
     [setComments, setGetMoreCommentsErrors, setIsLoading, setCursor]
   );
 
+  const onScroll = React.useCallback(async () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !isLoading) {
+      if (cursor !== null) {
+        getMoreComments(cursor.commentId, cursor.createdAt);
+        setIsLoading(true);
+      }
+    }
+  }, [isLoading, setIsLoading, getMoreComments]);
+
+  React.useEffect(() => {
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [onScroll, isLoading]);
+
   return (
     <main className="flex flex-col">
       <Suspense fallback={<SkeletonFullPagePost />}>{renderEditedOrExistingPost(user, setIsEditing, isEditing, setSuccessfullyEditedPost, successfullyEditedPost, post)}</Suspense>
