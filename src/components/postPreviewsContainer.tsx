@@ -45,8 +45,22 @@ export function PostPreviewsContainer({ initialPosts, category, user }: PostPrev
     [setPosts, setGetMorPostsErrors, setIsLoading, setCursor]
   );
 
+  const onScroll = React.useCallback(async () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !isLoading) {
+      if (cursor !== null) {
+        getMorePosts(cursor.postId, cursor.createdAt);
+        setIsLoading(true);
+      }
+    }
+  }, [isLoading, setIsLoading, getMorePosts]);
+
+  React.useEffect(() => {
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [onScroll, isLoading]);
+
   return (
-    <div className="flex flex-col justify-center gap-5">
+    <div className="flex flex-col justify-center gap-5" onScroll={(e) => console.log(e)}>
       <div className="space-y-2">
         {posts.map((post, idx) => {
           return <PostPreview user={user} post={post} key={idx} />;
@@ -54,14 +68,15 @@ export function PostPreviewsContainer({ initialPosts, category, user }: PostPrev
       </div>
       {getMorePostsErrors.length > 0 && <QueryError errors={getMorePostsErrors} />}
       {cursor !== null ? (
-        <Button
-          className="self-center"
-          onClick={() => {
-            getMorePosts(cursor.postId, cursor.createdAt);
-          }}
-        >
-          {isLoading ? <Spinner /> : 'Load More...'}
-        </Button>
+        <div className="self-center" onScroll={(e) => console.log(e)}>
+          <Button
+            onClick={() => {
+              getMorePosts(cursor.postId, cursor.createdAt);
+            }}
+          >
+            {isLoading ? <Spinner /> : 'Load More...'}
+          </Button>
+        </div>
       ) : (
         <Card>
           <CardHeader className="text-center flex flex-col justify-center">
