@@ -10,7 +10,7 @@ const arrayOfCardTitles = new Array(9).fill(null).map((_, idx) => {
 });
 export function WelcomeCard() {
   return (
-    <Card className="w-full bg-secondary-background overflow-hidden border-primary border-2">
+    <Card className="w-full overflow-hidden border-primary border-2">
       <CardHeader className="overflow-hidden px-0">
         <div className="overflow-hidden items-center flex flex-row bg-primary gap-28 group">
           <div className="items-center flex flex-row  whitespace-nowrap animate-marquee gap-28 group-hover:paused">{arrayOfCardTitles}</div>
