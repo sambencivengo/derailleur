@@ -12,9 +12,9 @@ export function WelcomeCard() {
   return (
     <Card className="w-full bg-secondary-background overflow-hidden border-primary border-2">
       <CardHeader className="overflow-hidden px-0">
-        <div className="overflow-hidden items-center flex flex-row bg-primary gap-4 group">
-          <div className="items-center flex flex-row  whitespace-nowrap animate-marquee gap-4 group-hover:paused">{arrayOfCardTitles}</div>
-          <div className="items-center flex flex-row whitespace-nowrap aria-hidden:true animate-marquee2 gap-4 group-hover:paused" aria-hidden="true">
+        <div className="overflow-hidden items-center flex flex-row bg-primary gap-28 group">
+          <div className="items-center flex flex-row  whitespace-nowrap animate-marquee gap-28 group-hover:paused">{arrayOfCardTitles}</div>
+          <div className="items-center flex flex-row whitespace-nowrap aria-hidden:true animate-marquee2 gap-28 group-hover:paused" aria-hidden="true">
             {arrayOfCardTitles}
           </div>
         </div>
@@ -24,12 +24,14 @@ export function WelcomeCard() {
       </CardContent>
 
       <CardContent className="flex flex-row justify-center w-full gap-5">
-        <Button className="font-bold">
-          <Link href="/signup">Create account</Link>
-        </Button>
-        <Button className="text-primary font-bold hover:text-primary hover:bg-transparent" variant={'ghost'}>
-          <Link href="/login">Login</Link>
-        </Button>
+        <Link href="/signup">
+          <Button className="font-bold">Create account</Button>
+        </Link>
+        <Link href="/login">
+          <Button className="text-primary font-bold hover:text-primary hover:bg-transparent" variant={'ghost'}>
+            Login
+          </Button>
+        </Link>
       </CardContent>
     </Card>
   );
