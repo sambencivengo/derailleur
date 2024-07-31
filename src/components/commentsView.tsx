@@ -13,7 +13,7 @@ interface CommentsViewProps {
   newCommentsOnPost: Array<CommentWithUserNameAndId>;
   postId: string;
   showContextLink?: boolean;
-  inThread: boolean;
+  inThread?: boolean;
 }
 const COMMENT_BATCH_AMOUNT = 5;
 
