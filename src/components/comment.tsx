@@ -24,7 +24,7 @@ interface CommentProps {
   commentId: string;
   updatedAt: Date;
   showContextLink?: boolean;
-  inThread: boolean;
+  inThread?: boolean;
 }
 
 export function Comment({ author, commentId, content, createdAt, updatedAt, postId, replies, repliesCount, user, showContextLink = false, inThread = false, level }: CommentProps) {
