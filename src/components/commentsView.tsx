@@ -70,7 +70,7 @@ export function CommentsView({ showContextLink = false, postId, user, initialCom
       {getMoreCommentsErrors.length > 0 && <QueryError errors={getMoreCommentsErrors} />}
       {cursor !== null && (
         <Button
-          className="self-center"
+          className="self-center mt-5"
           onClick={() => {
             getMoreComments(cursor.commentId, cursor.createdAt);
           }}
