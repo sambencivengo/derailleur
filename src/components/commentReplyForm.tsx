@@ -69,7 +69,7 @@ export function CommentReplyForm({ parentCommentId, postId, userId, isReplying, 
   );
 
   return (
-    <div className="w-full mb-2">
+    <div className="w-full mb-2 pr-2">
       {isReplying && (
         <div className="w-full">
           <FormWrapper form={form} onSubmit={callOnSubmit}>

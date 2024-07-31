@@ -13,10 +13,11 @@ interface CommentsViewProps {
   newCommentsOnPost: Array<CommentWithUserNameAndId>;
   postId: string;
   showContextLink?: boolean;
+  inThread: boolean;
 }
 const COMMENT_BATCH_AMOUNT = 5;
 
-export function CommentsView({ showContextLink = false, postId, user, initialComments, newCommentsOnPost }: CommentsViewProps) {
+export function CommentsView({ showContextLink = false, postId, user, initialComments, newCommentsOnPost, inThread = false }: CommentsViewProps) {
   const [comments, setComments] = React.useState<Array<CommentWithAuthorUsernameIDAndReplies>>(initialComments.length > COMMENT_BATCH_AMOUNT ? initialComments.slice(0, COMMENT_BATCH_AMOUNT) : initialComments);
   const [getMoreCommentsErrors, setGetMoreCommentsErrors] = React.useState<Array<DerailleurError>>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -57,15 +58,14 @@ export function CommentsView({ showContextLink = false, postId, user, initialCom
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, [onScroll, isLoading]);
-
   return (
     <div className="flex flex-col">
       {newCommentsOnPost.length > 0 &&
         newCommentsOnPost.map(({ author, content, createdAt, id, postId, updatedAt }, idx) => {
-          return <Comment showContextLink={showContextLink} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} replies={[]} updatedAt={updatedAt} repliesCount={0} user={user} level={0} />;
+          return <Comment inThread={inThread} showContextLink={showContextLink} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} replies={[]} updatedAt={updatedAt} repliesCount={0} user={user} level={0} />;
         })}
       {comments.map(({ _count, author, content, createdAt, id, postId, replies, updatedAt }, idx) => {
-        return <Comment showContextLink={showContextLink} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} replies={replies} updatedAt={updatedAt} repliesCount={_count.replies} user={user} level={0} />;
+        return <Comment inThread={inThread} showContextLink={showContextLink} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} replies={replies} updatedAt={updatedAt} repliesCount={_count.replies} user={user} level={0} />;
       })}
       {getMoreCommentsErrors.length > 0 && <QueryError errors={getMoreCommentsErrors} />}
       {cursor !== null && (
