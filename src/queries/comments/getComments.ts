@@ -25,8 +25,7 @@ export const getComments = async (postId?: string, parentCommentId?: string, use
           id: cursor.commentId,
         }
       } : undefined,
-      take: 6, // NOTE: Show 10, if there is an 11th, show load more button and use as cursor WITHOUT skip
-      // skip: cursor !== undefined ? 1 : 0,
+      take: 6,
       ...commentWithAuthorUsernameIDAndReplies,
     });
     return createSuccessfulResponse(comments);
