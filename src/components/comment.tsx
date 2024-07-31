@@ -32,7 +32,7 @@ export function Comment({ author, commentId, content, createdAt, updatedAt, post
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
   const [successfullyEditedComment, setSuccessfullyEditedComment] = React.useState<CommentWithUserNameAndId | null>(null);
   return (
-    <Card className={cn('w-full pr-0', level !== 0 && 'pr-0 border-r-0 rounded-r-none')}>
+    <Card className={cn('w-full pr-0', level !== 0 && 'pr-0 border-r-0')}>
       <CardContent className="w-full mt-3">
         {isEditing && user !== null ? (
           <EditCommentForm setSuccessfullyEditedComment={setSuccessfullyEditedComment} setIsEditing={setIsEditing} content={content} commentId={commentId} userId={user.userId} />
