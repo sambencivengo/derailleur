@@ -7,11 +7,9 @@ import React from 'react';
 import { CommentReplyForm } from '~/components/commentReplyForm';
 import { Button } from '~/components/ui';
 import { useToast } from '~/components/ui/use-toast';
-import { savePost, unsavePost } from '~/queries';
-import { likePost } from '~/queries/posts/likePost';
-import { unlikePost } from '~/queries/posts/unlikePost';
+import { wrapHandleLikePost } from '~/lib/handleLikePost';
+import { wrapHandleSavePost } from '~/lib/handleSavePost';
 import { CommentWithUserNameAndId, UserAndSession } from '~/types';
-import { DerailleurResponse } from '~/utils';
 
 interface PostLinksProps {
   user: UserAndSession | null;
@@ -33,56 +31,19 @@ export function PostLinks({ likesCount, postIsLiked, user, postId, numberOfComme
   const [numberOfLikes, setNumberOfLikes] = React.useState(likesCount);
   const [liked, setLiked] = React.useState<boolean>(postIsLiked);
 
-  async function handleSavePost(userId: string) {
-    let response: DerailleurResponse<string>;
-    if (saved) {
-      setSaved(false);
-      response = await unsavePost(postId, userId);
-    } else {
-      setSaved(true);
-      response = await savePost(postId, userId);
-    }
-    const { errors, result } = response;
-    if (errors.length > 0 || result === null) {
-      setSaved((prev) => !prev);
-      toast({
-        title: saved ? 'Unable to remove from saved posts' : 'Unable to save post',
-        description: errors.map((error) => error.message),
-        variant: 'destructive',
-      });
-    } else {
-      setSaved(!saved);
-      toast({
-        title: saved ? 'Removed from saved posts' : 'Post saved!',
-        className: 'bg-green-400',
-      });
-    }
+  function handleSave(input: boolean): void {
+    setSaved(input);
   }
+  const handleSavePost = wrapHandleSavePost(saved, handleSave, toast);
 
-  // TODO: dry up this function, used in both postLinks.tsx and here
-  async function handleLikePost(userId: string) {
-    let response: DerailleurResponse<string>;
-    if (liked) {
-      setLiked(false);
-      setNumberOfLikes((prev) => prev - 1);
-      response = await unlikePost(postId, userId);
-    } else {
-      setNumberOfLikes((prev) => prev + 1);
-      setLiked(true);
-      response = await likePost(postId, userId);
-    }
-    const { errors, result } = response;
-    if (errors.length > 0 || result === null) {
-      setLiked((prev) => !prev);
-      toast({
-        title: liked ? 'Unable to unlike post' : 'Unable to like post',
-        description: errors.map((error) => error.message),
-        variant: 'destructive',
-      });
-    } else {
-      setLiked(!liked);
-    }
+  function handleLike(input: boolean): void {
+    setLiked(input);
   }
+  function handleNumberOfLikes(input: (args: any) => number | number): void {
+    setNumberOfLikes(input);
+  }
+  const handleLikePost = wrapHandleLikePost(liked, handleLike, handleNumberOfLikes, toast);
+
   return (
     <>
       <div className="w-full h-full flex flex-col mt-2">
@@ -96,7 +57,7 @@ export function PostLinks({ likesCount, postIsLiked, user, postId, numberOfComme
                 if (user === null) {
                   router.push('/login');
                 } else {
-                  handleLikePost(user.userId);
+                  handleLikePost(user.userId, postId);
                 }
               }}
             >
@@ -122,7 +83,7 @@ export function PostLinks({ likesCount, postIsLiked, user, postId, numberOfComme
               if (user === null) {
                 router.push('/login');
               } else {
-                handleSavePost(user.userId);
+                handleSavePost(postId, user.userId);
               }
             }}
           >
