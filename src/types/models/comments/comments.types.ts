@@ -11,6 +11,10 @@ export const commentWithAuthorUsernameIDAndReplies = Prisma.validator<Prisma.Com
     _count: true,
     // first level of children
     replies: {
+      take: 5,
+      orderBy: {
+        createdAt: 'desc'
+      },
       include: {
         author: {
           select: {
@@ -21,6 +25,10 @@ export const commentWithAuthorUsernameIDAndReplies = Prisma.validator<Prisma.Com
         _count: true,
         // second level of children
         replies: {
+          take: 5,
+          orderBy: {
+            createdAt: 'desc'
+          },
           include: {
             author: {
               select: {
@@ -31,6 +39,10 @@ export const commentWithAuthorUsernameIDAndReplies = Prisma.validator<Prisma.Com
             _count: true,
             // third level of children
             replies: {
+              take: 5,
+              orderBy: {
+                createdAt: 'desc'
+              },
               include: {
                 author: {
                   select: {
@@ -41,6 +53,10 @@ export const commentWithAuthorUsernameIDAndReplies = Prisma.validator<Prisma.Com
                 // fourth third level of children
                 _count: true,
                 replies: {
+                  take: 5,
+                  orderBy: {
+                    createdAt: 'desc'
+                  },
                   include: {
                     author: {
                       select: {

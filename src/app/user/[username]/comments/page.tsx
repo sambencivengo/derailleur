@@ -7,7 +7,6 @@ import { getCommentsForProfile } from '~/queries/comments/getComments';
 export default async function Page({ params }: { params: { username: string } }) {
   const { username } = params;
   const user = await getUserSession();
-  // TODO: DRY up code between this page and the profile posts page
   const emptyCommentsString = user !== null && user.username === username ? "Looks like you haven't made any comments... Any comments you create will be shown here." : `${username} hasn't created any comments yet`;
   const { errors, result } = await getCommentsForProfile(username);
   if (result === null || errors.length > 0) {
@@ -25,7 +24,7 @@ export default async function Page({ params }: { params: { username: string } })
         <Separator />
         <div className="space-y-2 flex flex-col">
           {result.map(({ author, content, createdAt, id, postId, updatedAt }, idx) => {
-            return <Comment showContextLink={true} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} replies={[]} updatedAt={updatedAt} repliesCount={0} user={user} level={0} />;
+            return <Comment showContextLink={true} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} initialReplies={[]} updatedAt={updatedAt} repliesCount={0} user={user} level={0} />;
           })}
         </div>
       </div>

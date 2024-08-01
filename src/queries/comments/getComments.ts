@@ -19,13 +19,17 @@ export const getComments = async (postId?: string, parentCommentId?: string, use
           username
         }
       },
+      orderBy: {
+        createdAt: 'desc'
+      },
       cursor: cursor !== undefined ? {
         id_createdAt: {
           createdAt: cursor.createdAt,
           id: cursor.commentId,
         }
       } : undefined,
-      take: 6,
+      take: cursor === undefined ? 10 : 5,
+      skip: cursor === undefined ? 0 : 1,
       ...commentWithAuthorUsernameIDAndReplies,
     });
     return createSuccessfulResponse(comments);

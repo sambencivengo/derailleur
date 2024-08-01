@@ -61,6 +61,7 @@ export function CommentReplyForm({ parentCommentId, postId, userId, isReplying, 
           });
           setIsReplying(false);
           setIsLoading(false);
+          form.setValue('content', '');
         }
       }
       onSubmit(values);

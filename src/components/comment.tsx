@@ -4,8 +4,10 @@ import Link from 'next/link';
 import React from 'react';
 import { CommentLinks } from '~/components/commentLinks';
 import { EditCommentForm } from '~/components/editCommentForm';
-import { Card, CardContent, CardDescription, CardFooter } from '~/components/ui';
+import { Spinner } from '~/components/spinner';
+import { Button, Card, CardContent, CardDescription, CardFooter } from '~/components/ui';
 import { cn } from '~/lib/utils';
+import { getComments } from '~/queries/comments/getComments';
 import { CommentWithAuthorUsernameIDAndReplies, CommentWithUserNameAndId, UserAndSession } from '~/types';
 import { determineDateToShow } from '~/utils/dateUtils';
 
@@ -14,7 +16,7 @@ interface CommentProps {
   level: number;
   content: string;
   createdAt: Date;
-  replies: Array<CommentWithAuthorUsernameIDAndReplies>;
+  initialReplies: Array<CommentWithAuthorUsernameIDAndReplies>;
   author: {
     id: string;
     username: string;
@@ -27,10 +29,31 @@ interface CommentProps {
   inThread?: boolean;
 }
 
-export function Comment({ author, commentId, content, createdAt, updatedAt, postId, replies, repliesCount, user, showContextLink = false, inThread = false, level }: CommentProps) {
+export function Comment({ author, commentId, content, createdAt, updatedAt, postId, initialReplies, repliesCount, user, showContextLink = false, inThread = false, level }: CommentProps) {
+  const [replies, setReplies] = React.useState<Array<CommentWithAuthorUsernameIDAndReplies>>(initialReplies);
   const [newCommentsOnComment, setNewCommentsOnComment] = React.useState<Array<CommentWithUserNameAndId>>([]);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
   const [successfullyEditedComment, setSuccessfullyEditedComment] = React.useState<CommentWithUserNameAndId | null>(null);
+
+  const getNextSetOfComments = React.useCallback(
+    async (postId: string, commentId: string, initialReplies: Array<CommentWithAuthorUsernameIDAndReplies>) => {
+      const cursor = { commentId: replies[replies.length - 1].id, createdAt: replies[replies.length - 1].createdAt };
+      setIsLoading(true);
+      const response = await getComments(postId, commentId, undefined, cursor);
+      const { errors, result } = response;
+      if (errors.length > 0 || result === null) {
+        // ERROR HANDLING
+        setIsLoading(false);
+      } else {
+        console.log(result);
+        setReplies((prev) => [...prev, ...result]);
+        setIsLoading(false);
+      }
+    },
+    [postId, commentId, replies]
+  );
+
   return (
     <Card className={cn('w-full pr-0', level !== 0 && 'pr-0 border-r-0')}>
       <CardContent className="w-full mt-3">
@@ -57,17 +80,29 @@ export function Comment({ author, commentId, content, createdAt, updatedAt, post
             ...continue comment thread
           </Link>
         )}
-        {newCommentsOnComment.length > 0 && newCommentsOnComment.map(({ author, content, createdAt, id, postId, updatedAt }, idx) => <Comment inThread updatedAt={updatedAt} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} replies={[]} repliesCount={0} user={user} level={0} />)}
+        {newCommentsOnComment.length > 0 && newCommentsOnComment.map(({ author, content, createdAt, id, postId, updatedAt }, idx) => <Comment inThread updatedAt={updatedAt} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} initialReplies={[]} repliesCount={0} user={user} level={0} />)}
 
         {inThread
-          ? replies.map(({ _count: { replies: repliesCount }, author, content, createdAt, id, postId, replies, updatedAt }, idx: number) => {
-              return <Comment inThread={inThread} updatedAt={updatedAt} key={idx} author={author} commentId={id} content={content} postId={postId} createdAt={createdAt} user={user} replies={replies} repliesCount={repliesCount} level={level + 1} />;
+          ? initialReplies.map(({ _count: { replies: repliesCount }, author, content, createdAt, id, postId, replies, updatedAt }, idx: number) => {
+              return <Comment inThread={inThread} updatedAt={updatedAt} key={idx} author={author} commentId={id} content={content} postId={postId} createdAt={createdAt} user={user} initialReplies={replies} repliesCount={repliesCount} level={level + 1} />;
             })
           : level < 4 &&
+            initialReplies.length > 0 &&
             replies.length > 0 &&
             replies.map(({ _count: { replies: repliesCount }, author, content, createdAt, id, postId, replies, updatedAt }, idx: number) => {
-              return <Comment inThread={inThread} updatedAt={updatedAt} key={idx} author={author} commentId={id} content={content} postId={postId} createdAt={createdAt} user={user} replies={replies} repliesCount={repliesCount} level={level + 1} />;
+              return <Comment inThread={inThread} updatedAt={updatedAt} key={idx} author={author} commentId={id} content={content} postId={postId} createdAt={createdAt} user={user} initialReplies={replies} repliesCount={repliesCount} level={level + 1} />;
             })}
+        {repliesCount > 5 &&
+          repliesCount !== replies.length &&
+          (isLoading ? (
+            <Spinner />
+          ) : (
+            <Button onClick={() => getNextSetOfComments(postId, commentId, replies)} size={'lg'} variant="link">
+              Load more comments...
+            </Button>
+          ))}
+
+        {/* replies exist,  */}
       </CardFooter>
     </Card>
   );

@@ -6,8 +6,6 @@ import { getSavedPosts } from '~/queries';
 export default async function Page({ params }: { params: { username: string } }) {
   const { username } = params;
   const user = await getUserSession();
-  // TODO: DRY up code between this page and the profile comments page
-
   if (user === null || user.username !== username) {
     return <QueryError errors={[{ message: 'You are forbidden from accessing this page', data: {} }]} />;
   } else {

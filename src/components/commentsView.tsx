@@ -62,10 +62,10 @@ export function CommentsView({ showContextLink = false, postId, user, initialCom
     <div className="flex flex-col">
       {newCommentsOnPost.length > 0 &&
         newCommentsOnPost.map(({ author, content, createdAt, id, postId, updatedAt }, idx) => {
-          return <Comment inThread={inThread} showContextLink={showContextLink} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} replies={[]} updatedAt={updatedAt} repliesCount={0} user={user} level={0} />;
+          return <Comment inThread={inThread} showContextLink={showContextLink} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} initialReplies={[]} updatedAt={updatedAt} repliesCount={0} user={user} level={0} />;
         })}
       {comments.map(({ _count, author, content, createdAt, id, postId, replies, updatedAt }, idx) => {
-        return <Comment inThread={inThread} showContextLink={showContextLink} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} replies={replies} updatedAt={updatedAt} repliesCount={_count.replies} user={user} level={0} />;
+        return <Comment inThread={inThread} showContextLink={showContextLink} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} initialReplies={replies} updatedAt={updatedAt} repliesCount={_count.replies} user={user} level={0} />;
       })}
       {getMoreCommentsErrors.length > 0 && <QueryError errors={getMoreCommentsErrors} />}
       {cursor !== null && (
