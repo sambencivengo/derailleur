@@ -16,7 +16,7 @@ interface CommentProps {
   level: number;
   content: string;
   createdAt: Date;
-  initialReplies: Array<CommentWithAuthorUsernameIDAndReplies>;
+  initialReplies?: Array<CommentWithAuthorUsernameIDAndReplies>;
   author: {
     id: string;
     username: string;
@@ -30,7 +30,7 @@ interface CommentProps {
 }
 
 export function Comment({ author, commentId, content, createdAt, updatedAt, postId, initialReplies, repliesCount, user, showContextLink = false, inThread = false, level }: CommentProps) {
-  const [replies, setReplies] = React.useState<Array<CommentWithAuthorUsernameIDAndReplies>>(initialReplies);
+  const [replies, setReplies] = React.useState<Array<CommentWithAuthorUsernameIDAndReplies>>(initialReplies ?? []);
   const [newCommentsOnComment, setNewCommentsOnComment] = React.useState<Array<CommentWithUserNameAndId>>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
@@ -38,7 +38,7 @@ export function Comment({ author, commentId, content, createdAt, updatedAt, post
 
   const getNextSetOfComments = React.useCallback(
     async (postId: string, commentId: string, initialReplies: Array<CommentWithAuthorUsernameIDAndReplies>) => {
-      const cursor = { commentId: replies[replies.length - 1].id, createdAt: replies[replies.length - 1].createdAt };
+      const cursor = { commentId: initialReplies[initialReplies.length - 1].id, createdAt: initialReplies[initialReplies.length - 1].createdAt };
       setIsLoading(true);
       const response = await getComments(postId, commentId, undefined, cursor);
       const { errors, result } = response;
@@ -73,7 +73,7 @@ export function Comment({ author, commentId, content, createdAt, updatedAt, post
           </>
         )}
       </CardContent>
-      <CardFooter className={cn('flex flex-col pl-5pb-1 gap-y-2 pr-0')}>
+      <CardFooter className={cn('flex flex-col pl-5 pb-1 gap-y-2 pr-0')}>
         {isEditing ? null : <CommentLinks commentId={commentId} showContextLink={showContextLink} isEditing={isEditing} setIsEditing={setIsEditing} parentCommentId={commentId} postId={postId} user={user} setNewComments={setNewCommentsOnComment} isUsersComment={user !== null && user.userId === author.id} />}
         {level >= 4 && repliesCount > 0 && !inThread && (
           <Link href={`/post/${postId}/comment/${commentId}`} className="text-primary hover:underline">
@@ -82,12 +82,11 @@ export function Comment({ author, commentId, content, createdAt, updatedAt, post
         )}
         {newCommentsOnComment.length > 0 && newCommentsOnComment.map(({ author, content, createdAt, id, postId, updatedAt }, idx) => <Comment inThread updatedAt={updatedAt} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} initialReplies={[]} repliesCount={0} user={user} level={0} />)}
 
-        {inThread
-          ? initialReplies.map(({ _count: { replies: repliesCount }, author, content, createdAt, id, postId, replies, updatedAt }, idx: number) => {
+        {inThread && replies.length > 0
+          ? replies.map(({ _count: { replies: repliesCount }, author, content, createdAt, id, postId, replies, updatedAt }, idx: number) => {
               return <Comment inThread={inThread} updatedAt={updatedAt} key={idx} author={author} commentId={id} content={content} postId={postId} createdAt={createdAt} user={user} initialReplies={replies} repliesCount={repliesCount} level={level + 1} />;
             })
           : level < 4 &&
-            initialReplies.length > 0 &&
             replies.length > 0 &&
             replies.map(({ _count: { replies: repliesCount }, author, content, createdAt, id, postId, replies, updatedAt }, idx: number) => {
               return <Comment inThread={inThread} updatedAt={updatedAt} key={idx} author={author} commentId={id} content={content} postId={postId} createdAt={createdAt} user={user} initialReplies={replies} repliesCount={repliesCount} level={level + 1} />;
@@ -97,7 +96,7 @@ export function Comment({ author, commentId, content, createdAt, updatedAt, post
           (isLoading ? (
             <Spinner />
           ) : (
-            <Button onClick={() => getNextSetOfComments(postId, commentId, replies)} size={'lg'} variant="link">
+            <Button variant={'link'} className="text-md" onClick={() => getNextSetOfComments(postId, commentId, replies)}>
               Load more comments...
             </Button>
           ))}

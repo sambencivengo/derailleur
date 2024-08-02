@@ -8,12 +8,13 @@ export default async function Page({ params }: { params: { postId: string; comme
   const user = await getUserSession();
   const { postId, commentId } = params;
   const commentsResponse = await getComment(commentId, postId);
+  console.log(commentsResponse);
   const { errors: commentsErrors, result } = commentsResponse;
   if (commentsErrors.length > 0 || result === null) {
     return <QueryError errors={commentsErrors} />;
-  } else if (result.comment === null) {
-    return <QueryError errors={[{ data: {}, message: 'Unable to find comment' }]} />;
-  } else {
-    return <CommentThreadContainer postId={postId} comment={result.comment} user={user} />;
   }
+  if (result.comment === null) {
+    return <QueryError errors={[{ data: {}, message: 'Unable to find comment' }]} />;
+  }
+  return <CommentThreadContainer postId={postId} comment={result.comment} user={user} />;
 }

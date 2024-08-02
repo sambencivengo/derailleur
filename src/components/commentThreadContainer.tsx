@@ -35,7 +35,6 @@ export function CommentThreadContainer({ postId, comment, user }: CommentThreadC
     },
     [commentsToRender, parentCommentErrors, getParentComment]
   );
-  commentsToRender.forEach((comment) => console.log(comment.id));
   return (
     <div>
       <BackToAllPostsLink postId={postId} />
