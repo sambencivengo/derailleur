@@ -7,7 +7,7 @@ import React from 'react';
 import { CommentReplyForm } from '~/components/commentReplyForm';
 import { Button } from '~/components/ui';
 import { useToast } from '~/components/ui/use-toast';
-import { wrapHandleLikePost } from '~/lib/handleLikePost';
+import { useLikePost } from '~/hooks/useLikePost';
 import { wrapHandleSavePost } from '~/lib/handleSavePost';
 import { CommentWithUserNameAndId, UserAndSession } from '~/types';
 
@@ -24,25 +24,17 @@ interface PostLinksProps {
 }
 
 export function PostLinks({ likesCount, postIsLiked, user, postId, numberOfComments, setNewComments, postAuthorId, setIsEditing, postIsSaved }: PostLinksProps) {
+  const { handleLikePost, liked, numberOfLikes } = useLikePost({ postIsLiked: postIsLiked, postId, numOfLikes: likesCount });
+
   const [isReplying, setIsReplying] = React.useState<boolean>(false);
   const router = useRouter();
   const { toast } = useToast();
   const [saved, setSaved] = React.useState<boolean>(postIsSaved);
-  const [numberOfLikes, setNumberOfLikes] = React.useState(likesCount);
-  const [liked, setLiked] = React.useState<boolean>(postIsLiked);
 
   function handleSave(input: boolean): void {
     setSaved(input);
   }
   const handleSavePost = wrapHandleSavePost(saved, handleSave, toast);
-
-  function handleLike(input: boolean): void {
-    setLiked(input);
-  }
-  function handleNumberOfLikes(input: (args: any) => number | number): void {
-    setNumberOfLikes(input);
-  }
-  const handleLikePost = wrapHandleLikePost(liked, handleLike, handleNumberOfLikes, toast);
 
   return (
     <>
@@ -57,7 +49,7 @@ export function PostLinks({ likesCount, postIsLiked, user, postId, numberOfComme
                 if (user === null) {
                   router.push('/login');
                 } else {
-                  handleLikePost(user.userId, postId);
+                  handleLikePost(user.userId);
                 }
               }}
             >

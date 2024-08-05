@@ -8,31 +8,22 @@ import { Heart, MessageSquare } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from '~/components/ui/use-toast';
 import { PostCategoryTag } from '~/components/postCategoryTag';
-import { wrapHandleLikePost } from '~/lib/handleLikePost';
 import { wrapHandleSavePost } from '~/lib/handleSavePost';
+import { useLikePost } from '~/hooks/useLikePost';
 
 interface PostPreviewProps {
   post: PostWithAuthorNameTagsAndCommentCount;
   user: UserAndSession | null;
 }
 export function PostPreview({ post, user }: PostPreviewProps) {
-  const [liked, setLiked] = React.useState<boolean>(post.likes.length === 1 && user !== null);
+  const { handleLikePost, liked, numberOfLikes } = useLikePost({ postIsLiked: post.likes.length === 1 && user !== null, numOfLikes: post._count.likes, postId: post.id });
   const [saved, setSaved] = React.useState<boolean>(post.savedBy.length !== 0);
-  const [numberOfLikes, setNumberOfLikes] = React.useState(post._count.likes);
   const router = useRouter();
 
   function handleSave(input: boolean): void {
     setSaved(input);
   }
   const handleSavePost = wrapHandleSavePost(saved, handleSave, toast);
-
-  function handleLike(input: boolean): void {
-    setLiked(input);
-  }
-  function handleNumberOfLikes(input: (args: any) => number | number): void {
-    setNumberOfLikes(input);
-  }
-  const handleLikePost = wrapHandleLikePost(liked, handleLike, handleNumberOfLikes, toast);
 
   const {
     author: { username },
@@ -84,7 +75,7 @@ export function PostPreview({ post, user }: PostPreviewProps) {
                 if (user === null) {
                   router.push('/login');
                 } else {
-                  handleLikePost(user.userId, post.id);
+                  handleLikePost(user.userId);
                 }
               }}
             >
