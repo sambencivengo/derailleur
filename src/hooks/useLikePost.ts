@@ -16,11 +16,9 @@ export function useLikePost({ postIsLiked, numOfLikes, postId }: UseLikePostProp
 
   const handleLikePost = (userId: string) => createLikeOrUnlikePostHandler(userId, postId, liked);
   async function createLikeOrUnlikePostHandler(userId: string, postId: string, likeState: boolean) {
-
     likeState ? setLiked(false) : setLiked(true);
     const query = liked ? unlikePost(postId, userId) : likePost(postId, userId);
-    const response = await query;
-    const { errors, result } = response;
+    const { errors, result } = await query;
 
     if (errors.length > 0 || result === null) {
       setLiked(postIsLiked);

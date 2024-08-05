@@ -6,9 +6,8 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import { CommentReplyForm } from '~/components/commentReplyForm';
 import { Button } from '~/components/ui';
-import { useToast } from '~/components/ui/use-toast';
 import { useLikePost } from '~/hooks/useLikePost';
-import { wrapHandleSavePost } from '~/lib/handleSavePost';
+import { useSavePost } from '~/hooks/useSavePost';
 import { CommentWithUserNameAndId, UserAndSession } from '~/types';
 
 interface PostLinksProps {
@@ -25,16 +24,9 @@ interface PostLinksProps {
 
 export function PostLinks({ likesCount, postIsLiked, user, postId, numberOfComments, setNewComments, postAuthorId, setIsEditing, postIsSaved }: PostLinksProps) {
   const { handleLikePost, liked, numberOfLikes } = useLikePost({ postIsLiked: postIsLiked, postId, numOfLikes: likesCount });
-
+  const { handleSavePost, saved } = useSavePost({ postIsSaved, postId: postId });
   const [isReplying, setIsReplying] = React.useState<boolean>(false);
   const router = useRouter();
-  const { toast } = useToast();
-  const [saved, setSaved] = React.useState<boolean>(postIsSaved);
-
-  function handleSave(input: boolean): void {
-    setSaved(input);
-  }
-  const handleSavePost = wrapHandleSavePost(saved, handleSave, toast);
 
   return (
     <>
@@ -75,7 +67,7 @@ export function PostLinks({ likesCount, postIsLiked, user, postId, numberOfComme
               if (user === null) {
                 router.push('/login');
               } else {
-                handleSavePost(postId, user.userId);
+                handleSavePost(user.userId);
               }
             }}
           >

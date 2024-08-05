@@ -6,10 +6,9 @@ import { Card, CardHeader, CardTitle, CardDescription, CardFooter, Badge, CardCo
 import { PostWithAuthorNameTagsAndCommentCount, UserAndSession } from '~/types';
 import { Heart, MessageSquare } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { toast } from '~/components/ui/use-toast';
 import { PostCategoryTag } from '~/components/postCategoryTag';
-import { wrapHandleSavePost } from '~/lib/handleSavePost';
 import { useLikePost } from '~/hooks/useLikePost';
+import { useSavePost } from '~/hooks/useSavePost';
 
 interface PostPreviewProps {
   post: PostWithAuthorNameTagsAndCommentCount;
@@ -17,13 +16,8 @@ interface PostPreviewProps {
 }
 export function PostPreview({ post, user }: PostPreviewProps) {
   const { handleLikePost, liked, numberOfLikes } = useLikePost({ postIsLiked: post.likes.length === 1 && user !== null, numOfLikes: post._count.likes, postId: post.id });
-  const [saved, setSaved] = React.useState<boolean>(post.savedBy.length !== 0);
+  const { handleSavePost, saved } = useSavePost({ postIsSaved: post.savedBy.length !== 0, postId: post.id });
   const router = useRouter();
-
-  function handleSave(input: boolean): void {
-    setSaved(input);
-  }
-  const handleSavePost = wrapHandleSavePost(saved, handleSave, toast);
 
   const {
     author: { username },
@@ -99,7 +93,7 @@ export function PostPreview({ post, user }: PostPreviewProps) {
               if (user === null) {
                 router.push('/login');
               } else {
-                handleSavePost(post.id, user.userId);
+                handleSavePost(user.userId);
               }
             }}
             variant="link"
