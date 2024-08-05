@@ -6,7 +6,6 @@ import prisma from "~prisma/prisma";
 
 export const getPostById: GetPostById = async (postId: string, userId?: string): Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount>> => {
   try {
-
     const post = await prisma.post.findUnique({
       where: {
         id: postId,
@@ -15,19 +14,18 @@ export const getPostById: GetPostById = async (postId: string, userId?: string):
         ...postWithAuthorNameTagsAndCommentCountQuery.include,
         savedBy: {
           where: {
-            userId
-          },
-          select: {
-            userId: true
+            userId: { in: [userId ?? ''] }
           }
         },
         likes: {
           where: {
-            userId
+            userId: { in: [userId ?? ''] }
           }
         }
       }
     });
+    console.log('#######', { userId }, post);
+
     if (!post) {
       return createErrorResponse([{ message: "Unable to find post with by provided ID", data: { userId, postId } }]);
     }

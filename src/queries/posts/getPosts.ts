@@ -32,14 +32,14 @@ export const getPosts: GetPosts = async (username?: string, category?: PostCateg
         ...postWithAuthorNameTagsAndCommentCountQuery.include,
         savedBy: {
           where: {
-            userId
+            userId: { in: [userId ?? ''] }
           }
         },
         likes: {
           where: {
-            userId
+            userId: { in: [userId ?? ''] }
           }
-        },
+        }
       }
     });
     return createSuccessfulResponse(posts);
