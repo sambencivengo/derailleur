@@ -45,19 +45,20 @@ export function PostPreviewsContainer({ initialPosts, category, user }: PostPrev
     [setPosts, setGetMorPostsErrors, setIsLoading, setCursor]
   );
 
-  const onScroll = React.useCallback(async () => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !isLoading) {
-      if (cursor !== null) {
-        getMorePosts(cursor.postId, cursor.createdAt);
-        setIsLoading(true);
-      }
-    }
-  }, [isLoading, setIsLoading, getMorePosts]);
+  // TODO: re-enable auto scroll
+  // const onScroll = React.useCallback(async () => {
+  //   if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !isLoading) {
+  //     if (cursor !== null) {
+  //       getMorePosts(cursor.postId, cursor.createdAt);
+  //       setIsLoading(true);
+  //     }
+  //   }
+  // }, [isLoading, setIsLoading, getMorePosts]);
 
-  React.useEffect(() => {
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [onScroll, isLoading]);
+  // React.useEffect(() => {
+  //   window.addEventListener('scroll', onScroll);
+  //   return () => window.removeEventListener('scroll', onScroll);
+  // }, [onScroll, isLoading]);
 
   return (
     <div className="flex flex-col justify-center gap-5" onScroll={(e) => console.log(e)}>

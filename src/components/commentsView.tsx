@@ -45,19 +45,20 @@ export function CommentsView({ showContextLink = false, postId, user, initialCom
     [setComments, setGetMoreCommentsErrors, setIsLoading, setCursor]
   );
 
-  const onScroll = React.useCallback(async () => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !isLoading) {
-      if (cursor !== null) {
-        getMoreComments(cursor.commentId, cursor.createdAt);
-        setIsLoading(true);
-      }
-    }
-  }, [isLoading, setIsLoading, getMoreComments]);
+  // TODO: re-enable auto load
+  // const onScroll = React.useCallback(async () => {
+  //   if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !isLoading) {
+  //     if (cursor !== null) {
+  //       getMoreComments(cursor.commentId, cursor.createdAt);
+  //       setIsLoading(true);
+  //     }
+  //   }
+  // }, [isLoading, setIsLoading, getMoreComments]);
 
-  React.useEffect(() => {
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [onScroll, isLoading]);
+  // React.useEffect(() => {
+  //   window.addEventListener('scroll', onScroll);
+  //   return () => window.removeEventListener('scroll', onScroll);
+  // }, [onScroll, isLoading]);
   return (
     <div className="flex flex-col">
       {newCommentsOnPost.length > 0 &&
