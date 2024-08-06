@@ -24,7 +24,6 @@ export const getPostById: GetPostById = async (postId: string, userId?: string):
         }
       }
     });
-    console.log('#######', { userId }, post);
 
     if (!post) {
       return createErrorResponse([{ message: "Unable to find post with by provided ID", data: { userId, postId } }]);
