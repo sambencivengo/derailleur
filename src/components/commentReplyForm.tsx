@@ -9,6 +9,7 @@ import { QueryError } from '~/components/queryError';
 import { Spinner } from '~/components/spinner';
 import { Button, FormControl, FormField, FormItem, FormMessage, Textarea } from '~/components/ui';
 import { useToast } from '~/components/ui/use-toast';
+import { cn } from '~/lib/utils';
 import { createComment } from '~/queries';
 import { CreateCommentPayload, CommentWithUserNameAndId } from '~/types';
 import { DerailleurError } from '~/utils';
@@ -70,7 +71,7 @@ export function CommentReplyForm({ parentCommentId, postId, userId, isReplying, 
   );
 
   return (
-    <div className="w-full mb-2 pr-2">
+    <div className={cn('w-full mb-2', parentCommentId !== null ? 'pr-2' : 'pr-0')}>
       {isReplying && (
         <div className="w-full">
           <FormWrapper form={form} onSubmit={callOnSubmit}>
