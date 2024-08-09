@@ -43,10 +43,9 @@ export function Comment({ author, commentId, content, createdAt, updatedAt, post
       const response = await getComments(postId, commentId, undefined, cursor);
       const { errors, result } = response;
       if (errors.length > 0 || result === null) {
-        // ERROR HANDLING
+        // TODO: ERROR HANDLING
         setIsLoading(false);
       } else {
-        console.log(result);
         setReplies((prev) => [...prev, ...result]);
         setIsLoading(false);
       }
@@ -100,8 +99,6 @@ export function Comment({ author, commentId, content, createdAt, updatedAt, post
               Load more comments...
             </Button>
           ))}
-
-        {/* replies exist,  */}
       </CardFooter>
     </Card>
   );

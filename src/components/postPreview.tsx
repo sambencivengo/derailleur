@@ -5,7 +5,7 @@ import moment from 'moment';
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter, Badge, CardContent, Button } from '~/components/ui';
 import { PostWithAuthorNameTagsAndCommentCount, UserAndSession } from '~/types';
 import { Heart, MessageSquare } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { PostCategoryTag } from '~/components/postCategoryTag';
 import { useLikePost } from '~/hooks/useLikePost';
 import { useSavePost } from '~/hooks/useSavePost';
@@ -18,6 +18,7 @@ export function PostPreview({ post, user }: PostPreviewProps) {
   const { handleLikePost, liked, numberOfLikes } = useLikePost({ postIsLiked: post.likes.length === 1 && user !== null, numOfLikes: post._count.likes, postId: post.id });
   const { handleSavePost, saved } = useSavePost({ postIsSaved: post.savedBy.length !== 0, postId: post.id });
   const router = useRouter();
+  const pathName = usePathname();
 
   const {
     author: { username },
@@ -67,7 +68,7 @@ export function PostPreview({ post, user }: PostPreviewProps) {
               variant={'link'}
               onClick={() => {
                 if (user === null) {
-                  router.push('/login');
+                  router.push(`/login?returnPath=${pathName}`);
                 } else {
                   handleLikePost(user.userId);
                 }
@@ -91,7 +92,7 @@ export function PostPreview({ post, user }: PostPreviewProps) {
           <Button
             onClick={() => {
               if (user === null) {
-                router.push('/login');
+                router.push(`/login?returnPath=${pathName}`);
               } else {
                 handleSavePost(user.userId);
               }

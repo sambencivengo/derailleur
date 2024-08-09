@@ -9,7 +9,7 @@ import { SignUpSchema } from '~/schemas';
 import { AlertCircle } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '~/components/ui';
 import { DerailleurError } from '~/utils';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { FormWrapper, Spinner } from '~/components';
 
 // NOTE: Necessary in this file to prevent build errors
@@ -47,6 +47,7 @@ export function SignUpForm() {
       password: '',
     },
   });
+  const returnPath = useSearchParams().get('returnPath');
 
   async function onSubmit(values: z.infer<typeof userSignUpSchema>) {
     setIsLoading(true);
@@ -54,7 +55,7 @@ export function SignUpForm() {
       .post('/api/signup', values)
       .then(() => {
         router.refresh();
-        router.push('/');
+        router.push(returnPath === null ? '/' : returnPath);
       })
       .catch((error: AxiosError) => {
         setIsLoading(false);

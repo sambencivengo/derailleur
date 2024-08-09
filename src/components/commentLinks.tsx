@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 import { CommentReplyForm } from '~/components/commentReplyForm';
 import { Button } from '~/components/ui';
@@ -21,6 +21,7 @@ interface CommentLinksProps {
 export function CommentLinks({ showContextLink = false, user, postId, setNewComments, parentCommentId, isUsersComment, isEditing, commentId, setIsEditing }: CommentLinksProps) {
   const [isReplying, setIsReplying] = React.useState<boolean>(false);
   const router = useRouter();
+  const pathName = usePathname();
 
   return (
     <div className="w-full flex flex-col items-center justify-center">
@@ -30,7 +31,7 @@ export function CommentLinks({ showContextLink = false, user, postId, setNewComm
             variant="link"
             className=""
             onClick={() => {
-              user === null ? router.push('/login') : setIsReplying(true);
+              user === null ? router.push(`/login?returnPath=${pathName}`) : setIsReplying(true);
             }}
           >
             Reply

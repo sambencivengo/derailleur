@@ -9,7 +9,7 @@ import { AlertCircle } from 'lucide-react';
 import { FormWrapper, Spinner } from '~/components';
 import { FormControl, FormField, FormItem, FormMessage, Button, Input, Alert, AlertTitle, AlertDescription } from '~/components/ui';
 import { DerailleurError } from '~/utils';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 // NOTE: Necessary in this file to prevent build errors
 const userLogInSchema = z.object({
@@ -39,6 +39,8 @@ export function LogInForm() {
   const router = useRouter();
   const [logInError, setLogInError] = React.useState<string[] | null>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const returnPath = useSearchParams().get('returnPath');
+
   const form = useForm<LogInSchema>({
     resolver: zodResolver(userLogInSchema),
     defaultValues: {
@@ -52,7 +54,7 @@ export function LogInForm() {
       .post('/api/login', values)
       .then(() => {
         router.refresh();
-        router.push('/');
+        router.push(returnPath === null ? '/' : returnPath);
       })
       .catch((error: AxiosError) => {
         setIsLoading(false);

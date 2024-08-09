@@ -2,7 +2,7 @@
 
 import { Heart, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 import { CommentReplyForm } from '~/components/commentReplyForm';
 import { Button } from '~/components/ui';
@@ -27,10 +27,11 @@ export function PostLinks({ likesCount, postIsLiked, user, postId, numberOfComme
   const { handleSavePost, saved } = useSavePost({ postIsSaved, postId: postId });
   const [isReplying, setIsReplying] = React.useState<boolean>(false);
   const router = useRouter();
+  const pathName = usePathname();
 
   return (
     <>
-      <div className="w-full h-full flex flex-col mt-2">
+      <div className="w-full h-full flex flex-col">
         <div className="w-full h-full flex flex-wrap justify-center md:justify-start items-center">
           <div className="flex flex-row gap-2 items-center">
             <Button
@@ -39,7 +40,7 @@ export function PostLinks({ likesCount, postIsLiked, user, postId, numberOfComme
               variant={'link'}
               onClick={() => {
                 if (user === null) {
-                  router.push('/login');
+                  router.push(`/login?returnPath=${pathName}`);
                 } else {
                   handleLikePost(user.userId);
                 }
@@ -55,7 +56,7 @@ export function PostLinks({ likesCount, postIsLiked, user, postId, numberOfComme
             variant="link"
             className=""
             onClick={() => {
-              user === null ? router.push('/login') : setIsReplying(true);
+              user === null ? router.push(`/login?returnPath=${pathName}`) : setIsReplying(true);
             }}
           >
             Reply
@@ -65,7 +66,7 @@ export function PostLinks({ likesCount, postIsLiked, user, postId, numberOfComme
             variant="link"
             onClick={() => {
               if (user === null) {
-                router.push('/login');
+                router.push(`/login?returnPath=${pathName}`);
               } else {
                 handleSavePost(user.userId);
               }
