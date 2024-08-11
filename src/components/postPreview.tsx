@@ -34,7 +34,7 @@ export function PostPreview({ post, user }: PostPreviewProps) {
     );
   });
   return (
-    <Card className="h-auto w-full">
+    <Card className="h-auto w-full hover:border-primary hover:border-1">
       <CardHeader className="h-auto gap-y-2">
         <div className="flex flex-col gap-2">
           <CardTitle className="text-base line-clamp-2">
