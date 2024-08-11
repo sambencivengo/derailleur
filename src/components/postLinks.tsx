@@ -23,7 +23,7 @@ interface PostLinksProps {
 }
 
 export function PostLinks({ likesCount, postIsLiked, user, postId, numberOfComments, setNewComments, postAuthorId, setIsEditing, postIsSaved }: PostLinksProps) {
-  const { handleLikePost, liked, numberOfLikes } = useLikePost({ postIsLiked: postIsLiked, postId, numOfLikes: likesCount });
+  const { handleLikePost, liked, numberOfLikes } = useLikePost({ postIsLiked, postId, numOfLikes: likesCount });
   const { handleSavePost, saved } = useSavePost({ postIsSaved, postId: postId });
   const [isReplying, setIsReplying] = React.useState<boolean>(false);
   const router = useRouter();
