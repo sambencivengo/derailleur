@@ -44,7 +44,8 @@ export const getComments = async (postId?: string, parentCommentId?: string, use
 };
 
 export const getCommentsForProfile = async (
-  username: string
+  username: string,
+  cursor?: CommentCursor
 ): Promise<DerailleurResponse<CommentWithUserNameAndId[]>> => {
   try {
     const comments = await prisma.comment.findMany({
@@ -53,6 +54,17 @@ export const getCommentsForProfile = async (
           username
         }
       },
+      orderBy: {
+        createdAt: 'desc'
+      },
+      cursor: cursor !== undefined ? {
+        id_createdAt: {
+          createdAt: cursor.createdAt,
+          id: cursor.commentId,
+        }
+      } : undefined,
+      take: cursor === undefined ? 10 : 5,
+      skip: cursor === undefined ? 0 : 1,
       ...commentWithUsernameAndId,
     });
     return createSuccessfulResponse(comments);

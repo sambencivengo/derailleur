@@ -1,6 +1,6 @@
 import { getUserSession } from '~/auth';
 import { QueryError, TextHeading } from '~/components';
-import { Comment } from '~/components/comment';
+import { ProfileCommentsView } from '~/components/profileCommentsView';
 import { Separator } from '~/components/ui';
 import { getCommentsForProfile } from '~/queries/comments/getComments';
 
@@ -22,11 +22,7 @@ export default async function Page({ params }: { params: { username: string } })
       <div className="flex flex-col mt-5 gap-2">
         <TextHeading heading={user !== null && user.username === username ? 'Your comments' : `Comments by ${username}`} />
         <Separator />
-        <div className="space-y-2 flex flex-col">
-          {result.map(({ author, content, createdAt, id, postId, updatedAt }, idx) => {
-            return <Comment showContextLink={true} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} initialReplies={[]} updatedAt={updatedAt} repliesCount={0} user={user} level={0} />;
-          })}
-        </div>
+        <ProfileCommentsView initialComments={result} user={user} username={username} />
       </div>
     );
   }
