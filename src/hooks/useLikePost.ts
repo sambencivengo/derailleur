@@ -16,24 +16,25 @@ export function useLikePost({ postIsLiked, numOfLikes, postId }: UseLikePostProp
 
   const handleLikePost = (userId: string) => createLikeOrUnlikePostHandler(userId, postId, liked);
   async function createLikeOrUnlikePostHandler(userId: string, postId: string, likeState: boolean) {
-    likeState ? setLiked(false) : setLiked(true);
+    optimisticLikeUpdateHandler(likeState);
+
     const query = liked ? unlikePost(postId, userId) : likePost(postId, userId);
     const { errors, result } = await query;
 
-    if (errors.length > 0 || result === null) {
-      setLiked(postIsLiked);
-    } else {
-      if (likeState) {
+    if (errors.length === 0 || result === null) {
+      optimisticLikeUpdateHandler(true);
+    }
+
+    function optimisticLikeUpdateHandler(onError: boolean = true) {
+      if (onError) {
         setLiked(false);
         setNumberOfLikes((prevNum) => prevNum - 1);
-      }
-      else {
+      } else {
         setLiked(true);
         setNumberOfLikes((prevNum) => prevNum + 1);
       }
     }
   }
-
 
   return ({ handleLikePost, liked, numberOfLikes });
 }
