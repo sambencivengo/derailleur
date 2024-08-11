@@ -12,18 +12,23 @@ export function useSavePost({ postIsSaved, postId }: UseSavePostProps) {
 
   const handleSavePost = (userId: string) => createSavePostHandler(userId, postId, saved);
   async function createSavePostHandler(userId: string, postId: string, savedState: boolean) {
+    optimisticSaveUpdateHandler();
+
     const query = savedState ? unsavePost(postId, userId) : savePost(postId, userId);
     const { errors, result } = await query;
     if (errors.length > 0 || result === null) {
       setSaved(postIsSaved);
-    } else {
-      if (savedState) {
+    }
+
+    function optimisticSaveUpdateHandler() {
+      if (saved) {
         setSaved(false);
-      }
-      else {
+      } else {
         setSaved(true);
       }
     }
   }
+
+
   return ({ handleSavePost, saved });
 };

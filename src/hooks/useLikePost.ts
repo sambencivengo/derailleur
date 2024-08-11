@@ -14,19 +14,21 @@ export function useLikePost({ postIsLiked, numOfLikes, postId }: UseLikePostProp
   const [liked, setLiked] = React.useState<boolean>(postIsLiked);
   const [numberOfLikes, setNumberOfLikes] = React.useState<number>(numOfLikes);
 
-  const handleLikePost = (userId: string) => createLikeOrUnlikePostHandler(userId, postId, liked);
-  async function createLikeOrUnlikePostHandler(userId: string, postId: string, likeState: boolean) {
-    optimisticLikeUpdateHandler(likeState);
+  const handleLikePost = (userId: string) => createLikeOrUnlikePostHandler(userId, postId);
+
+  const createLikeOrUnlikePostHandler = React.useCallback(async (userId: string, postId: string) => {
+    optimisticLikeUpdate();
 
     const query = liked ? unlikePost(postId, userId) : likePost(postId, userId);
     const { errors, result } = await query;
 
-    if (errors.length === 0 || result === null) {
-      optimisticLikeUpdateHandler(true);
+    if (errors.length > 0 || result === null) {
+      setLiked(postIsLiked);
+      setNumberOfLikes(numOfLikes);
     }
 
-    function optimisticLikeUpdateHandler(onError: boolean = true) {
-      if (onError) {
+    function optimisticLikeUpdate() {
+      if (liked) {
         setLiked(false);
         setNumberOfLikes((prevNum) => prevNum - 1);
       } else {
@@ -34,7 +36,7 @@ export function useLikePost({ postIsLiked, numOfLikes, postId }: UseLikePostProp
         setNumberOfLikes((prevNum) => prevNum + 1);
       }
     }
-  }
+  }, [liked, numberOfLikes]);
 
   return ({ handleLikePost, liked, numberOfLikes });
 }
