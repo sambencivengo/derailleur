@@ -34,11 +34,9 @@ export function PostPreviewsContainer({ username, initialPosts, category, user, 
         setIsLoading(false);
       } else {
         if (result.length > POST_BATCH_AMOUNT) {
-          console.log({ cursor });
           const { createdAt, id } = result[result.length - 1];
           setCursor({ createdAt, postId: id });
         } else {
-          console.log({ cursor });
           setCursor(null);
         }
         setPosts((prev) => [...prev, ...result]);
