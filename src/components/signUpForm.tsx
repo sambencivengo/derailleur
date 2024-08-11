@@ -11,6 +11,7 @@ import { Alert, AlertTitle, AlertDescription } from '~/components/ui';
 import { DerailleurError } from '~/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { FormWrapper, Spinner } from '~/components';
+import Link from 'next/link';
 
 // NOTE: Necessary in this file to prevent build errors
 const userSignUpSchema = z.object({
@@ -103,10 +104,13 @@ export function SignUpForm() {
           </Alert>
         )}
       </div>
-      <div className="w-full flex justify-center">
-        <Button className="w-auto" type="submit">
+      <div className="w-full flex flex-col justify-center gap-5">
+        <Button className="self-center" type="submit">
           {isLoading ? <Spinner /> : 'Submit'}
         </Button>
+        <Link className="text-primary hover:underline italic self-center" href={'/login'}>
+          Already have an account?
+        </Link>
       </div>
     </FormWrapper>
   );

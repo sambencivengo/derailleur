@@ -10,6 +10,7 @@ import { FormWrapper, Spinner } from '~/components';
 import { FormControl, FormField, FormItem, FormMessage, Button, Input, Alert, AlertTitle, AlertDescription } from '~/components/ui';
 import { DerailleurError } from '~/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 // NOTE: Necessary in this file to prevent build errors
 const userLogInSchema = z.object({
@@ -102,10 +103,13 @@ export function LogInForm() {
           </Alert>
         )}
       </div>
-      <div className="w-full flex justify-center">
-        <Button className="w-auto" type="submit">
+      <div className="w-full flex flex-col justify-center gap-5">
+        <Button className="self-center" type="submit">
           {isLoading ? <Spinner /> : 'Submit'}
         </Button>
+        <Link className="text-primary hover:underline italic self-center" href={'/signup'}>
+          Need to create an account?{' '}
+        </Link>
       </div>
     </FormWrapper>
   );
