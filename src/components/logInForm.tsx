@@ -67,14 +67,14 @@ export function LogInForm() {
 
   return (
     <FormWrapper form={form} onSubmit={onSubmit}>
-      <div className="flex flex-col w-44 space-y-4">
+      <div className="flex flex-col w-auto space-y-4">
         <FormField
           control={form.control}
           name="username"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input autoComplete="" placeholder="username" {...field} />
+                <Input autoComplete="" className="w-full" placeholder="username" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -101,8 +101,11 @@ export function LogInForm() {
             })}
           </Alert>
         )}
-
-        <Button type="submit">{isLoading ? <Spinner /> : 'Submit'}</Button>
+      </div>
+      <div className="w-full flex justify-center">
+        <Button className="w-auto" type="submit">
+          {isLoading ? <Spinner /> : 'Submit'}
+        </Button>
       </div>
     </FormWrapper>
   );

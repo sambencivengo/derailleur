@@ -2,15 +2,16 @@
 
 import { getUserSessionAndRedirect } from '~/auth';
 import { SignUpForm, TextHeading } from '~/components';
+import { LoginAndSignupContainer } from '~/components/loginAndSignupContainer';
 
 export default async function Page() {
   await getUserSessionAndRedirect();
   return (
-    <div className="flex justify-center gap-y-2">
-      <div className="flex-col space-y-3">
+    <main>
+      <LoginAndSignupContainer>
         <TextHeading heading="Sign Up" className="italic" />
         <SignUpForm />
-      </div>
-    </div>
+      </LoginAndSignupContainer>
+    </main>
   );
 }
