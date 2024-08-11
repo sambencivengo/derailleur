@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { PostPreview, QueryError, Spinner } from '~/components';
+import { EndOfPostsNotice } from '~/components/endOfPostsNotice';
 import { Button } from '~/components/ui';
 import { getTagWithPostsByName } from '~/queries';
 import { PostCursor, PostWithAuthorNameTagsAndCommentCount, TagWithPosts, UserAndSession } from '~/types';
@@ -66,7 +67,7 @@ export function TagPostsView({ user, initialTagAndPosts, tagNameWithoutHyphens }
         })}
       </div>
       {getMorePostsErrors.length > 0 && <QueryError errors={getMorePostsErrors} />}
-      {cursor !== null && (
+      {cursor !== null ? (
         <Button
           className="self-center"
           onClick={() => {
@@ -75,6 +76,8 @@ export function TagPostsView({ user, initialTagAndPosts, tagNameWithoutHyphens }
         >
           {isLoading ? <Spinner /> : 'Load More...'}
         </Button>
+      ) : (
+        <EndOfPostsNotice />
       )}
     </div>
   );

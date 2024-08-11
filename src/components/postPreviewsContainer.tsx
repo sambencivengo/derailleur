@@ -1,13 +1,12 @@
 'use client';
 import React from 'react';
-import { Wind } from 'lucide-react';
 import { PostPreview, QueryError, Spinner } from '~/components';
-import { Button, Card, CardHeader, CardTitle } from '~/components/ui';
+import { Button } from '~/components/ui';
 import { getPosts } from '~/queries';
 import { PostCursor, PostWithAuthorNameTagsAndCommentCount, UserAndSession } from '~/types';
 import { DerailleurError } from '~/utils';
-import Link from 'next/link';
 import { PostCategory } from '@prisma/client';
+import { EndOfPostsNotice } from '~/components/endOfPostsNotice';
 
 const POST_BATCH_AMOUNT = 10;
 
@@ -15,9 +14,11 @@ interface PostPreviewsContainerProps {
   user: UserAndSession | null;
   initialPosts: Array<PostWithAuthorNameTagsAndCommentCount>;
   category?: PostCategory;
+  username?: string;
+  showEndOfPostsNotice?: boolean;
 }
 
-export function PostPreviewsContainer({ initialPosts, category, user }: PostPreviewsContainerProps) {
+export function PostPreviewsContainer({ username, initialPosts, category, user, showEndOfPostsNotice = false }: PostPreviewsContainerProps) {
   const [posts, setPosts] = React.useState<Array<PostWithAuthorNameTagsAndCommentCount>>(initialPosts.length > POST_BATCH_AMOUNT ? initialPosts.slice(0, POST_BATCH_AMOUNT) : initialPosts);
   const [getMorePostsErrors, setGetMorPostsErrors] = React.useState<Array<DerailleurError>>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -26,16 +27,18 @@ export function PostPreviewsContainer({ initialPosts, category, user }: PostPrev
   const getMorePosts = React.useCallback(
     async function (cursorId: string, cursorDate: string | Date) {
       setIsLoading(true);
-      const nextGroupOfPostsResponse = await getPosts(undefined, category, undefined, { postId: cursorId, createdAt: cursorDate });
+      const nextGroupOfPostsResponse = await getPosts(username, category, undefined, { postId: cursorId, createdAt: cursorDate });
       const { errors, result } = nextGroupOfPostsResponse;
       if (result === null || errors.length > 0) {
         setGetMorPostsErrors(errors);
         setIsLoading(false);
       } else {
         if (result.length > POST_BATCH_AMOUNT) {
+          console.log({ cursor });
           const { createdAt, id } = result[result.length - 1];
           setCursor({ createdAt, postId: id });
         } else {
+          console.log({ cursor });
           setCursor(null);
         }
         setPosts((prev) => [...prev, ...result]);
@@ -79,20 +82,7 @@ export function PostPreviewsContainer({ initialPosts, category, user }: PostPrev
           </Button>
         </div>
       ) : (
-        <Card>
-          <CardHeader className="text-center flex flex-col justify-center">
-            <div className="self-center">
-              <Wind size={50} />
-            </div>
-            <CardTitle>Looks like there {initialPosts.length > 0 ? ' is nothing left...' : 'are no posts...'}</CardTitle>
-            <CardTitle>
-              <p>Join the conversation and </p>{' '}
-              <Link href={'/post/new'} className="hover:underline text-primary">
-                create a new post!
-              </Link>
-            </CardTitle>
-          </CardHeader>
-        </Card>
+        showEndOfPostsNotice && <EndOfPostsNotice />
       )}
     </div>
   );

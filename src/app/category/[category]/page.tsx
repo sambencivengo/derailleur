@@ -32,7 +32,7 @@ export default async function Page({ params }: { params: { category: string } })
           <BackToAllPostsLink />
 
           <Suspense fallback={<RoutePostsContainerSkeleton />}>
-            <PostPreviewsContainer initialPosts={result} user={user} category={objectCategories[category]} />
+            <PostPreviewsContainer initialPosts={result} user={user} category={objectCategories[category]} showEndOfPostsNotice={true} />
           </Suspense>
         </div>
       </main>

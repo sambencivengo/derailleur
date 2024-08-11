@@ -25,7 +25,7 @@ export default async function Home() {
         )}
         <div className="w-full justify-center">{<HomePageTagsView />}</div>
         <Separator className="mt-5 mb-5" />
-        <PostPreviewsContainer initialPosts={posts.result} user={user} />
+        <PostPreviewsContainer initialPosts={posts.result} user={user} showEndOfPostsNotice={true} />
       </Suspense>
     </main>
   );
