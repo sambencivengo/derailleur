@@ -3,6 +3,9 @@ import { CreatePostPayload } from "~/types";
 
 const RIDE_WITH_GPS_ROUTE_REGEX = /^https:\/\/ridewithgps\.com\/(routes|trips)\/\d+$/;
 
+const MAX_IMAGE_SIZE = 4 * 1024 * 1024;
+const ACCEPTED_IMAGE_TYPE = 'image/jpeg';
+
 export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
   title: z
     .string({
@@ -27,7 +30,9 @@ export const createPostSchema: z.ZodType<CreatePostPayload> = z.object({
   rideWithGPSLink: z.string({
     invalid_type_error: 'Post content must be a string',
   }).refine((data: string) => (RIDE_WITH_GPS_ROUTE_REGEX.test(data)), { message: 'Route input must be a valid Ride With GPS route link eg: https://ridewithgps.com/routes/ or https://ridewithgps.com/trips/' }).optional().or(z.literal('')),
-  images: z.optional(z.string().trim()),
+  images: typeof window === 'undefined' ? z.undefined() : z.array(z.instanceof(File)).max(5, { message: 'Post cannot have more than 5 images' }).refine((files) => files.every((file) => {
+    return file.size <= MAX_IMAGE_SIZE && ACCEPTED_IMAGE_TYPE === file.type;
+  }), { message: 'Files cannot be larger than 4MB and must be JPEGs' }),
   published: z
     .boolean({
       required_error: 'Published is required',
