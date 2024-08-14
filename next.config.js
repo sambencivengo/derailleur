@@ -7,11 +7,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
-      },
-      {
-        protocol: 'http',
-        hostname: '**',
+        hostname: 'derailleurimages.s3.us-east-2.amazonaws.com',
+        pathname: '**',
       },
     ],
   },
