@@ -1,5 +1,7 @@
 'use client';
+
 import React from 'react';
+import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { FormWrapper, Spinner } from '~/components';
@@ -11,6 +13,7 @@ import { AlertCircle } from 'lucide-react';
 import { createPost, getTagsWithCountByName } from '~/queries';
 import { useToast } from '~/components/ui/use-toast';
 import { Switch } from '~/components/ui/switch';
+import { DerailleurError } from '~/utils';
 
 export type Framework = Record<'value' | 'label', string>;
 
@@ -36,6 +39,7 @@ export function NewPostForm({ userId }: NewPostFormProps) {
       title: '',
       tags: [],
       rideWithGPSLink: '',
+      images: [],
     },
   });
 
@@ -49,50 +53,53 @@ export function NewPostForm({ userId }: NewPostFormProps) {
   }, [showRideWithGpsLinkInput, setShowRideWithGpsLinkInput]);
 
   // NOTE: validate url function from https://www.freecodecamp.org/news/check-if-a-javascript-string-is-a-url/
-  const isValidUrl = (urlString: string) => {
-    var urlPattern = new RegExp(
-      '^((http|https)?:\\/\\/)' + // validate protocol
-        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // validate domain name
-        '((\\d{1,3}\\.){3}\\d{1,3}))' + // validate OR ip (v4) address
-        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // validate port and path
-        '(\\?[;&a-z\\d%_.~+=-]*)?' + // validate query string
-        '(\\#[-a-z\\d_]*)?$',
-      'i'
-    ); // validate fragment locator
-    return !!urlPattern.test(urlString);
-  };
 
   async function onSubmit(values: CreatePostSchema) {
     setIsLoading(true);
     const { images } = values;
-    // TODO: move to zod validation
-    const arrayOfImagesContainsInvalidUrl =
-      images !== undefined && images.length > 0
-        ? images
-            .split(',')
-            .map((imageLink) => isValidUrl(imageLink))
-            .includes(false)
-        : false;
-
-    if (arrayOfImagesContainsInvalidUrl) {
-      form.setError('images', { message: 'Image links must be valid URLs' });
-      return;
-    } else {
-      const valuesWithTags: CreatePostPayload = { ...values, tags: selected.map((tag) => tag.name) };
-      const response = await createPost(valuesWithTags, userId);
-      if (response.errors.length > 0 || response.result === null) {
-        setIsLoading(false);
-        setSubmitPostError(response.errors.map((error) => error.message));
-      } else {
-        toast({
-          title: 'Post submitted!',
-          className: 'bg-green-400',
+    const valuesWithTags: CreatePostPayload = { ...values, images: [], tags: selected.map((tag) => tag.name) };
+    if (images !== undefined && images.length > 0) {
+      const formData = new FormData();
+      console.log(images.length);
+      images.forEach((image) => {
+        formData.append('files', image);
+      });
+      await axios
+        .post<{ result: Array<string> }>('/api/upload-image', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(async (axiosResponse) => {
+          const { result } = axiosResponse.data;
+          const valuesWithTagsAndImageNames: CreatePostPayload = { ...valuesWithTags, images: result };
+          return await submitPostPayloadToQuery(valuesWithTagsAndImageNames, userId);
+        })
+        .catch((error: AxiosError) => {
+          setIsLoading(false);
+          if (error.response) {
+            const { errors } = error.response.data as { errors: DerailleurError[] };
+            setSubmitPostError(['There was an issue uploading your images', ...errors.map((error) => error.message)]);
+          }
         });
-        router.push(`/post/${response.result.id}`);
-      }
+    } else {
+      return await submitPostPayloadToQuery(valuesWithTags, userId);
     }
   }
 
+  async function submitPostPayloadToQuery(payload: CreatePostPayload, userId: string) {
+    const response = await createPost(payload, userId);
+    if (response.errors.length > 0 || response.result === null) {
+      setIsLoading(false);
+      setSubmitPostError(response.errors.map((error) => error.message));
+    } else {
+      toast({
+        title: 'Post submitted!',
+        className: 'bg-green-400',
+      });
+      router.push(`/post/${response.result.id}`);
+    }
+  }
   async function fetchAndSetTags(value: string): Promise<void> {
     // fetch and set tags
     const response = await getTagsWithCountByName(value);
@@ -104,7 +111,6 @@ export function NewPostForm({ userId }: NewPostFormProps) {
       setOpen(false);
     }
   }
-
   return (
     <Card>
       <CardHeader>Create a new post...</CardHeader>
@@ -170,15 +176,27 @@ export function NewPostForm({ userId }: NewPostFormProps) {
           <FormField
             control={form.control}
             name="images"
-            render={({ field }) => {
+            render={({ field: { value, onChange, ...fieldProps } }) => {
               return (
                 <FormItem>
                   <div className="flex flex-col gap-2">
-                    <FormLabel>Image Link(s)</FormLabel>
-                    <FormLabel className="text-gray-500">Links must start with either "https://" or "http://" and separated with a comma and should end with the image format e.g. ".jpeg" ".png"</FormLabel>
+                    <FormLabel>Images</FormLabel>
+                    <FormLabel className="text-gray-500">You can upload up to 5 images to accompany your post.</FormLabel>
                   </div>
                   <FormControl>
-                    <Input {...field} />
+                    <div className="w-auto gap-2 flex flex-row">
+                      <Input
+                        className="w-auto"
+                        {...fieldProps}
+                        type="file"
+                        multiple={true}
+                        name="images"
+                        accept="image/jpeg"
+                        onChange={(event) => {
+                          onChange(Array.from(event.target.files!));
+                        }}
+                      />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -210,7 +228,15 @@ export function NewPostForm({ userId }: NewPostFormProps) {
             </Alert>
           )}
           <div className="flex justify-end">
-            <Button type="submit">{isLoading ? <Spinner /> : 'Submit'}</Button>
+            <Button disabled={isLoading} type="submit">
+              {isLoading ? (
+                <div className="flex flex-row gap-2">
+                  Submitting post... <Spinner />
+                </div>
+              ) : (
+                'Submit'
+              )}
+            </Button>
           </div>
         </FormWrapper>
       </CardContent>
