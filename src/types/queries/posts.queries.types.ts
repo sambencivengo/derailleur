@@ -8,13 +8,19 @@ export interface PostCursor {
   createdAt: string | Date;
 }
 
-export interface CreatePostPayload {
+export interface CreatePostBase {
   title: string;
   content: string;
   published?: boolean;
-  images?: Array<File>;
   rideWithGPSLink?: string;
   tags: string[];
+}
+
+export interface CreatePostSchemaFromBase extends CreatePostBase {
+  images?: Array<File>;
+}
+export interface CreatePostPayload extends CreatePostBase {
+  images: Array<string>;
 }
 
 export interface UpdatePostPayload {
