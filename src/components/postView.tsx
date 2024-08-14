@@ -9,6 +9,7 @@ import { RideWithGPSIFrame } from '~/components/rideWithGPSIFrame';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { PostCategory } from '@prisma/client';
 import { PostCategoryTag } from '~/components/postCategoryTag';
+import { createImageUrl } from '~/utils/imageUrl';
 
 interface PostViewProps {
   post: PostWithAuthorNameTagsAndCommentCount;
@@ -63,9 +64,9 @@ export function PostView({ post }: PostViewProps) {
           {images.length > 0 && (
             <ScrollArea className="bg-gray-100 h-[400px] rounded-md border ">
               <div className="p-4 flex flex-col gap-4">
-                {images.map((imageLink, idx) => (
+                {images.map((imageName, idx) => (
                   <div key={idx} className="w-full relative pt-[50%]">
-                    <ImageWrapper fallbackSrc="" imageSrc={imageLink} />
+                    <ImageWrapper fallbackSrc="" imageSrc={createImageUrl(imageName)} />
                   </div>
                 ))}
               </div>
