@@ -4,7 +4,7 @@ import { Prisma } from '@prisma/client';
 import prisma from '~prisma/prisma';
 import { DerailleurResponse, createSuccessfulResponse, createErrorResponse, DerailleurError } from '~/utils';
 import { CreatePost, CreatePostPayload, PostWithAuthorNameAndTags, postWithAuthorNameAndTagsQuery } from '~/types';
-import { CreatePostSchema, createPostSchema, validateSchema } from '~/schemas';
+import { createPostPayloadSchema, CreatePostPayloadSchema, validateSchema } from '~/schemas';
 import { PrismaQueryErrorCodes } from '~prisma/prismaErrorCodes';
 import { determinePostCategory } from '~/queries/posts/utils';
 
@@ -15,7 +15,7 @@ export const createPost: CreatePost = async (postPayload: CreatePostPayload, use
     return (createErrorResponse([{ data: { postPayload, userId, postId }, message: "Create Post recursive attempts exhausted" }]));
   }
   else {
-    const validateResponse = validateSchema<CreatePostSchema>({ body: postPayload, schema: createPostSchema });
+    const validateResponse = validateSchema<CreatePostPayloadSchema>({ body: postPayload, schema: createPostPayloadSchema });
     if (validateResponse.result === null || validateResponse.errors.length > 0) {
       const errors: DerailleurError[] = validateResponse.errors.map((error) => {
         return { data: postPayload, message: error.message };
@@ -28,7 +28,7 @@ export const createPost: CreatePost = async (postPayload: CreatePostPayload, use
       const newPost = await prisma.post.create({
         data: {
           id: postId,
-          images: images !== undefined ? images.split(',').map((image => image)) : [],
+          images,
           authorId: userId,
           content,
           title,
