@@ -1,16 +1,14 @@
 'use client';
 import React from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Badge, Separator } from '~/components/ui';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Badge, Separator, Dialog, DialogContent, DialogTrigger } from '~/components/ui';
 import Link from 'next/link';
-import { ImageWrapper } from '~/components/imageWrapper';
 import { PostWithAuthorNameTagsAndCommentCount } from '~/types';
 import { determineDateToShow } from '~/utils/dateUtils';
 import { RideWithGPSIFrame } from '~/components/rideWithGPSIFrame';
-import { ScrollArea } from '~/components/ui/scroll-area';
 import { PostCategory } from '@prisma/client';
 import { PostCategoryTag } from '~/components/postCategoryTag';
 import { createImageUrl } from '~/utils/imageUrl';
-
+import Image from 'next/image';
 interface PostViewProps {
   post: PostWithAuthorNameTagsAndCommentCount;
 }
@@ -59,18 +57,35 @@ export function PostView({ post }: PostViewProps) {
           </CardDescription>
           <CardDescription>{determineDateToShow(createdAt, updatedAt)}</CardDescription>
         </div>
-        <CardContent>
+        <CardContent className="w-full">
           <p>{content}</p>
           {images.length > 0 && (
-            <ScrollArea className="bg-gray-100 h-[400px] rounded-md border ">
-              <div className="p-4 flex flex-col gap-4">
-                {images.map((imageName, idx) => (
-                  <div key={idx} className="w-full relative pt-[50%]">
-                    <ImageWrapper fallbackSrc="" imageSrc={createImageUrl(imageName)} />
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
+            <div className="p-4 w-full h-full flex flex-wrap justify-center gap-2">
+              {images.map((imageName, idx) => (
+                <Dialog>
+                  <DialogTrigger asChild className="hover:cursor-pointer">
+                    <div key={idx} className="w-[200px] h-[200px] object-cover shadow-lg">
+                      <Image
+                        alt="User uploaded image"
+                        sizes="100vw"
+                        src={createImageUrl(imageName)}
+                        style={{
+                          width: '100%',
+                        }}
+                        className="object-cover w-[300px] h-[200px]"
+                        width={500}
+                        height={100}
+                      />
+                    </div>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-6xl bg-transparent p-0 shadow-none border-none">
+                    <div className="relative h-[calc(100vh-200px)] w-full overflow-clip rounded-md bg-transparent">
+                      <Image src={createImageUrl(imageName)} fill alt="User uploaded image" className="h-full w-full object-contain" />
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              ))}
+            </div>
           )}
         </CardContent>
       </CardHeader>
