@@ -78,7 +78,7 @@ export function PostView({ post }: PostViewProps) {
                       />
                     </div>
                   </DialogTrigger>
-                  <DialogContent className="border-2 border-red-500 max-w-6xl bg-transparent p-0 shadow-none border-none">
+                  <DialogContent className="max-w-6xl bg-transparent p-0 shadow-none border-none">
                     <div className="relative h-[calc(100vh-200px)] w-full overflow-clip rounded-md bg-transparent">
                       <Image src={createImageUrl(imageName)} fill alt="User uploaded image" className="h-full w-full object-contain" />
                     </div>
