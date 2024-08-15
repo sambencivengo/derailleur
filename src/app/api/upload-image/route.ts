@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     await Promise.all(imageUploadPromises);
     return createNextResponse({ status: 200, result: fileNames });
   } catch (error: any) {
-    return createErrorResponse([createDerailleurError(`An error occurred when uploading image: ${error.toString()}`, {})]);
+    return createNextResponse({ status: 500, errors: [createDerailleurError(`An error occurred when uploading image: ${error.toString()}`, {})] });
   }
 };
 

@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { FormWrapper, Spinner } from '~/components';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, Label, MultiSelect, Textarea } from '~/components/ui';
-import { createPostSchema, CreatePostSchema, updatePostPayloadSchema } from '~/schemas/postSchemas';
+import { updatePostPayloadSchema } from '~/schemas/postSchemas';
 import { PostWithAuthorNameTagsAndCommentCount, TagWithPostCount, UpdatePostPayload, UserAndSession } from '~/types';
 import { AlertCircle } from 'lucide-react';
 import { getTagsWithCountByName, updatePost } from '~/queries';
