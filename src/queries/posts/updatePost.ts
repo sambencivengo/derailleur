@@ -6,7 +6,7 @@ import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } fro
 import prisma from "~prisma/prisma";
 
 export const updatePost: UpdatePost = async (updatePostPayload: UpdatePostPayload, postId: string, authorId: string): Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount>> => {
-  const { content, title, published, tags, rideWithGPSLink, images, existingTags } = updatePostPayload;
+  const { content, title, published, tags, rideWithGPSLink, existingTags } = updatePostPayload;
 
   const tagsToDelete: Array<{ name: string, id: string; }> = [];
   for (let i = 0; i < existingTags.length; i++) {
@@ -27,7 +27,6 @@ export const updatePost: UpdatePost = async (updatePostPayload: UpdatePostPayloa
         category: determinePostCategory(rideWithGPSLink),
         rideWithGPSLink: rideWithGPSLink === '' ? null : rideWithGPSLink,
         published,
-        images: images !== undefined ? images.split(',').map((image => image)) : [],
         tags:
         {
           disconnect: existingTags.map(({ id }) => {

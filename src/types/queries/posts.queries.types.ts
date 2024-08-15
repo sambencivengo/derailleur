@@ -23,13 +23,14 @@ export interface CreatePostPayload extends CreatePostBase {
   images: Array<string>;
 }
 
-export interface UpdatePostPayload {
+export interface UpdatePostPayloadBase {
   title: string;
   content: string;
   published?: boolean;
-  images?: string;
   tags: string[];
   rideWithGPSLink?: string;
+}
+export interface UpdatePostPayload extends UpdatePostPayloadBase {
   existingTags: { id: string, name: string; }[];
 }
 

@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { FormWrapper, Spinner } from '~/components';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, Label, MultiSelect, Textarea } from '~/components/ui';
-import { createPostSchema, CreatePostSchema } from '~/schemas/postSchemas';
+import { createPostSchema, CreatePostSchema, updatePostPayloadSchema } from '~/schemas/postSchemas';
 import { PostWithAuthorNameTagsAndCommentCount, TagWithPostCount, UpdatePostPayload, UserAndSession } from '~/types';
 import { AlertCircle } from 'lucide-react';
 import { getTagsWithCountByName, updatePost } from '~/queries';
@@ -41,62 +41,35 @@ export function EditPostForm({ user, postId, content, title, existingTags, rideW
     );
   }, [setSelected, existingTags]);
 
-  const form = useForm<CreatePostSchema>({
-    resolver: zodResolver(createPostSchema),
+  const form = useForm<UpdatePostPayload>({
+    resolver: zodResolver(updatePostPayloadSchema),
     defaultValues: {
       content,
       published: true, // TODO: change this when drafts are implemented
       title,
-      images: images.join(','),
       tags: existingTags.map((tag) => tag.name),
       rideWithGPSLink: rideWithGPSLink === null ? '' : rideWithGPSLink,
     },
   });
 
   // NOTE: validate url function from https://www.freecodecamp.org/news/check-if-a-javascript-string-is-a-url/
-  const isValidUrl = (urlString: string) => {
-    var urlPattern = new RegExp(
-      '^((http|https)?:\\/\\/)' + // validate protocol
-        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // validate domain name
-        '((\\d{1,3}\\.){3}\\d{1,3}))' + // validate OR ip (v4) address
-        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // validate port and path
-        '(\\?[;&a-z\\d%_.~+=-]*)?' + // validate query string
-        '(\\#[-a-z\\d_]*)?$',
-      'i'
-    ); // validate fragment locator
-    return !!urlPattern.test(urlString);
-  };
 
-  async function onSubmit(values: CreatePostSchema) {
-    const { images } = values;
-    const arrayOfImagesContainsInvalidUrl =
-      images !== undefined && images.length > 0
-        ? images
-            .split(',')
-            .map((imageLink) => isValidUrl(imageLink))
-            .includes(false)
-        : false;
-
-    if (arrayOfImagesContainsInvalidUrl) {
-      form.setError('images', { message: 'Image links must be valid URLs' });
-      return;
+  async function onSubmit(values: UpdatePostPayload) {
+    setIsLoading(true);
+    const valuesWithTags: UpdatePostPayload = { ...values, tags: selected.map((tag) => tag.name), existingTags: existingTags };
+    const response = await updatePost(valuesWithTags, postId, user.userId);
+    if (response.errors.length > 0 || response.result === null) {
+      setIsLoading(false);
+      setEditPostError(response.errors.map((error) => error.message));
+      setIsEditing(false);
     } else {
-      setIsLoading(true);
-      const valuesWithTags: UpdatePostPayload = { ...values, images: images === '' ? undefined : images, tags: selected.map((tag) => tag.name), existingTags: existingTags };
-      const response = await updatePost(valuesWithTags, postId, user.userId);
-      if (response.errors.length > 0 || response.result === null) {
-        setIsLoading(false);
-        setEditPostError(response.errors.map((error) => error.message));
-        setIsEditing(false);
-      } else {
-        setSuccessfullyEditedPost(response.result);
-        toast({
-          title: 'Post edited!',
-          className: 'bg-green-400',
-        });
-        setIsEditing(false);
-        setIsLoading(false);
-      }
+      setSuccessfullyEditedPost(response.result);
+      toast({
+        title: 'Post edited!',
+        className: 'bg-green-400',
+      });
+      setIsEditing(false);
+      setIsLoading(false);
     }
   }
 
@@ -173,24 +146,7 @@ export function EditPostForm({ user, postId, content, title, existingTags, rideW
               }}
             />
           )}
-          <FormField
-            control={form.control}
-            name="images"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <div className="flex flex-col gap-2">
-                    <FormLabel>Image Link(s)</FormLabel>
-                    <FormLabel className="text-gray-500">Links must start with either "https://" or "http://" and separated with a comma and should end with the image format e.g. ".jpeg" ".png"</FormLabel>
-                  </div>
-                  <FormControl>
-                    <Input placeholder="https://i.imgur.com/WwpJY2t.jpeg" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
+
           <FormField
             control={form.control}
             name="tags"

@@ -65,7 +65,7 @@ export function PostView({ post }: PostViewProps) {
                 <Dialog>
                   <DialogTrigger asChild className="hover:cursor-pointer">
                     <div key={idx} className="w-[200px] h-[200px] object-cover shadow-lg">
-                      <Image
+                      {/* <Image
                         alt="User uploaded image"
                         sizes="100vw"
                         src={createImageUrl(imageName)}
@@ -75,11 +75,14 @@ export function PostView({ post }: PostViewProps) {
                         className="object-cover w-[300px] h-[200px]"
                         width={500}
                         height={100}
-                      />
+                      /> */}
+                      <img src={createImageUrl(imageName)} />
                     </div>
                   </DialogTrigger>
-                  <DialogContent className="max-w-6xl bg-transparent p-0 shadow-none border-none">
-                    <div className="relative h-[calc(100vh-200px)] w-full overflow-clip rounded-md bg-transparent">
+                  <DialogContent className="border-2 border-red-500  h-[calc(100vh-200px)] max-w-6xl bg-transparent p-0 shadow-none ">
+                    <div className="relative overflow-clip rounded-md bg-transparent">
+                      <img src={createImageUrl(imageName)} />
+
                       <Image src={createImageUrl(imageName)} fill alt="User uploaded image" className="h-full w-full object-contain" />
                     </div>
                   </DialogContent>
