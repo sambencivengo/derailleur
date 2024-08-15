@@ -4,10 +4,11 @@ const nextConfig = {
     serverComponentsExternalPackages: ['oslo'],
   },
   images: {
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'derailleurimages.s3.us-east-2.amazonaws.com',
+        hostname: 'd203wdkr6gpe3h.cloudfront.net',
         pathname: '**',
       },
     ],

@@ -1,3 +1,3 @@
 export function createImageUrl(slug: string): string {
-  return `https://derailleurimages.s3.us-east-2.amazonaws.com/${slug}`;
+  return `https://d203wdkr6gpe3h.cloudfront.net/${slug}`;
 }
