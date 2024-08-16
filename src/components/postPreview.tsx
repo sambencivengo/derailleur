@@ -35,7 +35,7 @@ export function PostPreview({ post, user }: PostPreviewProps) {
   });
   return (
     <Card className="h-auto w-full hover:border-primary hover:border-1">
-      <CardHeader className="h-auto gap-y-2">
+      <CardHeader className="h-auto gap-y-2 p-3">
         <div className="flex flex-col gap-2">
           <CardTitle className="text-base line-clamp-2">
             <Link className="hover:text-primary" href={`/post/${id}`}>
@@ -60,7 +60,7 @@ export function PostPreview({ post, user }: PostPreviewProps) {
         </div>
       </CardHeader>
       <CardContent className="p-0 gap-4">
-        <CardFooter className="flex flex-wrap text-primary">
+        <CardFooter className="pb-2 pl-3 flex flex-wrap text-primary">
           <div className="flex flex-row gap-2 items-center">
             <Button
               className="h-6 w-6 hover:bg-opacity-0"
