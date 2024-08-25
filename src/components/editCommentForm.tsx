@@ -65,7 +65,7 @@ export function EditCommentForm({ commentId, userId, content: existingContent, s
       }
       onSubmit(values);
     },
-    [setIsLoading, setUpdateCommentError]
+    [setIsLoading, setUpdateCommentError, commentId, setIsEditing, setSuccessfullyEditedComment, toast, userId]
   );
 
   return (

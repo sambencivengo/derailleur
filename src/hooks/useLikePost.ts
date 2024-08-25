@@ -36,7 +36,7 @@ export function useLikePost({ postIsLiked, numOfLikes, postId }: UseLikePostProp
         setNumberOfLikes((prevNum) => prevNum + 1);
       }
     }
-  }, [liked, numberOfLikes]);
+  }, [liked, numOfLikes, postIsLiked,]);
 
   return ({ handleLikePost, liked, numberOfLikes });
 }

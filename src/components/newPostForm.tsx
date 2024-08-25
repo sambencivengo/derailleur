@@ -50,7 +50,7 @@ export function NewPostForm({ userId }: NewPostFormProps) {
       form.setValue('rideWithGPSLink', '');
       form.clearErrors('rideWithGPSLink');
     }
-  }, [showRideWithGpsLinkInput, setShowRideWithGpsLinkInput]);
+  }, [showRideWithGpsLinkInput, setShowRideWithGpsLinkInput, form]);
 
   // NOTE: validate url function from https://www.freecodecamp.org/news/check-if-a-javascript-string-is-a-url/
 

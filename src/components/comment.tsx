@@ -36,22 +36,19 @@ export function Comment({ author, commentId, content, createdAt, updatedAt, post
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
   const [successfullyEditedComment, setSuccessfullyEditedComment] = React.useState<CommentWithUserNameAndId | null>(null);
 
-  const getNextSetOfComments = React.useCallback(
-    async (postId: string, commentId: string, initialReplies: Array<CommentWithAuthorUsernameIDAndReplies>) => {
-      const cursor = { commentId: initialReplies[initialReplies.length - 1].id, createdAt: initialReplies[initialReplies.length - 1].createdAt };
-      setIsLoading(true);
-      const response = await getComments(postId, commentId, undefined, cursor);
-      const { errors, result } = response;
-      if (errors.length > 0 || result === null) {
-        // TODO: ERROR HANDLING
-        setIsLoading(false);
-      } else {
-        setReplies((prev) => [...prev, ...result]);
-        setIsLoading(false);
-      }
-    },
-    [postId, commentId, replies]
-  );
+  const getNextSetOfComments = React.useCallback(async (postId: string, commentId: string, initialReplies: Array<CommentWithAuthorUsernameIDAndReplies>) => {
+    const cursor = { commentId: initialReplies[initialReplies.length - 1].id, createdAt: initialReplies[initialReplies.length - 1].createdAt };
+    setIsLoading(true);
+    const response = await getComments(postId, commentId, undefined, cursor);
+    const { errors, result } = response;
+    if (errors.length > 0 || result === null) {
+      // TODO: ERROR HANDLING
+      setIsLoading(false);
+    } else {
+      setReplies((prev) => [...prev, ...result]);
+      setIsLoading(false);
+    }
+  }, []);
 
   return (
     <Card className={cn('w-full pr-0', level !== 0 && 'pr-0 border-r-0')}>

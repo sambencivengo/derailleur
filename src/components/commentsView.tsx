@@ -42,7 +42,7 @@ export function CommentsView({ showContextLink = false, postId, user, initialCom
         setIsLoading(false);
       }
     },
-    [setComments, setGetMoreCommentsErrors, setIsLoading, setCursor]
+    [setComments, setGetMoreCommentsErrors, setIsLoading, setCursor, postId]
   );
 
   // TODO: re-enable auto load

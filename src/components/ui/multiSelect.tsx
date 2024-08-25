@@ -19,52 +19,58 @@ type MultiSelectProps = InputProps & {
 export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(({ type, selected, setSelected, fetchAndSetTags, tags, setOpen, open, ...props }, ref) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = React.useState('');
-  const handleUnselect = React.useCallback((tag: TagWithPostCount) => {
-    setSelected((prev) => prev.filter((s) => s.name !== tag.name));
-  }, []);
-  let typingTimer: string | number | NodeJS.Timeout | undefined;
+  const handleUnselect = React.useCallback(
+    (tag: TagWithPostCount) => {
+      setSelected((prev) => prev.filter((s) => s.name !== tag.name));
+    },
+    [setSelected]
+  );
+  // let typingTimer: string | number | NodeJS.Timeout | undefined;
   const selectables = tags.filter((tag) => !selected.includes(tag));
-  const handleKeyDown = React.useCallback(async (e: React.KeyboardEvent<HTMLDivElement>) => {
-    const input = inputRef.current;
-    if (input) {
-      clearTimeout(typingTimer);
-      typingTimer = setTimeout(() => fetchAndSetTags(input.value), 500);
-      if (selectables.length > 0) setOpen(true);
+  const handleKeyDown = React.useCallback(
+    async (e: React.KeyboardEvent<HTMLDivElement>) => {
+      const input = inputRef.current;
+      if (input) {
+        // clearTimeout(typingTimer);
+        // typingTimer = setTimeout(() => fetchAndSetTags(input.value), 500);
+        if (selectables.length > 0) setOpen(true);
 
-      if (e.key === 'Delete' || e.key === 'Backspace') {
-        if (input.value === '') {
-          setSelected((prev) => {
-            const newSelected = [...prev];
-            newSelected.pop();
-            return newSelected;
-          });
-        }
-      }
-      const trimmedValue = input.value.trim();
-      if (e.key === 'Tab') {
-        if (trimmedValue === '') {
-          return;
-        } else {
-          const tagIsAlreadySelected = selected.find((tag) => tag.name === trimmedValue);
-          if (tagIsAlreadySelected) {
-            setInputValue('');
-            if (selectables.length === 0) setOpen(false);
-          } else {
+        if (e.key === 'Delete' || e.key === 'Backspace') {
+          if (input.value === '') {
             setSelected((prev) => {
-              const newSelected = [...prev, { id: trimmedValue, _count: { posts: 0 }, name: trimmedValue }];
+              const newSelected = [...prev];
+              newSelected.pop();
               return newSelected;
             });
-            setInputValue('');
-            if (selectables.length === 0) setOpen(false);
           }
         }
-      }
+        const trimmedValue = input.value.trim();
+        if (e.key === 'Tab') {
+          if (trimmedValue === '') {
+            return;
+          } else {
+            const tagIsAlreadySelected = selected.find((tag) => tag.name === trimmedValue);
+            if (tagIsAlreadySelected) {
+              setInputValue('');
+              if (selectables.length === 0) setOpen(false);
+            } else {
+              setSelected((prev) => {
+                const newSelected = [...prev, { id: trimmedValue, _count: { posts: 0 }, name: trimmedValue }];
+                return newSelected;
+              });
+              setInputValue('');
+              if (selectables.length === 0) setOpen(false);
+            }
+          }
+        }
 
-      if (e.key === 'Escape') {
-        input.blur();
+        if (e.key === 'Escape') {
+          input.blur();
+        }
       }
-    }
-  }, []);
+    },
+    [setSelected, selectables.length, selected, setOpen]
+  );
   return (
     <Command onKeyDown={handleKeyDown} className="overflow-visible bg-transparent">
       <div className="group bg-background border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
@@ -144,3 +150,4 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
     </Command>
   );
 });
+MultiSelect.displayName = 'MultiSelect';
