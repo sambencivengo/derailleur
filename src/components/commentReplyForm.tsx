@@ -67,7 +67,7 @@ export function CommentReplyForm({ parentCommentId, postId, userId, isReplying, 
       }
       onSubmit(values);
     },
-    [setIsReplying, setIsLoading, setSubmitCommentError]
+    [form, parentCommentId, postId, setNewComments, toast, userId, setIsReplying]
   );
 
   return (

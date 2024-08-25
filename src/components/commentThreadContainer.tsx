@@ -20,21 +20,18 @@ export function CommentThreadContainer({ postId, comment, user }: CommentThreadC
   const [parentCommentId, setParentCommentId] = React.useState<null | string>(comment.parentCommentId);
   const [parentCommentErrors, setParentCommentErrors] = React.useState<Array<DerailleurError>>([]);
 
-  const getParentCommentHandler = React.useCallback(
-    async (commentId: string) => {
-      const response = await getParentComment(commentId);
-      const { errors, result } = response;
-      if (errors.length > 0 || result === null) {
-        setParentCommentErrors(errors);
-      } else if (result.comment === null) {
-      } else {
-        const { comment: parentCommentResult } = result;
-        setCommentsToRender((prev) => [{ ...parentCommentResult, _count: { replies: 0, author: 0, parentComment: 0, post: 0, likes: 0 }, replies: [...prev] }]);
-        setParentCommentId(parentCommentResult.parentCommentId);
-      }
-    },
-    [commentsToRender, parentCommentErrors, getParentComment]
-  );
+  const getParentCommentHandler = React.useCallback(async (commentId: string) => {
+    const response = await getParentComment(commentId);
+    const { errors, result } = response;
+    if (errors.length > 0 || result === null) {
+      setParentCommentErrors(errors);
+    } else if (result.comment === null) {
+    } else {
+      const { comment: parentCommentResult } = result;
+      setCommentsToRender((prev) => [{ ...parentCommentResult, _count: { replies: 0, author: 0, parentComment: 0, post: 0, likes: 0 }, replies: [...prev] }]);
+      setParentCommentId(parentCommentResult.parentCommentId);
+    }
+  }, []);
   return (
     <div>
       <BackToAllPostsLink postId={postId} />

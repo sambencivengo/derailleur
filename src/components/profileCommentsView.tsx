@@ -47,7 +47,7 @@ export function ProfileCommentsView({ initialComments, username, user }: Profile
         setIsLoading(false);
       }
     },
-    [setComments, setGetMoreCommentsErrors, setIsLoading, setCursor]
+    [setComments, setGetMoreCommentsErrors, setIsLoading, setCursor, username]
   );
   return (
     <div className="flex flex-col">

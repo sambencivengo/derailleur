@@ -41,7 +41,7 @@ export function TagPostsView({ user, initialTagAndPosts, tagNameWithoutHyphens }
         setIsLoading(false);
       }
     },
-    [setPosts, setGetMorePostsErrors, setIsLoading, setCursor]
+    [tagNameWithoutHyphens]
   );
 
   // TODO: re-enable auto load

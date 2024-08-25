@@ -62,7 +62,7 @@ export function PostView({ post }: PostViewProps) {
           {images.length > 0 && (
             <div className="p-4 w-full h-full flex flex-wrap justify-center gap-2">
               {images.map((imageName, idx) => (
-                <Dialog>
+                <Dialog key={idx}>
                   <DialogTrigger asChild className="hover:cursor-pointer">
                     <div key={idx} className="w-[200px] h-[200px] object-cover shadow-lg">
                       <Image

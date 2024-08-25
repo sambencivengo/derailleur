@@ -43,7 +43,7 @@ export function PostPreviewsContainer({ username, initialPosts, category, user, 
         setIsLoading(false);
       }
     },
-    [setPosts, setGetMorPostsErrors, setIsLoading, setCursor]
+    [setPosts, setGetMorPostsErrors, setIsLoading, setCursor, category, username]
   );
 
   // TODO: re-enable auto load
