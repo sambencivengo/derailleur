@@ -22,7 +22,7 @@ export const createPost: CreatePost = async (postPayload: CreatePostPayload, use
       });
       return (createErrorResponse(errors));
     }
-    const { content, title, tags, images, rideWithGPSLink } = validateResponse.result;
+    const { content, title, tags, images, rideWithGPSLink, thumbnail } = validateResponse.result;
 
     try {
       const newPost = await prisma.post.create({
@@ -32,6 +32,7 @@ export const createPost: CreatePost = async (postPayload: CreatePostPayload, use
           authorId: userId,
           content,
           title,
+          thumbnail,
           category: determinePostCategory(rideWithGPSLink),
           rideWithGPSLink: rideWithGPSLink === '' ? undefined : rideWithGPSLink,
           published: true, // NOTE: CHANGE WHEN USING PUBLISHED ARGS AND DRAFTS

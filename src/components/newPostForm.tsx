@@ -60,19 +60,18 @@ export function NewPostForm({ userId }: NewPostFormProps) {
     const valuesWithTags: CreatePostPayload = { ...values, images: [], tags: selected.map((tag) => tag.name) };
     if (images !== undefined && images.length > 0) {
       const formData = new FormData();
-      console.log(images.length);
       images.forEach((image) => {
         formData.append('files', image);
       });
       await axios
-        .post<{ result: Array<string> }>('/api/upload-image', formData, {
+        .post<{ result: { thumbnailFileName: string; fileNames: Array<string> } }>('/api/upload-image', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         })
         .then(async (axiosResponse) => {
-          const { result } = axiosResponse.data;
-          const valuesWithTagsAndImageNames: CreatePostPayload = { ...valuesWithTags, images: result };
+          const { fileNames, thumbnailFileName } = axiosResponse.data.result;
+          const valuesWithTagsAndImageNames: CreatePostPayload = { ...valuesWithTags, images: fileNames, thumbnail: thumbnailFileName };
           return await submitPostPayloadToQuery(valuesWithTagsAndImageNames, userId);
         })
         .catch((error: AxiosError) => {

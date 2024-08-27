@@ -9,6 +9,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import { PostCategoryTag } from '~/components/postCategoryTag';
 import { useLikePost } from '~/hooks/useLikePost';
 import { useSavePost } from '~/hooks/useSavePost';
+import Image from 'next/image';
+import { createImageUrl } from '~/utils/imageUrl';
 
 interface PostPreviewProps {
   post: PostWithAuthorNameTagsAndCommentCount;
@@ -34,75 +36,99 @@ export function PostPreview({ post, user }: PostPreviewProps) {
     );
   });
   return (
-    <Card className="h-auto w-full hover:border-primary hover:border-1">
-      <CardHeader className="h-auto gap-y-2 p-3">
-        <div className="flex flex-col gap-2">
-          <CardTitle className="text-base line-clamp-2">
-            <Link className="hover:text-primary" href={`/post/${id}`}>
-              {post.title}
-            </Link>
-          </CardTitle>
-          <div className="flex flex-wrap gap-3">
-            <PostCategoryTag postCategory={post.category} />
-            {renderTagBadges}
-          </div>
-        </div>
-        <div className="flex flex-col">
-          <div className="flex flex-row gap-1">
-            <CardDescription>
-              by{' '}
-              <Link className="underline hover:text-primary" href={`/user/${username}/posts`}>
-                {username}
+    <Card className="h-auto flex flex-row justify-between w-full hover:border-primary hover:border-1">
+      <div className="flex flex-col h-full">
+        <CardHeader className="h-auto gap-y-2 p-3">
+          <div className="flex flex-col gap-2">
+            <CardTitle className="text-base line-clamp-2">
+              <Link className="hover:text-primary" href={`/post/${id}`}>
+                {post.title}
               </Link>
-            </CardDescription>
-            <CardDescription> {moment(createdAt).fromNow()}</CardDescription>
+            </CardTitle>
+
+            <div className="flex flex-wrap gap-3">
+              <PostCategoryTag postCategory={post.category} />
+              {renderTagBadges}
+            </div>
           </div>
-        </div>
-      </CardHeader>
-      <CardContent className="p-0 gap-4">
-        <CardFooter className="pb-2 pl-3 flex flex-wrap text-primary">
-          <div className="flex flex-row gap-2 items-center">
+          <div className="flex flex-col">
+            <div className="flex flex-row gap-1">
+              <CardDescription>
+                by{' '}
+                <Link className="underline hover:text-primary" href={`/user/${username}/posts`}>
+                  {username}
+                </Link>
+              </CardDescription>
+              <CardDescription> {moment(createdAt).fromNow()}</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="p-0 gap-4">
+          <CardFooter className="pb-2 pl-3 flex flex-wrap text-primary">
+            <div className="flex flex-row gap-2 items-center">
+              <Button
+                className="h-6 w-6 hover:bg-opacity-0"
+                size={'icon'}
+                variant={'link'}
+                onClick={() => {
+                  if (user === null) {
+                    router.push(`/login?returnPath=${pathName}`);
+                  } else {
+                    handleLikePost(user.userId);
+                  }
+                }}
+              >
+                {liked ? <Heart className={'text-primary'} fill={'#f97316'} /> : <Heart className={'text-primary'} />}
+              </Button>
+              <Link href={`/post/${id}`}>
+                <Button variant={'link'}>
+                  {numberOfLikes} like{numberOfLikes > 1 || numberOfLikes === 0 ? 's' : ''}
+                </Button>
+              </Link>
+            </div>
+            <Link className="text-[16px]" href={`/post/${id}`}>
+              <Button variant="link" className="flex-row gap-1 ">
+                {post._count.comments}
+                <MessageSquare className="top-[1px]" />
+              </Button>
+            </Link>
+
             <Button
-              className="h-6 w-6 hover:bg-opacity-0"
-              size={'icon'}
-              variant={'link'}
               onClick={() => {
                 if (user === null) {
                   router.push(`/login?returnPath=${pathName}`);
                 } else {
-                  handleLikePost(user.userId);
+                  handleSavePost(user.userId);
                 }
               }}
+              variant="link"
             >
-              {liked ? <Heart className={'text-primary'} fill={'#f97316'} /> : <Heart className={'text-primary'} />}
+              {saved ? 'Unsave' : 'Save'}
             </Button>
-            <Link href={`/post/${id}`}>
-              <Button variant={'link'}>
-                {numberOfLikes} like{numberOfLikes > 1 || numberOfLikes === 0 ? 's' : ''}
-              </Button>
-            </Link>
-          </div>
-          <Link className="text-[16px]" href={`/post/${id}`}>
-            <Button variant="link" className="flex-row gap-1 ">
-              {post._count.comments}
-              <MessageSquare className="top-[1px]" />
-            </Button>
-          </Link>
-
-          <Button
-            onClick={() => {
-              if (user === null) {
-                router.push(`/login?returnPath=${pathName}`);
-              } else {
-                handleSavePost(user.userId);
-              }
-            }}
-            variant="link"
-          >
-            {saved ? 'Unsave' : 'Save'}
-          </Button>
-        </CardFooter>
-      </CardContent>
+          </CardFooter>
+        </CardContent>
+      </div>
+      <div>
+        <CardContent className="flex items-center mt-2 h-full">
+          {post.thumbnail && (
+            <div className="w-[100px] h-[100px] object-fill rounded-md p-1">
+              <Link href={`/post/${id}`}>
+                <Image
+                  alt="User uploaded image"
+                  sizes="100vw"
+                  src={createImageUrl(post.thumbnail)}
+                  style={{
+                    width: '100%',
+                  }}
+                  className="rounded-md"
+                  width={100}
+                  height={100}
+                />
+              </Link>
+            </div>
+          )}
+        </CardContent>
+      </div>
     </Card>
   );
 }
