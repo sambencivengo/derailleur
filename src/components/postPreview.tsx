@@ -9,8 +9,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { PostCategoryTag } from '~/components/postCategoryTag';
 import { useLikePost } from '~/hooks/useLikePost';
 import { useSavePost } from '~/hooks/useSavePost';
-import Image from 'next/image';
-import { createImageUrl } from '~/utils/imageUrl';
+import { PostPreviewThumbnail } from '~/components/postPreviewIcon';
 
 interface PostPreviewProps {
   post: PostWithAuthorNameTagsAndCommentCount;
@@ -108,27 +107,7 @@ export function PostPreview({ post, user }: PostPreviewProps) {
           </CardFooter>
         </CardContent>
       </div>
-      <div>
-        <CardContent className="flex items-center mt-2 h-full">
-          {post.thumbnail && (
-            <div className="w-[100px] h-[100px] object-fill rounded-md p-1">
-              <Link href={`/post/${id}`}>
-                <Image
-                  alt="User uploaded image"
-                  sizes="100vw"
-                  src={createImageUrl(post.thumbnail)}
-                  style={{
-                    width: '100%',
-                  }}
-                  className="rounded-md"
-                  width={100}
-                  height={100}
-                />
-              </Link>
-            </div>
-          )}
-        </CardContent>
-      </div>
+      <PostPreviewThumbnail postId={post.id} rideWithGPSLink={post.rideWithGPSLink} thumbnail={post.thumbnail} />
     </Card>
   );
 }
