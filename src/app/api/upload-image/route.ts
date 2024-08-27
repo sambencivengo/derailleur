@@ -33,9 +33,8 @@ export async function POST(request: Request) {
     return createImageCommandPromise(buffer, fileName);
   });
   imageUploadPromises.push(createThumbnailImage(files[0], thumbnailFileName));
-
   try {
-    await Promise.all(imageUploadPromises);
+    // await Promise.all(imageUploadPromises);
     console.log('in route', { thumbnailFileName, fileNames });
     return createNextResponse({ status: 200, result: { thumbnailFileName, fileNames } });
   } catch (error: any) {

@@ -1,3 +1,4 @@
+'use server';
 import { LogOutButton, NewPostButton, LogInButton, SignUpButton, ToggleDarkModeButton } from '~/components';
 import { UserProfileButton } from '~/components/userProfileButton';
 import { UserAndSession } from '~/types';
@@ -5,7 +6,7 @@ import { UserAndSession } from '~/types';
 interface DesktopNavProps {
   user: UserAndSession | null;
 }
-export const DesktopNav = ({ user }: DesktopNavProps) => {
+export async function DesktopNav({ user }: DesktopNavProps) {
   return (
     <div className="hidden md:flex gap-3">
       {user !== null ? (
@@ -23,4 +24,4 @@ export const DesktopNav = ({ user }: DesktopNavProps) => {
       <ToggleDarkModeButton />
     </div>
   );
-};
+}
