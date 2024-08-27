@@ -40,13 +40,13 @@ function renderThumbnailImage(postId: string, thumbnail: string | null, rideWith
   } else if (rideWithGPSLink) {
     return (
       <div>
-        <Map size={75} strokeWidth={1} className="px-3 w-[100px] h-[100px] hover:text-primary" />
+        <Map size={40} strokeWidth={1} className="px-3 w-[70px] h-[70px] hover:text-primary" />
       </div>
     );
   } else {
     return (
       <div>
-        <Text size={75} strokeWidth={1} className="px-3 w-[100px] h-[100px] hover:text-primary" />
+        <Text size={40} strokeWidth={1} className="px-3 w-[70px] h-[70px] hover:text-primary" />
       </div>
     );
   }
