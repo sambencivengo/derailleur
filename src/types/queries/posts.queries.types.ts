@@ -21,6 +21,7 @@ export interface CreatePostSchemaFromBase extends CreatePostBase {
 }
 export interface CreatePostPayload extends CreatePostBase {
   images: Array<string>;
+  thumbnail?: string;
 }
 
 export interface UpdatePostPayloadBase {

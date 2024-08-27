@@ -8,7 +8,6 @@ export default async function Page({ params }: { params: { postId: string; comme
   const user = await getUserSession();
   const { postId, commentId } = params;
   const commentsResponse = await getComment(commentId, postId);
-  console.log(commentsResponse);
   const { errors: commentsErrors, result } = commentsResponse;
   if (commentsErrors.length > 0 || result === null) {
     return <QueryError errors={commentsErrors} />;

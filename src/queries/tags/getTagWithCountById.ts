@@ -2,9 +2,9 @@
 import { Prisma } from '@prisma/client';
 import prisma from '~prisma/prisma';
 import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from '~/utils';
-import { GetTagWithCountById, TagWithPostCount, tagWithPostCountQuery } from '~/types';
+import { TagWithPostCount, tagWithPostCountQuery } from '~/types';
 
-export const getTagWithCountById: GetTagWithCountById = async (tagId: string): Promise<DerailleurResponse<TagWithPostCount>> => {
+export async function getTagWithCountById(tagId: string): Promise<DerailleurResponse<TagWithPostCount>> {
   try {
     const tag: TagWithPostCount | null = await prisma.tag.findUnique({
       where: {

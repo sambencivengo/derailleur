@@ -30,7 +30,7 @@ export async function TagPageHeading({ tagName }: TagPageHeadingProps) {
     <div className="flex flex-col gap-2">
       <div className="flex flex-col md:flex-row items-center gap-2">
         <Badge className="w-auto">
-          <TextHeading heading={`#${name.toUpperCase()}`} className="text-3xl bg-primary text-primary-foreground" />
+          <TextHeading heading={`#${name.toUpperCase()}`} className="text-3xl text-primary-foreground" />
         </Badge>
         <p className="font-bold italic">{_count.posts} posts</p>
       </div>

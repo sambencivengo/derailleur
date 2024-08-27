@@ -194,6 +194,4 @@ if (process.env.NODE_ENV !== 'production') {
       await prisma.$disconnect();
       process.exit(1);
     });
-} else {
-  // Do nothing
 }

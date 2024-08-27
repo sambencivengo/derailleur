@@ -1,4 +1,5 @@
 import { v4 as uuid } from 'uuid';
+import sharp from 'sharp';
 import { S3Client, PutObjectCommand, PutObjectCommandInput, PutObjectCommandOutput } from '@aws-sdk/client-s3';
 import { createDerailleurError, createErrorResponse, createNextResponse, createSuccessfulResponse, DerailleurResponse } from "~/utils";
 
@@ -22,6 +23,7 @@ export async function POST(request: Request) {
     return (createNextResponse({ errors, status: 400 }));
   }
 
+  const thumbnailFileName = `${uuid()}_thumbnail_${Date.now()}`;
   const fileNames: Array<string> = [];
 
   const imageUploadPromises: Array<Promise<PutObjectCommandOutput>> = files.map(async (image) => {
@@ -30,10 +32,11 @@ export async function POST(request: Request) {
     fileNames.push(fileName);
     return createImageCommandPromise(buffer, fileName);
   });
-
+  imageUploadPromises.push(createThumbnailImage(files[0], thumbnailFileName));
   try {
-    await Promise.all(imageUploadPromises);
-    return createNextResponse({ status: 200, result: fileNames });
+    // await Promise.all(imageUploadPromises);
+    console.log('in route', { thumbnailFileName, fileNames });
+    return createNextResponse({ status: 200, result: { thumbnailFileName, fileNames } });
   } catch (error: any) {
     return createNextResponse({ status: 500, errors: [createDerailleurError(`An error occurred when uploading image: ${error.toString()}`, {})] });
   }
@@ -56,6 +59,16 @@ function validateImagesAndReturnErrorResponse(files: Array<File>): DerailleurRes
   }
   return createSuccessfulResponse(true);
 }
+
+async function createThumbnailImage(image: File, thumbnailFileName: string): Promise<PutObjectCommandOutput> {
+  const imageBuffer = Buffer.from(await image.arrayBuffer());
+  const thumbnailBuffer = await sharp(imageBuffer).jpeg({
+    quality: 70,
+    mozjpeg: true
+  }).resize(200, 200).toBuffer();
+
+  return createImageCommandPromise(thumbnailBuffer, thumbnailFileName);
+};
 
 function createImageCommandPromise(fileBuffer: Buffer, fileName: string): Promise<PutObjectCommandOutput> {
   const params: PutObjectCommandInput = {

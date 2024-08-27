@@ -46,6 +46,7 @@ model Post {
   rideWithGPSLink String?
   tags Tag[]
   images String[]
+  thumbnail String?
   comments Comment[]
   category PostCategory @default(POST)
   savedBy UserSavedPosts[]

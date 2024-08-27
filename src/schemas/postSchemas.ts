@@ -69,6 +69,7 @@ export const createPostPayloadSchema: z.ZodType<CreatePostPayload> = z.object({
     invalid_type_error: 'Post content must be a string',
   }).refine((data: string) => (RIDE_WITH_GPS_ROUTE_REGEX.test(data)), { message: 'Route input must be a valid Ride With GPS route link eg: https://ridewithgps.com/routes/ or https://ridewithgps.com/trips/' }).optional().or(z.literal('')),
   images: z.array(z.string()).max(5, "Cannot upload more than 5 images with your post"),
+  thumbnail: z.string().optional(),
   published: z
     .boolean({
       required_error: 'Published is required',
