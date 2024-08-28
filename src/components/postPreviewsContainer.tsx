@@ -46,22 +46,6 @@ export function PostPreviewsContainer({ username, initialPosts, category, user, 
     },
     [setPosts, setGetMorPostsErrors, setIsLoading, setCursor, category, username]
   );
-  console.log(initialPosts[initialPosts.length - 1].id);
-  console.log(initialPosts[initialPosts.length - 1].title);
-  // TODO: re-enable auto load
-  // const onScroll = React.useCallback(async () => {
-  //   if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !isLoading) {
-  //     if (cursor !== null) {
-  //       getMorePosts(cursor.postId, cursor.createdAt);
-  //       setIsLoading(true);
-  //     }
-  //   }
-  // }, [isLoading, setIsLoading, getMorePosts]);
-
-  // React.useEffect(() => {
-  //   window.addEventListener('scroll', onScroll);
-  //   return () => window.removeEventListener('scroll', onScroll);
-  // }, [onScroll, isLoading]);
 
   return (
     <div className="flex flex-col justify-center gap-5">
