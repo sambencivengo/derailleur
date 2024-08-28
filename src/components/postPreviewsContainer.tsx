@@ -34,18 +34,20 @@ export function PostPreviewsContainer({ username, initialPosts, category, user, 
         setIsLoading(false);
       } else {
         if (result.length > POST_BATCH_AMOUNT) {
-          const { createdAt, id } = result[result.length - 1];
+          const { createdAt, id, title } = result[result.length - 1];
+          console.log({ createdAt, id, title });
           setCursor({ createdAt, postId: id });
         } else {
           setCursor(null);
         }
-        setPosts((prev) => [...prev, ...result]);
+        setPosts((prev) => [...prev, ...result.slice(0, POST_BATCH_AMOUNT)]);
         setIsLoading(false);
       }
     },
     [setPosts, setGetMorPostsErrors, setIsLoading, setCursor, category, username]
   );
-
+  console.log(initialPosts[initialPosts.length - 1].id);
+  console.log(initialPosts[initialPosts.length - 1].title);
   // TODO: re-enable auto load
   // const onScroll = React.useCallback(async () => {
   //   if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !isLoading) {
