@@ -54,8 +54,8 @@ export function LogInForm() {
     await axios
       .post('/api/login', values)
       .then(() => {
-        router.refresh();
         router.push(returnPath === null ? '/' : returnPath);
+        router.refresh();
       })
       .catch((error: AxiosError) => {
         setIsLoading(false);
