@@ -55,8 +55,8 @@ export function SignUpForm() {
     await axios
       .post('/api/signup', values)
       .then(() => {
-        router.refresh();
         router.push(returnPath === null ? '/' : returnPath);
+        router.refresh();
       })
       .catch((error: AxiosError) => {
         setIsLoading(false);

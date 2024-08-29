@@ -20,7 +20,6 @@ export function PostPreview({ post, user }: PostPreviewProps) {
   const { handleSavePost, saved } = useSavePost({ postIsSaved: post.savedBy.length !== 0, postId: post.id });
   const router = useRouter();
   const pathName = usePathname();
-
   const {
     author: { username },
     createdAt,
