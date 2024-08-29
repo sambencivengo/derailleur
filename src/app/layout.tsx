@@ -23,7 +23,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <Toaster />
           <NavBar />
-          <div className="w-full mb-5 mt-2 flex justify-center">
+          <div className="w-full mb-5 mt-5 flex justify-center">
             <div className="max-w-3xl w-full p-1 lg:p-0">{children}</div>
           </div>
         </ThemeProvider>

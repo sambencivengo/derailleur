@@ -7,6 +7,7 @@ import prisma from "~prisma/prisma";
 
 
 export const getPosts: GetPosts = async (username?: string, category?: PostCategory, userId?: string, cursor?: PostCursor): Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount[]>> => {
+  const gravity = 1.8; // scoring algorithm
   try {
     console.log({ cursor });
     const posts = await prisma.post.findMany({
@@ -48,7 +49,17 @@ export const getPosts: GetPosts = async (username?: string, category?: PostCateg
         }
       }
     });
-    return createSuccessfulResponse(posts);
+
+    // Scoring algorithm
+    const now = new Date();
+    const rankedPosts = posts.map(post => {
+      const hoursSincePost = (now.getTime() - new Date(post.createdAt).getTime()) / 36e5;
+      const score = post.likes.length / Math.pow((hoursSincePost + 2), gravity);
+      return { ...post, score };
+    }).sort((a, b) => b.score - a.score);
+
+
+    return createSuccessfulResponse(rankedPosts);
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
       return createErrorResponse([{ message: 'An error occurred when trying to get posts', data: { error: JSON.stringify(error) } }]);
