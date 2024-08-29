@@ -5,7 +5,7 @@ import { Badge } from '~/components/ui/badge';
 import { getTagsWithCount } from '~/queries';
 
 export async function HomePageTagsView() {
-  const tagsResponse = await getTagsWithCount(20);
+  const tagsResponse = await getTagsWithCount(10);
 
   const { errors, result } = tagsResponse;
   if (errors.length > 0 || result === null) {
