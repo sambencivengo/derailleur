@@ -34,8 +34,7 @@ export async function POST(request: Request) {
   });
   imageUploadPromises.push(createThumbnailImage(files[0], thumbnailFileName));
   try {
-    // await Promise.all(imageUploadPromises);
-    console.log('in route', { thumbnailFileName, fileNames });
+    await Promise.all(imageUploadPromises);
     return createNextResponse({ status: 200, result: { thumbnailFileName, fileNames } });
   } catch (error: any) {
     return createNextResponse({ status: 500, errors: [createDerailleurError(`An error occurred when uploading image: ${error.toString()}`, {})] });

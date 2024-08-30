@@ -41,23 +41,22 @@ export async function TopUsers() {
   return (
     <Card className="w-full max-w-52 p-2">
       <CardHeader>
-        <CardTitle>Top Contributors</CardTitle>
+        <CardTitle className="text-xl text-center">Top Contributors</CardTitle>
       </CardHeader>
       <Separator />
       <CardContent className="flex flex-col gap-1">
-        {result.length > 0 &&
-          result.map((user, idx) => {
-            const { id, username } = user;
-            return (
-              <Card key={idx} className="border-0 shadow-none">
-                <CardHeader className="p-2">
-                  <Link className="hover:text-primary" href={`/user/${id}`}>
-                    <CardTitle className="text-base flex flex-row truncate min-w-0">{username}</CardTitle>
-                  </Link>
-                </CardHeader>
-              </Card>
-            );
-          })}
+        {result.map((user, idx) => {
+          const { id, username } = user;
+          return (
+            <Card key={idx} className="border-0 shadow-none">
+              <CardHeader className="p-2">
+                <Link className="hover:text-primary" href={`/user/${id}`}>
+                  <p className="text-base flex flex-row min-w-0 truncate text-ellipsis">{username}</p>
+                </Link>
+              </CardHeader>
+            </Card>
+          );
+        })}
       </CardContent>
     </Card>
   );
