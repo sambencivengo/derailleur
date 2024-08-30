@@ -23,8 +23,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <Toaster />
           <NavBar />
-          <div className="w-full mb-5 mt-5 flex justify-center">
-            <div className="max-w-3xl w-full p-1 lg:p-0">{children}</div>
+          <div className="w-full mb-5 mt-5 flex justify-around">
+            {/* NOTE: placeholder div for future sidebar content */}
+            {/* <div className="p-5 hidden md:block w-3/12 "></div> */}
+            <div className="w-full sm:w-8/12 md:w-6/12 max-w-3xl px-1">{children}</div>
+            {/* TODO: move this out, it should live in a nested layout and not at the base layer */}
+            {/* <RightSideLayoutContainer />  */}
           </div>
         </ThemeProvider>
       </body>

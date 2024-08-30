@@ -6,19 +6,16 @@ import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } fro
 import prisma from "~prisma/prisma";
 
 
-export const getPosts: GetPosts = async (username?: string, category?: PostCategory, userId?: string, cursor?: PostCursor): Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount[]>> => {
+export const getPosts: GetPosts = async (username?: string, category?: PostCategory, userId?: string, cursor?: PostCursor, sort: 'best' | 'latest' = 'best'): Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount[]>> => {
   const gravity = 1.8; // scoring algorithm
   try {
-    console.log({ cursor });
     const posts = await prisma.post.findMany({
-      orderBy: [
+      orderBy: sort === 'best' ? [
         {
           likes: { _count: OrderBy.DESC }
         },
-        {
-          createdAt: OrderBy.DESC
-        }
-      ],
+        { createdAt: OrderBy.DESC }
+      ] : [{ createdAt: OrderBy.DESC }],
       cursor: cursor !== undefined ? {
         id_createdAt: {
           createdAt: cursor.createdAt,
@@ -50,16 +47,18 @@ export const getPosts: GetPosts = async (username?: string, category?: PostCateg
       }
     });
 
-    // Scoring algorithm
-    const now = new Date();
-    const rankedPosts = posts.map(post => {
-      const hoursSincePost = (now.getTime() - new Date(post.createdAt).getTime()) / 36e5;
-      const score = post.likes.length / Math.pow((hoursSincePost + 2), gravity);
-      return { ...post, score };
-    }).sort((a, b) => b.score - a.score);
+    if (sort === 'best') {
+      // Scoring algorithm
+      const now = new Date();
+      const rankedPosts = posts.map(post => {
+        const hoursSincePost = (now.getTime() - new Date(post.createdAt).getTime()) / 36e5;
+        const score = post.likes.length / Math.pow((hoursSincePost + 2), gravity);
+        return { ...post, score };
+      }).sort((a, b) => b.score - a.score);
+      return createSuccessfulResponse(rankedPosts);
+    }
 
-
-    return createSuccessfulResponse(rankedPosts);
+    return (createSuccessfulResponse(posts));
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
       return createErrorResponse([{ message: 'An error occurred when trying to get posts', data: { error: JSON.stringify(error) } }]);
