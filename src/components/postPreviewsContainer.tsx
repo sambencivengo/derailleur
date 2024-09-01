@@ -8,6 +8,8 @@ import { DerailleurError } from '~/utils';
 import { PostCategory } from '@prisma/client';
 import { EndOfPostsNotice } from '~/components/endOfPostsNotice';
 import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+import { Tabs, TabsList, TabsTrigger } from '~/components/ui/tabs';
 
 const POST_BATCH_AMOUNT = 10;
 
@@ -27,26 +29,28 @@ export function PostPreviewsContainer({ username, initialPosts, category, user, 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [cursor, setCursor] = React.useState<PostCursor | null>(initialPosts.length > POST_BATCH_AMOUNT ? { createdAt: initialPosts[initialPosts.length - 1].createdAt, postId: initialPosts[initialPosts.length - 1].id } : null);
 
-  const sort = searchParams.get('sort') as 'best' | 'latest';
+  const sort = searchParams.get('sort') as 'best' | 'latest' | null;
   React.useEffect(() => {
     async function getPostsWithQuery() {
-      const response = await getPosts(undefined, undefined, user === null ? undefined : user.userId, undefined, sort);
+      const response = await getPosts(username, category, user === null ? undefined : user.userId, undefined, sort === null ? undefined : sort);
       return response;
     }
 
-    getPostsWithQuery().then(({ errors, result }) => {
-      if (errors.length > 0 || result === null) {
-        setQueryErrors(errors);
-      } else {
-        setPosts(result.length > POST_BATCH_AMOUNT ? result.slice(0, POST_BATCH_AMOUNT) : result);
-      }
-    });
-  }, [searchParams, user, initialPosts, sort]);
+    if (sort !== null) {
+      getPostsWithQuery().then(({ errors, result }) => {
+        if (errors.length > 0 || result === null) {
+          setQueryErrors(errors);
+        } else {
+          setPosts(result.length > POST_BATCH_AMOUNT ? result.slice(0, POST_BATCH_AMOUNT) : result);
+        }
+      });
+    }
+  }, [searchParams, user, category, username, sort]);
 
   const getMorePosts = React.useCallback(
     async function (cursorId: string, cursorDate: string | Date) {
       setIsLoading(true);
-      const nextGroupOfPostsResponse = await getPosts(username, category, undefined, { postId: cursorId, createdAt: cursorDate }, sort);
+      const nextGroupOfPostsResponse = await getPosts(username, category, undefined, { postId: cursorId, createdAt: cursorDate }, sort === null ? undefined : sort);
       const { errors, result } = nextGroupOfPostsResponse;
       if (result === null || errors.length > 0) {
         setGetMorPostsErrors(errors);
@@ -67,27 +71,41 @@ export function PostPreviewsContainer({ username, initialPosts, category, user, 
   );
 
   return (
-    <div className="flex flex-col justify-center gap-5">
-      <div className="space-y-2">
-        {posts.map((post, idx) => {
-          return <PostPreview user={user} post={post} key={idx} />;
-        })}
+    <div className="w-full flex flex-col mt-5 gap-5">
+      <div className="min-h-full flex flex-row gap-2">
+        <Tabs defaultValue={sort || sort === null ? 'best' : 'latest'} className="w-[400px]">
+          <TabsList>
+            <Link href="?sort=best">
+              <TabsTrigger value="best">Best</TabsTrigger>
+            </Link>
+            <Link href="?sort=latest">
+              <TabsTrigger value="latest">Latest</TabsTrigger>
+            </Link>
+          </TabsList>
+        </Tabs>
       </div>
-      {getMorePostsErrors.length > 0 && <QueryError errors={getMorePostsErrors} />}
-      {queryErrors.length > 0 && <QueryError errors={queryErrors} />}
-      {cursor !== null ? (
-        <div className="self-center">
-          <Button
-            onClick={() => {
-              getMorePosts(cursor.postId, cursor.createdAt);
-            }}
-          >
-            {isLoading ? <Spinner /> : 'Load More...'}
-          </Button>
+      <div className="flex flex-col justify-center gap-5">
+        <div className="space-y-2">
+          {posts.map((post, idx) => {
+            return <PostPreview user={user} post={post} key={idx} />;
+          })}
         </div>
-      ) : (
-        showEndOfPostsNotice && <EndOfPostsNotice />
-      )}
+        {getMorePostsErrors.length > 0 && <QueryError errors={getMorePostsErrors} />}
+        {queryErrors.length > 0 && <QueryError errors={queryErrors} />}
+        {cursor !== null ? (
+          <div className="self-center">
+            <Button
+              onClick={() => {
+                getMorePosts(cursor.postId, cursor.createdAt);
+              }}
+            >
+              {isLoading ? <Spinner /> : 'Load More...'}
+            </Button>
+          </div>
+        ) : (
+          showEndOfPostsNotice && <EndOfPostsNotice />
+        )}
+      </div>
     </div>
   );
 }
