@@ -23,13 +23,13 @@ interface PostPreviewsContainerProps {
 
 export function PostPreviewsContainer({ username, initialPosts, category, user, showEndOfPostsNotice = false }: PostPreviewsContainerProps) {
   const searchParams = useSearchParams();
+  const sort = searchParams.get('sort') as 'best' | 'latest' | null;
   const [queryErrors, setQueryErrors] = React.useState<DerailleurError[]>([]);
   const [posts, setPosts] = React.useState<Array<PostWithAuthorNameTagsAndCommentCount>>(initialPosts.length > POST_BATCH_AMOUNT ? initialPosts.slice(0, POST_BATCH_AMOUNT) : initialPosts);
   const [getMorePostsErrors, setGetMorPostsErrors] = React.useState<Array<DerailleurError>>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [cursor, setCursor] = React.useState<PostCursor | null>(initialPosts.length > POST_BATCH_AMOUNT ? { createdAt: initialPosts[initialPosts.length - 1].createdAt, postId: initialPosts[initialPosts.length - 1].id } : null);
 
-  const sort = searchParams.get('sort') as 'best' | 'latest' | null;
   React.useEffect(() => {
     async function getPostsWithQuery() {
       const response = await getPosts(username, category, user === null ? undefined : user.userId, undefined, sort === null ? undefined : sort);
@@ -50,7 +50,7 @@ export function PostPreviewsContainer({ username, initialPosts, category, user, 
   const getMorePosts = React.useCallback(
     async function (cursorId: string, cursorDate: string | Date) {
       setIsLoading(true);
-      const nextGroupOfPostsResponse = await getPosts(username, category, undefined, { postId: cursorId, createdAt: cursorDate }, sort === null ? undefined : sort);
+      const nextGroupOfPostsResponse = await getPosts(username, category, user === null ? undefined : user.userId, { postId: cursorId, createdAt: cursorDate }, sort === null ? undefined : sort);
       const { errors, result } = nextGroupOfPostsResponse;
       if (result === null || errors.length > 0) {
         setGetMorPostsErrors(errors);
@@ -73,7 +73,7 @@ export function PostPreviewsContainer({ username, initialPosts, category, user, 
   return (
     <div className="w-full flex flex-col mt-5 gap-5">
       <div className="min-h-full flex flex-row gap-2">
-        <Tabs defaultValue={sort || sort === null ? 'best' : 'latest'} className="w-[400px]">
+        <Tabs defaultValue={sort === 'best' || sort === null ? 'best' : 'latest'} className="w-[400px]">
           <TabsList>
             <Link href="?sort=best">
               <TabsTrigger value="best">Best</TabsTrigger>
