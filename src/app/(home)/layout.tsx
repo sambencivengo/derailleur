@@ -1,9 +1,9 @@
 import { BikeIcon, Home, LucideIcon, Map, PlusCircle, Tag } from 'lucide-react';
 import { v4 as uuid } from 'uuid';
 import Link from 'next/link';
-import { CenterLayout } from '~/components/layouts/centerLayout';
 import { TopUsers } from '~/components/TopUsers';
 import { ReactElement } from 'react';
+import { MainLayout } from '~/components/layouts/mainLayout';
 
 const sideBarButtons: Array<{ icon: ReactElement<LucideIcon>; label: string; href: string }> = [
   { icon: <Home />, label: 'Home', href: '/' },
@@ -15,7 +15,7 @@ const sideBarButtons: Array<{ icon: ReactElement<LucideIcon>; label: string; hre
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <CenterLayout>
+    <MainLayout>
       <div className="left-layout">
         <div className="w-56 flex justify-center flex-col gap-4 ">
           {sideBarButtons.map(({ icon, label, href }) => {
@@ -33,6 +33,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <div className="right-layout">
         <TopUsers />
       </div>
-    </CenterLayout>
+    </MainLayout>
   );
 }

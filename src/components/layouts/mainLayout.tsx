@@ -2,11 +2,11 @@ import { ClassValue } from 'clsx';
 import React from 'react';
 import { cn } from '~/lib/utils';
 
-interface CenterLayoutProps {
+interface MainLayoutProps {
   children: React.ReactNode;
   className?: ClassValue;
 }
 
-export function CenterLayout({ children, className }: CenterLayoutProps) {
+export function MainLayout({ children, className }: MainLayoutProps) {
   return <div className={cn('w-full flex justify-center', className)}>{children}</div>;
 }
