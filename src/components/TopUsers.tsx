@@ -1,6 +1,8 @@
+import { Info } from 'lucide-react';
 import moment from 'moment';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, Separator } from '~/components/ui';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip';
 import { DerailleurResponse, createSuccessfulResponse, createErrorResponse, createDerailleurError } from '~/utils';
 import prisma from '~prisma/prisma';
 
@@ -17,19 +19,33 @@ export async function TopUsers() {
     return null;
   }
   return (
-    <Card className="w-full max-w-52 p-2">
-      <CardHeader>
-        <CardTitle className="text-xl text-center">Top Contributors</CardTitle>
-      </CardHeader>
+    <Card className="w-full max-w-52">
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger>
+            <CardHeader className="hover:text-primary">
+              <div className="flex flex-row items-center gap-2">
+                <CardTitle className="text-xl text-center">
+                  <p>Top Contributors</p>
+                </CardTitle>
+                <Info size={15} />
+              </div>
+            </CardHeader>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Based on likes received in the last month</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <Separator />
       <CardContent className="flex flex-col gap-1">
         {result.map((user, idx) => {
           const { id, username } = user;
           return (
-            <Card key={idx} className="border-0 shadow-none">
+            <Card key={id} className="border-0 shadow-none">
               <CardHeader className="p-2">
-                <Link className="hover:text-primary" href={`/user/${id}`}>
-                  <p className="truncate">{username}</p>
+                <Link className="hover:text-primary" href={`/user/${username}/posts`}>
+                  <p className="font-semibold truncate">{username}</p>
                 </Link>
               </CardHeader>
             </Card>
