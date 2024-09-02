@@ -89,7 +89,7 @@ export function PostPreviewsContainer({ username, initialPosts, category, user, 
         </Tabs>
       </div>
       {isSortLoading ? (
-        <div className="w-full flex justify-center h-10 border-2">
+        <div className="w-full flex justify-center h-10">
           <Spinner className={'text-primary w-10 h-10'} />
         </div>
       ) : (
