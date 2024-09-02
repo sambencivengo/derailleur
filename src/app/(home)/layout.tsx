@@ -20,8 +20,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <div className="w-56 flex justify-center flex-col gap-4 ">
           {sideBarButtons.map(({ icon, label, href }) => {
             return (
-              <div className="w-full ml-10 flex justify-center">
-                <Link key={uuid()} href={href} className="w-full hover:text-primary h-10 flex flex-row items-center font-semibold gap-2">
+              <div key={uuid()} className="w-full ml-10 flex justify-center">
+                <Link href={href} className="w-full hover:text-primary h-10 flex flex-row items-center font-semibold gap-2">
                   {icon} {label}
                 </Link>
               </div>

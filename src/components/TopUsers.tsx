@@ -18,8 +18,9 @@ export async function TopUsers() {
   if (errors.length > 0 || result === null) {
     return null;
   }
+  console.log(result);
   return (
-    <Card className="w-full max-w-52">
+    <Card className="w-full max-w-52 bg-background">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>
@@ -39,10 +40,10 @@ export async function TopUsers() {
       </TooltipProvider>
       <Separator />
       <CardContent className="flex flex-col gap-1">
-        {result.map((user, idx) => {
+        {result.map((user) => {
           const { id, username } = user;
           return (
-            <Card key={id} className="border-0 shadow-none">
+            <Card key={id} className="border-0 bg-background shadow-none">
               <CardHeader className="p-2">
                 <Link className="hover:text-primary" href={`/user/${username}/posts`}>
                   <p className="font-semibold truncate">{username}</p>
