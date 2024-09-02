@@ -1,4 +1,4 @@
-import '../styles/globals.css';
+import '../../styles/globals.css';
 import { cn } from '~/lib/utils';
 import { NavBar, ThemeProvider } from '~/components';
 import { Toaster } from '~/components/ui/toaster';

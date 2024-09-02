@@ -71,7 +71,7 @@ export function PostPreviewsContainer({ username, initialPosts, category, user, 
         setIsLoading(false);
       }
     },
-    [setPosts, setGetMorPostsErrors, setIsLoading, setCursor, category, username, sort]
+    [setPosts, setGetMorPostsErrors, setIsLoading, setCursor, category, user, username, sort]
   );
 
   return (
