@@ -5,6 +5,7 @@ import { TextHeading } from '~/components';
 import { Alert, AlertTitle, AlertDescription, Badge } from '~/components/ui';
 import { getTagWithCountByName } from '~/queries';
 import { BackToAllPostsLink } from '~/components/backToAllPostsLink';
+import { BackToAllTagsLink } from '~/components/backToAllTagsLink';
 
 interface TagPageHeadingProps {
   tagName: string;
@@ -35,6 +36,7 @@ export async function TagPageHeading({ tagName }: TagPageHeadingProps) {
         <p className="font-bold italic">{_count.posts} posts</p>
       </div>
       <BackToAllPostsLink />
+      <BackToAllTagsLink />
     </div>
   );
 }

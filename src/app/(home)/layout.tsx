@@ -1,4 +1,4 @@
-import { BikeIcon, Home, LucideIcon, Map, PlusCircle } from 'lucide-react';
+import { BikeIcon, Home, LucideIcon, Map, PlusCircle, Tag } from 'lucide-react';
 import { v4 as uuid } from 'uuid';
 import Link from 'next/link';
 import { CenterLayout } from '~/components/layouts/centerLayout';
@@ -10,7 +10,7 @@ const sideBarButtons: Array<{ icon: ReactElement<LucideIcon>; label: string; hre
   { icon: <PlusCircle />, label: 'New Post', href: '/post/new' },
   { icon: <Map />, label: 'Routes', href: '/category/routes' },
   { icon: <BikeIcon />, label: 'Trips', href: '/category/trips' },
-  // { icon: <Tag />, label: 'All Tags', href: '/category/trips' },
+  { icon: <Tag />, label: 'All Tags', href: '/tags' },
 ];
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
