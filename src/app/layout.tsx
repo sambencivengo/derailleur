@@ -16,7 +16,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <Toaster />
           <NavBar />
-          <div className="w-full min-h-screen mb-5 mt-5 flex justify-around">{children}</div>
+          <div className="w-full mb-5 mt-5">{children}</div>
         </ThemeProvider>
       </body>
     </html>

@@ -11,28 +11,6 @@ interface UsersByLikes {
   total_likes: BigInt;
 }
 
-async function getTopUsers(): Promise<DerailleurResponse<UsersByLikes[]>> {
-  'use server';
-  try {
-    const query: UsersByLikes[] = await prisma.$queryRaw`
-    SELECT u."id", u."username", COUNT(ulp."id") AS total_likes
-    FROM "User" u
-    JOIN "Post" p ON u."id" = p."authorId"
-    JOIN "UserLikedPosts" ulp ON p.id = ulp."postId"
-    WHERE p."createdAt" > ${lastMonth}
-    GROUP BY u."id", u."username"
-    ORDER BY total_likes DESC
-    LIMIT 10;
-    `;
-    return createSuccessfulResponse(query);
-  } catch (error) {
-    return createErrorResponse([createDerailleurError('Unable to get top users', {})]);
-  }
-}
-
-export async function RightSideLayoutContainer() {
-  return <div className="hidden md:flex flex-col items-center px-5 w-3/12">{<TopUsers />}</div>;
-}
 export async function TopUsers() {
   const { errors, result } = await getTopUsers();
   if (errors.length > 0 || result === null) {
@@ -51,7 +29,7 @@ export async function TopUsers() {
             <Card key={idx} className="border-0 shadow-none">
               <CardHeader className="p-2">
                 <Link className="hover:text-primary" href={`/user/${id}`}>
-                  <p className="text-base flex flex-row min-w-0 truncate text-ellipsis">{username}</p>
+                  <p className="truncate">{username}</p>
                 </Link>
               </CardHeader>
             </Card>
@@ -60,4 +38,23 @@ export async function TopUsers() {
       </CardContent>
     </Card>
   );
+}
+
+async function getTopUsers(): Promise<DerailleurResponse<UsersByLikes[]>> {
+  'use server';
+  try {
+    const query: UsersByLikes[] = await prisma.$queryRaw`
+    SELECT u."id", u."username", COUNT(ulp."id") AS total_likes
+    FROM "User" u
+    JOIN "Post" p ON u."id" = p."authorId"
+    JOIN "UserLikedPosts" ulp ON p.id = ulp."postId"
+    WHERE p."createdAt" > ${lastMonth}
+    GROUP BY u."id", u."username"
+    ORDER BY total_likes DESC
+    LIMIT 10;
+    `;
+    return createSuccessfulResponse(query);
+  } catch (error) {
+    return createErrorResponse([createDerailleurError('Unable to get top users', {})]);
+  }
 }
