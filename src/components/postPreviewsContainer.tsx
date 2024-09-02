@@ -28,6 +28,7 @@ export function PostPreviewsContainer({ username, initialPosts, category, user, 
   const [posts, setPosts] = React.useState<Array<PostWithAuthorNameTagsAndCommentCount>>(initialPosts.length > POST_BATCH_AMOUNT ? initialPosts.slice(0, POST_BATCH_AMOUNT) : initialPosts);
   const [getMorePostsErrors, setGetMorPostsErrors] = React.useState<Array<DerailleurError>>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isSortLoading, setIsSortLoading] = React.useState<boolean>(false);
   const [cursor, setCursor] = React.useState<PostCursor | null>(initialPosts.length > POST_BATCH_AMOUNT ? { createdAt: initialPosts[initialPosts.length - 1].createdAt, postId: initialPosts[initialPosts.length - 1].id } : null);
 
   React.useEffect(() => {
@@ -37,11 +38,14 @@ export function PostPreviewsContainer({ username, initialPosts, category, user, 
     }
 
     if (sort !== null) {
+      setIsSortLoading(true);
       getPostsWithQuery().then(({ errors, result }) => {
         if (errors.length > 0 || result === null) {
           setQueryErrors(errors);
+          setIsSortLoading(false);
         } else {
           setPosts(result.length > POST_BATCH_AMOUNT ? result.slice(0, POST_BATCH_AMOUNT) : result);
+          setIsSortLoading(false);
         }
       });
     }
@@ -84,28 +88,34 @@ export function PostPreviewsContainer({ username, initialPosts, category, user, 
           </TabsList>
         </Tabs>
       </div>
-      <div className="flex flex-col justify-center gap-5">
-        <div className="space-y-2">
-          {posts.map((post) => {
-            return <PostPreview user={user} post={post} key={post.id} />;
-          })}
+      {isSortLoading ? (
+        <div className="w-full flex justify-center h-10">
+          <Spinner className={'text-primary w-10 h-10'} />
         </div>
-        {getMorePostsErrors.length > 0 && <QueryError errors={getMorePostsErrors} />}
-        {queryErrors.length > 0 && <QueryError errors={queryErrors} />}
-        {cursor !== null ? (
-          <div className="self-center">
-            <Button
-              onClick={() => {
-                getMorePosts(cursor.postId, cursor.createdAt);
-              }}
-            >
-              {isLoading ? <Spinner /> : 'Load More...'}
-            </Button>
+      ) : (
+        <div className="flex flex-col justify-center gap-5">
+          <div className="space-y-2">
+            {posts.map((post) => {
+              return <PostPreview user={user} post={post} key={post.id} />;
+            })}
           </div>
-        ) : (
-          showEndOfPostsNotice && <EndOfPostsNotice />
-        )}
-      </div>
+          {getMorePostsErrors.length > 0 && <QueryError errors={getMorePostsErrors} />}
+          {queryErrors.length > 0 && <QueryError errors={queryErrors} />}
+          {cursor !== null ? (
+            <div className="self-center">
+              <Button
+                onClick={() => {
+                  getMorePosts(cursor.postId, cursor.createdAt);
+                }}
+              >
+                {isLoading ? <Spinner /> : 'Load More...'}
+              </Button>
+            </div>
+          ) : (
+            showEndOfPostsNotice && <EndOfPostsNotice />
+          )}
+        </div>
+      )}
     </div>
   );
 }

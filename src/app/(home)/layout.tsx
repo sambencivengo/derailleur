@@ -1,4 +1,4 @@
-import './styles/globals.css';
+import '../styles/globals.css';
 import { Inter as FontSans } from 'next/font/google';
 import type { Metadata } from 'next';
 import { cn } from '~/lib/utils';
@@ -23,10 +23,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <Toaster />
           <NavBar />
-          <div className="w-full mb-5 mt-5 flex justify-around">
+          <div className="w-full min-h-screen mb-5 mt-5 flex justify-around">
             {/* NOTE: placeholder div for future sidebar content */}
             {/* <div className="p-5 hidden md:block w-3/12 "></div> */}
-            <div className="w-full sm:w-8/12 md:w-6/12 max-w-3xl px-1">{children}</div>
+            <div className="left-layout"></div>
+            <div className="center-layout">{children}</div>
+            <div className="right-layout"></div>
             {/* TODO: move this out, it should live in a nested layout and not at the base layer */}
             {/* <RightSideLayoutContainer />  */}
           </div>
