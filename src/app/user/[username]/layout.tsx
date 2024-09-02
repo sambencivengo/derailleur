@@ -35,7 +35,7 @@ export default async function RootLayout({ children, params }: ProfileLayoutProp
           {children}
         </div>
       </div>
-      ;{/* <div className="right-layout"></div> */}
+      {/* <div className="right-layout"></div> */}
     </CenterLayout>
   );
 }

@@ -66,12 +66,12 @@
 }
 @layer components {
   .center-layout {
-    @apply w-full sm:w-11/12 max-w-3xl px-1 sm:px-0;
+    @apply w-full sm:w-11/12 max-w-3xl px-1;
   }
   .right-layout {
-    @apply p-5 hidden lg:block w-3/12;
+    @apply justify-start hidden lg:flex items-start w-3/12;
   }
   .left-layout {
-    @apply p-5 ml-1 hidden md:block w-4/12 lg:w-3/12;
+    @apply hidden md:flex items-start justify-end w-4/12 lg:w-3/12;
   }
 }
