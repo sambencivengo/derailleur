@@ -31,7 +31,7 @@ export default async function Page({ params }: { params: { postId: string } }) {
           <PostAndCommentsView post={postResult} user={user} initialComments={commentsResult} />
         </CenterLayout>
         <SideBarLayout side="right">
-          <UsersRecentPosts postId={postId} userId={postResult.authorId} />
+          <UsersRecentPosts postId={postId} userId={postResult.authorId} username={postResult.author.username} />
         </SideBarLayout>
       </MainLayout>
     );
