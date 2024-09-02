@@ -86,8 +86,8 @@ export function PostPreviewsContainer({ username, initialPosts, category, user, 
       </div>
       <div className="flex flex-col justify-center gap-5">
         <div className="space-y-2">
-          {posts.map((post, idx) => {
-            return <PostPreview user={user} post={post} key={idx} />;
+          {posts.map((post) => {
+            return <PostPreview user={user} post={post} key={post.id} />;
           })}
         </div>
         {getMorePostsErrors.length > 0 && <QueryError errors={getMorePostsErrors} />}
