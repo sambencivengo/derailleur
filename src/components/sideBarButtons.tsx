@@ -13,7 +13,7 @@ const sideBarButtons: Array<{ icon: ReactElement<LucideIcon>; label: string; hre
 ];
 
 interface SideBarButtonsProps {
-  closeSheet: boolean;
+  closeSheet?: boolean;
 }
 export async function SideBarButtons({ closeSheet = false }: SideBarButtonsProps) {
   return (
