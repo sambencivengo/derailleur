@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { getUserSession } from '~/auth';
 import { TextHeading } from '~/components';
-import { CenterLayout } from '~/components/layouts/centerLayout';
+import { MainLayout } from '~/components/layouts/mainLayout';
 import { cn } from '~/lib/utils';
 
 interface ProfileLayoutProps {
@@ -13,7 +13,7 @@ export default async function RootLayout({ children, params }: ProfileLayoutProp
   const { username } = params;
   const userIsLoggedIn = user !== null && user.username === username;
   return (
-    <CenterLayout>
+    <MainLayout>
       {/* <div className="left-layout"></div> */}
       <div className="w-full flex justify-center">
         <div className="center-layout">
@@ -36,6 +36,6 @@ export default async function RootLayout({ children, params }: ProfileLayoutProp
         </div>
       </div>
       {/* <div className="right-layout"></div> */}
-    </CenterLayout>
+    </MainLayout>
   );
 }
