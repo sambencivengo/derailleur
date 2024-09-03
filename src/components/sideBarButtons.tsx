@@ -2,6 +2,7 @@ import { v4 as uuid } from 'uuid';
 import { BikeIcon, Map, Home, LucideIcon, PlusCircle, Tag } from 'lucide-react';
 import Link from 'next/link';
 import { ReactElement } from 'react';
+import { SheetClose } from '~/components/ui';
 
 const sideBarButtons: Array<{ icon: ReactElement<LucideIcon>; label: string; href: string }> = [
   { icon: <Home />, label: 'Home', href: '/' },
@@ -11,15 +12,26 @@ const sideBarButtons: Array<{ icon: ReactElement<LucideIcon>; label: string; hre
   { icon: <Tag />, label: 'All Tags', href: '/tags' },
 ];
 
-export async function SideBarButtons() {
+interface SideBarButtonsProps {
+  closeSheet: boolean;
+}
+export async function SideBarButtons({ closeSheet = false }: SideBarButtonsProps) {
   return (
     <div className="w-56 flex justify-center flex-col gap-4 ">
       {sideBarButtons.map(({ icon, label, href }) => {
         return (
           <div key={uuid()} className="w-full ml-10 flex justify-center">
-            <Link href={href} className="w-full hover:text-primary h-10 flex flex-row items-center font-semibold gap-2">
-              {icon} {label}
-            </Link>
+            {closeSheet ? (
+              <SheetClose asChild>
+                <Link href={href} className="w-full hover:text-primary h-10 flex flex-row items-center font-semibold gap-2">
+                  {icon} {label}
+                </Link>
+              </SheetClose>
+            ) : (
+              <Link href={href} className="w-full hover:text-primary h-10 flex flex-row items-center font-semibold gap-2">
+                {icon} {label}
+              </Link>
+            )}
           </div>
         );
       })}

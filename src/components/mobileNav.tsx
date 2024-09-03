@@ -9,7 +9,7 @@ import { UserAndSession } from '~/types';
 interface MobileNavProps {
   user: UserAndSession | null;
 }
-export const MobileNav = ({ user }: MobileNavProps) => {
+export async function MobileNav({ user }: MobileNavProps) {
   return (
     <div className="flex md:hidden pr-2 gap-2">
       <MobileAddPostButton />
@@ -57,4 +57,4 @@ export const MobileNav = ({ user }: MobileNavProps) => {
       </Sheet>
     </div>
   );
-};
+}
