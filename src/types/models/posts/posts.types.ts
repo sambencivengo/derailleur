@@ -43,7 +43,19 @@ export const postWithAuthorNameAndTagsQuery = Prisma.validator<Prisma.PostDefaul
   }
 });
 
+export const postWithTitleAndCommentCount = Prisma.validator<Prisma.PostDefaultArgs>()({
+  select: {
+    id: true,
+    title: true,
+    _count: {
+      select: {
+        comments: true
+      }
+    }
+  },
+});
 export interface Post extends PrismaPost { };
 export type PostWithAuthorName = Prisma.PostGetPayload<typeof postWithAuthorNameQuery>;
 export type PostWithAuthorNameTagsAndCommentCount = Prisma.PostGetPayload<typeof postWithAuthorNameTagsAndCommentCountQuery>;
 export type PostWithAuthorNameAndTags = Prisma.PostGetPayload<typeof postWithAuthorNameAndTagsQuery>;
+export type PostWithTitleAndCommentCount = Prisma.PostGetPayload<typeof postWithTitleAndCommentCount>;

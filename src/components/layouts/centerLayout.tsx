@@ -8,5 +8,5 @@ interface CenterLayoutProps {
 }
 
 export function CenterLayout({ children, className }: CenterLayoutProps) {
-  return <div className={cn('w-full flex justify-center', className)}>{children}</div>;
+  return <div className={cn('center-layout', className)}>{children}</div>;
 }

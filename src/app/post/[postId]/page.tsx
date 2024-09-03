@@ -1,6 +1,11 @@
 import { getUserSession } from '~/auth';
 import { QueryError } from '~/components';
+import { CenterLayout } from '~/components/layouts/centerLayout';
+import { MainLayout } from '~/components/layouts/mainLayout';
+import { SideBarLayout } from '~/components/layouts/rightLayout';
 import { PostAndCommentsView } from '~/components/postAndCommentsView';
+import { SideBarButtons } from '~/components/sideBarButtons';
+import { UsersRecentPosts } from '~/components/usersRecentPosts';
 import { getPostById } from '~/queries';
 import { getComments } from '~/queries/comments/getComments';
 
@@ -17,6 +22,18 @@ export default async function Page({ params }: { params: { postId: string } }) {
   } else if (commentsErrors.length > 0 || commentsResult === null) {
     return <QueryError errors={commentsErrors} />;
   } else {
-    return <PostAndCommentsView post={postResult} user={user} initialComments={commentsResult} />;
+    return (
+      <MainLayout>
+        <SideBarLayout side="left">
+          <SideBarButtons />
+        </SideBarLayout>
+        <CenterLayout>
+          <PostAndCommentsView post={postResult} user={user} initialComments={commentsResult} />
+        </CenterLayout>
+        <SideBarLayout side="right">
+          <UsersRecentPosts postId={postId} userId={postResult.authorId} username={postResult.author.username} />
+        </SideBarLayout>
+      </MainLayout>
+    );
   }
 }
