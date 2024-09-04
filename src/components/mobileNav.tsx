@@ -11,7 +11,7 @@ interface MobileNavProps {
 }
 export async function MobileNav({ user }: MobileNavProps) {
   return (
-    <div className="flex md:hidden pr-2 gap-2">
+    <div className="flex md:hidden  gap-2">
       <MobileAddPostButton />
       <Sheet>
         <SheetTrigger>
