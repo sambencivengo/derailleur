@@ -12,17 +12,13 @@ interface PostPreviewThumbnailProps {
 }
 
 export function PostPreviewThumbnail({ postId, thumbnail, rideWithGPSLink }: PostPreviewThumbnailProps) {
-  return (
-    <div>
-      <CardContent className="flex items-center mt-2 h-full">{renderThumbnailImage(postId, thumbnail, rideWithGPSLink)}</CardContent>
-    </div>
-  );
+  return <CardContent className="p-1 flex items-center h-full">{renderThumbnailImage(postId, thumbnail, rideWithGPSLink)}</CardContent>;
 }
 
 function renderThumbnailImage(postId: string, thumbnail: string | null, rideWithGPSLink: string | null) {
   if (thumbnail) {
     return (
-      <div className="w-[100px] h-[100px] object-fill rounded-md p-1">
+      <div className="w-[80px] h-[80px] object-fill rounded-md p-1">
         <PostLinkWrapper postId={postId}>
           <Image
             alt="User uploaded image"

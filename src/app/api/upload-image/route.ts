@@ -23,12 +23,12 @@ export async function POST(request: Request) {
     return (createNextResponse({ errors, status: 400 }));
   }
 
-  const thumbnailFileName = `${uuid()}_thumbnail_${Date.now()}`;
+  const thumbnailFileName = `${process.env.NODE_ENV === 'production' ? '' : 'DEV_IMAGE_'}thumbnail_${uuid()}_${Date.now()}`;
   const fileNames: Array<string> = [];
 
   const imageUploadPromises: Array<Promise<PutObjectCommandOutput>> = files.map(async (image) => {
     const buffer = Buffer.from(await image.arrayBuffer());
-    const fileName = `${uuid()}_${Date.now()}`;
+    const fileName = `${process.env.NODE_ENV === 'production' ? '' : 'DEV_IMAGE_'}${uuid()}_${Date.now()}`;
     fileNames.push(fileName);
     return createImageCommandPromise(buffer, fileName);
   });
