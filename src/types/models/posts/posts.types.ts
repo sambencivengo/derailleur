@@ -29,7 +29,7 @@ export const postWithAuthorNameTagsAndCommentCountQuery = Prisma.validator<Prism
       }
     },
     author: {
-      select: { username: true }
+      select: { username: true, id: true }
     },
   },
 });

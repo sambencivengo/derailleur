@@ -11,7 +11,7 @@ export async function DesktopNav({ user }: DesktopNavProps) {
     <div className="hidden md:flex gap-3">
       {user !== null ? (
         <div className="grid grid-flow-col content-center gap-3">
-          <UserProfileButton userName={user.username} />
+          <UserProfileButton userName={user.username} userId={user.userId} />
           <NewPostButton />
           <LogOutButton />
         </div>

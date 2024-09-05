@@ -59,7 +59,7 @@ export function Comment({ author, commentId, content, createdAt, updatedAt, post
           <>
             <div className="">
               <CardDescription className="flex flex-row gap-x-2">
-                <Link href={`/user/${author.username}/posts`} className="underline hover:text-primary font-bold">
+                <Link href={`/user/${author.id}`} className="underline hover:text-primary font-bold">
                   {author.username}
                 </Link>
                 {determineDateToShow(createdAt, updatedAt)}

@@ -23,7 +23,7 @@ export async function MobileNav({ user }: MobileNavProps) {
               {user !== null ? (
                 <>
                   <SheetClose asChild>
-                    <UserProfileButton userName={user.username} forMobile={true} />
+                    <UserProfileButton userName={user.username} userId={user.userId} forMobile={true} />
                   </SheetClose>
                   <Separator className="bg-primary" />
                   <SheetClose asChild>
