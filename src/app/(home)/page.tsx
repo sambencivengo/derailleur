@@ -13,7 +13,7 @@ export default async function Home({ searchParams }: { searchParams: { [key: str
   if (response.result === null || response.errors.length > 0) {
     return <QueryError errors={response.errors} />;
   }
-  // TODO: remove
+
   return (
     <main>
       <Suspense fallback={<SkeletonPostPreview />}>
