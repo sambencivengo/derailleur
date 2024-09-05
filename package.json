@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "database": "cd docker && sh ./buildDerailleurDatabase.sh",
     "docker:db": "docker-compose -f docker/docker-compose.yml up -d && npm run migrate:docker:deploy",
     "docker:down": "docker-compose -f docker/docker-compose.yml down",
