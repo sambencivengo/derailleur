@@ -8,7 +8,7 @@ interface UserProfileButtonProps {
 }
 export const UserProfileButton = ({ forMobile, userName, userId }: UserProfileButtonProps) => {
   return (
-    <Link href={`/user/${userId}`} className={cn(forMobile ? 'rounded-sm h-10 flex justify-center items-center text-2xl font-bold' : 'text-primary hover:underline', 'italic')}>
+    <Link href={`/user/${userName}`} className={cn(forMobile ? 'rounded-sm h-10 flex justify-center items-center text-2xl font-bold' : 'text-primary hover:underline', 'italic')}>
       @{userName}
     </Link>
   );

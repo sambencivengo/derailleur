@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import { getUserSession } from '~/auth';
 import { TextHeading } from '~/components';
+import { CenterLayout } from '~/components/layouts/centerLayout';
 import { MainLayout } from '~/components/layouts/mainLayout';
 import { cn } from '~/lib/utils';
+import { getUserByUsername } from '~/queries';
 
 interface ProfileLayoutProps {
   children: React.ReactNode;
@@ -11,13 +13,17 @@ interface ProfileLayoutProps {
 export default async function RootLayout({ children, params }: ProfileLayoutProps) {
   const user = await getUserSession();
   const { username } = params;
+  const userProfile = await getUserByUsername(username);
+  console.log(userProfile);
+
   const userIsLoggedIn = user !== null && user.username === username;
   return (
     <MainLayout>
-      {/* <div className="left-layout"></div> */}
-      <div className="w-full flex justify-center">
+      <CenterLayout className="w-full flex justify-center">
         <div className="center-layout">
-          <TextHeading heading={userIsLoggedIn ? `Hey, @${username}` : username} className="text-2xl" />
+          <Link href={`/user/${username}`} className="flex flex-row gap-2 items-center">
+            <TextHeading heading={`@${username}`} className="text-2xl hover:underline text-primary" />
+          </Link>
 
           <div className="flex flex-row gap-5 text-lg">
             <Link className={cn('text-primary hover:underline', 'italic')} href={`/user/${username}/posts`}>
@@ -34,8 +40,7 @@ export default async function RootLayout({ children, params }: ProfileLayoutProp
           </div>
           {children}
         </div>
-      </div>
-      {/* <div className="right-layout"></div> */}
+      </CenterLayout>
     </MainLayout>
   );
 }

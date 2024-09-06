@@ -21,7 +21,7 @@ export function PostPreview({ post, user }: PostPreviewProps) {
   const router = useRouter();
   const pathName = usePathname();
   const {
-    author: { username, id: authorId },
+    author: { username },
     createdAt,
     id,
     tags,
@@ -53,7 +53,7 @@ export function PostPreview({ post, user }: PostPreviewProps) {
           <div className="flex flex-row gap-1">
             <CardDescription className="text-xs">
               by{' '}
-              <Link className="underline hover:text-primary" href={`/user/${authorId}`}>
+              <Link className="underline hover:text-primary" href={`/user/${username}`}>
                 {username}
               </Link>{' '}
               {moment(createdAt).fromNow()}
