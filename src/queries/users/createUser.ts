@@ -10,7 +10,7 @@ import { CreateUserPayload, User } from "~/types";
 export async function createUser(createUserPayload: CreateUserPayload, userId = uuid()): Promise<DerailleurResponse<User>> {
 
   // NOTE: Create User Schema validation is in API call
-  const { password, username, favoriteBike, location } = createUserPayload;
+  const { password, username, favoriteBikes, location } = createUserPayload;
 
   try {
     const newUser = await prisma.user.create({
@@ -18,7 +18,7 @@ export async function createUser(createUserPayload: CreateUserPayload, userId = 
         id: userId,
         username,
         hashedPassword: password,
-        favoriteBike,
+        favoriteBikes,
         location,
       },
     });
