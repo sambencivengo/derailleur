@@ -23,6 +23,13 @@ export const userSignUpSchema = z.object({
     .trim(),
 });
 
+export const editProfilePayloadSchema = z.object({
+  location: z.string().optional(),
+  favoriteBikes: z.array(z.object({ bike: z.string() }))
+});
+export type EditProfilePayloadSchema = z.infer<typeof editProfilePayloadSchema>;
+
+
 export const userLogInSchema = userSignUpSchema;
 export type SignUpSchema = z.infer<typeof userSignUpSchema>;
 export type LogInSchema = SignUpSchema;
