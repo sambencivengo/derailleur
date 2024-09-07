@@ -1,5 +1,3 @@
-'use server';
-
 import { cn } from '~/lib/utils';
 
 interface HeadingProps {

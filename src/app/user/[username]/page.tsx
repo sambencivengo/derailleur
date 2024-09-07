@@ -1,9 +1,12 @@
-import { QueryError, TextHeading } from '~/components';
-import { Badge, Card, CardContent, CardHeader, Separator } from '~/components/ui';
+import React from 'react';
+import { getUserSession } from '~/auth';
+import { QueryError } from '~/components';
+import { ProfileView } from '~/components/profileView';
 import { getUserByUsername } from '~/queries';
 
 export default async function Page({ params }: { params: { username: string } }) {
   const { username } = params;
+  const user = await getUserSession();
 
   const { errors, result } = await getUserByUsername(username);
 
@@ -26,27 +29,7 @@ export default async function Page({ params }: { params: { username: string } })
   } else {
     return (
       <div className="flex flex-col mt-5 gap-2">
-        <Card>
-          <CardHeader>
-            <TextHeading heading={'Profile'} />
-          </CardHeader>
-          <CardContent>
-            <ul className="flex flex-col gap-2">
-              <li>
-                <p className="text-lg font-semibold">Favorite Bike:</p>
-                <Separator />
-              </li>
-              <li>
-                <Badge variant={'secondary'}>{result.favoriteBike}</Badge>
-              </li>
-              <li>
-                <p className="text-lg font-semibold">Location:</p>
-                <Separator />
-              </li>
-              <li>{result.location}</li>
-            </ul>
-          </CardContent>
-        </Card>
+        <ProfileView result={result} user={user} />
       </div>
     );
   }

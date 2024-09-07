@@ -4,6 +4,7 @@ import { UserWithHashedPassword } from "~/types/models/users";
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
 import prisma from "~prisma/prisma";
 
+// TODO: conditionally return password hash
 export async function getUserByUsername(username: string): Promise<DerailleurResponse<UserWithHashedPassword>> {
   try {
     const user = await prisma.user.findUnique({
