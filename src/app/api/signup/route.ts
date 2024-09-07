@@ -19,6 +19,7 @@ export const POST = async (req: Request) => {
     const hashedPassword = await argon2.hash(password);
     const userId = uuid();
     const userResponse = await createUser({
+      favoriteBikes: [],
       username,
       password: hashedPassword
     }, userId);

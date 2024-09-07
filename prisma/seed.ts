@@ -64,7 +64,7 @@ async function seed() {
         id: DEV_USER_ID,
         username: 'sammy',
         location: 'Colorado',
-        favoriteBike: '1991 Trek Single Track 990',
+        favoriteBikes: ['1991 Trek Single Track 990'],
       }
     }));
   };
@@ -102,7 +102,7 @@ async function seed() {
         data: {
           id: uuid(),
           username: faker.internet.displayName(),
-          favoriteBike: faker.vehicle.bicycle(),
+          favoriteBikes: [faker.vehicle.bicycle()],
           hashedPassword: hashedSimplePassword,
           location: faker.location.state(),
           posts: { create: postsPayloadArray },

@@ -11,11 +11,11 @@ import prisma from '~prisma/prisma';
 describe("Get User By ID Query", function () {
   const testUserId_00 = uuid();
   const testPassword = "testPassword1234!";
-  const { favoriteBike, username, location } = mockUser_00;
+  const { favoriteBikes, username, location } = mockUser_00;
   const now = new Date();
   const testUser_00: CreateUserPayload = {
     username,
-    favoriteBike,
+    favoriteBikes,
     location,
     password: testPassword
   };
