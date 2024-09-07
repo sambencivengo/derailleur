@@ -1,4 +1,5 @@
 'use client';
+import { PenBox } from 'lucide-react';
 import React from 'react';
 import { TextHeading } from '~/components/textHeading';
 import { Badge, Button, Card, CardContent, CardHeader, Separator } from '~/components/ui';
@@ -13,14 +14,15 @@ interface ProfileViewProps {
 export function ProfileView({ result, user }: ProfileViewProps) {
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
   // const form = useForm();
-
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center gap-2">
+      <CardHeader className="flex space-y-0 flex-row w-full items-center justify-between gap-2">
         <TextHeading heading={'Profile'} />{' '}
-        <Button variant={'secondary'} size={'sm'} onClick={() => setIsEditing((prev) => !prev)}>
-          Edit
-        </Button>
+        {user !== null && user.username === result.username && (
+          <Button variant={'ghost'} size={'icon'} onClick={() => setIsEditing((prev) => !prev)}>
+            <PenBox size={25} />
+          </Button>
+        )}
       </CardHeader>
       <CardContent>
         {isEditing ? (
