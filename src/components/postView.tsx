@@ -15,7 +15,6 @@ interface PostViewProps {
 
 export function PostView({ post }: PostViewProps) {
   const {
-    authorId,
     author: { username },
     content,
     createdAt,
@@ -51,7 +50,7 @@ export function PostView({ post }: PostViewProps) {
           <CardDescription>
             by {''}
             {/* TODO: update to go to user/${authorId}, not the posts endpoint. Query both and do a user profile context*/}
-            <Link className="underline hover:text-primary" href={`/user/${authorId}/posts`}>
+            <Link className="underline hover:text-primary" href={`/user/${username}`}>
               {username}
             </Link>
           </CardDescription>

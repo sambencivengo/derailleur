@@ -5,7 +5,7 @@ import { DerailleurResponse } from "~/utils";
 export interface CreateUserPayload {
   username: string;
   password: string;
-  favoriteBike?: string | null;
+  favoriteBikes: Array<string>;
   location?: string | null;
 }
 export type UpdateUserPayload = Omit<Partial<CreateUserPayload>, 'password'>;

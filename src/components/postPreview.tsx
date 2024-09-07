@@ -53,7 +53,7 @@ export function PostPreview({ post, user }: PostPreviewProps) {
           <div className="flex flex-row gap-1">
             <CardDescription className="text-xs">
               by{' '}
-              <Link className="underline hover:text-primary" href={`/user/${username}/posts`}>
+              <Link className="underline hover:text-primary" href={`/user/${username}`}>
                 {username}
               </Link>{' '}
               {moment(createdAt).fromNow()}

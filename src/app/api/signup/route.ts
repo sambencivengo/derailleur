@@ -20,7 +20,8 @@ export const POST = async (req: Request) => {
     const userId = uuid();
     const userResponse = await createUser({
       username,
-      password: hashedPassword
+      password: hashedPassword,
+      favoriteBikes: []
     }, userId);
 
     if (userResponse.errors.length > 0 || userResponse.result === null) {

@@ -44,7 +44,7 @@ export async function TopUsers() {
           return (
             <Card key={id} className="border-0 bg-background shadow-none">
               <CardHeader className="p-2">
-                <Link className="hover:text-primary" href={`/user/${username}/posts`}>
+                <Link className="hover:text-primary" href={`/user/${username}`}>
                   <p className="font-semibold truncate">{username}</p>
                 </Link>
               </CardHeader>
