@@ -1,16 +1,19 @@
 'use server';
 import { Prisma } from "@prisma/client";
-import { UpdateUserPayload, User } from "~/types";
+import { UpdateUserPayload, UserProfile, userProfile } from "~/types";
 import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from "~/utils";
 import prisma from "~prisma/prisma";
 
-export async function updateUser(user: UpdateUserPayload, userId: string,): Promise<DerailleurResponse<User>> {
+export async function updateUser(user: UpdateUserPayload, userId: string,): Promise<DerailleurResponse<UserProfile>> {
   try {
+    // TODO: schema validation
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: {
-        ...user
+        location: user.location === '' ? null : user.location,
+        favoriteBikes: user.favoriteBikes
       },
+      ...userProfile
     });
     return (createSuccessfulResponse(updatedUser));
   } catch (error: any) {

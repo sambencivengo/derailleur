@@ -10,8 +10,6 @@ export interface CreateUserPayload {
 }
 export type UpdateUserPayload = Omit<Partial<CreateUserPayload>, 'password'>;
 
-
-
 // Query Function Types
 export type CreateUser = (user: CreateUserPayload, userId?: string) => Promise<DerailleurResponse<User>>;
 export type GetUserById = (userId: string) => Promise<DerailleurResponse<User>>;

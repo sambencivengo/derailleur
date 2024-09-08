@@ -2,9 +2,9 @@
 import * as argon2 from 'argon2';
 import { LogInSchema, userLogInSchema, validateSchema } from "~/schemas";
 import { createNextResponse } from "~/utils";
-import { getUserByUsername } from '~/queries';
 import { cookies } from 'next/headers';
 import { auth } from '~/auth';
+import { getUserByUsernameForLogin } from '~/queries/users/getUserByUsernameForLogin';
 
 export const POST = async (req: Request) => {
   const body = await req.json();
@@ -15,7 +15,7 @@ export const POST = async (req: Request) => {
   const { password, username } = validateResponse.result;
 
   try {
-    const getUserByUsernameResponse = await getUserByUsername(username);
+    const getUserByUsernameResponse = await getUserByUsernameForLogin(username);
 
     if (getUserByUsernameResponse.result === null || getUserByUsernameResponse.errors.length > 0) {
       return (createNextResponse({ errors: getUserByUsernameResponse.errors, status: 400 }));

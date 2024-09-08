@@ -1,134 +1,87 @@
 'use client';
 import React from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { PenBox, PlusCircle } from 'lucide-react';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { v4 as uuid } from 'uuid';
+import { PenBox, X } from 'lucide-react';
 import { TextHeading } from '~/components/textHeading';
-import { Badge, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, Separator } from '~/components/ui';
-import { UserAndSession, UserWithHashedPassword } from '~/types';
-import { FormWrapper } from '~/components/formWrapper';
-import { editProfilePayloadSchema, EditProfilePayloadSchema } from '~/schemas/userSchemas';
-
-// export function EditProfileForm({ result }: { result: UserWithHashedPassword }) {}
+import { Badge, Button, Card, CardContent, CardHeader, Separator } from '~/components/ui';
+import { UserAndSession, UserProfile } from '~/types';
+import { EditProfileForm } from '~/components/editProfileForm';
 
 interface ProfileViewProps {
-  result: UserWithHashedPassword;
+  userProfile: UserProfile;
   user: UserAndSession | null;
 }
-export function ProfileView({ result, user }: ProfileViewProps) {
+export function ProfileView({ userProfile, user }: ProfileViewProps) {
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
-  // const form = useForm();
+  const [userProfileState, setUserProfileState] = React.useState<UserProfile>(userProfile);
+
+  const userIsLoggedIn = user !== null && user.username === userProfile.username;
+
+  function updateUserProfileState(userProfileState: UserProfile): void {
+    console.log(userProfileState);
+    setUserProfileState(userProfileState);
+  }
+  function updateEditingState(isEditingState: boolean): void {
+    setIsEditing(isEditingState);
+  }
+
+  console.log('#@###', userProfileState.location);
   return (
     <Card>
       <CardHeader className="flex space-y-0 flex-row w-full items-center justify-between gap-2">
         <TextHeading heading={'Profile'} />{' '}
-        {user !== null && user.username === result.username && (
+        {userIsLoggedIn && (
           <Button variant={'ghost'} size={'icon'} onClick={() => setIsEditing((prev) => !prev)}>
-            <PenBox size={25} />
+            {isEditing ? <X size={25} /> : <PenBox size={25} />}
           </Button>
         )}
       </CardHeader>
       <CardContent>
-        {isEditing ? (
-          <EditProfileForm result={result} />
+        {isEditing && userIsLoggedIn ? (
+          <EditProfileForm updateEditingState={updateEditingState} userProfile={userProfileState} updateUserProfileState={updateUserProfileState} userId={user.userId} />
         ) : (
-          <ul className="flex flex-col gap-2">
+          <ul className="w-full flex flex-col gap-2">
             <li>
-              <p className="text-lg font-semibold">Favorite Bike:</p>
+              <p className="text-lg font-semibold">Favorite Bikes:</p>
               <Separator />
             </li>
-            <li>
-              <Badge variant={'secondary'}>{result.favoriteBikes}</Badge>
+            <li className="w-full flex flex-wrap gap-2">
+              {userProfileState.favoriteBikes.length > 0 ? (
+                userProfileState.favoriteBikes.map((bike) => (
+                  <Badge key={uuid()} variant={'secondary'}>
+                    {bike}
+                  </Badge>
+                ))
+              ) : (
+                <div>
+                  {userIsLoggedIn ? (
+                    <Button size={'sm'} variant={'secondary'} onClick={() => setIsEditing(true)}>
+                      Add bikes
+                    </Button>
+                  ) : (
+                    <p>{userProfileState.username} hasn't added any favorite bikes</p>
+                  )}
+                </div>
+              )}
             </li>
             <li>
               <p className="text-lg font-semibold">Location:</p>
               <Separator />
             </li>
-            <li>{result.location}</li>
+            <li>
+              {userProfileState.location !== null ? (
+                <Badge variant={'secondary'}>{userProfileState.location}</Badge>
+              ) : userIsLoggedIn ? (
+                <Button size={'sm'} variant={'secondary'} onClick={() => setIsEditing(true)}>
+                  Add your location
+                </Button>
+              ) : (
+                <p>{userProfileState.username} hasn't added their location</p>
+              )}
+            </li>
           </ul>
         )}
       </CardContent>
     </Card>
-  );
-}
-
-export function EditProfileForm({ result }: { result: UserWithHashedPassword }) {
-  const form = useForm<EditProfilePayloadSchema>({
-    resolver: zodResolver(editProfilePayloadSchema),
-    defaultValues: {
-      favoriteBikes: [],
-      location: '',
-    },
-  });
-
-  const { fields, append } = useFieldArray({ name: 'favoriteBikes', control: form.control });
-  // const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
-  //   nam
-  //   control: form.control, // control props comes from useForm (optional: if you are using FormProvider)
-  // });
-
-  async function onSubmit(values: EditProfilePayloadSchema) {
-    console.log('onSubmit:', values);
-  }
-  return (
-    <FormWrapper form={form} onSubmit={onSubmit}>
-      <ul className="flex flex-col gap-2 w-full">
-        <li className="flex flex-row items-center w-full justify-between">
-          <p className="text-lg font-semibold">Favorite Bike:</p>
-
-          <Button
-            variant={'ghost'}
-            size={'icon'}
-            onClick={() => {
-              append({ bike: '' });
-            }}
-          >
-            <PlusCircle />
-          </Button>
-        </li>
-        <Separator />
-        <div className="flex flex-col gap-2">
-          <li>
-            {fields.map((field, index) => {
-              return (
-                <FormField
-                  key={field.id}
-                  control={form.control}
-                  name={`favoriteBikes.${index}.bike`}
-                  render={({ field: bikeFiled }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input placeholder="Bike" {...bikeFiled} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              );
-            })}
-          </li>
-        </div>
-        <li>
-          <p className="text-lg font-semibold">Location:</p>
-          <Separator />
-        </li>
-        <FormField
-          control={form.control}
-          name="location"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Location</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="w-full flex justify-end">
-          <Button type="submit">Save</Button>
-        </div>
-      </ul>
-    </FormWrapper>
   );
 }

@@ -1,4 +1,4 @@
-import { User as PrismaUser } from "@prisma/client";
+import { Prisma, User as PrismaUser } from "@prisma/client";
 
 export interface UserWithHashedPassword extends PrismaUser { }
 
@@ -11,3 +11,14 @@ export interface UserAndSession {
   expiresAt: Date;
   fresh: boolean;
 }
+
+
+export const userProfile = Prisma.validator<Prisma.UserDefaultArgs>()({
+  select: {
+    username: true,
+    favoriteBikes: true,
+    location: true,
+  }
+});
+
+export type UserProfile = Prisma.UserGetPayload<typeof userProfile>;
