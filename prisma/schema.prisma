@@ -41,7 +41,7 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   published Boolean @default(false)
-  author User @relation(references: [id], fields: [authorId], onDelete: Cascade)
+  author User @relation(references: [id], fields: [authorId])
   authorId String
   rideWithGPSLink String?
   tags Tag[]
@@ -57,7 +57,7 @@ model Post {
 model UserLikedPosts {
   id String @id @unique
   createdAt DateTime @default(now())
-  post Post @relation(fields: [postId], references: [id])
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId String
   user User @relation(fields: [userId], references: [id])
   userId String
@@ -65,7 +65,7 @@ model UserLikedPosts {
 model UserLikedComments {
   id String @id @unique
   createdAt DateTime @default(now())
-  comment Comment @relation(fields: [commentId], references: [id])
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
   commentId String
   user User @relation(fields: [userId], references: [id])
   userId String
@@ -74,7 +74,7 @@ model UserLikedComments {
 model UserSavedPosts {
   id String @id @unique
   createdAt DateTime @default(now())
-  post Post @relation(fields: [postId], references: [id])
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId String
   user User @relation(fields: [userId], references: [id])
   userId String
