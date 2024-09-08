@@ -23,7 +23,6 @@ export const POST = async (req: Request) => {
       password: hashedPassword,
       favoriteBikes: []
     }, userId);
-
     if (userResponse.errors.length > 0 || userResponse.result === null) {
       return (createNextResponse({ errors: userResponse.errors, status: 401 }));
     }

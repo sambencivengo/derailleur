@@ -1,16 +1,15 @@
 'use server';
 import { Prisma } from "@prisma/client";
-import { userProfile, UserProfile } from "~/types/models/users";
+import { UserWithHashedPassword } from "~/types";
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
 import prisma from "~prisma/prisma";
 
-export async function getUserByUsername(username: string): Promise<DerailleurResponse<UserProfile>> {
+export async function getUserByUsernameForLogin(username: string): Promise<DerailleurResponse<UserWithHashedPassword>> {
   try {
     const user = await prisma.user.findUnique({
       where: {
         username
       },
-      ...userProfile
     });
     if (!user) {
       return createErrorResponse([{ message: "Unable to find user by provided username", data: { username } }]);

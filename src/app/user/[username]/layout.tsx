@@ -4,7 +4,6 @@ import { TextHeading } from '~/components';
 import { CenterLayout } from '~/components/layouts/centerLayout';
 import { MainLayout } from '~/components/layouts/mainLayout';
 import { cn } from '~/lib/utils';
-import { getUserByUsername } from '~/queries';
 
 interface ProfileLayoutProps {
   children: React.ReactNode;
@@ -13,8 +12,6 @@ interface ProfileLayoutProps {
 export default async function RootLayout({ children, params }: ProfileLayoutProps) {
   const user = await getUserSession();
   const { username } = params;
-  const userProfile = await getUserByUsername(username);
-  console.log(userProfile);
 
   const userIsLoggedIn = user !== null && user.username === username;
   return (

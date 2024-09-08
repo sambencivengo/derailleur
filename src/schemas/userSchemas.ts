@@ -25,9 +25,15 @@ export const userSignUpSchema = z.object({
 
 export const editProfilePayloadSchema = z.object({
   location: z.string().optional(),
-  favoriteBikes: z.array(z.object({ bike: z.string() }))
+  favoriteBikes: z.array(z.object({ bike: z.string().min(5, 'Bike names must be at least 5 characters long').max(50, 'Bike names cannot be longer than 50 characters') }))
 });
 export type EditProfilePayloadSchema = z.infer<typeof editProfilePayloadSchema>;
+
+export const editProfileSchema = z.object({
+  location: z.string().optional(),
+  favoriteBikes: z.array(z.string().min(5, 'Bike names must be at least 5 characters long').max(50, 'Bike names cannot be longer than 50 characters'))
+});
+export type EditProfileSchema = z.infer<typeof editProfileSchema>;
 
 
 export const userLogInSchema = userSignUpSchema;
