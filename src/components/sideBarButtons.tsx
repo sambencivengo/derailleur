@@ -17,7 +17,7 @@ interface SideBarButtonsProps {
 }
 export async function SideBarButtons({ closeSheet = false }: SideBarButtonsProps) {
   return (
-    <div className="w-56 flex justify-center flex-col gap-4 ">
+    <div className="sticky top-5 w-56 flex justify-center flex-col gap-4 ">
       {sideBarButtons.map(({ icon, label, href }) => {
         return (
           <div key={uuid()} className="w-full ml-10 flex justify-center">

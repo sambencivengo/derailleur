@@ -1,31 +1,35 @@
 'use client';
 import axios from 'axios';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { cn } from '~/lib/utils';
+import React from 'react';
+import { Spinner } from '~/components/spinner';
+import { Button } from '~/components/ui/button';
 
 interface LogOutButtonProps {
-  forMobile?: boolean;
+  setOpenState: (state: boolean) => void;
 }
-export const LogOutButton = ({ forMobile }: LogOutButtonProps) => {
+export const LogOutButton = ({ setOpenState }: LogOutButtonProps) => {
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const router = useRouter();
   const logOut = async () => {
+    setIsLoading(true);
     axios
       .post('/api/logout')
       .then((response) => {
+        setIsLoading(false);
+        setOpenState(false);
         router.refresh();
-        console.log(response);
-        router;
       })
       .catch((error) => {
         console.log(error);
+        setIsLoading(false);
       });
   };
 
   return (
-    <Link className={cn(forMobile ? 'rounded-sm h-10 flex justify-center items-center text-2xl font-bold' : 'text-primary hover:underline', 'italic')} href={''} onClick={logOut}>
-      Log Out
-    </Link>
+    <Button variant={'outline'} className="w-full" onClick={logOut}>
+      {isLoading ? <Spinner /> : 'Log Out'}
+    </Button>
   );
 };
 1;
