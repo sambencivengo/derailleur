@@ -17,8 +17,8 @@ export const LogOutButton = ({ setOpenState }: LogOutButtonProps) => {
       .post('/api/logout')
       .then((response) => {
         setIsLoading(false);
-        setOpenState(false);
         router.refresh();
+        setOpenState(false);
       })
       .catch((error) => {
         console.log(error);

@@ -36,16 +36,14 @@ export function DesktopNav({ user }: DesktopNavProps) {
             <ChevronLeftSquare size={30} />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-60">
+        <PopoverContent onInteractOutside={() => setIsOpen(false)} className="w-60">
           <div className="flex flex-col gap-4 w-full">
             {user !== null ? (
               <>
                 <PopoverClose onClick={() => setIsOpen(false)}>
                   <UserProfileButton userId={user.userId} userName={user.username} />
                 </PopoverClose>
-                <PopoverClose onClick={() => setIsOpen(false)}>
-                  <LogOutButton setOpenState={setOpenState} />
-                </PopoverClose>
+                <LogOutButton setOpenState={setOpenState} />
               </>
             ) : (
               <>

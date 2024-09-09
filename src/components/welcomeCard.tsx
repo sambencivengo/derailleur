@@ -29,7 +29,7 @@ export function WelcomeCard() {
         </Link>
         <Link href="/login">
           <Button className="text-primary font-bold hover:text-primary hover:bg-transparent" variant={'ghost'}>
-            Login
+            Log in
           </Button>
         </Link>
       </CardContent>

@@ -1,51 +1,51 @@
-'use server';
+'use client';
 import { ChevronLeftSquare } from 'lucide-react';
+import React from 'react';
 import { LogInButton, LogOutButton, NewPostButton, SignUpButton, ToggleDarkModeButton } from '~/components';
 import { MobileAddPostButton } from '~/components/mobileAddPostButton';
-import { Separator, Sheet, SheetClose, SheetContent, SheetTrigger } from '~/components/ui';
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from '~/components/ui';
 import { UserProfileButton } from '~/components/userProfileButton';
 import { UserAndSession } from '~/types';
 
 interface MobileNavProps {
   user: UserAndSession | null;
 }
-export async function MobileNav({ user }: MobileNavProps) {
+export function MobileNav({ user }: MobileNavProps) {
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  function setOpenState(state: boolean = false) {
+    setIsOpen(state);
+  }
+
   return (
-    <div className="flex md:hidden  gap-2">
+    <div className="flex md:hidden gap-2">
       <MobileAddPostButton />
-      <Sheet>
-        <SheetTrigger>
+      <Sheet open={isOpen}>
+        <SheetTrigger onClick={() => setIsOpen(true)}>
           <ChevronLeftSquare size={30} />
         </SheetTrigger>
-        <SheetContent className="pt-10">
-          <div className="flex flex-col justify-between  h-full py-4 ">
-            <div className="flex flex-col gap-1">
+        <SheetContent setOpenState={setOpenState} className="pt-10">
+          <div className="flex flex-col justify-between h-full py-4 ">
+            <div className="flex flex-col gap-4">
               {user !== null ? (
                 <>
-                  <SheetClose asChild>
-                    <UserProfileButton userName={user.username} userId={user.userId} forMobile={true} />
-                  </SheetClose>
-                  <Separator className="bg-primary" />
-                  <SheetClose asChild>
+                  <SheetClose onClick={() => setIsOpen(false)}>
                     <NewPostButton forMobile={true} />
                   </SheetClose>
-                  <Separator className="bg-primary" />
-                  <SheetClose asChild>
-                    <LogOutButton forMobile={true} />
+                  <SheetClose onClick={() => setIsOpen(false)}>
+                    <UserProfileButton userName={user.username} userId={user.userId} forMobile={true} />
                   </SheetClose>
-                  <Separator className="bg-primary" />
+                  <SheetClose>
+                    <LogOutButton setOpenState={setOpenState} />
+                  </SheetClose>
                 </>
               ) : (
                 <>
-                  <Separator className="bg-primary" />
-                  <SheetClose asChild>
-                    <LogInButton forMobile={true} />
+                  <SheetClose onClick={() => setIsOpen(false)}>
+                    <LogInButton />
                   </SheetClose>
-                  <Separator className="bg-primary" />
-                  <SheetClose asChild>
+                  <SheetClose onClick={() => setIsOpen(false)}>
                     <SignUpButton forMobile={true} />
                   </SheetClose>
-                  <Separator className="bg-primary" />
                 </>
               )}
             </div>
