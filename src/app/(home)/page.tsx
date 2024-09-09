@@ -14,9 +14,6 @@ export default async function Home({ searchParams }: { searchParams: { [key: str
     return <QueryError errors={response.errors} />;
   }
 
-  const thumbnailFileName = `${process.env.NODE_ENV === 'production' ? '' : 'DEV_IMAGE_'}thumbnail_UUID_HERE_${Date.now()}`;
-  console.log(process.env.NODE_ENV, thumbnailFileName);
-
   return (
     <main>
       <Suspense fallback={<SkeletonPostPreview />}>
