@@ -7,7 +7,7 @@ export function BetaDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Link href={''} className="mt-1 italic text-lg font-semibold text-primary hover:text-green-500">
+        <Link href={''} className="italic text-sm font-semibold text-primary hover:text-green-500">
           beta
         </Link>
       </DialogTrigger>
