@@ -46,6 +46,7 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
         }
         const trimmedValue = input.value.trim();
         if (e.key === 'Tab') {
+          e.preventDefault();
           if (trimmedValue === '') {
             return;
           } else {

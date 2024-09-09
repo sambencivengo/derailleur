@@ -51,7 +51,7 @@ export function Comment({ author, commentId, content, createdAt, updatedAt, post
   }, []);
 
   return (
-    <Card className={cn('w-full pr-0', level !== 0 && 'pr-0 border-r-0')}>
+    <Card className={cn('w-full pr-0', level !== 0 ? 'pr-0 border-r-0' : 'mb-2')}>
       <CardContent className="w-full mt-3">
         {isEditing && user !== null ? (
           <EditCommentForm setSuccessfullyEditedComment={setSuccessfullyEditedComment} setIsEditing={setIsEditing} content={content} commentId={commentId} userId={user.userId} />

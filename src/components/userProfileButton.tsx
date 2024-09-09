@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Button } from '~/components/ui';
 import { cn } from '~/lib/utils';
 
 interface UserProfileButtonProps {
@@ -8,8 +9,10 @@ interface UserProfileButtonProps {
 }
 export const UserProfileButton = ({ forMobile, userName, userId }: UserProfileButtonProps) => {
   return (
-    <Link href={`/user/${userName}`} className={cn(forMobile ? 'rounded-sm h-10 flex justify-center items-center text-2xl font-bold' : 'text-primary hover:underline', 'italic')}>
-      @{userName}
+    <Link href={`/user/${userName}`} className={cn('w-full')}>
+      <Button variant={'outline'} className="w-full">
+        @{userName}
+      </Button>
     </Link>
   );
 };

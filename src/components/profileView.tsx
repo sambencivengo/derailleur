@@ -25,7 +25,6 @@ export function ProfileView({ userProfile, user }: ProfileViewProps) {
     setIsEditing(isEditingState);
   }
 
-  console.log('#@###', userProfileState.location);
   return (
     <Card>
       <CardHeader className="flex space-y-0 flex-row w-full items-center justify-between gap-2">
