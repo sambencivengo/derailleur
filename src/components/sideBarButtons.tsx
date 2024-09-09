@@ -17,18 +17,18 @@ interface SideBarButtonsProps {
 }
 export async function SideBarButtons({ closeSheet = false }: SideBarButtonsProps) {
   return (
-    <div className="sticky top-5 w-56 flex justify-center flex-col gap-4 ">
+    <div className="sticky top-5 w-56 flex justify-center flex-col gap-4">
       {sideBarButtons.map(({ icon, label, href }) => {
         return (
-          <div key={uuid()} className="w-full ml-10 flex justify-center">
+          <div key={uuid()} className="ml-10">
             {closeSheet ? (
               <SheetClose asChild>
-                <Link href={href} className="w-full hover:text-primary h-10 flex flex-row items-center font-semibold gap-2">
+                <Link href={href} className="hover:text-primary h-10 flex flex-row items-center font-semibold gap-2">
                   {icon} {label}
                 </Link>
               </SheetClose>
             ) : (
-              <Link href={href} className="w-full hover:text-primary h-10 flex flex-row items-center font-semibold gap-2">
+              <Link href={href} className="hover:bg-card w-auto p-4  h-10 flex flex-row items-center font-semibold gap-2">
                 {icon} {label}
               </Link>
             )}
