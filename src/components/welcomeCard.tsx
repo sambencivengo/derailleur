@@ -20,7 +20,7 @@ export function WelcomeCard() {
             {arrayOfCardTitles}
           </div>
         </div> */}
-        <CardTitle className="w-full text-3xl flex justify-center italic bg-primary">WELCOME TO DERAILLEUR</CardTitle>
+        <CardTitle className="w-full text-3xl flex justify-center italic bg-primary text-center">WELCOME TO DERAILLEUR</CardTitle>
       </CardHeader>
       <CardContent className="text-center text-xl">
         <p>Derailleur is place for bike enthusiasts to come together to discuss their passion for cycling, share routes and rides, plan bikepacking trips and more. Join the discussion!</p>
