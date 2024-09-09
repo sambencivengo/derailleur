@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
 import { Button } from '~/components/ui';
-import { cn } from '~/lib/utils';
 
 interface SignUpButtonProps {
   forMobile?: boolean;
