@@ -1,12 +1,11 @@
 'use client';
-import { PopoverClose } from '@radix-ui/react-popover';
 import { ChevronLeftSquare } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 import { LogOutButton, ToggleDarkModeButton } from '~/components';
 import { NewPostLoginDialog } from '~/components/newPostLoginDialog';
 import { Button } from '~/components/ui';
-import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
+import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
 import { UserProfileButton } from '~/components/userProfileButton';
 import { UserAndSession } from '~/types';
 
@@ -31,8 +30,8 @@ export function DesktopNav({ user }: DesktopNavProps) {
         </NewPostLoginDialog>
       )}
       <Popover open={isOpen}>
-        <PopoverTrigger asChild onClick={() => setIsOpen((prev) => !prev)}>
-          <Button size={'icon'} variant="ghost">
+        <PopoverTrigger asChild>
+          <Button onClick={() => setIsOpen((prev) => !prev)} size={'icon'} variant="ghost">
             <ChevronLeftSquare size={30} />
           </Button>
         </PopoverTrigger>
@@ -40,19 +39,19 @@ export function DesktopNav({ user }: DesktopNavProps) {
           <div className="flex flex-col gap-4 w-full">
             {user !== null ? (
               <>
-                <PopoverClose onClick={() => setIsOpen(false)}>
+                <PopoverClose asChild onClick={() => setIsOpen(false)}>
                   <UserProfileButton userId={user.userId} userName={user.username} />
                 </PopoverClose>
                 <LogOutButton setOpenState={setOpenState} />
               </>
             ) : (
               <>
-                <PopoverClose onClick={() => setIsOpen(false)}>
+                <PopoverClose asChild onClick={() => setIsOpen(false)}>
                   <Link href={'/signup'} className="w-full">
                     <Button className="w-full">Sign Up</Button>
                   </Link>
                 </PopoverClose>
-                <PopoverClose onClick={() => setIsOpen(false)}>
+                <PopoverClose asChild onClick={() => setIsOpen(false)}>
                   <Link href={'/login'}>
                     <Button variant={'secondary'} className="w-full">
                       Log In
