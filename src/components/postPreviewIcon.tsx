@@ -23,11 +23,15 @@ function renderThumbnailImage(postId: string, thumbnail: string | null, rideWith
           <Image
             alt="User uploaded image"
             sizes="100vw"
+            data-loaded="false"
+            onLoad={(e) => {
+              e.currentTarget.setAttribute('data-loaded', 'true');
+            }}
             src={createImageUrl(thumbnail)}
             style={{
               width: '100%',
             }}
-            className="rounded-md"
+            className="rounded-md data-[loaded=false]:animate-pulse data-[loaded=false]:bg-secondary-background"
             width={100}
             height={100}
           />

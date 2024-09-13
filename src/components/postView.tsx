@@ -66,12 +66,16 @@ export function PostView({ post }: PostViewProps) {
                     <div key={idx} className="w-[200px] h-[200px] object-cover shadow-lg">
                       <Image
                         alt="User uploaded image"
+                        data-loaded="false"
+                        onLoad={(e) => {
+                          e.currentTarget.setAttribute('data-loaded', 'true');
+                        }}
                         sizes="100vw"
                         src={createImageUrl(imageName)}
                         style={{
                           width: '100%',
                         }}
-                        className="object-cover w-[300px] h-[200px]"
+                        className="data-[loaded=false]:animate-pulse data-[loaded=false]:bg-secondary-background object-cover w-[300px] h-[200px]"
                         width={500}
                         height={100}
                       />
