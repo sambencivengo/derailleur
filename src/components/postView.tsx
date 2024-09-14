@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Badge, Separator, Dialog, DialogContent, DialogTrigger } from '~/components/ui';
+import { v4 as uuid } from 'uuid';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Badge, Separator, Dialog, DialogContent, DialogTrigger, Button } from '~/components/ui';
 import Link from 'next/link';
 import { PostWithAuthorNameTagsAndCommentCount } from '~/types';
 import { determineDateToShow } from '~/utils/dateUtils';
@@ -9,6 +10,7 @@ import { PostCategory } from '@prisma/client';
 import { PostCategoryTag } from '~/components/postCategoryTag';
 import { createImageUrl } from '~/utils/imageUrl';
 import Image from 'next/image';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 interface PostViewProps {
   post: PostWithAuthorNameTagsAndCommentCount;
 }
@@ -34,6 +36,37 @@ export function PostView({ post }: PostViewProps) {
     );
   });
 
+  interface ImageAndIdx {
+    image: string;
+    idx: number;
+  }
+  const [selectedImage, setSelectedImage] = React.useState<ImageAndIdx | null>(null);
+  const lightboxRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (selectedImage && lightboxRef.current) {
+      lightboxRef.current.focus();
+    }
+  }, [selectedImage]);
+
+  const openLightbox = (image: ImageAndIdx) => setSelectedImage(image);
+  const closeLightbox = () => setSelectedImage(null);
+
+  function changeLightBoxImage(direction: 'prev' | 'next'): void {
+    setSelectedImage((current) => {
+      if (current === null) {
+        return null;
+      }
+      let idx: number = current.idx;
+      if (direction === 'prev') {
+        current.idx === 0 ? (idx = images.length - 1) : idx--;
+      }
+      if (direction === 'next') {
+        current.idx === images.length - 1 ? (idx = 0) : idx++;
+      }
+      return { idx, image: images[idx] };
+    });
+  }
   return (
     <Card className="h-auto hyphens-auto">
       <CardHeader>
@@ -59,11 +92,11 @@ export function PostView({ post }: PostViewProps) {
         <CardContent className="w-full">
           <p>{content}</p>
           {images.length > 0 && (
-            <div className="p-4 w-full h-full flex flex-wrap justify-center gap-2">
-              {images.map((imageName, idx) => (
-                <Dialog key={idx}>
+            <div className="p-4 w-full overflow-y-hidden h-full flex flex-wrap justify-center gap-2">
+              {images.map((imageName) => (
+                <Dialog key={uuid()}>
                   <DialogTrigger asChild className="hover:cursor-pointer">
-                    <div key={idx} className="w-[200px] h-[200px] object-cover shadow-lg">
+                    <div className="w-[200px] h-[200px] object-cover shadow-lg">
                       <Image
                         alt="User uploaded image"
                         data-loaded="false"
@@ -82,7 +115,7 @@ export function PostView({ post }: PostViewProps) {
                     </div>
                   </DialogTrigger>
                   <DialogContent className="max-w-6xl bg-transparent p-0 shadow-none border-none">
-                    <div className="relative h-[calc(100vh-200px)] w-full overflow-clip rounded-md bg-transparent">
+                    <div className="relative h-[100vh] max-h-[90vh] w-full overflow-clip rounded-md bg-transparent ">
                       <Image src={createImageUrl(imageName)} fill blurDataURL="/placeholderD.jpg" alt="User uploaded image" className="h-full w-full object-contain" />
                     </div>
                   </DialogContent>
@@ -92,6 +125,76 @@ export function PostView({ post }: PostViewProps) {
           )}
         </CardContent>
       </CardHeader>
+      <CardContent>
+        {selectedImage !== null && (
+          <div onClick={closeLightbox} tabIndex={-1} className="fixed border-2 border-green-500 inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-90">
+            <div
+              ref={lightboxRef}
+              onClick={() => {
+                closeLightbox();
+              }}
+              className="relative w-full border-primary border h-full"
+            >
+              <Image src={createImageUrl(selectedImage.image)} fill blurDataURL="/placeholderD.jpg" alt="User uploaded image" className="object-contain hover:cursor-zoom-out" />
+              <Button onClick={() => closeLightbox()} size={'icon'} variant={'ghost'} className="absolute top-0 right-0">
+                <X size={40} />
+              </Button>
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  changeLightBoxImage('prev');
+                }}
+                size={'icon'}
+                variant={'ghost'}
+                className="absolute top-1/2 left-0"
+              >
+                <ChevronLeft size={60} />
+              </Button>
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  changeLightBoxImage('next');
+                }}
+                size={'icon'}
+                variant={'ghost'}
+                className="absolute top-1/2 right-0"
+              >
+                <ChevronRight size={60} />
+              </Button>
+            </div>
+          </div>
+        )}
+        <p className="bg-yellow-600">NEW Lightbox</p>
+        <div className="w-full px-5 flex flex-wrap justify-center gap-2">
+          {images.map((image, idx) => {
+            return (
+              <div
+                key={uuid()}
+                onClick={() => {
+                  openLightbox({ image, idx });
+                }}
+                className="w-[200px] h-[200px] object-cover hover:cursor-zoom-in shadow-lg"
+              >
+                <Image
+                  alt="User uploaded image"
+                  data-loaded="false"
+                  onLoad={(e) => {
+                    e.currentTarget.setAttribute('data-loaded', 'true');
+                  }}
+                  sizes="100vw"
+                  src={createImageUrl(image)}
+                  style={{
+                    width: '100%',
+                  }}
+                  className="data-[loaded=false]:animate-pulse data-[loaded=false]:bg-secondary-background object-cover w-[300px] h-[200px]"
+                  width={500}
+                  height={100}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </CardContent>
       {category !== PostCategory.POST && rideWithGPSLink !== null && (
         <div>
           <CardHeader>
