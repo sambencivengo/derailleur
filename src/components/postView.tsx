@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Badge, Separator, Dialog, DialogContent, DialogTrigger, Button } from '~/components/ui';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Badge, Separator, Button } from '~/components/ui';
 import Link from 'next/link';
 import { PostWithAuthorNameTagsAndCommentCount } from '~/types';
 import { determineDateToShow } from '~/utils/dateUtils';
@@ -99,38 +99,6 @@ export function PostView({ post }: PostViewProps) {
         </div>
         <CardContent className="w-full">
           <p>{content}</p>
-          {images.length > 0 && (
-            <div className="p-4 w-full overflow-y-hidden h-full flex flex-wrap justify-center gap-2">
-              {images.map((imageName) => (
-                <Dialog key={uuid()}>
-                  <DialogTrigger asChild className="hover:cursor-pointer">
-                    <div className="w-[200px] h-[200px] object-cover shadow-lg">
-                      <Image
-                        alt="User uploaded image"
-                        data-loaded="false"
-                        onLoad={(e) => {
-                          e.currentTarget.setAttribute('data-loaded', 'true');
-                        }}
-                        sizes="100vw"
-                        src={createImageUrl(imageName)}
-                        style={{
-                          width: '100%',
-                        }}
-                        className="data-[loaded=false]:animate-pulse data-[loaded=false]:bg-secondary-background object-cover w-[300px] h-[200px]"
-                        width={500}
-                        height={100}
-                      />
-                    </div>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-6xl bg-transparent p-0 shadow-none border-none">
-                    <div className="relative h-[100vh] max-h-[90vh] w-full overflow-clip rounded-md bg-transparent ">
-                      <Image src={createImageUrl(imageName)} fill blurDataURL="/placeholderD.jpg" alt="User uploaded image" className="h-full w-full object-contain" />
-                    </div>
-                  </DialogContent>
-                </Dialog>
-              ))}
-            </div>
-          )}
         </CardContent>
       </CardHeader>
       <CardContent>
@@ -172,7 +140,6 @@ export function PostView({ post }: PostViewProps) {
             </div>
           </div>
         )}
-        <p className="bg-yellow-600">NEW Lightbox</p>
         <div className="w-full px-5 flex flex-wrap justify-center gap-2 ">
           {images.map((image, idx) => {
             return (
