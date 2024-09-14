@@ -136,8 +136,8 @@ export function PostView({ post }: PostViewProps) {
               className="relative w-full border-primary border h-full"
             >
               <Image src={createImageUrl(selectedImage.image)} fill blurDataURL="/placeholderD.jpg" alt="User uploaded image" className="object-contain hover:cursor-zoom-out" />
-              <Button onClick={() => closeLightbox()} size={'icon'} variant={'ghost'} className="absolute top-0 right-0">
-                <X size={40} />
+              <Button onClick={() => closeLightbox()} size={'icon'} variant={'ghost'} className="hover:bg-transparent absolute top-0 right-0">
+                <X size={40} className="text-white" />
               </Button>
               <Button
                 onClick={(e) => {
@@ -146,7 +146,7 @@ export function PostView({ post }: PostViewProps) {
                 }}
                 size={'icon'}
                 variant={'ghost'}
-                className="absolute top-1/2 left-0"
+                className="absolute top-1/2 left-0 hover:text-white text-white hover:bg-transparent"
               >
                 <ChevronLeft size={60} />
               </Button>
@@ -157,7 +157,7 @@ export function PostView({ post }: PostViewProps) {
                 }}
                 size={'icon'}
                 variant={'ghost'}
-                className="absolute top-1/2 right-0"
+                className="absolute top-1/2 right-0 hover:text-white text-white hover:bg-transparent"
               >
                 <ChevronRight size={60} />
               </Button>
@@ -165,7 +165,7 @@ export function PostView({ post }: PostViewProps) {
           </div>
         )}
         <p className="bg-yellow-600">NEW Lightbox</p>
-        <div className="w-full px-5 flex flex-wrap justify-center gap-2">
+        <div className="w-full px-5 flex flex-wrap justify-center gap-2 ">
           {images.map((image, idx) => {
             return (
               <div
