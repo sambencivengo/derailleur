@@ -127,13 +127,13 @@ export function PostView({ post }: PostViewProps) {
       </CardHeader>
       <CardContent>
         {selectedImage !== null && (
-          <div onClick={closeLightbox} tabIndex={-1} className="fixed border-2 border-green-500 inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-90">
+          <div onClick={closeLightbox} tabIndex={-1} className="fixed  inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-90">
             <div
               ref={lightboxRef}
               onClick={() => {
                 closeLightbox();
               }}
-              className="relative w-full border-primary border h-full"
+              className="relative w-full  h-full"
             >
               <Image src={createImageUrl(selectedImage.image)} fill blurDataURL="/placeholderD.jpg" alt="User uploaded image" className="object-contain hover:cursor-zoom-out" />
               <Button onClick={() => closeLightbox()} size={'icon'} variant={'ghost'} className="hover:bg-transparent absolute top-0 right-0">
