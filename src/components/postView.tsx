@@ -49,6 +49,14 @@ export function PostView({ post }: PostViewProps) {
     }
   }, [selectedImage]);
 
+  React.useEffect(() => {
+    if (selectedImage !== null) {
+      document.body.classList.add('overflow-y-hidden');
+    } else {
+      document.body.classList.remove('overflow-y-hidden');
+    }
+  }, [selectedImage]);
+
   const openLightbox = (image: ImageAndIdx) => setSelectedImage(image);
   const closeLightbox = () => setSelectedImage(null);
 
