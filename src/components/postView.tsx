@@ -115,28 +115,32 @@ export function PostView({ post }: PostViewProps) {
               <Button onClick={() => closeLightbox()} size={'icon'} variant={'ghost'} className="hover:bg-transparent absolute top-0 right-0">
                 <X size={40} className="text-white" />
               </Button>
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  changeLightBoxImage('prev');
-                }}
-                size={'icon'}
-                variant={'ghost'}
-                className="absolute top-1/2 left-0 hover:text-white text-white hover:bg-transparent"
-              >
-                <ChevronLeft size={60} />
-              </Button>
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  changeLightBoxImage('next');
-                }}
-                size={'icon'}
-                variant={'ghost'}
-                className="absolute top-1/2 right-0 hover:text-white text-white hover:bg-transparent"
-              >
-                <ChevronRight size={60} />
-              </Button>
+              {images.length > 1 && (
+                <>
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      changeLightBoxImage('prev');
+                    }}
+                    size={'icon'}
+                    variant={'ghost'}
+                    className="absolute top-1/2 left-0 hover:text-white text-white hover:bg-transparent"
+                  >
+                    <ChevronLeft size={60} />
+                  </Button>
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      changeLightBoxImage('next');
+                    }}
+                    size={'icon'}
+                    variant={'ghost'}
+                    className="absolute top-1/2 right-0 hover:text-white text-white hover:bg-transparent"
+                  >
+                    <ChevronRight size={60} />
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         )}
