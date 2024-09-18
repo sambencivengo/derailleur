@@ -24,6 +24,15 @@ model User {
   saved UserSavedPosts[]
   likedPosts UserLikedPosts[]
   likedComments UserLikedComments[]
+  oAuthAccounts OAuthAccount[]
+}
+
+model OAuthAccount {
+  id String @id @unique
+  providerId String
+  providerUserId String
+  userId String
+  user User @relation(references: [id], fields: [userId])
 }
 
 model Session {
