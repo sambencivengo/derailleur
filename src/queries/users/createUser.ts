@@ -5,18 +5,18 @@ import prisma from "~prisma/prisma";
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
 import { PrismaQueryErrorCodes } from "~prisma/prismaErrorCodes";
 import { CreateUserPayload, User } from "~/types";
-
+import { generateUserNameFromEmail } from "~/utils/generateUsername";
 
 export async function createUser(createUserPayload: CreateUserPayload, userId = uuid()): Promise<DerailleurResponse<User>> {
 
   // NOTE: Create User Schema validation is in API call
-  const { password, username, favoriteBikes, location } = createUserPayload;
-
+  const { password, username, email, favoriteBikes, location } = createUserPayload;
   try {
     const newUser = await prisma.user.create({
       data: {
         id: userId,
-        username,
+        username: username ?? generateUserNameFromEmail(email),
+        email,
         hashedPassword: password,
         favoriteBikes,
         location,
