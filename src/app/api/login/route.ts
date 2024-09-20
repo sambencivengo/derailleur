@@ -1,21 +1,21 @@
 'use server';
 import * as argon2 from 'argon2';
-import { LogInSchema, userLogInSchema, validateSchema } from "~/schemas";
+import { UserLogInSchema, userLogInSchema, validateSchema } from "~/schemas";
 import { createNextResponse } from "~/utils";
 import { cookies } from 'next/headers';
 import { auth } from '~/auth';
-import { getUserByEmailForLogin } from '~/queries/users/getUserByEmailForLogin';
+import { getUserByUsernameOrEmailForLogin } from '~/queries/users/getUserByUsernameOrEmailForLogin';
 
 export const POST = async (req: Request) => {
   const body = await req.json();
-  const validateResponse = validateSchema<LogInSchema>({ body, schema: userLogInSchema });
+  const validateResponse = validateSchema<UserLogInSchema>({ body, schema: userLogInSchema });
   if (validateResponse.result === null || validateResponse.errors.length > 0) {
     return (createNextResponse({ errors: validateResponse.errors, status: 400 }));
   }
-  const { password, email } = validateResponse.result;
+  const { password, usernameOrEmail } = validateResponse.result;
 
   try {
-    const getUserByEmailResponse = await getUserByEmailForLogin(email);
+    const getUserByEmailResponse = await getUserByUsernameOrEmailForLogin(usernameOrEmail);
 
     if (getUserByEmailResponse.result === null || getUserByEmailResponse.errors.length > 0) {
       return (createNextResponse({ errors: getUserByEmailResponse.errors, status: 400 }));

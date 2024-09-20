@@ -4,37 +4,15 @@ import axios, { AxiosError } from 'axios';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { LogInSchema } from '~/schemas';
 import { AlertCircle } from 'lucide-react';
 import { FormWrapper, Spinner } from '~/components';
 import { FormControl, FormField, FormItem, FormMessage, Button, Input, Alert, AlertTitle, AlertDescription } from '~/components/ui';
 import { DerailleurError } from '~/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { userLogInSchema, UserLogInSchema } from '~/schemas/userSchemas';
 
 // NOTE: Necessary in this file to prevent build errors
-const userLogInSchema = z.object({
-  username: z
-    .string({
-      required_error: 'Username is required',
-      invalid_type_error: 'Username must be a string',
-    })
-    .min(2, {
-      message: 'Username must be at least 2 characters.',
-    })
-    .max(50)
-    .trim(),
-  password: z
-    .string({
-      required_error: 'Password is required',
-      invalid_type_error: 'Password must be a string',
-    })
-    .min(2, {
-      message: 'Password must be at least 2 characters.',
-    })
-    .max(50)
-    .trim(),
-});
 
 export function LogInForm() {
   const router = useRouter();
@@ -42,10 +20,10 @@ export function LogInForm() {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const returnPath = useSearchParams().get('returnPath');
 
-  const form = useForm<LogInSchema>({
+  const form = useForm<UserLogInSchema>({
     resolver: zodResolver(userLogInSchema),
     defaultValues: {
-      username: '',
+      usernameOrEmail: '',
       password: '',
     },
   });
@@ -71,11 +49,11 @@ export function LogInForm() {
       <div className="flex flex-col w-auto space-y-4">
         <FormField
           control={form.control}
-          name="username"
+          name="usernameOrEmail"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input autoComplete="" className="w-full" placeholder="username" {...field} />
+                <Input autoComplete="" className="w-full" placeholder="Username or email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -87,7 +65,7 @@ export function LogInForm() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input autoComplete="cuu" type="password" placeholder="password" {...field} />
+                <Input autoComplete="cuu" type="password" placeholder="Password" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
