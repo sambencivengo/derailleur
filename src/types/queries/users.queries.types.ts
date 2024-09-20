@@ -3,7 +3,8 @@ import { User } from "~/types";
 import { DerailleurResponse } from "~/utils";
 
 export interface CreateUserPayload {
-  username: string;
+  username?: string;
+  email: string;
   password: string;
   favoriteBikes: Array<string>;
   location?: string | null;

@@ -1,14 +1,15 @@
 import { z } from "zod";
 
 export const userSignUpSchema = z.object({
-  username: z
+  email: z
     .string({
-      required_error: "Username is required",
-      invalid_type_error: "Username must be a string",
+      required_error: 'Email is required',
+      invalid_type_error: 'Email must be a string',
     })
-    .min(2, {
-      message: 'Username must be at least 2 characters.',
+    .min(5, {
+      message: 'Email must be at least 5 characters.',
     })
+    .email({ message: 'Email address must be a valid email' })
     .max(50)
     .trim(),
   password: z
