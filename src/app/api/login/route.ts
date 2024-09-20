@@ -4,7 +4,7 @@ import { LogInSchema, userLogInSchema, validateSchema } from "~/schemas";
 import { createNextResponse } from "~/utils";
 import { cookies } from 'next/headers';
 import { auth } from '~/auth';
-import { getUserByUsernameForLogin } from '~/queries/users/getUserByUsernameForLogin';
+import { getUserByEmailForLogin } from '~/queries/users/getUserByEmailForLogin';
 
 export const POST = async (req: Request) => {
   const body = await req.json();
@@ -12,19 +12,19 @@ export const POST = async (req: Request) => {
   if (validateResponse.result === null || validateResponse.errors.length > 0) {
     return (createNextResponse({ errors: validateResponse.errors, status: 400 }));
   }
-  const { password, username } = validateResponse.result;
+  const { password, email } = validateResponse.result;
 
   try {
-    const getUserByUsernameResponse = await getUserByUsernameForLogin(username);
+    const getUserByEmailResponse = await getUserByEmailForLogin(email);
 
-    if (getUserByUsernameResponse.result === null || getUserByUsernameResponse.errors.length > 0) {
-      return (createNextResponse({ errors: getUserByUsernameResponse.errors, status: 400 }));
+    if (getUserByEmailResponse.result === null || getUserByEmailResponse.errors.length > 0) {
+      return (createNextResponse({ errors: getUserByEmailResponse.errors, status: 400 }));
     }
 
-    const { hashedPassword, id: userId } = getUserByUsernameResponse.result;
+    const { hashedPassword, id: userId } = getUserByEmailResponse.result;
     const validPassword = await argon2.verify(hashedPassword, password);
     if (!validPassword) {
-      return (createNextResponse({ errors: [{ data: {}, message: "Incorrect username or password" }], status: 403 }));
+      return (createNextResponse({ errors: [{ data: {}, message: "Incorrect email or password" }], status: 403 }));
     }
     const session = await auth.createSession(userId, {});
     const sessionCookie = auth.createSessionCookie(session.id);
@@ -32,7 +32,6 @@ export const POST = async (req: Request) => {
 
     return (createNextResponse({ result: 'success', status: 201 }));
   } catch (error) {
-    console.log(error);
     return (createNextResponse({ errors: [{ message: "An unknown error occurred", data: {} }], status: 500 }));
   }
 };
