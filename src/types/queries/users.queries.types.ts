@@ -5,8 +5,9 @@ import { DerailleurResponse } from "~/utils";
 export interface CreateUserPayload {
   username?: string;
   email: string;
-  password: string;
-  favoriteBikes: Array<string>;
+  // TODO: when user passwords are moved to their own table, remove
+  password?: string;
+  favoriteBikes?: Array<string>;
   location?: string | null;
 }
 export type UpdateUserPayload = Omit<Partial<CreateUserPayload>, 'password'>;
