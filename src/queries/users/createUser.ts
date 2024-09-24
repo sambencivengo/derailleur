@@ -17,8 +17,8 @@ export async function createUser(createUserPayload: CreateUserPayload, userId = 
         id: userId,
         username: username ?? generateUserNameFromEmail(email),
         email,
-        hashedPassword: password,
-        favoriteBikes,
+        hashedPassword: password ?? '', // TODO: Move passwords to their own table
+        favoriteBikes: favoriteBikes ?? [],
         location,
       },
     });
