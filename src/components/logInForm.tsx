@@ -12,8 +12,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { userLogInSchema, UserLogInSchema } from '~/schemas/userSchemas';
 
-// NOTE: Necessary in this file to prevent build errors
-
 export function LogInForm() {
   const router = useRouter();
   const [logInError, setLogInError] = React.useState<string[] | null>(null);
