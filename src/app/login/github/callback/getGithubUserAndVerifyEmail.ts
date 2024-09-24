@@ -2,7 +2,6 @@ import { GitHubTokens } from "arctic";
 import { gitHubOAuth } from "~/auth";
 import { createDerailleurError, createErrorResponse, createSuccessfulResponse, DerailleurResponse, responseIsOk } from "~/utils";
 
-
 interface GitHubUser {
   id: string;
   login: string;
@@ -15,7 +14,8 @@ interface GithubEmail {
   primary: boolean,
   visibility: string;
 }
-export async function getGithubUserAndVerifyEmailWithOAuth(code: string): Promise<DerailleurResponse> {
+
+export async function getGithubUserAndVerifyEmail(code: string): Promise<DerailleurResponse<GitHubUser>> {
   const tokens = await gitHubOAuth.validateAuthorizationCode(code);
 
   const githubUserResponse = await getGithubUser(tokens);
@@ -23,9 +23,9 @@ export async function getGithubUserAndVerifyEmailWithOAuth(code: string): Promis
     return (githubUserResponse);
   }
 
-  const verifiedEmailResponse = await userHasVerifiedEmail(tokens);
+  const verifiedEmailResponse = await getUsersVerifiedEmail(tokens);
   if (!responseIsOk(verifiedEmailResponse)) {
-    return (verifiedEmailResponse);
+    return (createErrorResponse(verifiedEmailResponse.errors));
   }
   const { email } = verifiedEmailResponse.result;
   return createSuccessfulResponse<GitHubUser>({ ...githubUserResponse.result, email });
@@ -44,15 +44,24 @@ export async function getGithubUser(tokens: GitHubTokens): Promise<DerailleurRes
     return createErrorResponse([createDerailleurError('Unable to retrieve GitHub user', {})]);
   }
 }
-export async function userHasVerifiedEmail(tokens: GitHubTokens): Promise<DerailleurResponse<GithubEmail>> {
+export async function getUsersVerifiedEmail(tokens: GitHubTokens): Promise<DerailleurResponse<GithubEmail>> {
 
   try {
-    const emailsResponse = await fetch("https://api.github.com/user/emails", {
-      headers: {
-        Authorization: `Bearer ${tokens.accessToken}`
+    const emailsResponse = await fetch(
+      "https://api.github.com/user/emails",
+      {
+        headers: {
+          Authorization: `token ${tokens.accessToken}`,
+          scope: 'user:email',
+          token_type: 'bearer',
+          Accept: 'application/vnd.github+json'
+        },
       }
-    });
+    );
     const emails: GithubEmail[] = await emailsResponse.json();
+    if (!emailsResponse.ok) {
+      return createErrorResponse([createDerailleurError('Request to GitHub Api was unsuccessful', { status: emailsResponse.status })]);
+    }
     const primaryEmail = emails.find((email) => email.primary) ?? null;
 
     if (!primaryEmail) {

@@ -9,7 +9,6 @@ import { FormWrapper, Spinner } from '~/components';
 import { FormControl, FormField, FormItem, FormMessage, Button, Input, Alert, AlertTitle, AlertDescription } from '~/components/ui';
 import { DerailleurError } from '~/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
 import { userLogInSchema, UserLogInSchema } from '~/schemas/userSchemas';
 
 export function LogInForm() {
@@ -79,13 +78,11 @@ export function LogInForm() {
           </Alert>
         )}
       </div>
+
       <div className="w-full flex flex-col justify-center gap-5">
         <Button className="self-center" type="submit">
           {isLoading ? <Spinner /> : 'Submit'}
         </Button>
-        <Link className="text-primary hover:underline italic self-center" href={'/signup'}>
-          Need to create an account?{' '}
-        </Link>
       </div>
     </FormWrapper>
   );
