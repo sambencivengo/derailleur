@@ -1,13 +1,11 @@
+import { v4 as uuid } from 'uuid';
 import { cookies } from "next/headers";
 import { OAuth2RequestError } from "arctic";
 import { auth } from "~/auth";
-import { createUser } from "~/queries";
-import { generateUserNameFromEmail } from "~/utils/generateUsername";
 import { createNextResponse, responseIsOk } from "~/utils";
-import { getUserByEmailForOAuthLink } from "~/queries/users/getUserByEmailForOAuthLink";
 import { getGithubUserAndVerifyEmail } from "~/app/login/github/callback/getGithubUserAndVerifyEmail";
-import { createOAuthAccount } from "~/queries/oAuthAccounts/createOAuthAccount";
-
+import { getOAuthAccountByProviderUserId } from '~/queries/oAuthAccounts/getOAuthAccount';
+import { createUserAndOAuthAccountInTransaction } from '~/queries/users/createUserAndOAuthAccountInTransaction';
 
 
 export async function GET(request: Request): Promise<Response> {
@@ -32,48 +30,30 @@ export async function GET(request: Request): Promise<Response> {
     }
 
     const githubUser = githubUserAndEmailResponse.result;
-
-    // Check if user is already in database
-    const existingUserResponse = await getUserByEmailForOAuthLink(githubUser.email, 'github');
-
-    if (existingUserResponse.errors.length > 0) {
-      return createNextResponse({ errors: existingUserResponse.errors, status: 400 });
+    const existingOAuthAccountResponse = await getOAuthAccountByProviderUserId({ providerId: 'github', providerUserId: githubUser.id });
+    // Error during account query, return errors
+    if (existingOAuthAccountResponse.errors.length > 0) {
+      return createNextResponse({ errors: existingOAuthAccountResponse.errors, status: 400 });
     }
-    if (!existingUserResponse.result) {
-      // If user is not in the DB, create a new user
-      const newUserResponse = await createUser({ favoriteBikes: [], username: generateUserNameFromEmail(githubUser.email), email: githubUser.email, });
-      if (!responseIsOk(newUserResponse)) {
-        return createNextResponse({ errors: newUserResponse.errors, status: 400 });
+    // Account doesn't exist but query was successful, we want to create a user and oAuthAccount
+    if (existingOAuthAccountResponse.result === null) {
+      const userId = uuid();
+      const oAuthAccountId = uuid();
+      const userAndOAuthResponse = await createUserAndOAuthAccountInTransaction({ email: githubUser.email, providerId: 'github', providerUserId: githubUser.id, oAuthAccountId, userId });
+      if (!responseIsOk(userAndOAuthResponse)) {
+        return createNextResponse({ errors: userAndOAuthResponse.errors, status: 400 });
       }
-      const { result } = newUserResponse;
-      const oAuthAccountResponse = await createOAuthAccount({ providerId: 'github', providerUserId: githubUser.id, userId: result.id });
-      if (!responseIsOk(oAuthAccountResponse)) {
-        return createNextResponse({ errors: oAuthAccountResponse.errors, status: 400 });
-      }
-      const session = await auth.createSession(result.id, {});
-      const sessionCookie = auth.createSessionCookie(session.id);
-      cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
-      return createNextResponse({ result: { user: result, oAuth: oAuthAccountResponse.result }, status: 200 });
+      // User and associated OAuth account created, proceed
+      const { oAuthAccount, user } = userAndOAuthResponse.result;
+      await setOAuthAccountSession(user.id);
+      return createNextResponse({ result: { user, oAuth: oAuthAccount }, status: 200 });
     }
 
-    if (existingUserResponse.result.oAuthAccounts.length !== 1) {
-      const oAuthAccountResponse = await createOAuthAccount({ providerId: 'github', providerUserId: githubUser.id, userId: existingUserResponse.result.id });
-      if (!responseIsOk(oAuthAccountResponse)) {
-        return createNextResponse({ errors: oAuthAccountResponse.errors, status: 400 });
-      }
-    }
+    // Existing account exists, create session for it
+    const oAuthAccount = existingOAuthAccountResponse.result;
+    await setOAuthAccountSession(oAuthAccount.userId);
+    return createNextResponse({ result: { oAuth: oAuthAccount }, status: 200 });
 
-    const existingUser = existingUserResponse.result;
-    const session = await auth.createSession(existingUser.id, {});
-    const sessionCookie = auth.createSessionCookie(session.id);
-    cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
-    return new Response(null, {
-      status: 302,
-      headers: {
-        Location: "/",
-
-      }
-    });
   } catch (e) {
     // the specific error message depends on the provider
     if (e instanceof OAuth2RequestError) {
@@ -88,3 +68,8 @@ export async function GET(request: Request): Promise<Response> {
   }
 }
 
+async function setOAuthAccountSession(userId: string) {
+  const session = await auth.createSession(userId, {});
+  const sessionCookie = auth.createSessionCookie(session.id);
+  cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+}
