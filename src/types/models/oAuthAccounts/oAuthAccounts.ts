@@ -1,4 +1,3 @@
 import { OAuthAccount as PrismaOAuthAccount } from '@prisma/client';
 
-export interface OAuthAccount extends PrismaOAuthAccount { }
-
+export type OAuthAccount = PrismaOAuthAccount;
