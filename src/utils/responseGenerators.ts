@@ -24,3 +24,7 @@ export function createErrorResponse<T = any>(errors: DerailleurError[]): Deraill
 export function createNextResponse({ errors, status, result }: { errors?: DerailleurError[]; status: number; result?: string | { [key: string]: any; }; }) {
   return NextResponse.json({ errors, result }, { status });
 }
+
+export function responseIsOk<T>(response: DerailleurResponse<T>): response is { errors: DerailleurError[]; result: T; } {
+  return (response.errors.length === 0 || response.result !== null);
+}

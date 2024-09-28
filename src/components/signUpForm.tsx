@@ -14,15 +14,17 @@ import { FormWrapper, Spinner } from '~/components';
 import Link from 'next/link';
 
 // NOTE: Necessary in this file to prevent build errors
+
 const userSignUpSchema = z.object({
-  username: z
+  email: z
     .string({
-      required_error: 'Username is required',
-      invalid_type_error: 'Username must be a string',
+      required_error: 'Email is required',
+      invalid_type_error: 'Email must be a string',
     })
-    .min(2, {
-      message: 'Username must be at least 2 characters.',
+    .min(5, {
+      message: 'Email must be at least 5 characters.',
     })
+    .email({ message: 'Email address must be a valid email' })
     .max(50)
     .trim(),
   password: z
@@ -44,7 +46,7 @@ export function SignUpForm() {
   const form = useForm<SignUpSchema>({
     resolver: zodResolver(userSignUpSchema),
     defaultValues: {
-      username: '',
+      email: '',
       password: '',
     },
   });
@@ -72,11 +74,11 @@ export function SignUpForm() {
       <div className="flex flex-col w-auto space-y-4">
         <FormField
           control={form.control}
-          name="username"
+          name="email"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input autoComplete="" className="w-full" placeholder="username" {...field} />
+                <Input autoComplete="" className="w-full" placeholder="email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

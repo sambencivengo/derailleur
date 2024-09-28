@@ -21,4 +21,13 @@ export const userProfile = Prisma.validator<Prisma.UserDefaultArgs>()({
   }
 });
 
+export const userProfileWithOAuth = Prisma.validator<Prisma.UserDefaultArgs>()({
+  include: {
+    oAuthAccounts: true
+  }
+});
+export type UserProfileWithOAuth = Prisma.UserGetPayload<typeof userProfileWithOAuth>;
+
+
+
 export type UserProfile = Prisma.UserGetPayload<typeof userProfile>;
