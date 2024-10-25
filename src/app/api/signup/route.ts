@@ -13,13 +13,13 @@ export const POST = async (req: Request) => {
   if (validateResponse.result === null || validateResponse.errors.length > 0) {
     return (createNextResponse({ errors: validateResponse.errors, status: 400 }));
   }
-  const { password, username } = validateResponse.result;
+  const { password, email } = validateResponse.result;
 
   try {
     const hashedPassword = await argon2.hash(password);
     const userId = uuid();
     const userResponse = await createUser({
-      username,
+      email,
       password: hashedPassword,
       favoriteBikes: []
     }, userId);

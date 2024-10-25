@@ -62,6 +62,7 @@ async function seed() {
       data: {
         hashedPassword: hashedSimplePassword,
         id: DEV_USER_ID,
+        email: 'sambencivengo2@gmail.com',
         username: 'sammy',
         location: 'Colorado',
         favoriteBikes: ['1991 Trek Single Track 990'],
@@ -101,7 +102,8 @@ async function seed() {
       const createUserPromise = prisma.user.create({
         data: {
           id: uuid(),
-          username: faker.internet.displayName(),
+          username: faker.internet.userName(),
+          email: faker.internet.email(),
           favoriteBikes: new Array(generateRandomNumberInLimit()).fill(null).map(() => faker.vehicle.bicycle()),
           hashedPassword: hashedSimplePassword,
           location: faker.location.state(),
