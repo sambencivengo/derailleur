@@ -4,8 +4,10 @@ import { OAuth2RequestError } from "arctic";
 import { auth } from "~/auth";
 import { createNextResponse, responseIsOk } from "~/utils";
 import { getGithubUserAndVerifyEmail } from "~/app/login/github/callback/getGithubUserAndVerifyEmail";
-import { getOAuthAccountByProviderUserId } from '~/queries/oAuthAccounts/getOAuthAccount';
 import { createUserAndOAuthAccountInTransaction } from '~/queries/users/createUserAndOAuthAccountInTransaction';
+import { getOAuthAccountByProviderUserId } from '~/queries/oAuthAccounts/getOAuthAccountByProviderUserId';
+import { URL } from 'url';
+import { NextResponse } from 'next/server';
 
 
 export async function GET(request: Request): Promise<Response> {
@@ -30,7 +32,7 @@ export async function GET(request: Request): Promise<Response> {
     }
 
     const githubUser = githubUserAndEmailResponse.result;
-    const existingOAuthAccountResponse = await getOAuthAccountByProviderUserId({ providerId: 'github', providerUserId: githubUser.id });
+    const existingOAuthAccountResponse = await getOAuthAccountByProviderUserId({ providerId: 'github', providerUserId: githubUser.id.toString() });
     // Error during account query, return errors
     if (existingOAuthAccountResponse.errors.length > 0) {
       return createNextResponse({ errors: existingOAuthAccountResponse.errors, status: 400 });
@@ -52,7 +54,13 @@ export async function GET(request: Request): Promise<Response> {
     // Existing account exists, create session for it
     const oAuthAccount = existingOAuthAccountResponse.result;
     await setOAuthAccountSession(oAuthAccount.userId);
-    return createNextResponse({ result: { oAuth: oAuthAccount }, status: 200 });
+    return new Response(null, {
+      status: 302,
+      headers: {
+        Location: "/"
+      }
+    });
+    // return createNextResponse({ result: { oAuth: oAuthAccount }, status: 200 });
 
   } catch (e) {
     // the specific error message depends on the provider

@@ -3,7 +3,7 @@ import { gitHubOAuth } from "~/auth";
 import { createDerailleurError, createErrorResponse, createSuccessfulResponse, DerailleurResponse, responseIsOk } from "~/utils";
 
 interface GitHubUser {
-  id: string;
+  id: number;
   login: string;
   email: string;
 }

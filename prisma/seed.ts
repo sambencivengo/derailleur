@@ -62,7 +62,7 @@ async function seed() {
       data: {
         hashedPassword: hashedSimplePassword,
         id: DEV_USER_ID,
-        email: 'sambencivengo@gmail.com',
+        email: 'sambencivengo2@gmail.com',
         username: 'sammy',
         location: 'Colorado',
         favoriteBikes: ['1991 Trek Single Track 990'],
