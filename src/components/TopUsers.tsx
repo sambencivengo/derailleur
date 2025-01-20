@@ -18,6 +18,10 @@ export async function TopUsers() {
   if (errors.length > 0 || result === null) {
     return null;
   }
+
+  if (result.length == 0) {
+    return null;
+  }
   return (
     <Card className="w-full max-w-52 bg-background">
       <TooltipProvider>
