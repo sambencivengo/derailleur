@@ -1,5 +1,3 @@
-'use client';
-
 import { z } from 'zod';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
 import { Form } from '~/components/ui';
