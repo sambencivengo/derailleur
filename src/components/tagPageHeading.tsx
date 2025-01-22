@@ -3,7 +3,7 @@
 import { AlertCircle } from 'lucide-react';
 import { TextHeading } from '~/components/textHeading';
 import { Alert, AlertTitle, AlertDescription, Badge } from '~/components/ui';
-import { getTagWithCountByName } from '~/queries';
+import { getTagWithCountByName } from '~/queries/tags/getTagWithCountByName';
 import { BackToAllPostsLink } from '~/components/backToAllPostsLink';
 import { BackToAllTagsLink } from '~/components/backToAllTagsLink';
 

@@ -1,4 +1,3 @@
-'use client';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { FormWrapper } from '~/components/formWrapper';
@@ -8,7 +7,8 @@ import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHea
 import { updatePostPayloadSchema } from '~/schemas/postSchemas';
 import { PostWithAuthorNameTagsAndCommentCount, TagWithPostCount, UpdatePostPayload, UserAndSession } from '~/types';
 import { AlertCircle } from 'lucide-react';
-import { getTagsWithCountByName, updatePost } from '~/queries';
+import { getTagsWithCountByName } from '~/queries/tags/getTagsWithCountByName';
+import { updatePost } from '~/queries/posts/updatePost';
 import { useToast } from '~/components/ui/use-toast';
 import { Switch } from '~/components/ui/switch';
 
@@ -25,6 +25,7 @@ interface EditPostFormProps {
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   setSuccessfullyEditedPost: React.Dispatch<React.SetStateAction<PostWithAuthorNameTagsAndCommentCount | null>>;
 }
+// TODO: use images variable
 export function EditPostForm({ user, postId, content, title, existingTags, rideWithGPSLink, images, setIsEditing, setSuccessfullyEditedPost }: EditPostFormProps) {
   const [editPostError, setEditPostError] = React.useState<string[] | null>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);

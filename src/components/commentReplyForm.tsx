@@ -1,4 +1,3 @@
-'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { X } from 'lucide-react';
 import React from 'react';
@@ -10,7 +9,7 @@ import { Spinner } from '~/components/spinner';
 import { Button, FormControl, FormField, FormItem, FormMessage, Textarea } from '~/components/ui';
 import { useToast } from '~/components/ui/use-toast';
 import { cn } from '~/lib/utils';
-import { createComment } from '~/queries';
+import { createComment } from '~/queries/comments/createComment';
 import { CreateCommentPayload, CommentWithUserNameAndId } from '~/types';
 import { DerailleurError } from '~/utils';
 

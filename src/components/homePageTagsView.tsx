@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { QueryError } from '~/components/queryError';
 import { Card, CardContent, CardHeader } from '~/components/ui';
 import { Badge } from '~/components/ui/badge';
-import { getTagsWithCount } from '~/queries';
+import { getTagsWithCount } from '~/queries/tags/getTagsWithCount';
 
 export async function HomePageTagsView() {
   const tagsResponse = await getTagsWithCount(10);

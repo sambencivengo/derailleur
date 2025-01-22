@@ -7,7 +7,7 @@ import { TextHeading } from '~/components/textHeading';
 import { PostPreviewsContainer } from '~/components/postPreviewsContainer';
 import { BackToAllPostsLink } from '~/components/backToAllPostsLink';
 import { Badge, Skeleton } from '~/components/ui';
-import { getPosts } from '~/queries';
+import { getPosts } from '~/queries/posts/getPosts';
 
 const objectCategories: { [key: string]: PostCategory } = {
   routes: PostCategory.ROUTE,

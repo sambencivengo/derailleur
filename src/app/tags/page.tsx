@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { QueryError } from '~/components/queryError';
 import { TextHeading } from '~/components/textHeading';
 import { Badge, Separator } from '~/components/ui';
-import { getTagsWithCount } from '~/queries';
+import { getTagsWithCount } from '~/queries/tags/getTagsWithCount';
 
 export default async function Page() {
   const response = await getTagsWithCount();

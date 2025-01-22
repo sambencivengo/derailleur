@@ -6,7 +6,7 @@ import { TagPostsView } from '~/components/TagPostsView';
 import { QueryError } from '~/components/queryError';
 import { TagPageHeading } from '~/components/tagPageHeading';
 import { Skeleton } from '~/components/ui';
-import { getTagWithPostsByName } from '~/queries';
+import { getTagWithPostsByName } from '~/queries/tags/getTagWithPostsByName';
 
 export default async function Page({ params }: { params: { tag: string } }) {
   const { tag } = params;

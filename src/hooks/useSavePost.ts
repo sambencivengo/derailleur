@@ -1,7 +1,8 @@
 'use client';
 
 import React from "react";
-import { savePost, unsavePost } from "~/queries";
+import { savePost } from "~/queries/posts/savePost";
+import { unsavePost } from "~/queries/posts/unsavePost";
 
 interface UseSavePostProps {
   postIsSaved: boolean;

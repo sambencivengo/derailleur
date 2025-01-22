@@ -1,6 +1,7 @@
 'use server';
 import { Prisma } from "@prisma/client";
-import { editProfileSchema, EditProfileSchema, validateSchema } from "~/schemas";
+import { editProfileSchema, EditProfileSchema } from "~/schemas/userSchemas";
+import { validateSchema } from "~/schemas/schemaValidator";
 import { UpdateUserPayload, UserProfile, userProfile } from "~/types";
 import { DerailleurResponse, createSuccessfulResponse, createErrorResponse, DerailleurError } from "~/utils";
 import prisma from "~prisma/prisma";

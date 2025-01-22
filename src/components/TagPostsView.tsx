@@ -5,7 +5,7 @@ import { PostPreview } from '~/components/postPreview';
 import { QueryError } from '~/components/queryError';
 import { EndOfPostsNotice } from '~/components/endOfPostsNotice';
 import { Button } from '~/components/ui';
-import { getTagWithPostsByName } from '~/queries';
+import { getTagWithPostsByName } from '~/queries/tags/getTagWithPostsByName';
 import { PostCursor, PostWithAuthorNameTagsAndCommentCount, TagWithPosts, UserAndSession } from '~/types';
 import { DerailleurError } from '~/utils';
 

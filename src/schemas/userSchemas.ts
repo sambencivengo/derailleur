@@ -23,6 +23,7 @@ export const userSignUpSchema = z.object({
     .trim(),
 });
 
+// TODO: fix schema exports
 export const editProfilePayloadSchema = z.object({
   location: z.string().optional(),
   favoriteBikes: z.array(z.object({ bike: z.string().min(5, 'Bike names must be at least 5 characters long').max(50, 'Bike names cannot be longer than 50 characters') }))

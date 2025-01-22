@@ -1,6 +1,8 @@
 'use server';
 import * as argon2 from 'argon2';
-import { LogInSchema, userLogInSchema, validateSchema } from "~/schemas";
+import { LogInSchema } from "~/schemas/userSchemas";
+import { validateSchema } from "~/schemas/schemaValidator";
+import { userLogInSchema } from "~/schemas/userSchemas";
 import { createNextResponse } from "~/utils";
 import { cookies } from 'next/headers';
 import { auth } from '~/auth';

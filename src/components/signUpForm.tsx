@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { FormControl, FormField, FormItem, FormMessage, Button, Input } from '~/components/ui';
-import { SignUpSchema } from '~/schemas';
+import { SignUpSchema } from '~/schemas/userSchemas';
 import { AlertCircle } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '~/components/ui';
 import { DerailleurError } from '~/utils';

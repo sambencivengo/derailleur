@@ -1,9 +1,11 @@
 'use server';
 import * as argon2 from 'argon2';
 import { v4 as uuid } from 'uuid';
-import { createUser } from '~/queries';
+import { createUser } from '~/queries/users/createUser';
 import { auth } from '~/auth';
-import { SignUpSchema, userSignUpSchema, validateSchema } from '~/schemas';
+import { validateSchema } from '~/schemas/schemaValidator';
+import { userSignUpSchema, } from '~/schemas/userSchemas';
+import { SignUpSchema } from '~/schemas/userSchemas';
 import { createNextResponse } from '~/utils';
 import { cookies } from 'next/headers';
 

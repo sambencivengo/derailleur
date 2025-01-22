@@ -4,7 +4,7 @@ import { PostPreview } from '~/components/postPreview';
 import { Spinner } from '~/components/spinner';
 import { QueryError } from '~/components/queryError';
 import { Button } from '~/components/ui';
-import { getPosts } from '~/queries';
+import { getPosts } from '~/queries/posts/getPosts';
 import { PostCursor, PostWithAuthorNameTagsAndCommentCount, UserAndSession } from '~/types';
 import { DerailleurError } from '~/utils';
 import { PostCategory } from '@prisma/client';

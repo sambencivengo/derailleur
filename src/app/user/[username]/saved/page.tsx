@@ -3,7 +3,7 @@ import { TextHeading } from '~/components/textHeading';
 import { QueryError } from '~/components/queryError';
 import { PostPreview } from '~/components/postPreview';
 import { Separator } from '~/components/ui';
-import { getSavedPosts } from '~/queries';
+import { getSavedPosts } from '~/queries/posts/getSavedPosts';
 
 export default async function Page({ params }: { params: { username: string } }) {
   const { username } = params;

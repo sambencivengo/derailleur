@@ -11,7 +11,8 @@ import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHea
 import { createPostSchema, CreatePostSchema } from '~/schemas/postSchemas';
 import { CreatePostPayload, TagWithPostCount } from '~/types';
 import { AlertCircle } from 'lucide-react';
-import { createPost, getTagsWithCountByName } from '~/queries';
+import { createPost } from '~/queries/posts/createPost';
+import { getTagsWithCountByName } from '~/queries/tags/getTagsWithCountByName';
 import { useToast } from '~/components/ui/use-toast';
 import { Switch } from '~/components/ui/switch';
 import { DerailleurError } from '~/utils';

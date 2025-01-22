@@ -5,7 +5,7 @@ import { QueryError } from '~/components/queryError';
 import { HomePageTagsView } from '~/components/homePageTagsView';
 import { Separator, Skeleton } from '~/components/ui';
 import { WelcomeCard } from '~/components/welcomeCard';
-import { getPosts } from '~/queries';
+import { getPosts } from '~/queries/posts/getPosts';
 
 export default async function Home({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
   const user = await getUserSession();

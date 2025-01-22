@@ -4,7 +4,7 @@ import axios, { AxiosError } from 'axios';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { LogInSchema } from '~/schemas';
+import { LogInSchema } from '~/schemas/userSchemas';
 import { AlertCircle } from 'lucide-react';
 import { Spinner } from '~/components/spinner';
 import { FormWrapper } from '~/components/formWrapper';

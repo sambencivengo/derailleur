@@ -1,11 +1,10 @@
-'use client';
 import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { X, PlusCircle } from 'lucide-react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { FormWrapper } from '~/components/formWrapper';
 import { FormField, FormItem, FormControl, Input, FormMessage, Button, Separator } from '~/components/ui';
-import { updateUser } from '~/queries';
+import { updateUser } from '~/queries/users/updateUser';
 import { editProfilePayloadSchema, EditProfilePayloadSchema } from '~/schemas/userSchemas';
 import { UserProfile } from '~/types';
 import { Spinner } from '~/components/spinner';

@@ -4,7 +4,8 @@ import { Prisma } from '@prisma/client';
 import prisma from '~prisma/prisma';
 import { DerailleurResponse, createSuccessfulResponse, createErrorResponse, DerailleurError } from '~/utils';
 import { CreatePost, CreatePostPayload, PostWithAuthorNameAndTags, postWithAuthorNameAndTagsQuery } from '~/types';
-import { createPostPayloadSchema, CreatePostPayloadSchema, validateSchema } from '~/schemas';
+import { createPostPayloadSchema, CreatePostPayloadSchema } from '~/schemas/postSchemas';
+import { validateSchema } from '~/schemas/schemaValidator';
 import { PrismaQueryErrorCodes } from '~prisma/prismaErrorCodes';
 import { determinePostCategory } from '~/queries/posts/utils';
 
