@@ -10,7 +10,8 @@ import { AlertCircle } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '~/components/ui';
 import { DerailleurError } from '~/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { FormWrapper, Spinner } from '~/components';
+import { Spinner } from '~/components/spinner';
+import { FormWrapper } from '~/components/formWrapper';
 import Link from 'next/link';
 
 // NOTE: Necessary in this file to prevent build errors

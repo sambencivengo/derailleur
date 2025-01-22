@@ -1,5 +1,6 @@
 import { getUserSession } from '~/auth';
-import { QueryError, TextHeading } from '~/components';
+import { QueryError } from '~/components/queryError';
+import { TextHeading } from '~/components/textHeading';
 import { ProfileCommentsView } from '~/components/profileCommentsView';
 import { Separator } from '~/components/ui';
 import { getCommentsForProfile } from '~/queries/comments/getComments';

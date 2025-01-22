@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { getUserSession } from '~/auth';
-import { PostPreviewsContainer, QueryError } from '~/components';
+import { PostPreviewsContainer } from '~/components/postPreviewsContainer';
+import { QueryError } from '~/components/queryError';
 import { HomePageTagsView } from '~/components/homePageTagsView';
 import { Separator, Skeleton } from '~/components/ui';
 import { WelcomeCard } from '~/components/welcomeCard';

@@ -2,7 +2,9 @@
 
 import { Suspense } from 'react';
 import { getUserSession } from '~/auth';
-import { QueryError, TagPageHeading, TagPostsView } from '~/components';
+import { TagPostsView } from '~/components/TagPostsView';
+import { QueryError } from '~/components/queryError';
+import { TagPageHeading } from '~/components/tagPageHeading';
 import { Skeleton } from '~/components/ui';
 import { getTagWithPostsByName } from '~/queries';
 

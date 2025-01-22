@@ -1,7 +1,7 @@
 'use server';
 
 import { AlertCircle } from 'lucide-react';
-import { TextHeading } from '~/components';
+import { TextHeading } from '~/components/textHeading';
 import { Alert, AlertTitle, AlertDescription, Badge } from '~/components/ui';
 import { getTagWithCountByName } from '~/queries';
 import { BackToAllPostsLink } from '~/components/backToAllPostsLink';

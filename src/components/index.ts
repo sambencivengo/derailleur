@@ -1,4 +1,3 @@
-export * from './signUpForm';
 export * from './logInForm';
 export * from './logInForm';
 export * from './navBar';

@@ -1,6 +1,8 @@
 'use client';
 import React from 'react';
-import { PostPreview, QueryError, Spinner } from '~/components';
+import { Spinner } from '~/components/spinner';
+import { PostPreview } from '~/components/postPreview';
+import { QueryError } from '~/components/queryError';
 import { EndOfPostsNotice } from '~/components/endOfPostsNotice';
 import { Button } from '~/components/ui';
 import { getTagWithPostsByName } from '~/queries';
@@ -22,7 +24,7 @@ export function TagPostsView({ user, initialTagAndPosts, tagNameWithoutHyphens }
   const [cursor, setCursor] = React.useState<PostCursor | null>(initialPosts.length > POST_BATCH_AMOUNT ? { createdAt: initialPosts[initialPosts.length - 1].createdAt, postId: initialPosts[initialPosts.length - 1].id } : null);
 
   const getMorePosts = React.useCallback(
-    async function (cursorId: string, cursorDate: string | Date) {
+    async function(cursorId: string, cursorDate: string | Date) {
       setIsLoading(true);
       const nextGroupOfPostsResponse = await getTagWithPostsByName(tagNameWithoutHyphens, undefined, { postId: cursorId, createdAt: cursorDate });
       const { errors, result } = nextGroupOfPostsResponse;

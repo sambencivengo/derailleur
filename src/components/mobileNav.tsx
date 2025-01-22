@@ -1,7 +1,11 @@
 'use client';
-import { ChevronLeftSquare } from 'lucide-react';
 import React from 'react';
-import { LogInButton, LogOutButton, NewPostButton, SignUpButton, ToggleDarkModeButton } from '~/components';
+import { ChevronLeftSquare } from 'lucide-react';
+import { LogInButton } from '~/components/logInButton';
+import { LogOutButton } from '~/components/logOutButton';
+import { NewPostButton } from '~/components/newPostButton';
+import { SignUpButton } from '~/components/signUpButton';
+import { ToggleDarkModeButton } from '~/components/toggleDarkModeButton';
 import { MobileAddPostButton } from '~/components/mobileAddPostButton';
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from '~/components/ui';
 import { UserProfileButton } from '~/components/userProfileButton';

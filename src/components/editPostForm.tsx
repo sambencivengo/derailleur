@@ -1,7 +1,8 @@
 'use client';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { FormWrapper, Spinner } from '~/components';
+import { FormWrapper } from '~/components/formWrapper';
+import { Spinner } from '~/components/spinner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, Label, MultiSelect, Textarea } from '~/components/ui';
 import { updatePostPayloadSchema } from '~/schemas/postSchemas';

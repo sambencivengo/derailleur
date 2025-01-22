@@ -1,5 +1,7 @@
 import { getUserSession } from '~/auth';
-import { PostPreviewsContainer, QueryError, TextHeading } from '~/components';
+import { PostPreviewsContainer } from '~/components/postPreviewsContainer';
+import { TextHeading } from '~/components/textHeading';
+import { QueryError } from '~/components/queryError';
 import { Separator } from '~/components/ui';
 import { getPosts } from '~/queries';
 

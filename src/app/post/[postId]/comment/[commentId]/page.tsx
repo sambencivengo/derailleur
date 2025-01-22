@@ -1,6 +1,6 @@
 import React from 'react';
 import { getUserSession } from '~/auth';
-import { QueryError } from '~/components';
+import { QueryError } from '~/components/queryError';
 import { CommentThreadContainer } from '~/components/commentThreadContainer';
 import { getComment } from '~/queries/comments/getComment';
 

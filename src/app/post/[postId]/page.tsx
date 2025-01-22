@@ -1,5 +1,5 @@
 import { getUserSession } from '~/auth';
-import { QueryError } from '~/components';
+import { QueryError } from '~/components/queryError';
 import { CenterLayout } from '~/components/layouts/centerLayout';
 import { MainLayout } from '~/components/layouts/mainLayout';
 import { SideBarLayout } from '~/components/layouts/rightLayout';

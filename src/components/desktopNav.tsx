@@ -2,7 +2,8 @@
 import { ChevronLeftSquare } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
-import { LogOutButton, ToggleDarkModeButton } from '~/components';
+import { ToggleDarkModeButton } from '~/components/toggleDarkModeButton';
+import { LogOutButton } from '~/components/logOutButton';
 import { NewPostLoginDialog } from '~/components/newPostLoginDialog';
 import { Button } from '~/components/ui';
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from '~/components/ui/popover';

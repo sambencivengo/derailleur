@@ -1,6 +1,7 @@
 'use server';
 import { getUserSessionAndRedirect } from '~/auth';
-import { LogInForm, TextHeading } from '~/components';
+import { LogInForm } from '~/components/logInForm';
+import { TextHeading } from '~/components/textHeading';
 import { LoginAndSignupContainer } from '~/components/loginAndSignupContainer';
 
 export default async function Page() {

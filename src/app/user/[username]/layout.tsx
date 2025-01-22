@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { getUserSession } from '~/auth';
-import { TextHeading } from '~/components';
+import { TextHeading } from '~/components/textHeading';
 import { CenterLayout } from '~/components/layouts/centerLayout';
 import { MainLayout } from '~/components/layouts/mainLayout';
 import { cn } from '~/lib/utils';

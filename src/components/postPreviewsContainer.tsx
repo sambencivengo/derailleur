@@ -1,6 +1,8 @@
 'use client';
 import React from 'react';
-import { PostPreview, QueryError, Spinner } from '~/components';
+import { PostPreview } from '~/components/postPreview';
+import { Spinner } from '~/components/spinner';
+import { QueryError } from '~/components/queryError';
 import { Button } from '~/components/ui';
 import { getPosts } from '~/queries';
 import { PostCursor, PostWithAuthorNameTagsAndCommentCount, UserAndSession } from '~/types';
@@ -52,7 +54,7 @@ export function PostPreviewsContainer({ username, initialPosts, category, user, 
   }, [searchParams, user, category, username, sort]);
 
   const getMorePosts = React.useCallback(
-    async function (cursorId: string, cursorDate: string | Date) {
+    async function(cursorId: string, cursorDate: string | Date) {
       setIsLoading(true);
       const nextGroupOfPostsResponse = await getPosts(username, category, user === null ? undefined : user.userId, { postId: cursorId, createdAt: cursorDate }, sort === null ? undefined : sort);
       const { errors, result } = nextGroupOfPostsResponse;

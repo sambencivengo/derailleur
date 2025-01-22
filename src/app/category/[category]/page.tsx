@@ -3,7 +3,8 @@
 import { PostCategory } from '@prisma/client';
 import { Suspense } from 'react';
 import { getUserSession } from '~/auth';
-import { PostPreviewsContainer, TextHeading } from '~/components';
+import { TextHeading } from '~/components/textHeading';
+import { PostPreviewsContainer } from '~/components/postPreviewsContainer';
 import { BackToAllPostsLink } from '~/components/backToAllPostsLink';
 import { Badge, Skeleton } from '~/components/ui';
 import { getPosts } from '~/queries';

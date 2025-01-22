@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { QueryError, TextHeading } from '~/components';
+import { QueryError } from '~/components/queryError';
+import { TextHeading } from '~/components/textHeading';
 import { Badge, Separator } from '~/components/ui';
 import { getTagsWithCount } from '~/queries';
 

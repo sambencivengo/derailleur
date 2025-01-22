@@ -1,6 +1,6 @@
 import React from 'react';
 import { getUserSession } from '~/auth';
-import { QueryError } from '~/components';
+import { QueryError } from '~/components/queryError';
 import { ProfileView } from '~/components/profileView';
 import { getUserByUsername } from '~/queries';
 

@@ -1,6 +1,7 @@
 import './styles/globals.css';
 import { cn } from '~/lib/utils';
-import { NavBar, ThemeProvider } from '~/components';
+import { ThemeProvider } from '~/components/themeProvider';
+import { NavBar } from '~/components/navBar';
 import { Toaster } from '~/components/ui/toaster';
 import { Metadata } from 'next';
 
