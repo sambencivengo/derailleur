@@ -1,7 +1,7 @@
 'use server';
 import { cookies } from "next/headers";
-import { getUserSession } from "~/auth";
-import { auth } from "~/auth";
+import { getUserSession } from "~/auth/getUserSession";
+import { auth } from "~/auth/auth";
 import { createNextResponse } from "~/utils";
 
 export const POST = async (request: Request) => {

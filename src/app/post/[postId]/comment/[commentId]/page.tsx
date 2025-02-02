@@ -1,5 +1,5 @@
 import React from 'react';
-import { getUserSession } from '~/auth';
+import { getUserSession } from '~/auth/getUserSession';
 import { QueryError } from '~/components/queryError';
 import { CommentThreadContainer } from '~/components/commentThreadContainer';
 import { getComment } from '~/queries/comments/getComment';

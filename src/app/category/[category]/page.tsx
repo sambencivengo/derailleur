@@ -2,7 +2,7 @@
 
 import { PostCategory } from '@prisma/client';
 import { Suspense } from 'react';
-import { getUserSession } from '~/auth';
+import { getUserSession } from '~/auth/getUserSession';
 import { TextHeading } from '~/components/textHeading';
 import { PostPreviewsContainer } from '~/components/postPreviewsContainer';
 import { BackToAllPostsLink } from '~/components/backToAllPostsLink';

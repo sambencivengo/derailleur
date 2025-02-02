@@ -1,4 +1,4 @@
-import { getUserSession } from '~/auth';
+import { getUserSession } from '~/auth/getUserSession';
 import { QueryError } from '~/components/queryError';
 import { TextHeading } from '~/components/textHeading';
 import { ProfileCommentsView } from '~/components/profileCommentsView';

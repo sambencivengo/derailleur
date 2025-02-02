@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { getUserSession } from '~/auth';
+import { getUserSession } from '~/auth/getUserSession';
 import { PostPreviewsContainer } from '~/components/postPreviewsContainer';
 import { QueryError } from '~/components/queryError';
 import { HomePageTagsView } from '~/components/homePageTagsView';

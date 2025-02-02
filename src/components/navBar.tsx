@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { DesktopNav } from '~/components/desktopNav';
 import { TextHeading } from '~/components/textHeading';
 import { MobileNav } from '~/components/mobileNav';
-import { getUserSession } from '~/auth';
+import { getUserSession } from '~/auth/getUserSession';
 import { BetaDialog } from '~/components/betaDialog';
 import { MobileSideBarButtons } from '~/components/mobileSideBarButtons';
 

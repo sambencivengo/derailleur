@@ -1,5 +1,5 @@
 'use server';
-import { getUserSessionAndRedirect } from '~/auth';
+import { getUserSessionAndRedirect } from '~/auth/getUserSession';
 import { LogInForm } from '~/components/logInForm';
 import { TextHeading } from '~/components/textHeading';
 import { LoginAndSignupContainer } from '~/components/loginAndSignupContainer';

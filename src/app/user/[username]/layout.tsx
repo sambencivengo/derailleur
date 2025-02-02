@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getUserSession } from '~/auth';
+import { getUserSession } from '~/auth/getUserSession';
 import { TextHeading } from '~/components/textHeading';
 import { CenterLayout } from '~/components/layouts/centerLayout';
 import { MainLayout } from '~/components/layouts/mainLayout';

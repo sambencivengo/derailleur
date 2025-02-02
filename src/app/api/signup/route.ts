@@ -2,7 +2,7 @@
 import * as argon2 from 'argon2';
 import { v4 as uuid } from 'uuid';
 import { createUser } from '~/queries/users/createUser';
-import { auth } from '~/auth';
+import { auth } from '~/auth/auth';
 import { validateSchema } from '~/schemas/schemaValidator';
 import { userSignUpSchema, } from '~/schemas/userSchemas';
 import { SignUpSchema } from '~/schemas/userSchemas';

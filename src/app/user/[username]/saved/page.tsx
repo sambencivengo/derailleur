@@ -1,4 +1,4 @@
-import { getUserSession } from '~/auth';
+import { getUserSession } from '~/auth/getUserSession';
 import { TextHeading } from '~/components/textHeading';
 import { QueryError } from '~/components/queryError';
 import { PostPreview } from '~/components/postPreview';

@@ -5,7 +5,7 @@ import { validateSchema } from "~/schemas/schemaValidator";
 import { userLogInSchema } from "~/schemas/userSchemas";
 import { createNextResponse } from "~/utils";
 import { cookies } from 'next/headers';
-import { auth } from '~/auth';
+import { auth } from '~/auth/auth';
 import { getUserByUsernameForLogin } from '~/queries/users/getUserByUsernameForLogin';
 
 export const POST = async (req: Request) => {

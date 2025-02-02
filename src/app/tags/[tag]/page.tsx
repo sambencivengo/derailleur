@@ -1,7 +1,7 @@
 'use server';
 
 import { Suspense } from 'react';
-import { getUserSession } from '~/auth';
+import { getUserSession } from '~/auth/getUserSession';
 import { TagPostsView } from '~/components/TagPostsView';
 import { QueryError } from '~/components/queryError';
 import { TagPageHeading } from '~/components/tagPageHeading';

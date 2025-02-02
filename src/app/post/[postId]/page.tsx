@@ -1,4 +1,4 @@
-import { getUserSession } from '~/auth';
+import { getUserSession } from '~/auth/getUserSession';
 import { QueryError } from '~/components/queryError';
 import { CenterLayout } from '~/components/layouts/centerLayout';
 import { MainLayout } from '~/components/layouts/mainLayout';

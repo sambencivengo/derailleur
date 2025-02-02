@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { cache } from "react";
-import { auth } from "~/auth";
+import { auth } from "~/auth/auth";
 import { UserAndSession } from "~/types";
 
 
