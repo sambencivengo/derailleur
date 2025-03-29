@@ -3,6 +3,7 @@
 import { Suspense } from 'react';
 import { getUserSession } from '~/auth/getUserSession';
 import { TagPostsView } from '~/components/TagPostsView';
+import { HomePageTagsView } from '~/components/homePageTagsView';
 import { QueryError } from '~/components/queryError';
 import { TagPageHeading } from '~/components/tagPageHeading';
 import { Skeleton } from '~/components/ui';
@@ -18,6 +19,7 @@ export default async function Page({ params }: { params: { tag: string } }) {
   return (
     <main>
       <div className="flex flex-col space-y-2">
+        <HomePageTagsView />
         <Suspense fallback={<TagPageHeadingSkeleton />}>
           <TagPageHeading tagName={tag} />
         </Suspense>

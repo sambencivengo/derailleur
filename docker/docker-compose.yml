@@ -1,7 +1,7 @@
 # The containers that compose the project
 services:
-  db:
-    image: postgres:13
+  derailleur:
+    image: postgres:15
     restart: always
     container_name: derailleur-postgresql
     ports:
