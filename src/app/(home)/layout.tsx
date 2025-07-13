@@ -1,7 +1,7 @@
 import { TopUsers } from '~/components/TopUsers';
 import { CenterLayout } from '~/components/layouts/centerLayout';
 import { MainLayout } from '~/components/layouts/mainLayout';
-import { SideBarLayout } from '~/components/layouts/rightLayout';
+import { SideBarLayout } from '~/components/layouts/sideLayout';
 import { SideBarButtons } from '~/components/sideBarButtons';
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
