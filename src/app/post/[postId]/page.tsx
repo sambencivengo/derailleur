@@ -2,12 +2,12 @@ import { getUserSession } from '~/auth/getUserSession';
 import { QueryError } from '~/components/queryError';
 import { CenterLayout } from '~/components/layouts/centerLayout';
 import { MainLayout } from '~/components/layouts/mainLayout';
-import { SideBarLayout } from '~/components/layouts/rightLayout';
 import { PostAndCommentsView } from '~/components/postAndCommentsView';
 import { SideBarButtons } from '~/components/sideBarButtons';
 import { UsersRecentPosts } from '~/components/usersRecentPosts';
 import { getPostById } from '~/queries/posts/getPostById';
 import { getComments } from '~/queries/comments/getComments';
+import { SideBarLayout } from '~/components/layouts/sideLayout';
 
 export default async function Page({ params }: { params: { postId: string } }) {
   const { postId } = params;
