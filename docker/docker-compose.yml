@@ -1,12 +1,30 @@
-# The containers that compose the project
+# docker-compose.yml
+version: '3.9'
+
 services:
-  derailleur:
+  dev-db:
     image: postgres:15
-    restart: always
-    container_name: derailleur-postgresql
+    container_name: derailleur-dev-db
     ports:
-      - '5433:5432'
+      - "5433:5432"
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: derailleur
+    volumes:
+      - dev-db-data:/var/lib/postgresql/data
+
+  test-db:
+    image: postgres:15
+    container_name: derailleur-test-db
+    ports:
+      - "5444:5432"
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: derailleur-test
+    tmpfs:
+      - /var/lib/postgresql/data  # test DB is in-memory and ephemeral
+
+volumes:
+  dev-db-data:
