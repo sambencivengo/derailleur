@@ -20,8 +20,8 @@
       }
     ],
     "paths": {
-      "~/*": ["./src/*"],
-      "~prisma/*": ["./prisma/*"]
+      //"~/*": ["./src/*"],
+      //"~prisma/*": ["./prisma/*"]
       // "@components/*": ["./src/components/*"],
       // "@types/*": ["./src/types/*"],
       // "@utils/*": ["./src/utils/*"],

@@ -2,6 +2,7 @@
   "name": "derailleur",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "database": "cd docker && sh ./buildDerailleurDatabase.sh",
     "docker:db": "cd docker && docker compose -f docker/docker-compose.yml up -d && npm run migrate:docker:deploy",
@@ -12,7 +13,8 @@
     "build": "npx prisma generate && npx prisma migrate deploy && next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "npx prisma migrate deploy && jest -i",
+    "test": "NODE_ENV=test vitest",
+    "test2": "npx prisma migrate deploy && jest -i",
     "migrate:create": "npx prisma migrate dev --name",
     "migrate:docker:deploy": "npx prisma migrate deploy",
     "prisma:client generate": "npx prisma generate",
@@ -95,7 +97,8 @@
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.6",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^4.0.13"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
