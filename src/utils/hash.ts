@@ -1,5 +1,5 @@
 import * as argon2 from "argon2";
-import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from "~/utils";
+import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from "../utils/";
 
 
 export async function hashPassword(plainTextPassword: string): Promise<DerailleurResponse<string>> {

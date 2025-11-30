@@ -8,6 +8,13 @@
       "when": 1763906458570,
       "tag": "0000_init-user-table",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1764533999187,
+      "tag": "0001_hashed-password-on-user",
+      "breakpoints": true
     }
   ]
 }
