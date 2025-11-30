@@ -1,8 +1,8 @@
+import path from "path";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { drizzle } from "drizzle-orm/node-postgres";
-import { afterEach, beforeEach } from 'vitest';
 import { Client } from "pg";
-import path from "path";
+import { afterEach, beforeEach } from 'vitest';
 
 export async function migrateTestDb() {
   const client = new Client({ connectionString: process.env.DATABASE_URL });

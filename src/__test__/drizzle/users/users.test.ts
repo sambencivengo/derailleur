@@ -5,8 +5,6 @@ import { eq } from 'drizzle-orm';
 
 
 describe('User Database Operations', () => {
-
-
   const username = "Sammy";
   const password = "password123";
   const favoriteBikes = ["1991 Trek 990", "Omnium CXC"];
