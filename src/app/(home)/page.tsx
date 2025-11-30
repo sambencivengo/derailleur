@@ -1,19 +1,13 @@
-import React, { Suspense } from 'react';
-import { getUserSession } from '../../auth/getUserSession';
-import { PostPreviewsContainer } from '../../components/postPreviewsContainer';
-import { QueryError } from '../../components/queryError';
-import { HomePageTagsView } from '../../components/homePageTagsView';
-import { Separator, Skeleton } from '../../components/ui';
-import { WelcomeCard } from '../../components/welcomeCard';
-import { getPosts } from '../../queries/posts/getPosts';
+import React from 'react';
+import { TextHeading } from '~/components/textHeading';
 
 export default async function Home({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
-  const user = await getUserSession();
-  const sort = searchParams.sort as 'best' | 'latest' | undefined;
-  const response = await getPosts(undefined, undefined, user === null ? undefined : user.userId, undefined, sort);
-  if (response.result === null || response.errors.length > 0) {
-    return <QueryError errors={response.errors} />;
-  }
+  //const user = await getUserSession();
+  //const sort = searchParams.sort as 'best' | 'latest' | undefined;
+  //  const response = await getPosts(undefined, undefined, user === null ? undefined : user.userId, undefined, sort);
+  //  if (response.result === null || response.errors.length > 0) {
+  //    return <QueryError errors={response.errors} />;
+  //  }
 
   return (
     <main>
@@ -32,17 +26,23 @@ export default async function Home({ searchParams }: { searchParams: { [key: str
       </Suspense>
 
       */}
-      This site is under construction. Thank you for your patience!
+
+      <div className='flex flex-col gap-10 w-auto mx-4 mt-20 text-center items-center'>
+        <TextHeading heading="DERAILLEUR" className="text-5xl" italicAnimate={true} />
+        <p className='text-xl'>
+          This site is under construction. Thank you for your patience!
+        </p>
+      </div>
     </main>
   );
 }
 
-function SkeletonPostPreview() {
-  return (
-    <div className="space-y-2">
-      {[...Array(10)].map((_, idx) => (
-        <Skeleton key={idx} className="h-32 w-full" />
-      ))}
-    </div>
-  );
-}
+//function SkeletonPostPreview() {
+//  return (
+//    <div className="space-y-2">
+//      {[...Array(10)].map((_, idx) => (
+//        <Skeleton key={idx} className="h-32 w-full" />
+//      ))}
+//    </div>
+//  );
+//}

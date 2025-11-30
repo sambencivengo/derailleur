@@ -2,7 +2,6 @@
   "name": "derailleur",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "database": "cd docker && sh ./buildDerailleurDatabase.sh",
     "docker:db": "cd docker && docker compose -f docker/docker-compose.yml up -d && npm run migrate:docker:deploy",
