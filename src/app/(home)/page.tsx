@@ -1,11 +1,11 @@
 import React, { Suspense } from 'react';
-import { getUserSession } from '~/auth/getUserSession';
-import { PostPreviewsContainer } from '~/components/postPreviewsContainer';
-import { QueryError } from '~/components/queryError';
-import { HomePageTagsView } from '~/components/homePageTagsView';
-import { Separator, Skeleton } from '~/components/ui';
-import { WelcomeCard } from '~/components/welcomeCard';
-import { getPosts } from '~/queries/posts/getPosts';
+import { getUserSession } from '../../auth/getUserSession';
+import { PostPreviewsContainer } from '../../components/postPreviewsContainer';
+import { QueryError } from '../../components/queryError';
+import { HomePageTagsView } from '../../components/homePageTagsView';
+import { Separator, Skeleton } from '../../components/ui';
+import { WelcomeCard } from '../../components/welcomeCard';
+import { getPosts } from '../../queries/posts/getPosts';
 
 export default async function Home({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
   const user = await getUserSession();
@@ -17,6 +17,8 @@ export default async function Home({ searchParams }: { searchParams: { [key: str
 
   return (
     <main>
+      {/*
+
       <Suspense fallback={<SkeletonPostPreview />}>
         {user === null && (
           <>
@@ -28,6 +30,9 @@ export default async function Home({ searchParams }: { searchParams: { [key: str
         <Separator className="mt-5 mb-5" />
         <PostPreviewsContainer initialPosts={response.result} user={user} />
       </Suspense>
+
+      */}
+      This site is under construction. Thank you for your patience!
     </main>
   );
 }
