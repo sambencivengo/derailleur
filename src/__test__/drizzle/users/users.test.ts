@@ -1,7 +1,7 @@
 import { assert, describe, test } from 'vitest';
 import { eq } from 'drizzle-orm';
-import { users } from '~/db/schema/users';
 import { db } from '~/db';
+import { users } from '~/db/schema/users';
 
 
 describe('User Database Operations', () => {

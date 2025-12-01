@@ -1,10 +1,8 @@
-
 import { sql } from "drizzle-orm";
 import { integer, pgTable, timestamp, varchar } from "drizzle-orm/pg-core";
 
-// TODO: use zod object?
+export const posts = pgTable("posts", {
 
-export const users = pgTable("users", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   createdAt: timestamp('created_at')
     .notNull()

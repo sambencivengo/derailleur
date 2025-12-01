@@ -15,6 +15,20 @@
       "when": 1764533999187,
       "tag": "0001_hashed-password-on-user",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1764546727186,
+      "tag": "0002_user-table-created-at-updated-at",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1764546772082,
+      "tag": "0003_user-table-created-at-updated-at",
+      "breakpoints": true
     }
   ]
 }
