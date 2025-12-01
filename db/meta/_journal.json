@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1763906458570,
-      "tag": "0000_init-user-table",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1764533999187,
-      "tag": "0001_hashed-password-on-user",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1764546727186,
-      "tag": "0002_user-table-created-at-updated-at",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1764546772082,
-      "tag": "0003_user-table-created-at-updated-at",
+      "when": 1764554900329,
+      "tag": "0000_init",
       "breakpoints": true
     }
   ]

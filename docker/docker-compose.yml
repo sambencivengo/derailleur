@@ -3,7 +3,7 @@ services:
   derailleur:
     image: postgres:15
     restart: always
-    container_name: derailleur-postgresql
+    container_name: derailleur-postgres-dev
     ports:
       - '5433:5432'
     environment:
@@ -12,12 +12,12 @@ services:
       POSTGRES_DB: derailleur
   db_test:
     image: postgres:15
-    container_name: derailleur_test
+    container_name: derailleur-prostgres-test
     restart: always
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: derailleur
+      POSTGRES_DB: derailleur-test
     ports:
       - "5435:5432"
     healthcheck:

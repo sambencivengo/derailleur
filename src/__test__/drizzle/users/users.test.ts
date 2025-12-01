@@ -18,6 +18,18 @@ describe('User Database Operations', () => {
     insertedUser[0].favoriteBikes?.forEach((returnedBike, idx) => {
       assert(returnedBike === favoriteBikes[idx])
     })
+    setTimeout(() => { }, 1000);
+
+    async function update() {
+
+      setTimeout(() => { }, 1000);
+
+      const result = await db.update(users).set({ location: "new york" }).where(eq(users.id, insertedUser[0].id)).returning();
+
+      console.log(insertedUser, result)
+    }
+
+    update()
   });
 
   test('retrieve user from database', async () => {
