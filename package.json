@@ -18,6 +18,7 @@
     "lint": "next lint",
     "test": "NODE_ENV=test vitest",
     "test2": "npx prisma migrate deploy && jest -i",
+    "migrate": "npx drizzle-kit migrate",
     "migrate:create": "npx prisma migrate dev --name",
     "migrate:docker:deploy": "npx prisma migrate deploy",
     "prisma:client generate": "npx prisma generate",

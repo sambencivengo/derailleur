@@ -1,84 +1,9 @@
 {
-  "id": "f22cab4f-e640-46b5-a36d-dee9e9604f9c",
+  "id": "6d89341a-1c14-4ebb-8977-0d81cd4d223b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.posts": {
-      "name": "posts",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "identity": {
-            "type": "always",
-            "name": "posts_id_seq",
-            "schema": "public",
-            "increment": "1",
-            "startWith": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "cache": "1",
-            "cycle": false
-          }
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "CURRENT_TIMESTAMP"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp (3)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "username": {
-          "name": "username",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "hashedPassword": {
-          "name": "hashedPassword",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "location": {
-          "name": "location",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "favoriteBikes": {
-          "name": "favoriteBikes",
-          "type": "varchar(255)[]",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "posts_username_unique": {
-          "name": "posts_username_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "username"
-          ]
-        }
-      },
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.users": {
       "name": "users",
       "schema": "",
@@ -120,8 +45,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "hashedPassword": {
-          "name": "hashedPassword",
+        "hashed_password": {
+          "name": "hashed_password",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
@@ -132,8 +57,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "favoriteBikes": {
-          "name": "favoriteBikes",
+        "favorite_bikes": {
+          "name": "favorite_bikes",
           "type": "varchar(255)[]",
           "primaryKey": false,
           "notNull": false

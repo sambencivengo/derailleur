@@ -2,19 +2,23 @@ import path from "path";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Client } from "pg";
-import { afterEach, beforeEach } from 'vitest';
+import { beforeEach } from "vitest";
 
 export async function migrateTestDb() {
-  const client = new Client({ connectionString: process.env.DATABASE_URL });
-  await client.connect();
+  try {
+    const client = new Client({ connectionString: process.env.DATABASE_URL });
+    await client.connect();
 
-  const db = drizzle(client);
+    const db = drizzle(client);
 
-  await migrate(db, {
-    migrationsFolder: path.join(__dirname, "../../../db"),
-  });
+    await migrate(db, {
+      migrationsFolder: path.join(__dirname, "../../../db"),
+    });
 
-  await client.end();
+    await client.end();
+  } catch (error) {
+    console.log("Error during test DB setup and migration:", error);
+  }
 }
 
 export async function tearDownTestDb() {
@@ -38,7 +42,7 @@ export function setUpAndTearDownDatabase() {
   beforeEach(async () => {
     await migrateTestDb();
   });
-  afterEach(async () => {
+  beforeEach(async () => {
     await tearDownTestDb();
   });
 }

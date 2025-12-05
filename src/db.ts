@@ -12,10 +12,11 @@ if (process.env.NODE_ENV === "test") {
 
 export const db = drizzle({
   schema: { users },
+  casing: 'snake_case',
   connection: {
     connectionString: process.env.DATABASE_URL!,
     ssl: false
-  }
+  },
 });
 
 
