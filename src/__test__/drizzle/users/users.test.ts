@@ -3,13 +3,14 @@ import { eq } from 'drizzle-orm';
 import { db } from '~/db';
 import { users } from '~/db/schema/users';
 import moment from 'moment';
+import { createUser } from '~/queries/users/createUser';
 
 
+const username = "Sammy";
+const hashedPassword = "password123";
+const favoriteBikes = ["1991 Trek 990", "Omnium CXC"];
+const location = "Brooklyn, NY";
 describe('User Database Operations', () => {
-  const username = "Sammy";
-  const hashedPassword = "password123";
-  const favoriteBikes = ["1991 Trek 990", "Omnium CXC"];
-  const location = "Brooklyn, NY";
 
   test('add user to database', async () => {
     const insertedUser = await db.insert(users).values({ username, hashedPassword, favoriteBikes, location }).returning();
@@ -45,5 +46,13 @@ describe('User Database Operations', () => {
 
     assert(moment(updatedUser.updatedAt).isAfter(initialUpdatedAt))
     assert(moment(updatedUser.updatedAt).isAfter(initialCreatedAt))
+  });
+});
+
+describe('creatUser Query', () => {
+  test('createUser inserts user into database', async () => {
+    const insertedUser = await createUser({ username, hashedPassword, favoriteBikes, location });
+
+    console.log('insertedUser', insertedUser);
   });
 });

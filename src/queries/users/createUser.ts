@@ -1,33 +1,19 @@
-'use server';
-import { Prisma } from "@prisma/client";
-import { v4 as uuid } from 'uuid';
-import prisma from "~prisma/prisma";
+
+import { db } from "~/db";
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
 import { PrismaQueryErrorCodes } from "~prisma/prismaErrorCodes";
-import { CreateUserPayload, User } from "~/types";
+import { CreateUserPayload, insertUserSchema } from "./user.queries.types";
+import { users } from "~/db/schema/users";
 
 
-export async function createUser(createUserPayload: CreateUserPayload, userId = uuid()): Promise<DerailleurResponse<User>> {
 
-  // NOTE: Create User Schema validation is in API call
-  const { password, username, favoriteBikes, location } = createUserPayload;
-
+export async function createUser(createUserPayload: CreateUserPayload): Promise<DerailleurResponse> {
+  const userToInsert = insertUserSchema.parse(createUserPayload);
   try {
-    const newUser = await prisma.user.create({
-      data: {
-        id: userId,
-        username,
-        hashedPassword: password,
-        favoriteBikes,
-        location,
-      },
-    });
-    return createSuccessfulResponse(newUser);
+    const [insertedUser] = await db.insert(users).values(userToInsert).returning();
+    return createSuccessfulResponse(insertedUser);
   } catch (error: any) {
-    if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
-      return createErrorResponse([{ message: 'Unable to save new user', data: { user: createUserPayload, error: JSON.stringify(error) } }]);
-    }
-    const errorData = { user: createUserPayload, prismaErrorCode: error.code };
+    const errorData = { user: createUserPayload };
     if (error.code === PrismaQueryErrorCodes.UNIQUE_CONSTRAINT) {
       return createErrorResponse([{ message: 'Unable to save new user due to unique constraint', data: errorData }]);
     }

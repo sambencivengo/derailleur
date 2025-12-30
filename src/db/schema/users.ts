@@ -1,3 +1,4 @@
+import { InferSelectModel } from "drizzle-orm";
 import { integer, pgTable, varchar } from "drizzle-orm/pg-core";
 import { recordTimestamps } from "~/schemas/helpers/columns.helpers";
 
@@ -9,3 +10,5 @@ export const users = pgTable("users", {
   favoriteBikes: varchar({ length: 255 }).array(),
   ...recordTimestamps
 });
+
+export type User = Omit<InferSelectModel<typeof users>, "hashedPassword">;
