@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "database": "cd docker && sh ./buildDerailleurDatabase.sh",
-    "docker:db": "cd docker && docker compose -f docker/docker-compose.yml up -d && npm run migrate:docker:deploy",
+    "docker:db": "docker compose -f docker/docker-compose.yml up -d && npm run migrate:docker:deploy",
     "docker:down": "docker compose -f docker/docker-compose.yml down",
     "docker:container": "docker exec -it $cid psql -U user derailleur",
     "dev": "npm run prisma:seed & next dev",
