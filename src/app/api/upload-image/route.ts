@@ -6,13 +6,17 @@ import { createDerailleurError, createErrorResponse, createNextResponse, createS
 const MAX_IMAGE_SIZE = 4 * 1024 * 1024;
 const ACCEPTED_IMAGE_TYPE = 'image/jpeg';
 
-const s3Client = new S3Client({
-  region: process.env.AWS_REGION ?? '',
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID ?? '',
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY ?? '',
-  }
-});
+function getS3Client(): S3Client {
+  const region = process.env.AWS_REGION;
+  if (!region) throw new Error('AWS_REGION is required for uploads');
+  return new S3Client({
+    region,
+    credentials: {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID ?? '',
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY ?? '',
+    }
+  });
+}
 
 export async function POST(request: Request) {
   const formData = await request.formData();
@@ -23,6 +27,7 @@ export async function POST(request: Request) {
     return (createNextResponse({ errors, status: 400 }));
   }
 
+  const s3Client = getS3Client();
   const thumbnailFileName = `${process.env.NODE_ENV === 'production' ? '' : 'DEV_IMAGE_'}thumbnail_${uuid()}_${Date.now()}`;
   const fileNames: Array<string> = [];
 
@@ -30,9 +35,9 @@ export async function POST(request: Request) {
     const buffer = Buffer.from(await image.arrayBuffer());
     const fileName = `${process.env.NODE_ENV === 'production' ? '' : 'DEV_IMAGE_'}${uuid()}_${Date.now()}`;
     fileNames.push(fileName);
-    return createImageCommandPromise(buffer, fileName);
+    return createImageCommandPromise(s3Client, buffer, fileName);
   });
-  imageUploadPromises.push(createThumbnailImage(files[0], thumbnailFileName));
+  imageUploadPromises.push(createThumbnailImage(s3Client, files[0], thumbnailFileName));
   try {
     await Promise.all(imageUploadPromises);
     return createNextResponse({ status: 200, result: { thumbnailFileName, fileNames } });
@@ -59,17 +64,17 @@ function validateImagesAndReturnErrorResponse(files: Array<File>): DerailleurRes
   return createSuccessfulResponse(true);
 }
 
-async function createThumbnailImage(image: File, thumbnailFileName: string): Promise<PutObjectCommandOutput> {
+async function createThumbnailImage(s3Client: S3Client, image: File, thumbnailFileName: string): Promise<PutObjectCommandOutput> {
   const imageBuffer = Buffer.from(await image.arrayBuffer());
   const thumbnailBuffer = await sharp(imageBuffer).jpeg({
     quality: 70,
     mozjpeg: true
   }).resize(200, 200).toBuffer();
 
-  return createImageCommandPromise(thumbnailBuffer, thumbnailFileName);
+  return createImageCommandPromise(s3Client, thumbnailBuffer, thumbnailFileName);
 };
 
-function createImageCommandPromise(fileBuffer: Buffer, fileName: string): Promise<PutObjectCommandOutput> {
+function createImageCommandPromise(s3Client: S3Client, fileBuffer: Buffer, fileName: string): Promise<PutObjectCommandOutput> {
   const params: PutObjectCommandInput = {
     Bucket: process.env.AWS_BUCKET_NAME,
     Key: fileName,
@@ -77,8 +82,7 @@ function createImageCommandPromise(fileBuffer: Buffer, fileName: string): Promis
     ContentType: "image/jpg",
   };
   const command = new PutObjectCommand(params);
-  const imagePromise = s3Client.send(command);
-  return imagePromise;
+  return s3Client.send(command);
 }
 
 function sizeToMb(byteSize: number) {
