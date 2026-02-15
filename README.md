@@ -1,28 +1,73 @@
 ## Derailleur
 
-An upcoming forum/platform for all kinds of bicycle enthusiasts.
+An upcoming forum/platform for all kinds of bicycle enthusiasts. Currently deployed [here](https://derailleur.vercel.app/).
 
-Currently deployed [here](https://derailleur.vercel.app/).
+---
 
-### Description
+### Local development
 
-This platform is intended to provide a one-stop-shop for all things cycling with a focus on bicycle touring & bikepacking, alt-cycling, rebuilding or refurbishing vintage frames and more.
+**Prerequisites:** Node.js, pnpm, Docker (for Postgres).
 
-User's can create accounts and with those accounts they can create posts about recent trips, bike builds, mechanical questions, etc.
+1. **Environment**
+   - Create a `.env` file in the project root. You need at least `DATABASE_URL` for the dev database (e.g. `postgresql://user:password@localhost:5433/derailleur`). See `.env.test` for the test DB URL pattern if you run tests.
 
-On each post, the user can add tags (like hashtags) that will help other user's find similar posts.
+2. **Start the Docker containers**
+   ```bash
+   pnpm run docker:db
+   ```
+   Starts the dev and test Postgres containers. Dev DB is on port **5433**, test DB on **5434**.
 
-If you desire, you can upload a route from [Ride WithGPS](https://ridewithgps.com/). If one does this, the route will be embedded in their post along with receiving a special ROUTE tag.
+3. **Run migrations**
+   ```bash
+   pnpm run migrate
+   ```
+   Applies Prisma migrations to the dev database (uses `DATABASE_URL` from `.env`). If you see "Can't reach database", wait a few seconds for Postgres to finish starting and run the command again.
 
-User's can save posts they like and contribute to the conversation by commenting on posts or replying to other comments. Post and replies can be edited by their creator wherever they are found on the application.
+4. **Start the app**
+   ```bash
+   pnpm run dev
+   ```
+   Seeds the DB (if needed) and starts the Next.js dev server (e.g. http://localhost:3000).
 
-### Tech
+5. **Stop the database**
+   ```bash
+   pnpm run docker:down
+   ```
+   Stops all Docker Compose services (dev and test DBs).
 
-- [Next.js](https://nextjs.org/)
-- [Prisma](https://www.prisma.io/)
-- [PostgreSQL](https://www.postgresql.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [shadcn/ui](https://ui.shadcn.com/)
-- [Lucia Auth](https://lucia-auth.com/)
+---
 
-If you have any questions about the application, or just want to chat, you can email me at [sambencivengo\@gmail.com](mailto:sambencivengo@gmail.com?subject=Derailler).
+### Running tests
+
+Tests use a **separate test database** (Postgres on port **5434**). The test script starts it automatically.
+
+```bash
+pnpm run test
+```
+
+This starts the test DB container, runs migrations (if needed), runs Vitest, then teardown truncates the test DB (schema is kept).
+
+Optional:
+- Start only the test DB: `pnpm run docker:test:up`
+- Stop only the test DB: `pnpm run docker:test:down`
+
+---
+
+### Useful commands
+
+| Command | Description |
+|---------|-------------|
+| `pnpm run docker:db` | Start Docker containers (dev + test DBs) |
+| `pnpm run migrate` | Run Prisma migrations on dev database |
+| `pnpm run docker:down` | Stop all database containers |
+| `pnpm run dev` | Seed (if needed) + start Next.js dev server |
+| `pnpm run test` | Start test DB (if needed) + run test suite |
+| `pnpm run docker:test:up` | Start only the test DB container |
+| `pnpm run docker:test:down` | Stop only the test DB container |
+| `pnpm run prisma:studio` | Open Prisma Studio for the DB in `.env` |
+| `pnpm run build` | Production build (generate client, migrate, next build) |
+
+To open a psql shell on the **dev** database:
+```bash
+docker exec -it derailleur-postgresql psql -U user derailleur
+```

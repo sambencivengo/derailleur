@@ -10,3 +10,14 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: derailleur
+
+  db_test:
+    image: postgres:15
+    restart: "no"
+    container_name: derailleur-postgresql-test
+    ports:
+      - '5434:5432'
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: derailleur
