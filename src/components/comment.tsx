@@ -80,13 +80,13 @@ export function Comment({ author, commentId, content, createdAt, updatedAt, post
 
         {inThread && replies.length > 0
           ? replies.map(({ _count: { replies: repliesCount }, author, content, createdAt, id, postId, replies, updatedAt }, idx: number) => {
-              return <Comment inThread={inThread} updatedAt={updatedAt} key={idx} author={author} commentId={id} content={content} postId={postId} createdAt={createdAt} user={user} initialReplies={replies} repliesCount={repliesCount} level={level + 1} />;
-            })
+            return <Comment inThread={inThread} updatedAt={updatedAt} key={idx} author={author} commentId={id} content={content} postId={postId} createdAt={createdAt} user={user} initialReplies={replies} repliesCount={repliesCount} level={level + 1} />;
+          })
           : level < 4 &&
-            replies.length > 0 &&
-            replies.map(({ _count: { replies: repliesCount }, author, content, createdAt, id, postId, replies, updatedAt }, idx: number) => {
-              return <Comment inThread={inThread} updatedAt={updatedAt} key={idx} author={author} commentId={id} content={content} postId={postId} createdAt={createdAt} user={user} initialReplies={replies} repliesCount={repliesCount} level={level + 1} />;
-            })}
+          replies.length > 0 &&
+          replies.map(({ _count: { replies: repliesCount }, author, content, createdAt, id, postId, replies, updatedAt }, idx: number) => {
+            return <Comment inThread={inThread} updatedAt={updatedAt} key={idx} author={author} commentId={id} content={content} postId={postId} createdAt={createdAt} user={user} initialReplies={replies} repliesCount={repliesCount} level={level + 1} />;
+          })}
         {repliesCount > 5 &&
           repliesCount !== replies.length &&
           (isLoading ? (
