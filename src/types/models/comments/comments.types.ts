@@ -4,7 +4,7 @@ import { Prisma, Comment as PrismaComment } from '@prisma/client';
 export const DEFAULT_REPLY_DEPTH = 4;
 
 const REPLIES_TAKE = 5;
-const REPLIES_ORDER_BY = { createdAt: 'desc' as const };
+const REPLIES_ORDER_BY = { createdAt: 'desc' } as const;
 
 const authorSelect = {
   select: {
@@ -14,8 +14,68 @@ const authorSelect = {
 } as const;
 
 /**
- * Builds the Prisma include for a comment with nested replies to a given depth.
- * Use this when you need a different depth than DEFAULT_REPLY_DEPTH (e.g. shallow threads).
+ * Static literal include so Prisma infers a single recursive type from the validator.
+ * No function-built include here: the validator must see a literal for GetPayload to infer correctly.
+ */
+export const commentWithAuthorUsernameIDAndReplies = Prisma.validator<Prisma.CommentDefaultArgs>()({
+  include: {
+    author: authorSelect,
+    _count: true,
+    replies: {
+      take: REPLIES_TAKE,
+      orderBy: REPLIES_ORDER_BY,
+      include: {
+        author: authorSelect,
+        _count: true,
+        replies: {
+          take: REPLIES_TAKE,
+          orderBy: REPLIES_ORDER_BY,
+          include: {
+            author: authorSelect,
+            _count: true,
+            replies: {
+              take: REPLIES_TAKE,
+              orderBy: REPLIES_ORDER_BY,
+              include: {
+                author: authorSelect,
+                _count: true,
+                replies: {
+                  take: REPLIES_TAKE,
+                  orderBy: REPLIES_ORDER_BY,
+                  include: {
+                    author: authorSelect,
+                    _count: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+});
+
+/** Inferred from the validator; no cast at the query boundary. */
+export type CommentWithAuthorUsernameIDAndReplies = Prisma.CommentGetPayload<typeof commentWithAuthorUsernameIDAndReplies>;
+
+export const commentWithUsernameAndId = Prisma.validator<Prisma.CommentDefaultArgs>()({
+  include: {
+    author: {
+      select: {
+        username: true,
+        id: true,
+      },
+    },
+  },
+});
+
+export type CommentWithUserNameAndId = Prisma.CommentGetPayload<typeof commentWithUsernameAndId>;
+
+/**
+ * Builds the Prisma include for a custom reply depth (e.g. shallow threads).
+ * Use getCommentRepliesInclude(depth) only when you need non-default depth; the return type
+ * is not inferred recursively, so prefer the default commentWithAuthorUsernameIDAndReplies for typing.
  */
 function buildCommentRepliesInclude(depth: number): Prisma.CommentInclude {
   const levelInclude: Prisma.CommentInclude = {
@@ -34,33 +94,6 @@ function buildCommentRepliesInclude(depth: number): Prisma.CommentInclude {
   return levelInclude;
 }
 
-/**
- * Fixed-depth include used for typing and default queries (DEFAULT_REPLY_DEPTH levels of replies).
- *
- */
-export const commentWithAuthorUsernameIDAndReplies = Prisma.validator<Prisma.CommentDefaultArgs>()({
-  include: buildCommentRepliesInclude(DEFAULT_REPLY_DEPTH) as Prisma.CommentInclude,
-});
-
-export const commentWithUsernameAndId = Prisma.validator<Prisma.CommentDefaultArgs>()({
-  include: {
-    author: {
-      select: {
-        username: true,
-        id: true,
-      },
-    },
-  },
-});
-
-export type CommentWithAuthorUsernameIDAndReplies = Prisma.CommentGetPayload<typeof commentWithAuthorUsernameIDAndReplies>;
-export type CommentWithUserNameAndId = Prisma.CommentGetPayload<typeof commentWithUsernameAndId>;
-
-/**
- * Returns the same include shape as commentWithAuthorUsernameIDAndReplies but with a custom depth.
- * Use in queries when you want fewer (or more) nested reply levels than the default.
- * Type remains CommentWithAuthorUsernameIDAndReplies; runtime shape may have fewer levels.
- */
 export function getCommentRepliesInclude(depth: number = DEFAULT_REPLY_DEPTH) {
   return { include: buildCommentRepliesInclude(depth) };
 }
