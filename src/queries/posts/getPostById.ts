@@ -5,6 +5,7 @@ import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } fro
 import prisma from "~prisma/prisma";
 
 export const getPostById: GetPostById = async (postId: string, userId?: string): Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount>> => {
+
   try {
     const post = await prisma.post.findUnique({
       where: {
@@ -26,10 +27,7 @@ export const getPostById: GetPostById = async (postId: string, userId?: string):
     });
 
     if (!post) {
-      return createErrorResponse([{ message: "Unable to find post with by provided ID", data: { userId, postId } }]);
-    }
-    if (userId != null && post.authorId !== userId) {
-      return createErrorResponse([{ message: "Unable to find post with by provided ID", data: { userId, postId } }]);
+      return createErrorResponse([{ message: "Unable to find post", data: { userId, postId } }]);
     }
     return createSuccessfulResponse(post);
 

@@ -60,15 +60,17 @@ describe("Get Post By ID", function () {
     assert.strictEqual(result, null);
     checkErrorResponse(errors, true);
   });
-  it("Unsuccessfully gets a post when provided a valid post id but a non matching user_id", async function () {
-    const response = await getPostById(testPostId_00, 'nonExistentUserId');
-    const { result, errors } = response;
-    assert.ok(response);
-    assert.strictEqual(result, null);
-    checkErrorResponse(errors, true);
+  it("Successfully gets a post by postId when requesting as a different user (non-author)", async function () {
+    const otherUserId = uuid();
+    const response = await getPostById(testPostId_00, otherUserId);
+    const result = response.result!;
+    checkErrorResponse(response.errors, false);
+    assert.ok(result);
+    assert.strictEqual(result.id, testPostId_00);
+    assert.strictEqual(result.authorId, testUserId_00);
   });
-  it("Unsuccessfully gets a post when provided a non existent post id and a non existent user_id", async function () {
-    const response = await getPostById(testPostId_00, 'nonExistentUserId');
+  it("Unsuccessfully gets a post when provided a non existent post id and a user id", async function () {
+    const response = await getPostById('nonExistentPostId2', testUserId_00);
     const { result, errors } = response;
     assert.ok(response);
     checkErrorResponse(errors, true);
