@@ -14,6 +14,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "docker compose -f docker/docker-compose.yml up -d db_test && pnpm exec dotenv -e .env.test -- vitest run",
+    "test:watch": "docker compose -f docker/docker-compose.yml up -d db_test && pnpm exec dotenv -e .env.test -- vitest watch",
     "migrate": "pnpm exec prisma migrate deploy",
     "migrate:create": "pnpm exec prisma migrate dev --name",
     "prisma:client generate": "pnpm exec prisma generate",

@@ -2,8 +2,10 @@ import assert from "assert";
 import { User } from "lucia";
 import { v4 as uuid } from "uuid";
 import { mockUser_00 } from "~/__test__/mock/users/mockUser";
-import { addRecordsToDb, checkErrorResponse, cleanUpTable } from "~/__test__/utils";
-import { createComment, createPost, createUser } from "~/queries";
+import { addRecordsToDb, checkErrorResponse } from "~/__test__/utils";
+import { createUser } from "~/queries/users/createUser";
+import { createPost } from "~/queries/posts/createPost";
+import { createComment } from "~/queries/comments/createComment";
 import { CreateUser, CreatePostPayload, CreatePost, PostWithAuthorNameAndTags } from "~/types";
 import { faker } from '@faker-js/faker';
 import prisma from "~prisma/prisma";
@@ -15,7 +17,8 @@ const testTitle = "26 inch Fork Replacement";
 const testPostPayload: CreatePostPayload = {
   title: testTitle,
   content: testContent,
-  tags: ['BIKEPACKING', 'RIG REPORT']
+  tags: ['BIKEPACKING', 'RIG REPORT'],
+  images: [],
 };
 
 describe("Create Comment Query", function () {
@@ -35,9 +38,9 @@ describe("Create Comment Query", function () {
       {
         createRecordFunction: createPost,
         newRecordParams: [
-          [{ content: testPostPayload.content, tags: testPostPayload.tags, title: testPostPayload.title }, testUserId_00, testPostId_00],
+          [{ content: testPostPayload.content, tags: testPostPayload.tags, title: testPostPayload.title, images: testPostPayload.images }, testUserId_00, testPostId_00],
         ],
-        mockDataName: 'User'
+        mockDataName: 'Post'
       },
     );
   });
@@ -135,7 +138,4 @@ describe("Create Comment Query", function () {
     assert.strictEqual(replies.length, 2, 'Result comments replies length on post does not match expected length');
   });
 
-  afterAll(async function () {
-    await cleanUpTable([prisma.user, prisma.post, prisma.tag, prisma.comment]);
-  });
 });

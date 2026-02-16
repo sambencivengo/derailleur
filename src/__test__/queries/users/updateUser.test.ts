@@ -1,7 +1,8 @@
 import assert from 'assert';
 import { v4 as uuid } from 'uuid';
-import { addRecordsToDb, checkErrorResponse, cleanUpTable } from '~/__test__/utils';
-import { createUser, updateUser } from '~/queries';
+import { addRecordsToDb, checkErrorResponse } from '~/__test__/utils';
+import { createUser } from '~/queries/users/createUser';
+import { updateUser } from '~/queries/users/updateUser';
 import { CreateUserPayload, CreateUser, User } from '~/types';
 import prisma from '~prisma/prisma';
 
@@ -12,7 +13,7 @@ describe("Update User Query", function () {
   const testUsername_00 = 'testUsername_00';
   const testUsername_01 = 'testUsername_01';
   const testPassword = "testPassword1234!";
-  const testUserFavoriteBike_00 = 'Trek Single Track 990';
+  const testUserFavoriteBike_00 = 'Trek Single Track 990'; // min 5 chars for schema
   const newUser_00: CreateUserPayload = {
     username: testUsername_00,
     password: testPassword
@@ -35,14 +36,14 @@ describe("Update User Query", function () {
   });
 
   it('Successfully updates a user record with a favorite bike', async function () {
-    const response = await updateUser({ favoriteBike: testUserFavoriteBike_00 }, testUserId_00);
+    const response = await updateUser({ favoriteBikes: [testUserFavoriteBike_00] }, testUserId_00);
     const { errors } = response;
     const result = response.result!;
     assert.ok(response);
     assert(now < result.createdAt);
     assert(now < result.updatedAt);
     assert(result.createdAt < result.updatedAt);
-    assert.strictEqual(result.favoriteBike, testUserFavoriteBike_00);
+    assert.deepStrictEqual(result.favoriteBikes, [testUserFavoriteBike_00]);
     assert.strictEqual(result.location, null);
     assert.strictEqual(result.id, testUserId_00);
     assert.strictEqual(result.username, testUsername_00);
@@ -50,14 +51,14 @@ describe("Update User Query", function () {
   });
   it('Successfully updates a user record with a location', async function () {
     const testLocation = 'Fort Collins, CO';
-    const response = await updateUser({ location: testLocation }, testUserId_00,);
+    const response = await updateUser({ location: testLocation, favoriteBikes: [testUserFavoriteBike_00] }, testUserId_00,);
     const { errors } = response;
     const result = response.result!;
     assert.ok(response);
     assert(now < result.createdAt);
     assert(now < result.updatedAt);
     assert(result.createdAt < result.updatedAt);
-    assert.strictEqual(result.favoriteBike, testUserFavoriteBike_00);
+    assert.deepStrictEqual(result.favoriteBikes, [testUserFavoriteBike_00]);
     assert.strictEqual(result.location, testLocation);
     assert.strictEqual(result.id, testUserId_00);
     assert.strictEqual(result.username, testUsername_00);
@@ -66,14 +67,14 @@ describe("Update User Query", function () {
   it('Successfully updates a user record with a location and favorite bike', async function () {
     const testLocation = 'Brooklyn, NY';
     const testUserFavoriteBike_00 = "Crust Bombora";
-    const response = await updateUser({ location: testLocation, favoriteBike: testUserFavoriteBike_00 }, testUserId_00);
+    const response = await updateUser({ location: testLocation, favoriteBikes: [testUserFavoriteBike_00] }, testUserId_00);
     const { errors } = response;
     const result = response.result!;
     assert.ok(response);
     assert(now < result.createdAt);
     assert(now < result.updatedAt);
     assert(result.createdAt < result.updatedAt);
-    assert.strictEqual(result.favoriteBike, testUserFavoriteBike_00);
+    assert.deepStrictEqual(result.favoriteBikes, [testUserFavoriteBike_00]);
     assert.strictEqual(result.location, testLocation);
     assert.strictEqual(result.id, testUserId_00);
     assert.strictEqual(result.username, testUsername_00);
@@ -87,7 +88,4 @@ describe("Update User Query", function () {
     checkErrorResponse(errors, true);
   });
 
-  afterAll(async function () {
-    await cleanUpTable([prisma.user]);
-  });
 });

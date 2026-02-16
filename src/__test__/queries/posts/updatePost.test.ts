@@ -2,8 +2,10 @@ import assert from "assert";
 import { v4 as uuid } from "uuid";
 import { mockPost_00 } from "~/__test__/mock/posts/mockPost";
 import { mockUser_00, mockUser_01 } from "~/__test__/mock/users/mockUser";
-import { addRecordsToDb, checkErrorResponse, cleanUpTable } from "~/__test__/utils";
-import { createUser, createPost, updatePost } from "~/queries";
+import { addRecordsToDb, checkErrorResponse } from "~/__test__/utils";
+import { createUser } from "~/queries/users/createUser";
+import { createPost } from "~/queries/posts/createPost";
+import { updatePost } from "~/queries/posts/updatePost";
 import { CreateUser, CreatePost, UpdatePostPayload, User, PostWithAuthorNameAndTags } from "~/types";
 import prisma from "~prisma/prisma";
 
@@ -31,7 +33,7 @@ describe("Update Post Query", function () {
       {
         createRecordFunction: createPost,
         newRecordParams: [
-          [{ content: mockPost_00.content, title: mockPost_00.title, tags: [] }, testUserId_00, testPostId_00],
+          [{ content: mockPost_00.content, title: mockPost_00.title, tags: [], images: [] }, testUserId_00, testPostId_00],
         ],
         mockDataName: 'Post'
       },
@@ -45,7 +47,8 @@ describe("Update Post Query", function () {
       content: updatedPostContent,
       title: updatedPostTitle,
       published: true,
-      tags: []
+      tags: [],
+      existingTags: []
     };
 
     const response = await updatePost(updatePostPayload, testPostId_00, testUserId_00);
@@ -69,7 +72,8 @@ describe("Update Post Query", function () {
       content: updatedPostContent,
       title: updatedPostTitle,
       published: true,
-      tags: []
+      tags: [],
+      existingTags: []
     };
 
     const response = await updatePost(updatePostPayload, 'nonExistentPostId', testUserId_00);
@@ -85,7 +89,8 @@ describe("Update Post Query", function () {
       content: updatedPostContent,
       title: updatedPostTitle,
       published: true,
-      tags: []
+      tags: [],
+      existingTags: []
     };
 
     const response = await updatePost(updatePostPayload, testPostId_00, testUserId_01);
@@ -96,7 +101,4 @@ describe("Update Post Query", function () {
   });
 
 
-  afterAll(async function () {
-    await cleanUpTable([prisma.user, prisma.post, prisma.tag]);
-  });
 });

@@ -1,8 +1,10 @@
 import assert from 'assert';
 import { v4 as uuid } from 'uuid';
 import { mockUser_00 } from '~/__test__/mock/users/mockUser';
-import { addRecordsToDb, cleanUpTable } from "~/__test__/utils";
-import { createPost, createUser, getTagWithPostsById } from "~/queries";
+import { addRecordsToDb } from "~/__test__/utils";
+import { createUser } from "~/queries/users/createUser";
+import { createPost } from "~/queries/posts/createPost";
+import { getTagWithPostsById } from "~/queries/tags/getTagWithPostsById";
 import { CreatePost, CreatePostPayload, CreateUser, PostWithAuthorNameAndTags, User } from "~/types";
 import prisma from '~prisma/prisma';
 
@@ -29,21 +31,25 @@ describe("Get Tag With Posts By ID ", function () {
     content: "Test content 00",
     title: "Test Title 00",
     tags: testTags00,
+    images: [],
   };
   const testPostPayload01: CreatePostPayload = {
     content: "Test content 01",
     title: "Test Title 01",
     tags: testTags00,
+    images: [],
   };
   const testPostPayload02: CreatePostPayload = {
     content: "Test content 02",
     title: "Test Title 02",
     tags: testTags00,
+    images: [],
   };
   const testPostPayload03: CreatePostPayload = {
     content: "Test content 03",
     title: "Test Title 03",
     tags: testTags01,
+    images: [],
   };
 
   beforeAll(async function () {
@@ -103,7 +109,4 @@ describe("Get Tag With Posts By ID ", function () {
   });
 
 
-  afterAll(async function () {
-    await cleanUpTable([prisma.user, prisma.post, prisma.tag]);
-  });
 });

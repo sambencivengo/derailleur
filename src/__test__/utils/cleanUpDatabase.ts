@@ -7,6 +7,16 @@ export type CommentTable = typeof prisma.comment;
 
 export type Table = UserTable | PostTable | TagTable | CommentTable;
 
-export async function cleanUpTable(table: Table[]) {
-  await Promise.all(table.map((table: any) => table.deleteMany({})));
+/** Delete in dependency order so FKs are satisfied. */
+export async function cleanUpTable(tables: Table[]) {
+  const hasUser = tables.includes(prisma.user as Table);
+  if (hasUser) {
+    await prisma.userLikedPosts.deleteMany({});
+    await prisma.userSavedPosts.deleteMany({});
+    await prisma.userLikedComments.deleteMany({});
+    await prisma.session.deleteMany({});
+    await prisma.comment.deleteMany({});
+    await prisma.post.deleteMany({});
+  }
+  await Promise.all(tables.map((t: any) => t.deleteMany({})));
 }

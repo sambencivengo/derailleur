@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
-import { describe, it, beforeAll, afterAll, expect } from 'vitest';
+import { describe, it, beforeAll, expect } from 'vitest';
 import { checkErrorResponse } from '~/__test__/utils';
-import { createUser } from '../../../queries/users/createUser';
+import { createUser } from '~/queries/users/createUser';
 import { CreateUserPayload } from '~/types';
 import prisma from '~prisma/prisma';
 
@@ -15,8 +15,6 @@ describe('Create User Query', () => {
   const passwordOnlyPayload = {
     password: testPassword
   };
-  const createdUserIds: string[] = [];
-
   beforeAll(async () => {
     await prisma.user.deleteMany({ where: { username: { in: [...testUsernames] } } });
   });
@@ -33,7 +31,6 @@ describe('Create User Query', () => {
     const response = await createUser(testCreateUser, testUserId);
     const result = response.result!;
     const { errors } = response;
-    if (result) createdUserIds.push(result.id);
     expect(response).toBeTruthy();
     expect(result.username).toBe(testUsername);
     expect(result.id).toBe(testUserId);
@@ -49,7 +46,6 @@ describe('Create User Query', () => {
     const response = await createUser({ username, ...passwordOnlyPayload });
     const result = response.result!;
     const errors = response.errors;
-    if (result) createdUserIds.push(result.id);
     expect(response).toBeTruthy();
     expect(result.username).toBe(username);
     expect(result.favoriteBikes).toEqual([]);
@@ -87,9 +83,4 @@ describe('Create User Query', () => {
     checkErrorResponse(errors, true);
   });
 
-  afterAll(async () => {
-    if (createdUserIds.length > 0) {
-      await prisma.user.deleteMany({ where: { id: { in: createdUserIds } } });
-    }
-  });
 });

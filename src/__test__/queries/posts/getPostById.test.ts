@@ -1,10 +1,11 @@
 
 import assert from "assert";
-import prisma from "~prisma/prisma";
 import { v4 as uuid } from "uuid";
 import { mockUser_00 } from "~/__test__/mock/users/mockUser";
-import { addRecordsToDb, checkErrorResponse, cleanUpTable } from "~/__test__/utils";
-import { createPost, createUser, getPostById } from "~/queries";
+import { addRecordsToDb, checkErrorResponse } from "~/__test__/utils";
+import { createUser } from "~/queries/users/createUser";
+import { createPost } from "~/queries/posts/createPost";
+import { getPostById } from "~/queries/posts/getPostById";
 import { CreatePost, CreateUser, PostWithAuthorNameAndTags, User } from "~/types";
 
 
@@ -32,7 +33,7 @@ describe("Get Post By ID", function () {
       {
         createRecordFunction: createPost,
         newRecordParams: [
-          [{ content: testContent_00, title: testTitle_00, tags: [] }, testUserId_00, testPostId_00],
+          [{ content: testContent_00, title: testTitle_00, tags: [], images: [] }, testUserId_00, testPostId_00],
         ],
         mockDataName: 'Post'
       },
@@ -74,7 +75,4 @@ describe("Get Post By ID", function () {
     assert.strictEqual(result, null);
   });
 
-  afterAll(async function () {
-    await cleanUpTable([prisma.user, prisma.post]);
-  });
 });

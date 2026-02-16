@@ -11,8 +11,9 @@ import { v4 as uuid } from 'uuid';
 // import prisma from '~prisma/prisma';
 
 import { faker } from "@faker-js/faker";
-import { addRecordsToDb, cleanUpTable } from "~/__test__/utils";
-import { createUser, createPost } from "~/queries";
+import { addRecordsToDb } from "~/__test__/utils";
+import { createUser } from "~/queries/users/createUser";
+import { createPost } from "~/queries/posts/createPost";
 import { CreateUser, PostWithAuthorNameAndTags, CreatePost, User } from "~/types";
 import prisma from "~prisma/prisma";
 import { mockUser_00 } from '~/__test__/mock/users/mockUser';
@@ -39,7 +40,7 @@ describe("Get Comments", function () {
         {
           createRecordFunction: createPost,
           newRecordParams: [
-            [{ content: faker.lorem.sentences(2), title: faker.lorem.sentence(1), tags: [] }, testUserId00, testPostId00],
+            [{ content: faker.lorem.sentences(2), title: faker.lorem.sentence(1), tags: [], images: [] }, testUserId00, testPostId00],
           ],
           mockDataName: 'Post'
         },
@@ -71,7 +72,7 @@ describe("Get Comments", function () {
       {
         createRecordFunction: createPost,
         newRecordParams: [
-          [{ content: faker.lorem.sentences(2), title: faker.lorem.sentence(1), tags: [] }, testUserId00, testPostId00],
+          [{ content: faker.lorem.sentences(2), title: faker.lorem.sentence(1), tags: [], images: [] }, testUserId00, testPostId00],
         ],
         mockDataName: 'Post'
       },
@@ -115,7 +116,4 @@ describe("Get Comments", function () {
   //   }
   // });
 
-  afterAll(async function () {
-    await cleanUpTable([prisma.user, prisma.post, prisma.tag]);
-  });
 });

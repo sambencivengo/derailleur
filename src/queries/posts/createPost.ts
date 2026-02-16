@@ -65,7 +65,7 @@ export const createPost: CreatePost = async (postPayload: CreatePostPayload, use
       const errorTarget = error.meta?.target as unknown as string[];
       if (error.code == PrismaQueryErrorCodes.UNIQUE_CONSTRAINT && errorTarget[0] === 'name') {
         console.warn(`Recursive createPost call required due to Tag name collision, attempts left: ${attemptsLeft}`);
-        await createPost(postPayload, userId, postId, attemptsLeft - 1);
+        return createPost(postPayload, userId, postId, attemptsLeft - 1);
       }
 
       const errResponse = { userId, postPayload, prismaErrorCode: error.code };

@@ -2,8 +2,9 @@ import assert from "assert";
 import { User } from "lucia";
 import { v4 as uuid } from "uuid";
 import { mockUser_00 } from "~/__test__/mock/users/mockUser";
-import { addRecordsToDb, checkErrorResponse, cleanUpTable } from "~/__test__/utils";
-import { createUser, createPost } from "~/queries";
+import { addRecordsToDb, checkErrorResponse } from "~/__test__/utils";
+import { createUser } from "~/queries/users/createUser";
+import { createPost } from "~/queries/posts/createPost";
 import { CreateUser, CreatePostPayload } from "~/types";
 import prisma from "~prisma/prisma";
 
@@ -15,7 +16,8 @@ const testTitle = "26 inch Fork Replacement";
 const testPostPayload: CreatePostPayload = {
   title: testTitle,
   content: testContent,
-  tags: []
+  tags: [],
+  images: [],
 };
 
 describe("Create Post Query", function () {
@@ -61,21 +63,19 @@ describe("Create Post Query", function () {
     checkErrorResponse(errors, true);
   });
 
-  afterAll(async function () {
-    await cleanUpTable([prisma.user]);
-  });
 });
 
 describe("Create Post with Tags", function () {
   const testUserId_00 = uuid();
   const testPostId_00 = uuid();
   const testPostId_01 = uuid();
+  const usernameTags = `${testUser_00.username}-tags`;
   beforeAll(async function () {
     await addRecordsToDb<User, CreateUser>(
       {
         createRecordFunction: createUser,
         newRecordParams: [
-          [{ username: testUser_00.username, password: testPassword }, testUserId_00],
+          [{ username: usernameTags, password: testPassword }, testUserId_00],
         ],
         mockDataName: 'User'
       },
@@ -116,7 +116,7 @@ describe("Create Post with Tags", function () {
     checkErrorResponse(errors);
     assert.ok(result);
     assert.strictEqual(result.authorId, testUserId_00);
-    assert.strictEqual(result.author.username, testUser_00.username);
+    assert.strictEqual(result.author.username, usernameTags);
     assert.strictEqual(result.content, testContent);
     assert.strictEqual(result.title, testTitle);
     assert.strictEqual(result.published, true);
@@ -128,7 +128,4 @@ describe("Create Post with Tags", function () {
     }
   });
 
-  afterAll(async function () {
-    await cleanUpTable([prisma.user, prisma.post, prisma.tag]);
-  });
 });

@@ -1,12 +1,11 @@
 import assert from 'assert';
 import { v4 as uuid } from 'uuid';
 import { mockUser_00 } from '~/__test__/mock/users/mockUser';
-import { addRecordsToDb, checkErrorResponse, cleanUpTable } from '~/__test__/utils';
+import { addRecordsToDb, checkErrorResponse } from '~/__test__/utils';
 import { getUserById } from '~/queries/users/getUserById';
 import { createUser } from '~/queries/users/createUser';
 import { CreateUserPayload, CreateUser } from '~/types';
 import { User } from '~/types/models/users';
-import prisma from '~prisma/prisma';
 
 
 describe("Get User By ID Query", function() {
@@ -37,7 +36,7 @@ describe("Get User By ID Query", function() {
     assert.ok(response);
     assert.strictEqual(result.username, username);
     assert.strictEqual(result.id, testUserId_00);
-    assert.strictEqual(result.favoriteBikes, favoriteBikes);
+    assert.deepStrictEqual(result.favoriteBikes, favoriteBikes);
 
     assert(now < result.createdAt);
     assert(now < result.updatedAt);
@@ -50,7 +49,4 @@ describe("Get User By ID Query", function() {
     checkErrorResponse(errors, true);
   });
 
-  afterAll(async function() {
-    await cleanUpTable([prisma.user]);
-  });
 });

@@ -1,8 +1,10 @@
 import assert from 'assert';
 import { v4 as uuid } from 'uuid';
 import { mockUser_00 } from '~/__test__/mock/users/mockUser';
-import { addRecordsToDb, checkErrorResponse, cleanUpTable } from "~/__test__/utils";
-import { createPost, createUser, getTagWithCountByName } from "~/queries";
+import { addRecordsToDb, checkErrorResponse } from "~/__test__/utils";
+import { createUser } from "~/queries/users/createUser";
+import { createPost } from "~/queries/posts/createPost";
+import { getTagWithCountByName } from "~/queries/tags/getTagWithCountByName";
 import { CreatePost, CreatePostPayload, CreateUser, PostWithAuthorNameAndTags, User } from "~/types";
 import prisma from '~prisma/prisma';
 
@@ -62,6 +64,7 @@ describe("Get Tag With Count By Name ", function () {
     content: "Test content",
     title: "Test Title",
     tags: [],
+    images: [],
   };
 
 
@@ -70,6 +73,7 @@ describe("Get Tag With Count By Name ", function () {
       content: testPostPayload.content,
       title: testPostPayload.title,
       tags: arrayOfTags.tags,
+      images: [],
       published: true
     };
 
@@ -119,7 +123,4 @@ describe("Get Tag With Count By Name ", function () {
     checkErrorResponse(response.errors, true);
   });
 
-  afterAll(async function () {
-    await cleanUpTable([prisma.user, prisma.post, prisma.tag]);
-  });
 });

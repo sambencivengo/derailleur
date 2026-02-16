@@ -24,13 +24,13 @@ export async function createUser(createUserPayload: CreateUserPayload, userId = 
     });
     return createSuccessfulResponse(newUser);
   } catch (error: any) {
-    if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
-      return createErrorResponse([{ message: 'Unable to save new user', data: { user: createUserPayload, error: JSON.stringify(error) } }]);
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      const errorData = { user: createUserPayload, prismaErrorCode: error.code };
+      if (error.code === PrismaQueryErrorCodes.UNIQUE_CONSTRAINT) {
+        return createErrorResponse([{ message: 'Unable to save new user due to unique constraint', data: errorData }]);
+      }
+      return createErrorResponse([{ message: 'Unable to save new user due to prisma error', data: errorData }]);
     }
-    const errorData = { user: createUserPayload, prismaErrorCode: error.code };
-    if (error.code === PrismaQueryErrorCodes.UNIQUE_CONSTRAINT) {
-      return createErrorResponse([{ message: 'Unable to save new user due to unique constraint', data: errorData }]);
-    }
-    return createErrorResponse([{ message: 'Unable to save new user due to prisma error', data: errorData }]);
+    return createErrorResponse([{ message: 'Unable to save new user', data: { user: createUserPayload, error: JSON.stringify(error) } }]);
   }
 };

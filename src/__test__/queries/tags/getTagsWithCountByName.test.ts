@@ -1,8 +1,10 @@
 import assert from 'assert';
 import { v4 as uuid } from 'uuid';
 import { mockUser_00 } from '~/__test__/mock/users/mockUser';
-import { addRecordsToDb, checkErrorResponse, cleanUpTable } from "~/__test__/utils";
-import { createPost, createUser, getTagsWithCountByName } from "~/queries";
+import { addRecordsToDb, checkErrorResponse } from "~/__test__/utils";
+import { createUser } from "~/queries/users/createUser";
+import { createPost } from "~/queries/posts/createPost";
+import { getTagsWithCountByName } from "~/queries/tags/getTagsWithCountByName";
 import { CreatePost, CreatePostPayload, CreateUser, PostWithAuthorNameAndTags, User } from "~/types";
 import prisma from '~prisma/prisma';
 
@@ -68,12 +70,14 @@ describe("Get Tag With Count By Name ", function () {
     content: "Test content",
     title: "Test Title",
     tags: [],
+    images: [],
   };
   const testPostPayloads: [postPayload: CreatePostPayload, userId: string][] = arrayOfArrayOfTestTags00.map((arrayOfTags => {
     const postPayload: CreatePostPayload = {
       content: testPostPayload.content,
       title: testPostPayload.title,
       tags: arrayOfTags.tags,
+      images: [],
       published: true
     };
 
@@ -118,10 +122,5 @@ describe("Get Tag With Count By Name ", function () {
     checkErrorResponse(response.errors);
     const tags = response.result;
     assert.strictEqual(tags.length, 0, "Result tags length does not match expected length");
-  });
-
-
-  afterAll(async function () {
-    await cleanUpTable([prisma.user, prisma.post, prisma.tag]);
   });
 });

@@ -2,10 +2,12 @@ import { faker } from "@faker-js/faker";
 import assert from "assert";
 import { v4 as uuid } from "uuid";
 import { mockUser_00 } from "~/__test__/mock/users/mockUser";
-import { addRecordsToDb, checkErrorResponse, cleanUpTable } from "~/__test__/utils";
-import { createComment, createPost, createUser, getPosts } from "~/queries";
+import { addRecordsToDb, checkErrorResponse } from "~/__test__/utils";
+import { createUser } from "~/queries/users/createUser";
+import { createPost } from "~/queries/posts/createPost";
+import { createComment } from "~/queries/comments/createComment";
+import { getPosts } from "~/queries/posts/getPosts";
 import { CreateComment, CreatePost, CreateUser, User, Comment, PostWithAuthorNameAndTags } from "~/types";
-import prisma from "~prisma/prisma";
 
 
 
@@ -29,10 +31,10 @@ describe("Get Posts", function () {
       {
         createRecordFunction: createPost,
         newRecordParams: [
-          [{ content: faker.lorem.sentences(4), title: faker.lorem.sentence(), tags: ['testTag'] }, testUserId_00, testPostId],
-          [{ content: faker.lorem.sentences(4), title: faker.lorem.sentence(), tags: ['testTag', 'testTag1'] }, testUserId_00, uuid()],
-          [{ content: faker.lorem.sentences(4), title: faker.lorem.sentence(), tags: ['testTag', 'testTag2'] }, testUserId_00, uuid()],
-          [{ content: faker.lorem.sentences(4), title: faker.lorem.sentence(), tags: ['testTag1', 'testTag3'] }, testUserId_00, uuid()],
+          [{ content: faker.lorem.sentences(4), title: 'Post title one for getPosts test', tags: ['testTag'], images: [], rideWithGPSLink: '' }, testUserId_00, testPostId],
+          [{ content: faker.lorem.sentences(4), title: 'Post title two for getPosts test', tags: ['testTag', 'testTag1'], images: [], rideWithGPSLink: '' }, testUserId_00, uuid()],
+          [{ content: faker.lorem.sentences(4), title: 'Post title three for getPosts test', tags: ['testTag', 'testTag2'], images: [], rideWithGPSLink: '' }, testUserId_00, uuid()],
+          [{ content: faker.lorem.sentences(4), title: 'Post title four for getPosts test', tags: ['testTag1', 'testTag3'], images: [], rideWithGPSLink: '' }, testUserId_00, uuid()],
         ],
         mockDataName: 'Post'
       },
@@ -41,9 +43,9 @@ describe("Get Posts", function () {
       {
         createRecordFunction: createComment,
         newRecordParams: [
-          [{ content: faker.lorem.sentences(4), postId: testPostId }, testUserId_00],
+          [{ content: faker.lorem.sentences(4) }, testPostId, testUserId_00],
         ],
-        mockDataName: 'Post'
+        mockDataName: 'Comment'
       },
     );
   });
@@ -69,7 +71,4 @@ describe("Get Posts", function () {
     }
   });
 
-  afterAll(async function () {
-    await cleanUpTable([prisma.user, prisma.post]);
-  });
 });

@@ -10,6 +10,8 @@ export default defineConfig({
     globals: true,
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
     globalSetup: ['./scripts/vitest-global-setup.ts'],
+    setupFiles: ['./scripts/vitest-setup.ts'],
+    fileParallelism: false,
   },
   resolve: {
     alias: {

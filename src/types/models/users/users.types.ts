@@ -15,9 +15,12 @@ export interface UserAndSession {
 
 export const userProfile = Prisma.validator<Prisma.UserDefaultArgs>()({
   select: {
+    id: true,
     username: true,
     favoriteBikes: true,
     location: true,
+    createdAt: true,
+    updatedAt: true,
   }
 });
 
