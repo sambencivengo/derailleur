@@ -31,7 +31,7 @@ export const POST = async (req: Request) => {
 
     const session = await auth.createSession(userId, {});
     const sessionCookie = auth.createSessionCookie(session.id);
-    cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+    (await cookies()).set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 
     return (createNextResponse({ result: 'success', status: 200 }));
   } catch (e) {

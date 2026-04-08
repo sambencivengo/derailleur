@@ -1,11 +1,13 @@
-import React from 'react';
 import { getUserSession } from '~/auth/getUserSession';
 import { PostPreviewsContainer } from '~/components/postPreviewsContainer';
 import { HomePageTagsView } from '~/components/homePageTagsView';
 import { Separator } from '~/components/ui';
 import { WelcomeCard } from '~/components/welcomeCard';
 
-export default async function Home({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
+export default async function Home(
+  props: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }
+) {
+  const searchParams = await props.searchParams;
   const user = await getUserSession();
   const sort = searchParams.sort as 'best' | 'latest' | undefined;
 

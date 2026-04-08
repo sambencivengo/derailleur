@@ -8,7 +8,7 @@ import { UserAndSession } from "~/types";
 
 
 export const getUserSession = cache(async (): Promise<UserAndSession | null> => {
-	const sessionId = cookies().get(auth.sessionCookieName)?.value ?? null;
+	const sessionId = (await cookies()).get(auth.sessionCookieName)?.value ?? null;
 	if (!sessionId) return null;
 	const { user, session } = await auth.validateSession(sessionId);
 	try {
@@ -16,10 +16,10 @@ export const getUserSession = cache(async (): Promise<UserAndSession | null> => 
 			return null;
 		} else if (session && session.fresh) {
 			const sessionCookie = auth.createSessionCookie(session.id);
-			cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+			(await cookies()).set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 		} else if (!session) {
 			const sessionCookie = auth.createBlankSessionCookie();
-			cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+			(await cookies()).set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 		}
 	} catch {
 		// Next.js throws error when attempting to set cookies when rendering page

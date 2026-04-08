@@ -1,10 +1,10 @@
-import React from 'react';
 import { getUserSession } from '~/auth/getUserSession';
 import { QueryError } from '~/components/queryError';
 import { ProfileView } from '~/components/profileView';
 import { getUserByUsername } from '~/queries/users/getUserByUsername';
 
-export default async function Page({ params }: { params: { username: string } }) {
+export default async function Page(props: { params: Promise<{ username: string }> }) {
+  const params = await props.params;
   const { username } = params;
   const user = await getUserSession();
 

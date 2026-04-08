@@ -10,7 +10,11 @@ const objectCategories: { [key: string]: PostCategory } = {
   trips: PostCategory.TRIP,
 };
 
-export default async function Page({ params, searchParams }: { params: { category: string }; searchParams: { [key: string]: string | string[] | undefined } }) {
+export default async function Page(
+  props: { params: Promise<{ category: string }>; searchParams: Promise<{ [key: string]: string | string[] | undefined }> }
+) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const { category } = params;
   const user = await getUserSession();
   const sort = searchParams.sort as 'best' | 'latest' | undefined;

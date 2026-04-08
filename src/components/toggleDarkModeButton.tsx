@@ -1,5 +1,4 @@
 'use client';
-import * as React from 'react';
 import { useTheme } from 'next-themes';
 import { Sun, MoonStar } from 'lucide-react';
 import { Button } from '~/components/ui';

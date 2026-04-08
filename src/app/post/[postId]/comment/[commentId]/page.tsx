@@ -1,10 +1,10 @@
-import React from 'react';
 import { getUserSession } from '~/auth/getUserSession';
 import { QueryError } from '~/components/queryError';
 import { CommentThreadContainer } from '~/components/commentThreadContainer';
 import { getComment } from '~/queries/comments/getComment';
 
-export default async function Page({ params }: { params: { postId: string; commentId: string } }) {
+export default async function Page(props: { params: Promise<{ postId: string; commentId: string }> }) {
+  const params = await props.params;
   const user = await getUserSession();
   const { postId, commentId } = params;
   const commentsResponse = await getComment(commentId, postId);

@@ -3,7 +3,11 @@ import { PostPreviewsContainer } from '~/components/postPreviewsContainer';
 import { TextHeading } from '~/components/textHeading';
 import { Separator } from '~/components/ui';
 
-export default async function Page({ params, searchParams }: { params: { username: string }; searchParams: { [key: string]: string | string[] | undefined } }) {
+export default async function Page(
+  props: { params: Promise<{ username: string }>; searchParams: Promise<{ [key: string]: string | string[] | undefined }> }
+) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const { username } = params;
   const user = await getUserSession();
   const sort = searchParams.sort as 'best' | 'latest' | undefined;

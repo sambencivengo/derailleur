@@ -7,9 +7,15 @@ import { cn } from '~/lib/utils';
 
 interface ProfileLayoutProps {
   children: React.ReactNode;
-  params: { [username: string]: string };
+  params: Promise<{ [username: string]: string }>;
 }
-export default async function RootLayout({ children, params }: ProfileLayoutProps) {
+export default async function RootLayout(props: ProfileLayoutProps) {
+  const params = await props.params;
+
+  const {
+    children
+  } = props;
+
   const user = await getUserSession();
   const { username } = params;
 

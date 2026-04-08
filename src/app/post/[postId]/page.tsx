@@ -10,7 +10,8 @@ import { PostPageSkeleton } from './postPageSkeleton';
  * the skeleton streams while data loads, then content replaces it.
  * This eliminates the "nothing happens" stall when clicking a post link.
  */
-export default function Page({ params }: { params: { postId: string } }) {
+export default async function Page(props: { params: Promise<{ postId: string }> }) {
+  const params = await props.params;
   const { postId } = params;
 
   return (

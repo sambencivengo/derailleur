@@ -4,7 +4,8 @@ import { TextHeading } from '~/components/textHeading';
 import { ProfileCommentsList } from '~/components/profileCommentsList';
 import { Separator, Skeleton } from '~/components/ui';
 
-export default async function Page({ params }: { params: { username: string } }) {
+export default async function Page(props: { params: Promise<{ username: string }> }) {
+  const params = await props.params;
   const { username } = params;
   const user = await getUserSession();
   const emptyCommentsString = user !== null && user.username === username

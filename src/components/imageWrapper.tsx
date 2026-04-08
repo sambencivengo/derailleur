@@ -17,7 +17,6 @@ export function ImageWrapper({ fallbackSrc, imageSrc, ref, ...rest }: ImageWrapp
       alt="User uploaded image"
       placeholder="blur"
       blurDataURL={imgSrc}
-      objectFit="contain"
       fill
       sizes="100vw"
       className="w-full h-full top-0 left-0 object-cover"

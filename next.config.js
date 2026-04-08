@@ -1,8 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['oslo', '@prisma/client', 'prisma'],
-  },
+  serverExternalPackages: ['oslo', '@prisma/client', 'prisma'],
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [

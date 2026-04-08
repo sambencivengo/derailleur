@@ -9,7 +9,8 @@ import { TagPageHeading } from '~/components/tagPageHeading';
 import { Skeleton } from '~/components/ui';
 import { getTagWithPostsByName } from '~/queries/tags/getTagWithPostsByName';
 
-export default async function Page({ params }: { params: { tag: string } }) {
+export default async function Page(props: { params: Promise<{ tag: string }> }) {
+  const params = await props.params;
   const { tag } = params;
   const user = await getUserSession();
   const tagNameWithoutHyphens = tag.split('-').join(' ').toUpperCase();
