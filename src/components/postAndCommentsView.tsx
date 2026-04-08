@@ -1,18 +1,18 @@
 'use client';
 import React, { Suspense } from 'react';
-import { CommentsView } from '~/components/commentsView';
+import { Comment } from '~/components/comment';
 import { EditPostForm } from '~/components/editPostForm';
 import { PostLinks } from '~/components/postLinks';
 import { PostView } from '~/components/postView';
 import { Skeleton } from '~/components/ui';
-import { CommentWithAuthorUsernameIDAndReplies, PostWithAuthorNameTagsAndCommentCount, CommentWithUserNameAndId, UserAndSession } from '~/types';
+import { PostWithAuthorNameTagsAndCommentCount, CommentWithUserNameAndId, UserAndSession } from '~/types';
 
 interface PostAndCommentsViewProps {
   post: PostWithAuthorNameTagsAndCommentCount;
   user: UserAndSession | null;
-  initialComments: CommentWithAuthorUsernameIDAndReplies[];
+  children: React.ReactNode;
 }
-export function PostAndCommentsView({ post, user, initialComments }: PostAndCommentsViewProps) {
+export function PostAndCommentsView({ post, user, children }: PostAndCommentsViewProps) {
   const [newCommentOnPost, setNewCommentOnPost] = React.useState<Array<CommentWithUserNameAndId>>([]);
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
   const [successfullyEditedPost, setSuccessfullyEditedPost] = React.useState<PostWithAuthorNameTagsAndCommentCount | null>(null);
@@ -20,9 +20,13 @@ export function PostAndCommentsView({ post, user, initialComments }: PostAndComm
     <main className="w-full flex flex-col">
       <Suspense fallback={<SkeletonFullPagePost />}>{renderEditedOrExistingPost(user, setIsEditing, isEditing, setSuccessfullyEditedPost, successfullyEditedPost, post)}</Suspense>
       <PostLinks likesCount={post._count.likes} postIsLiked={post.likes.length >= 1} postIsSaved={post.savedBy.length >= 1} setIsEditing={setIsEditing} numberOfComments={post._count.comments + newCommentOnPost.length} postId={post.id} postAuthorId={post.authorId} user={user} setNewComments={setNewCommentOnPost} />
+      {newCommentOnPost.length > 0 &&
+        newCommentOnPost.map(({ author, content, createdAt, id, postId, updatedAt }, idx) => {
+          return <Comment inThread={false} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} initialReplies={[]} updatedAt={updatedAt} repliesCount={0} user={user} level={0} />;
+        })}
       <Suspense fallback={<SkeletonCommentPreview />}>
         <div className="flex flex-col gap-5">
-          <CommentsView postId={post.id} user={user} initialComments={initialComments} newCommentsOnPost={newCommentOnPost} />
+          {children}
         </div>
       </Suspense>
     </main>

@@ -43,7 +43,7 @@ export function CommentThreadContainer({ postId, comment, user }: CommentThreadC
           </Button>
         )}
 
-        <CommentsView inThread={true} key={parentCommentId} postId={postId} initialComments={commentsToRender} newCommentsOnPost={[]} user={user} />
+        <CommentsView inThread={true} key={parentCommentId} postId={postId} initialComments={commentsToRender} user={user} />
       </Suspense>
     </div>
   );

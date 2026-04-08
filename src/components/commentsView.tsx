@@ -1,23 +1,24 @@
+'use client';
+
 import React from 'react';
 import { Comment } from '~/components/comment';
 import { QueryError } from '~/components/queryError';
 import { Spinner } from '~/components/spinner';
 import { Button } from '~/components/ui';
 import { CommentCursor, getComments } from '~/queries/comments/getComments';
-import { CommentWithAuthorUsernameIDAndReplies, CommentWithUserNameAndId, UserAndSession } from '~/types';
+import { CommentWithAuthorUsernameIDAndReplies, UserAndSession } from '~/types';
 import { DerailleurError } from '~/utils';
 
 interface CommentsViewProps {
   user: UserAndSession | null;
   initialComments: Array<CommentWithAuthorUsernameIDAndReplies>;
-  newCommentsOnPost: Array<CommentWithUserNameAndId>;
   postId: string;
   showContextLink?: boolean;
   inThread?: boolean;
 }
 const COMMENT_BATCH_AMOUNT = 5;
 
-export function CommentsView({ showContextLink = false, postId, user, initialComments, newCommentsOnPost, inThread = false }: CommentsViewProps) {
+export function CommentsView({ showContextLink = false, postId, user, initialComments, inThread = false }: CommentsViewProps) {
   const [comments, setComments] = React.useState<Array<CommentWithAuthorUsernameIDAndReplies>>(initialComments.length > COMMENT_BATCH_AMOUNT ? initialComments.slice(0, COMMENT_BATCH_AMOUNT) : initialComments);
   const [getMoreCommentsErrors, setGetMoreCommentsErrors] = React.useState<Array<DerailleurError>>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -61,10 +62,6 @@ export function CommentsView({ showContextLink = false, postId, user, initialCom
   // }, [onScroll, isLoading]);
   return (
     <div className="flex flex-col">
-      {newCommentsOnPost.length > 0 &&
-        newCommentsOnPost.map(({ author, content, createdAt, id, postId, updatedAt }, idx) => {
-          return <Comment inThread={inThread} showContextLink={showContextLink} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} initialReplies={[]} updatedAt={updatedAt} repliesCount={0} user={user} level={0} />;
-        })}
       {comments.map(({ _count, author, content, createdAt, id, postId, replies, updatedAt }, idx) => {
         return <Comment inThread={inThread} showContextLink={showContextLink} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} initialReplies={replies} updatedAt={updatedAt} repliesCount={_count.replies} user={user} level={0} />;
       })}
