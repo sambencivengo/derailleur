@@ -3,6 +3,7 @@ import { Prisma, User as PrismaUser } from "@prisma/client";
 export interface User extends PrismaUser { }
 
 export interface UserAndSession {
+  id: string;
   username: string;
 }
 
