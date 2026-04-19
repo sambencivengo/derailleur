@@ -54,7 +54,7 @@ export function Comment({ author, commentId, content, createdAt, updatedAt, post
     <Card className={cn('w-full pr-0', level !== 0 ? 'pr-0 border-r-0' : 'mb-2')}>
       <CardContent className="w-full mt-3">
         {isEditing && user !== null ? (
-          <EditCommentForm setSuccessfullyEditedComment={setSuccessfullyEditedComment} setIsEditing={setIsEditing} content={content} commentId={commentId} userId={user.userId} />
+          <EditCommentForm setSuccessfullyEditedComment={setSuccessfullyEditedComment} setIsEditing={setIsEditing} content={content} commentId={commentId} userId={user.id} />
         ) : (
           <>
             <div className="">
@@ -70,7 +70,7 @@ export function Comment({ author, commentId, content, createdAt, updatedAt, post
         )}
       </CardContent>
       <CardFooter className={cn('flex flex-col pl-5 pb-1 gap-y-2 pr-0')}>
-        {isEditing ? null : <CommentLinks commentId={commentId} showContextLink={showContextLink} isEditing={isEditing} setIsEditing={setIsEditing} parentCommentId={commentId} postId={postId} user={user} setNewComments={setNewCommentsOnComment} isUsersComment={user !== null && user.userId === author.id} />}
+        {isEditing ? null : <CommentLinks commentId={commentId} showContextLink={showContextLink} isEditing={isEditing} setIsEditing={setIsEditing} parentCommentId={commentId} postId={postId} user={user} setNewComments={setNewCommentsOnComment} isUsersComment={user !== null && user.id === author.id} />}
         {level >= 4 && repliesCount > 0 && !inThread && (
           <Link href={`/post/${postId}/comment/${commentId}`} className="text-primary hover:underline">
             ...continue comment thread

@@ -25,7 +25,7 @@ export async function PostsList({ user, category, username, sort, showEndOfPosts
   const { errors, result } = await getPosts(
     username,
     category,
-    user === null ? undefined : user.userId,
+    user === null ? undefined : user.id,
     undefined,
     sort
   );

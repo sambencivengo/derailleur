@@ -71,7 +71,7 @@ export function PostPreview({ post, user }: PostPreviewProps) {
               if (user === null) {
                 router.push(`/login?returnPath=${pathName}`);
               } else {
-                handleLikePost(user.userId);
+                handleLikePost(user.id);
               }
             }}
           >
@@ -97,7 +97,7 @@ export function PostPreview({ post, user }: PostPreviewProps) {
             if (user === null) {
               router.push(`/login?returnPath=${pathName}`);
             } else {
-              handleSavePost(user.userId);
+              handleSavePost(user.id);
             }
           }}
         >

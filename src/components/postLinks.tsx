@@ -42,7 +42,7 @@ export function PostLinks({ likesCount, postIsLiked, user, postId, numberOfComme
                 if (user === null) {
                   router.push(`/login?returnPath=${pathName}`);
                 } else {
-                  handleLikePost(user.userId);
+                  handleLikePost(user.id);
                 }
               }}
             >
@@ -68,13 +68,13 @@ export function PostLinks({ likesCount, postIsLiked, user, postId, numberOfComme
               if (user === null) {
                 router.push(`/login?returnPath=${pathName}`);
               } else {
-                handleSavePost(user.userId);
+                handleSavePost(user.id);
               }
             }}
           >
             {saved ? 'Unsave' : 'Save'}
           </Button>
-          {user !== null && user.userId === postAuthorId && (
+          {user !== null && user.id === postAuthorId && (
             <Button variant="link" onClick={() => setIsEditing(true)}>
               Edit
             </Button>
@@ -87,7 +87,7 @@ export function PostLinks({ likesCount, postIsLiked, user, postId, numberOfComme
             <MessageSquare className="top-[1px]" />
           </Button>
         </div>
-        {user !== null && <CommentReplyForm parentCommentId={null} postId={postId} userId={user.userId} isReplying={isReplying} setIsReplying={setIsReplying} setNewComments={setNewComments} />}
+        {user !== null && <CommentReplyForm parentCommentId={null} postId={postId} userId={user.id} isReplying={isReplying} setIsReplying={setIsReplying} setNewComments={setNewComments} />}
       </div>
     </>
   );

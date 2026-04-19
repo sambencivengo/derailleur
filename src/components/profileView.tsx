@@ -37,7 +37,7 @@ export function ProfileView({ userProfile, user }: ProfileViewProps) {
       </CardHeader>
       <CardContent>
         {isEditing && userIsLoggedIn ? (
-          <EditProfileForm updateEditingState={updateEditingState} userProfile={userProfileState} updateUserProfileState={updateUserProfileState} userId={user.userId} />
+          <EditProfileForm updateEditingState={updateEditingState} userProfile={userProfileState} updateUserProfileState={updateUserProfileState} userId={user.id} />
         ) : (
           <ul className="w-full flex flex-col gap-2">
             <li>

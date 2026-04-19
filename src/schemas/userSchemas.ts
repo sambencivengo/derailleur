@@ -9,7 +9,14 @@ export const userSignUpSchema = z.object({
     .min(2, {
       message: 'Username must be at least 2 characters.',
     })
-    .max(50)
+    .max(30)
+    .trim(),
+  email: z
+    .string({
+      required_error: "Email is required",
+      invalid_type_error: "Email must be a string",
+    })
+    .email({ message: "Must be a valid email" })
     .trim(),
   password: z
     .string({
@@ -19,6 +26,25 @@ export const userSignUpSchema = z.object({
     .min(2, {
       message: 'Password must be at least 2 characters.',
     })
+    .max(50)
+    .trim(),
+});
+
+export const userLogInSchema = z.object({
+  username: z
+    .string({
+      required_error: "Username is required",
+      invalid_type_error: "Username must be a string",
+    })
+    .min(2, { message: 'Username must be at least 2 characters.' })
+    .max(30)
+    .trim(),
+  password: z
+    .string({
+      required_error: "Password is required",
+      invalid_type_error: "Password must be a string",
+    })
+    .min(2, { message: 'Password must be at least 2 characters.' })
     .max(50)
     .trim(),
 });
@@ -37,6 +63,5 @@ export const editProfileSchema = z.object({
 export type EditProfileSchema = z.infer<typeof editProfileSchema>;
 
 
-export const userLogInSchema = userSignUpSchema;
 export type SignUpSchema = z.infer<typeof userSignUpSchema>;
-export type LogInSchema = SignUpSchema;
+export type LogInSchema = z.infer<typeof userLogInSchema>;

@@ -1,6 +1,5 @@
 'use client';
 import React from 'react';
-import axios, { AxiosError } from 'axios';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -8,11 +7,11 @@ import { FormControl, FormField, FormItem, FormMessage, Button, Input } from '~/
 import { SignUpSchema } from '~/schemas/userSchemas';
 import { AlertCircle } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '~/components/ui';
-import { DerailleurError } from '~/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Spinner } from '~/components/spinner';
 import { FormWrapper } from '~/components/formWrapper';
 import Link from 'next/link';
+import { authClient } from '~/auth/client';
 
 // NOTE: Necessary in this file to prevent build errors
 const userSignUpSchema = z.object({
@@ -24,7 +23,14 @@ const userSignUpSchema = z.object({
     .min(2, {
       message: 'Username must be at least 2 characters.',
     })
-    .max(50)
+    .max(30)
+    .trim(),
+  email: z
+    .string({
+      required_error: 'Email is required',
+      invalid_type_error: 'Email must be a string',
+    })
+    .email({ message: 'Must be a valid email' })
     .trim(),
   password: z
     .string({
@@ -46,6 +52,7 @@ export function SignUpForm() {
     resolver: zodResolver(userSignUpSchema),
     defaultValues: {
       username: '',
+      email: '',
       password: '',
     },
   });
@@ -53,19 +60,19 @@ export function SignUpForm() {
 
   async function onSubmit(values: z.infer<typeof userSignUpSchema>) {
     setIsLoading(true);
-    await axios
-      .post('/api/signup', values)
-      .then(() => {
-        router.push(returnPath === null ? '/' : returnPath);
-        router.refresh();
-      })
-      .catch((error: AxiosError) => {
-        setIsLoading(false);
-        if (error.response) {
-          const { errors } = error.response.data as { errors: DerailleurError[] };
-          setSignUpError(errors.map((error) => error.message));
-        }
-      });
+    const { error } = await authClient.signUp.email({
+      username: values.username,
+      email: values.email,
+      password: values.password,
+      name: values.username,
+    });
+    if (error) {
+      setIsLoading(false);
+      setSignUpError([error.message ?? 'Unable to create account']);
+      return;
+    }
+    router.push(returnPath === null ? '/' : returnPath);
+    router.refresh();
   }
 
   return (
@@ -78,6 +85,18 @@ export function SignUpForm() {
             <FormItem>
               <FormControl>
                 <Input autoComplete="" className="w-full" placeholder="username" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input autoComplete="email" type="email" className="w-full" placeholder="email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -1,17 +1,18 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import { getUserSession } from '~/auth/getUserSession';
+import { headers } from 'next/headers';
+import { auth } from '~/auth/auth';
 import { NewPostForm } from '~/components/newPostForm';
 
 export default async function Page() {
-  const userWithSession = await getUserSession();
-  if (!userWithSession) {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session) {
     redirect('/');
   } else {
     return (
       <main>
-        <NewPostForm userId={userWithSession.userId} />
+        <NewPostForm userId={session.user.id} />
       </main>
     );
   }

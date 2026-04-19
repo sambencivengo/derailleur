@@ -4,11 +4,13 @@ import { DerailleurResponse } from "~/utils";
 
 export interface CreateUserPayload {
   username: string;
-  password: string;
+  email?: string;
+  /** @deprecated password is set via Better Auth, this field is ignored */
+  password?: string;
   favoriteBikes?: Array<string>;
   location?: string | null;
 }
-export type UpdateUserPayload = Omit<Partial<CreateUserPayload>, 'password'>;
+export type UpdateUserPayload = Partial<CreateUserPayload>;
 
 // Query Function Types
 export type CreateUser = (user: CreateUserPayload, userId?: string) => Promise<DerailleurResponse<User>>;

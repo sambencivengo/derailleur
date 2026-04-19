@@ -33,7 +33,7 @@ export function MobileNav({ user }: MobileNavProps) {
                     <NewPostButton forMobile={true} />
                   </SheetClose>
                   <SheetClose onClick={close}>
-                    <UserProfileButton userName={user.username} userId={user.userId} forMobile={true} />
+                    <UserProfileButton userName={user.username} userId={user.id} forMobile={true} />
                   </SheetClose>
                   <SheetClose>
                     <LogOutButton setOpenState={close} />

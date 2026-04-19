@@ -32,7 +32,7 @@ export function LoadMorePosts({ initialPosts, initialCursor, user, category, use
   const getMorePosts = React.useCallback(
     async function (cursorId: string, cursorDate: string | Date) {
       setIsLoading(true);
-      const { errors, result } = await getPosts(username, category, user === null ? undefined : user.userId, { postId: cursorId, createdAt: cursorDate }, sort);
+      const { errors, result } = await getPosts(username, category, user === null ? undefined : user.id, { postId: cursorId, createdAt: cursorDate }, sort);
       if (result === null || errors.length > 0) {
         setErrors(errors);
         setIsLoading(false);

@@ -4,12 +4,14 @@ import Link from 'next/link';
 import { DesktopNav } from '~/components/desktopNav';
 import { TextHeading } from '~/components/textHeading';
 import { MobileNav } from '~/components/mobileNav';
-import { getUserSession } from '~/auth/getUserSession';
+import { headers } from 'next/headers';
+import { auth } from '~/auth/auth';
 import { BetaDialog } from '~/components/betaDialog';
 import { MobileSideBarButtons } from '~/components/mobileSideBarButtons';
 
 export async function NavBar() {
-  const user = await getUserSession();
+  const session = await auth.api.getSession({ headers: await headers() });
+  const user = session?.user.username ? { id: session.user.id, username: session.user.username } : null;
   return (
     <header className="w-full sticky md:relative top-0 bg-background">
       <nav>

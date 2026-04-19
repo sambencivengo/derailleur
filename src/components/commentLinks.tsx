@@ -53,7 +53,7 @@ export function CommentLinks({ showContextLink = false, user, postId, setNewComm
           </Button>
         )}
       </div>
-      {user !== null && isEditing !== true && <CommentReplyForm parentCommentId={parentCommentId} postId={postId} userId={user.userId} isReplying={isReplying} setIsReplying={setIsReplying} setNewComments={setNewComments} />}
+      {user !== null && isEditing !== true && <CommentReplyForm parentCommentId={parentCommentId} postId={postId} userId={user.id} isReplying={isReplying} setIsReplying={setIsReplying} setNewComments={setNewComments} />}
     </div>
   );
 }

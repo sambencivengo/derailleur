@@ -1,4 +1,5 @@
-import { getUserSession } from '~/auth/getUserSession';
+import { headers } from 'next/headers';
+import { auth } from '~/auth/auth';
 import { PostPreviewsContainer } from '~/components/postPreviewsContainer';
 import { HomePageTagsView } from '~/components/homePageTagsView';
 import { Separator } from '~/components/ui';
@@ -8,7 +9,8 @@ export default async function Home(
   props: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }
 ) {
   const searchParams = await props.searchParams;
-  const user = await getUserSession();
+  const session = await auth.api.getSession({ headers: await headers() });
+  const user = session?.user.username ? { id: session.user.id, username: session.user.username } : null;
   const sort = searchParams.sort as 'best' | 'latest' | undefined;
 
   return (

@@ -60,11 +60,22 @@ async function seed() {
     console.log('💻 Creating dev account 💻');
     createUserPromises.push(prisma.user.create({
       data: {
-        hashedPassword: hashedSimplePassword,
         id: DEV_USER_ID,
         username: 'sammy',
+        displayUsername: 'sammy',
+        name: 'sammy',
+        email: 'sammy@seed.local',
+        emailVerified: true,
         location: 'Colorado',
         favoriteBikes: ['1991 Trek Single Track 990'],
+        accounts: {
+          create: {
+            id: uuid(),
+            accountId: DEV_USER_ID,
+            providerId: 'credential',
+            password: hashedSimplePassword,
+          },
+        },
       }
     }));
   };
@@ -98,14 +109,27 @@ async function seed() {
         });
       };
       const hashedSimplePassword = await argon2.hash('password');
+      const newUserId = uuid();
+      const newUsername = faker.internet.displayName();
       const createUserPromise = prisma.user.create({
         data: {
-          id: uuid(),
-          username: faker.internet.displayName(),
+          id: newUserId,
+          username: newUsername,
+          displayUsername: newUsername,
+          name: newUsername,
+          email: faker.internet.email({ firstName: newUsername }),
+          emailVerified: true,
           favoriteBikes: new Array(generateRandomNumberInLimit()).fill(null).map(() => faker.vehicle.bicycle()),
-          hashedPassword: hashedSimplePassword,
           location: faker.location.state(),
           posts: { create: postsPayloadArray },
+          accounts: {
+            create: {
+              id: uuid(),
+              accountId: newUserId,
+              providerId: 'credential',
+              password: hashedSimplePassword,
+            },
+          },
         }
       });
 

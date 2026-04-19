@@ -59,7 +59,7 @@ export function EditPostForm({ user, postId, content, title, existingTags, rideW
   async function onSubmit(values: UpdatePostPayload) {
     setIsLoading(true);
     const valuesWithTags: UpdatePostPayload = { ...values, tags: selected.map((tag) => tag.name), existingTags: existingTags };
-    const response = await updatePost(valuesWithTags, postId, user.userId);
+    const response = await updatePost(valuesWithTags, postId, user.id);
     if (response.errors.length > 0 || response.result === null) {
       setIsLoading(false);
       setEditPostError(response.errors.map((error) => error.message));

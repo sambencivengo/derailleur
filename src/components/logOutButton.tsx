@@ -1,9 +1,9 @@
 'use client';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { Spinner } from '~/components/spinner';
 import { Button } from '~/components/ui/button';
+import { authClient } from '~/auth/client';
 
 interface LogOutButtonProps {
   setOpenState: (state: boolean) => void;
@@ -13,17 +13,10 @@ export const LogOutButton = ({ setOpenState }: LogOutButtonProps) => {
   const router = useRouter();
   const logOut = async () => {
     setIsLoading(true);
-    axios
-      .post('/api/logout')
-      .then((response) => {
-        setIsLoading(false);
-        router.refresh();
-        setOpenState(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsLoading(false);
-      });
+    await authClient.signOut();
+    setIsLoading(false);
+    router.refresh();
+    setOpenState(false);
   };
 
   return (
@@ -32,4 +25,3 @@ export const LogOutButton = ({ setOpenState }: LogOutButtonProps) => {
     </Button>
   );
 };
-1;

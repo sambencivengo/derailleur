@@ -36,7 +36,7 @@ export function DesktopNav({ user }: DesktopNavProps) {
             {user !== null ? (
               <>
                 <PopoverClose asChild onClick={close}>
-                  <UserProfileButton userId={user.userId} userName={user.username} />
+                  <UserProfileButton userId={user.id} userName={user.username} />
                 </PopoverClose>
                 <LogOutButton setOpenState={close} />
               </>

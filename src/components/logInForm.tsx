@@ -1,6 +1,5 @@
 'use client';
 import React from 'react';
-import axios, { AxiosError } from 'axios';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -9,9 +8,9 @@ import { AlertCircle } from 'lucide-react';
 import { Spinner } from '~/components/spinner';
 import { FormWrapper } from '~/components/formWrapper';
 import { FormControl, FormField, FormItem, FormMessage, Button, Input, Alert, AlertTitle, AlertDescription } from '~/components/ui';
-import { DerailleurError } from '~/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { authClient } from '~/auth/client';
 
 // NOTE: Necessary in this file to prevent build errors
 const userLogInSchema = z.object({
@@ -23,7 +22,7 @@ const userLogInSchema = z.object({
     .min(2, {
       message: 'Username must be at least 2 characters.',
     })
-    .max(50)
+    .max(30)
     .trim(),
   password: z
     .string({
@@ -52,19 +51,17 @@ export function LogInForm() {
   });
   async function onSubmit(values: z.infer<typeof userLogInSchema>) {
     setIsLoading(true);
-    await axios
-      .post('/api/login', values)
-      .then(() => {
-        router.push(returnPath === null ? '/' : returnPath);
-        router.refresh();
-      })
-      .catch((error: AxiosError) => {
-        setIsLoading(false);
-        if (error.response) {
-          const { errors } = error.response.data as { errors: DerailleurError[] };
-          setLogInError(errors.map((error) => error.message));
-        }
-      });
+    const { error } = await authClient.signIn.username({
+      username: values.username,
+      password: values.password,
+    });
+    if (error) {
+      setIsLoading(false);
+      setLogInError([error.message ?? 'Incorrect username or password']);
+      return;
+    }
+    router.push(returnPath === null ? '/' : returnPath);
+    router.refresh();
   }
 
   return (

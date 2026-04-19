@@ -11,27 +11,64 @@ datasource db {
 }
 
 model User {
-  id String @id @unique
-  hashedPassword String @db.VarChar(255)
+  id String @id
+  email String @unique
+  emailVerified Boolean @default(false)
+  name String
+  image String?
+  username String @unique @db.VarChar(30)
+  displayUsername String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
-  username String @unique @db.VarChar(30)
   location String?
   favoriteBikes String[]
   posts Post[]
   comments Comment[]
   sessions Session[]
+  accounts Account[]
   saved UserSavedPosts[]
   likedPosts UserLikedPosts[]
   likedComments UserLikedComments[]
 }
 
 model Session {
-  id String @id @unique
+  id String @id
   userId String
+  token String @unique
   expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
   user User @relation(references: [id], fields: [userId], onDelete: Cascade)
   @@index([userId])
+}
+
+model Account {
+  id String @id
+  userId String
+  accountId String
+  providerId String
+  accessToken String?
+  refreshToken String?
+  accessTokenExpiresAt DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope String?
+  idToken String?
+  password String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  user User @relation(references: [id], fields: [userId], onDelete: Cascade)
+  @@index([userId])
+}
+
+model Verification {
+  id String @id
+  identifier String
+  value String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Post {

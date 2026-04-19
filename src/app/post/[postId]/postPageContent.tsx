@@ -1,4 +1,5 @@
-import { getUserSession } from '~/auth/getUserSession';
+import { headers } from 'next/headers';
+import { auth } from '~/auth/auth';
 import { QueryError } from '~/components/queryError';
 import { CenterLayout } from '~/components/layouts/centerLayout';
 import { PostAndCommentsView } from '~/components/postAndCommentsView';
@@ -12,8 +13,9 @@ interface PostPageContentProps {
 }
 
 export async function PostPageContent({ postId }: PostPageContentProps) {
-  const user = await getUserSession();
-  const { errors: postErrors, result: postResult } = await getPostById(postId, user?.userId);
+  const session = await auth.api.getSession({ headers: await headers() });
+  const user = session?.user.username ? { id: session.user.id, username: session.user.username } : null;
+  const { errors: postErrors, result: postResult } = await getPostById(postId, user?.id);
 
   if (postErrors.length > 0 || postResult === null) {
     return <QueryError errors={postErrors} />;

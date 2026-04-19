@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { getUserSession } from '~/auth/getUserSession';
+import { headers } from 'next/headers';
+import { auth } from '~/auth/auth';
 import { TextHeading } from '~/components/textHeading';
 import { CenterLayout } from '~/components/layouts/centerLayout';
 import { MainLayout } from '~/components/layouts/mainLayout';
@@ -16,7 +17,8 @@ export default async function RootLayout(props: ProfileLayoutProps) {
     children
   } = props;
 
-  const user = await getUserSession();
+  const session = await auth.api.getSession({ headers: await headers() });
+  const user = session?.user.username ? { id: session.user.id, username: session.user.username } : null;
   const { username } = params;
 
   const userIsLoggedIn = user !== null && user.username === username;

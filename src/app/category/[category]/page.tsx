@@ -1,5 +1,6 @@
 import { PostCategory } from '@prisma/client';
-import { getUserSession } from '~/auth/getUserSession';
+import { headers } from 'next/headers';
+import { auth } from '~/auth/auth';
 import { TextHeading } from '~/components/textHeading';
 import { PostPreviewsContainer } from '~/components/postPreviewsContainer';
 import { BackToAllPostsLink } from '~/components/backToAllPostsLink';
@@ -16,7 +17,8 @@ export default async function Page(
   const searchParams = await props.searchParams;
   const params = await props.params;
   const { category } = params;
-  const user = await getUserSession();
+  const session = await auth.api.getSession({ headers: await headers() });
+  const user = session?.user.username ? { id: session.user.id, username: session.user.username } : null;
   const sort = searchParams.sort as 'best' | 'latest' | undefined;
 
   return (

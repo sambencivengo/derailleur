@@ -1,48 +1,26 @@
-import { Lucia } from "lucia";
-import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
+import { betterAuth } from "better-auth";
+import { prismaAdapter } from "better-auth/adapters/prisma";
+import { nextCookies } from "better-auth/next-js";
+import { username } from "better-auth/plugins";
+import * as argon2 from "argon2";
+import prisma from "~prisma/prisma";
 
-import prismaClient from '~prisma/prisma';
-
-const adapter = new PrismaAdapter(prismaClient.session, prismaClient.user);
-
-
-export const auth = new Lucia(
-  adapter,
-  {
-    sessionCookie: {
-      // this sets cookies with super long expiration
-      // since Next.js doesn't allow Lucia to extend cookie expiration when rendering pages
-      // https://v3.lucia-auth.com/getting-started/nextjs-app
-      expires: false,
-      attributes: {
-        secure: process.env.NODE_ENV === "production",
-      }
+export const auth = betterAuth({
+  database: prismaAdapter(prisma, { provider: "postgresql" }),
+  emailAndPassword: {
+    enabled: true,
+    minPasswordLength: 2,
+    maxPasswordLength: 50,
+    password: {
+      hash: async (password) => argon2.hash(password),
+      verify: async ({ hash, password }) => argon2.verify(hash, password),
     },
-    getSessionAttributes: () => {
-      return ({});
-    },
-    getUserAttributes: (attributes) => {
-      return (
-        {
-          username: attributes.username
-        }
-      );
-    },
-  }
-);
-
-// IMPORTANT!
-declare module "lucia" {
-  interface Register {
-    Lucia: typeof auth;
-    DatabaseSessionAttributes: DatabaseSessionAttributes;
-    DatabaseUserAttributes: DatabaseUserAttributes;
-  }
-}
-
-
-interface DatabaseSessionAttributes {
-}
-interface DatabaseUserAttributes {
-  username: string;
-}
+  },
+  plugins: [
+    username({
+      minUsernameLength: 2,
+      maxUsernameLength: 30,
+    }),
+    nextCookies(),
+  ],
+});
