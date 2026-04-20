@@ -2,13 +2,14 @@
 import Link from 'next/link';
 import moment from 'moment';
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter, Badge, Button } from '~/components/ui';
-import { PostForViewer, UserAndSession } from '~/types';
+import { PostForViewer, Tag, UserAndSession } from '~/types';
 import { Heart } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { PostCategoryTag } from '~/components/postCategoryTag';
 import { useLikePost } from '~/hooks/useLikePost';
 import { useSavePost } from '~/hooks/useSavePost';
 import { PostPreviewThumbnail } from '~/components/postPreviewIcon';
+import { TagBadge } from './tagBadge';
 
 interface PostPreviewProps {
   post: PostForViewer;
@@ -26,13 +27,13 @@ export function PostPreview({ post, user }: PostPreviewProps) {
     tags,
   } = post;
 
-  const renderTagBadges = tags.map((tag, idx) => {
+  const renderTagBadges = tags.map((tag) => {
     return (
-      <Link key={idx} href={`/tags/${tag.name.toLowerCase().split(' ').join('-')}`}>
-        <Badge variant={'secondary'}>{`#${tag.name}`}</Badge>
-      </Link>
+      <TagBadge tag={tag} key={tag.name} />
     );
   });
+
+
   return (
     <Card className="w-full flex flex-col">
       <div className="w-full flex justify-between flex-row">

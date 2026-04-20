@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Badge, Separator, Button } from '~/components/ui';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Separator, Button } from '~/components/ui';
 import Link from 'next/link';
 import { PostWithAuthorNameTagsAndCommentCount } from '~/types';
 import { determineDateToShow } from '~/utils/dateUtils';
@@ -11,6 +11,7 @@ import { PostCategoryTag } from '~/components/postCategoryTag';
 import { createImageUrl } from '~/utils/imageUrl';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { TagBadge } from './tagBadge';
 interface PostViewProps {
   post: PostWithAuthorNameTagsAndCommentCount;
 }
@@ -28,11 +29,9 @@ export function PostView({ post }: PostViewProps) {
     tags,
     updatedAt,
   } = post;
-  const renderTagBadges = tags.map((tag, idx) => {
+  const renderTagBadges = tags.map((tag) => {
     return (
-      <Link key={idx} href={`/tags/${tag.name.toLowerCase().split(' ').join('-')}`}>
-        <Badge key={idx} variant={'secondary'}>{`#${tag.name}`}</Badge>
-      </Link>
+      <TagBadge tag={tag} key={tag.name} />
     );
   });
 
