@@ -1,5 +1,5 @@
 import { PostCategory } from "@prisma/client";
-import { PostWithAuthorNameAndTags, PostWithAuthorNameTagsAndCommentCount } from "~/types";
+import { PostForViewer, PostWithAuthorNameAndTags } from "~/types";
 import { SavedPostWithPostAuthorNameTagsAndCommentCount } from "~/types/models/savedPosts";
 import { DerailleurResponse } from "~/utils";
 
@@ -46,16 +46,16 @@ export type CreatePost = (
 export type GetPostById = (
   postId: string,
   userId?: string,
-) => Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount>>;
+) => Promise<DerailleurResponse<PostForViewer>>;
 
 export type UpdatePost = (
   updatePostPayload: UpdatePostPayload,
   postId: string,
   authorId: string,
-) => Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount>>;
+) => Promise<DerailleurResponse<PostForViewer>>;
 
 export enum OrderBy { DESC = 'desc', ASC = 'asc' };
-export type GetPosts = (username?: string, category?: PostCategory, userId?: string, cursor?: PostCursor, sort?: 'best' | 'latest') => Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount[]>>;
+export type GetPosts = (username?: string, category?: PostCategory, userId?: string, cursor?: PostCursor, sort?: 'best' | 'latest') => Promise<DerailleurResponse<PostForViewer[]>>;
 
 export type UnsavePost = (postId: string, userId: string) => Promise<DerailleurResponse<string>>;
 export type SavePost = (postId: string, userId: string, savedPostId?: string) => Promise<DerailleurResponse<string>>;

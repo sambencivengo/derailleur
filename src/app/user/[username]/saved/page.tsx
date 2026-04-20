@@ -32,7 +32,12 @@ export default async function Page(props: { params: Promise<{ username: string }
           <Separator />
           <div className="space-y-2">
             {result.map(({ post }, idx) => {
-              return <PostPreview user={user} post={post} key={idx} />;
+              const postForViewer = {
+                ...post,
+                isLikedByViewer: post.likes.length > 0,
+                isSavedByViewer: true,
+              };
+              return <PostPreview user={user} post={postForViewer} key={idx} />;
             })}
           </div>
         </div>

@@ -1,5 +1,5 @@
 import { Prisma, Tag as PrismaTag } from '@prisma/client';
-import { postWithAuthorNameTagsAndCommentCountQuery } from '~/types/models/posts';
+import { PostForViewer, postWithAuthorNameTagsAndCommentCountQuery } from '~/types/models/posts';
 
 export const tagWithPostCountQuery = Prisma.validator<Prisma.TagDefaultArgs>()({
   include: {
@@ -22,4 +22,5 @@ export const tagWithPostsQuery = Prisma.validator<Prisma.TagDefaultArgs>()({
 export interface Tag extends PrismaTag { };
 export type TagWithPostCount = Prisma.TagGetPayload<typeof tagWithPostCountQuery>;
 export type TagWithPosts = Prisma.TagGetPayload<typeof tagWithPostsQuery>;
+export type TagWithPostsForViewer = Omit<TagWithPosts, 'posts'> & { posts: PostForViewer[] };
 

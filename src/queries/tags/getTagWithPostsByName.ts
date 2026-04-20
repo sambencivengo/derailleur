@@ -1,10 +1,11 @@
 'use server';
 import { Prisma } from '@prisma/client';
 import prisma from '~prisma/prisma';
-import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from '~/utils';
-import { GetTagWithPostsByName, PostCursor, postWithAuthorNameTagsAndCommentCountQuery, TagWithPosts, tagWithPostsQuery } from '~/types';
+import { createSuccessfulResponse, createErrorResponse } from '~/utils';
+import { GetTagWithPostsByName, postWithAuthorNameTagsAndCommentCountQuery, tagWithPostsQuery } from '~/types';
+import { withViewerFlags } from '~/queries/posts/utils';
 
-export const getTagWithPostsByName: GetTagWithPostsByName = async (name: string, userId?: string, cursor?: PostCursor): Promise<DerailleurResponse<TagWithPosts>> => {
+export const getTagWithPostsByName: GetTagWithPostsByName = async (name, userId, cursor) => {
   try {
     const tag = await prisma.tag.findUnique({
       where: {
@@ -23,11 +24,8 @@ export const getTagWithPostsByName: GetTagWithPostsByName = async (name: string,
           // skip: cursor !== undefined ? 1 : 0,
           include: {
             ...postWithAuthorNameTagsAndCommentCountQuery.include,
-            saves: {
-              where: {
-                userId
-              }
-            }
+            saves: { where: { userId: userId ?? '' } },
+            likes: { where: { userId: userId ?? '' } },
           }
         }
 
@@ -37,7 +35,7 @@ export const getTagWithPostsByName: GetTagWithPostsByName = async (name: string,
     if (!tag) {
       return createErrorResponse([{ data: { name }, message: "Unable to find tag's posts" }]);
     }
-    return createSuccessfulResponse(tag);
+    return createSuccessfulResponse({ ...tag, posts: tag.posts.map(withViewerFlags) });
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
       return createErrorResponse([{ message: 'An error occurred when retrieve a tag', data: { name, error: JSON.stringify(error) } }]);

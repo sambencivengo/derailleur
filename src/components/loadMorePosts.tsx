@@ -7,14 +7,14 @@ import { QueryError } from '~/components/queryError';
 import { Button } from '~/components/ui';
 import { EndOfPostsNotice } from '~/components/endOfPostsNotice';
 import { getPosts } from '~/queries/posts/getPosts';
-import { PostCursor, PostWithAuthorNameTagsAndCommentCount, UserAndSession } from '~/types';
+import { PostCursor, PostForViewer, UserAndSession } from '~/types';
 import { DerailleurError } from '~/utils';
 import { PostCategory } from '@prisma/client';
 
 const POST_BATCH_AMOUNT = 10;
 
 interface LoadMorePostsProps {
-  initialPosts: PostWithAuthorNameTagsAndCommentCount[];
+  initialPosts: PostForViewer[];
   initialCursor: PostCursor | null;
   user: UserAndSession | null;
   category?: PostCategory;

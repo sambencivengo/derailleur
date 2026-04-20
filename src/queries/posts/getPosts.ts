@@ -1,12 +1,13 @@
 'use server';
 
-import { PostCategory, Prisma } from "@prisma/client";
-import { GetPosts, OrderBy, PostCursor, PostWithAuthorNameTagsAndCommentCount, postWithAuthorNameTagsAndCommentCountQuery } from "~/types";
-import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
+import { Prisma } from "@prisma/client";
+import { GetPosts, OrderBy, postWithAuthorNameTagsAndCommentCountQuery } from "~/types";
+import { createErrorResponse, createSuccessfulResponse } from "~/utils";
+import { withViewerFlags } from "~/queries/posts/utils";
 import prisma from "~prisma/prisma";
 
 
-export const getPosts: GetPosts = async (username?: string, category?: PostCategory, userId?: string, cursor?: PostCursor, sort: 'best' | 'latest' = 'best'): Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount[]>> => {
+export const getPosts: GetPosts = async (username, category, userId, cursor, sort = 'best') => {
   const gravity = 1.8; // scoring algorithm
   try {
     const posts = await prisma.post.findMany({
@@ -47,18 +48,22 @@ export const getPosts: GetPosts = async (username?: string, category?: PostCateg
       }
     });
 
+    const postsWithFlags = posts.map(withViewerFlags);
+
     if (sort === 'best') {
-      // Scoring algorithm
+      // Scoring algorithm (uses _count.likes — total likes, not viewer-filtered)
       const now = new Date();
-      const rankedPosts = posts.map(post => {
-        const hoursSincePost = (now.getTime() - new Date(post.createdAt).getTime()) / 36e5;
-        const score = post.likes.length / Math.pow((hoursSincePost + 2), gravity);
-        return { ...post, score };
-      }).sort((a, b) => b.score - a.score);
+      const rankedPosts = [...postsWithFlags].sort((a, b) => {
+        const hoursA = (now.getTime() - new Date(a.createdAt).getTime()) / 36e5;
+        const hoursB = (now.getTime() - new Date(b.createdAt).getTime()) / 36e5;
+        const scoreA = a._count.likes / Math.pow((hoursA + 2), gravity);
+        const scoreB = b._count.likes / Math.pow((hoursB + 2), gravity);
+        return scoreB - scoreA;
+      });
       return createSuccessfulResponse(rankedPosts);
     }
 
-    return (createSuccessfulResponse(posts));
+    return createSuccessfulResponse(postsWithFlags);
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
       return createErrorResponse([{ message: 'An error occurred when trying to get posts', data: { error: JSON.stringify(error) } }]);

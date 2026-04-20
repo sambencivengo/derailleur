@@ -1,5 +1,4 @@
 import { Prisma, Post as PrismaPost } from '@prisma/client';
-import { boolean } from 'better-auth';
 
 // NOTE: Post will always have the number of comments and the username of the author included
 export const postWithAuthorNameQuery = Prisma.validator<Prisma.PostDefaultArgs>()({
@@ -58,5 +57,9 @@ export const postWithTitleAndCommentCount = Prisma.validator<Prisma.PostDefaultA
 export interface Post extends PrismaPost { };
 export type PostWithAuthorName = Prisma.PostGetPayload<typeof postWithAuthorNameQuery>;
 export type PostWithAuthorNameTagsAndCommentCount = Prisma.PostGetPayload<typeof postWithAuthorNameTagsAndCommentCountQuery>;
+export type PostForViewer = PostWithAuthorNameTagsAndCommentCount & {
+  isLikedByViewer: boolean;
+  isSavedByViewer: boolean;
+};
 export type PostWithAuthorNameAndTags = Prisma.PostGetPayload<typeof postWithAuthorNameAndTagsQuery>;
 export type PostWithTitleAndCommentCount = Prisma.PostGetPayload<typeof postWithTitleAndCommentCount>;

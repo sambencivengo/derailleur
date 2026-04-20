@@ -5,21 +5,21 @@ import { EditPostForm } from '~/components/editPostForm';
 import { PostLinks } from '~/components/postLinks';
 import { PostView } from '~/components/postView';
 import { Skeleton } from '~/components/ui';
-import { PostWithAuthorNameTagsAndCommentCount, CommentWithUserNameAndId, UserAndSession } from '~/types';
+import { PostForViewer, CommentWithUserNameAndId, UserAndSession } from '~/types';
 
 interface PostAndCommentsViewProps {
-  post: PostWithAuthorNameTagsAndCommentCount;
+  post: PostForViewer;
   user: UserAndSession | null;
   children: React.ReactNode;
 }
 export function PostAndCommentsView({ post, user, children }: PostAndCommentsViewProps) {
   const [newCommentOnPost, setNewCommentOnPost] = React.useState<Array<CommentWithUserNameAndId>>([]);
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
-  const [successfullyEditedPost, setSuccessfullyEditedPost] = React.useState<PostWithAuthorNameTagsAndCommentCount | null>(null);
+  const [successfullyEditedPost, setSuccessfullyEditedPost] = React.useState<PostForViewer | null>(null);
   return (
     <main className="w-full flex flex-col">
       <Suspense fallback={<SkeletonFullPagePost />}>{renderEditedOrExistingPost(user, setIsEditing, isEditing, setSuccessfullyEditedPost, successfullyEditedPost, post)}</Suspense>
-      <PostLinks likesCount={post._count.likes} postIsLiked={post.likes.length >= 1} postIsSaved={post.saves.length >= 1} setIsEditing={setIsEditing} numberOfComments={post._count.comments + newCommentOnPost.length} postId={post.id} postAuthorId={post.authorId} user={user} setNewComments={setNewCommentOnPost} />
+      <PostLinks likesCount={post._count.likes} postIsLiked={post.isLikedByViewer} postIsSaved={post.isSavedByViewer} setIsEditing={setIsEditing} numberOfComments={post._count.comments + newCommentOnPost.length} postId={post.id} postAuthorId={post.authorId} user={user} setNewComments={setNewCommentOnPost} />
       {newCommentOnPost.length > 0 &&
         newCommentOnPost.map(({ author, content, createdAt, id, postId, updatedAt }, idx) => {
           return <Comment inThread={false} key={idx} author={author} commentId={id} content={content} createdAt={createdAt} postId={postId} initialReplies={[]} updatedAt={updatedAt} repliesCount={0} user={user} level={0} />;
@@ -47,7 +47,7 @@ function SkeletonCommentPreview() {
   );
 }
 
-function renderEditedOrExistingPost(user: UserAndSession | null, setIsEditing: React.Dispatch<React.SetStateAction<boolean>>, isEditing: boolean, setSuccessfullyEditedPost: React.Dispatch<React.SetStateAction<PostWithAuthorNameTagsAndCommentCount | null>>, successfullyEditedPost: PostWithAuthorNameTagsAndCommentCount | null, post: PostWithAuthorNameTagsAndCommentCount) {
+function renderEditedOrExistingPost(user: UserAndSession | null, setIsEditing: React.Dispatch<React.SetStateAction<boolean>>, isEditing: boolean, setSuccessfullyEditedPost: React.Dispatch<React.SetStateAction<PostForViewer | null>>, successfullyEditedPost: PostForViewer | null, post: PostForViewer) {
   const postToRender = successfullyEditedPost === null ? post : successfullyEditedPost;
   if (isEditing && user !== null) {
     return <EditPostForm setSuccessfullyEditedPost={setSuccessfullyEditedPost} setIsEditing={setIsEditing} rideWithGPSLink={post.rideWithGPSLink} user={user} postId={postToRender.id} content={postToRender.content} title={postToRender.title} images={postToRender.images} existingTags={postToRender.tags} />;

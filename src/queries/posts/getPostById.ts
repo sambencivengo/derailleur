@@ -1,10 +1,11 @@
 'use server';
 import { Prisma } from "@prisma/client";
-import { GetPostById, PostWithAuthorNameTagsAndCommentCount, postWithAuthorNameTagsAndCommentCountQuery } from "~/types";
-import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
+import { GetPostById, postWithAuthorNameTagsAndCommentCountQuery } from "~/types";
+import { createErrorResponse, createSuccessfulResponse } from "~/utils";
+import { withViewerFlags } from "~/queries/posts/utils";
 import prisma from "~prisma/prisma";
 
-export const getPostById: GetPostById = async (postId: string, userId?: string): Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount>> => {
+export const getPostById: GetPostById = async (postId, userId) => {
 
   try {
     const post = await prisma.post.findUnique({
@@ -29,7 +30,8 @@ export const getPostById: GetPostById = async (postId: string, userId?: string):
     if (!post) {
       return createErrorResponse([{ message: "Unable to find post", data: { userId, postId } }]);
     }
-    return createSuccessfulResponse(post);
+
+    return createSuccessfulResponse(withViewerFlags(post));
 
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {

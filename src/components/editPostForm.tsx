@@ -5,7 +5,7 @@ import { Spinner } from '~/components/spinner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Alert, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, Label, MultiSelect, Textarea } from '~/components/ui';
 import { updatePostPayloadSchema } from '~/schemas/postSchemas';
-import { PostWithAuthorNameTagsAndCommentCount, TagWithPostCount, UpdatePostPayload, UserAndSession } from '~/types';
+import { PostForViewer, TagWithPostCount, UpdatePostPayload, UserAndSession } from '~/types';
 import { AlertCircle } from 'lucide-react';
 import { getTagsWithCountByName } from '~/queries/tags/getTagsWithCountByName';
 import { updatePost } from '~/queries/posts/updatePost';
@@ -23,7 +23,7 @@ interface EditPostFormProps {
   existingTags: Array<{ id: string; name: string }>;
   rideWithGPSLink: string | null;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
-  setSuccessfullyEditedPost: React.Dispatch<React.SetStateAction<PostWithAuthorNameTagsAndCommentCount | null>>;
+  setSuccessfullyEditedPost: React.Dispatch<React.SetStateAction<PostForViewer | null>>;
 }
 // TODO: use images variable
 export function EditPostForm({ user, postId, content, title, existingTags, rideWithGPSLink, images, setIsEditing, setSuccessfullyEditedPost }: EditPostFormProps) {

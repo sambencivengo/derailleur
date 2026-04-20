@@ -6,7 +6,7 @@ import { QueryError } from '~/components/queryError';
 import { EndOfPostsNotice } from '~/components/endOfPostsNotice';
 import { Button } from '~/components/ui';
 import { getTagWithPostsByName } from '~/queries/tags/getTagWithPostsByName';
-import { PostCursor, PostWithAuthorNameTagsAndCommentCount, TagWithPosts, UserAndSession } from '~/types';
+import { PostCursor, PostForViewer, TagWithPostsForViewer, UserAndSession } from '~/types';
 import { DerailleurError } from '~/utils';
 
 const POST_BATCH_AMOUNT = 10;
@@ -14,11 +14,11 @@ const POST_BATCH_AMOUNT = 10;
 interface TagPagePostsContainerProps {
   user: UserAndSession | null;
   tagNameWithoutHyphens: string;
-  initialTagAndPosts: TagWithPosts;
+  initialTagAndPosts: TagWithPostsForViewer;
 }
 export function TagPostsView({ user, initialTagAndPosts, tagNameWithoutHyphens }: TagPagePostsContainerProps) {
   const { posts: initialPosts } = initialTagAndPosts;
-  const [posts, setPosts] = React.useState<Array<PostWithAuthorNameTagsAndCommentCount>>(initialPosts.length > POST_BATCH_AMOUNT ? initialPosts.slice(0, POST_BATCH_AMOUNT) : initialPosts);
+  const [posts, setPosts] = React.useState<Array<PostForViewer>>(initialPosts.length > POST_BATCH_AMOUNT ? initialPosts.slice(0, POST_BATCH_AMOUNT) : initialPosts);
   const [getMorePostsErrors, setGetMorePostsErrors] = React.useState<Array<DerailleurError>>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [cursor, setCursor] = React.useState<PostCursor | null>(initialPosts.length > POST_BATCH_AMOUNT ? { createdAt: initialPosts[initialPosts.length - 1].createdAt, postId: initialPosts[initialPosts.length - 1].id } : null);

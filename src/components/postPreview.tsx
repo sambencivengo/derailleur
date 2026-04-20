@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import moment from 'moment';
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter, Badge, Button } from '~/components/ui';
-import { PostWithAuthorNameTagsAndCommentCount, UserAndSession } from '~/types';
+import { PostForViewer, UserAndSession } from '~/types';
 import { Heart } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { PostCategoryTag } from '~/components/postCategoryTag';
@@ -11,12 +11,12 @@ import { useSavePost } from '~/hooks/useSavePost';
 import { PostPreviewThumbnail } from '~/components/postPreviewIcon';
 
 interface PostPreviewProps {
-  post: PostWithAuthorNameTagsAndCommentCount;
+  post: PostForViewer;
   user: UserAndSession | null;
 }
 export function PostPreview({ post, user }: PostPreviewProps) {
-  const { handleLikePost, liked, numberOfLikes } = useLikePost({ postIsLiked: post.likes.length === 1 && user !== null, numOfLikes: post._count.likes, postId: post.id });
-  const { handleSavePost, saved } = useSavePost({ postIsSaved: post.saves.length !== 0, postId: post.id });
+  const { handleLikePost, liked, numberOfLikes } = useLikePost({ postIsLiked: post.isLikedByViewer && user !== null, numOfLikes: post._count.likes, postId: post.id });
+  const { handleSavePost, saved } = useSavePost({ postIsSaved: post.isSavedByViewer, postId: post.id });
   const router = useRouter();
   const pathName = usePathname();
   const {

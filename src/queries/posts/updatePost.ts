@@ -1,11 +1,11 @@
 'use server';
 import { Prisma } from "@prisma/client";
-import { determinePostCategory } from "~/queries/posts/utils";
-import { PostWithAuthorNameTagsAndCommentCount, UpdatePost, UpdatePostPayload, postWithAuthorNameTagsAndCommentCountQuery } from "~/types";
-import { DerailleurResponse, createSuccessfulResponse, createErrorResponse } from "~/utils";
+import { determinePostCategory, withViewerFlags } from "~/queries/posts/utils";
+import { UpdatePost, postWithAuthorNameTagsAndCommentCountQuery } from "~/types";
+import { createSuccessfulResponse, createErrorResponse } from "~/utils";
 import prisma from "~prisma/prisma";
 
-export const updatePost: UpdatePost = async (updatePostPayload: UpdatePostPayload, postId: string, authorId: string): Promise<DerailleurResponse<PostWithAuthorNameTagsAndCommentCount>> => {
+export const updatePost: UpdatePost = async (updatePostPayload, postId, authorId) => {
   const { content, title, published, tags, rideWithGPSLink, existingTags } = updatePostPayload;
 
   const tagsToDelete: Array<{ name: string, id: string; }> = [];
@@ -41,9 +41,13 @@ export const updatePost: UpdatePost = async (updatePostPayload: UpdatePostPayloa
           }),
         },
       },
-      ...postWithAuthorNameTagsAndCommentCountQuery
+      include: {
+        ...postWithAuthorNameTagsAndCommentCountQuery.include,
+        saves: { where: { userId: authorId } },
+        likes: { where: { userId: authorId } },
+      },
     });
-    return createSuccessfulResponse(updatedPost);
+    return createSuccessfulResponse(withViewerFlags(updatedPost));
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
       return createErrorResponse([{ message: 'An error occurred when trying update a post', data: { userId: authorId, updatePostPayload, postId, error: JSON.stringify(error) } }]);
