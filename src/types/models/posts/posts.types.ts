@@ -1,4 +1,5 @@
 import { Prisma, Post as PrismaPost } from '@prisma/client';
+import { boolean } from 'better-auth';
 
 // NOTE: Post will always have the number of comments and the username of the author included
 export const postWithAuthorNameQuery = Prisma.validator<Prisma.PostDefaultArgs>()({

@@ -4,6 +4,7 @@ import { v4 as uuid } from 'uuid';
 import { Prisma } from "@prisma/client";
 import { SavePost } from "~/types";
 import { DerailleurResponse, createErrorResponse, createSuccessfulResponse } from "~/utils";
+import { PrismaQueryErrorCodes } from "~prisma/prismaErrorCodes";
 import prisma from "~prisma/prisma";
 
 
@@ -20,6 +21,9 @@ export const savePost: SavePost = async (postId: string, userId: string, savedPo
   } catch (error: any) {
     if (!(error instanceof Prisma.PrismaClientKnownRequestError)) {
       return createErrorResponse([{ message: 'An error occurred when save post', data: { error: JSON.stringify(error) } }]);
+    }
+    if (error.code === PrismaQueryErrorCodes.UNIQUE_CONSTRAINT) {
+      return createSuccessfulResponse('success');
     }
     const errResponse = { error: JSON.stringify(error), prismaErrorCode: error.code };
     return createErrorResponse([{ message: 'Unable to find save post due to prisma error', data: errResponse }]);

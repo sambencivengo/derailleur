@@ -98,6 +98,7 @@ model UserLikedPosts {
   postId String
   user User @relation(fields: [userId], references: [id])
   userId String
+  @@unique([userId, postId])
 }
 model UserLikedComments {
   id String @id @unique
@@ -115,6 +116,7 @@ model UserSavedPosts {
   postId String
   user User @relation(fields: [userId], references: [id])
   userId String
+  @@unique([userId, postId])
 }
 
 model Comment {
