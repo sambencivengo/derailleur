@@ -6,7 +6,6 @@ import { withViewerFlags } from "~/queries/posts/utils";
 import prisma from "~prisma/prisma";
 
 export const getPostById: GetPostById = async (postId, userId) => {
-
   try {
     const post = await prisma.post.findUnique({
       where: {
