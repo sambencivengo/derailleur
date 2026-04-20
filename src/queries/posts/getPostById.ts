@@ -13,14 +13,14 @@ export const getPostById: GetPostById = async (postId: string, userId?: string):
       },
       include: {
         ...postWithAuthorNameTagsAndCommentCountQuery.include,
-        savedBy: {
+        saves: {
           where: {
-            userId: { in: [userId ?? ''] }
+            userId: userId ?? ''
           }
         },
         likes: {
           where: {
-            userId: { in: [userId ?? ''] }
+            userId: userId ?? ''
           }
         }
       }

@@ -1,5 +1,5 @@
 import assert from "assert";
-import { User } from "lucia";
+import { User } from "~/types";
 import { v4 as uuid } from "uuid";
 import { mockUser_00 } from "~/__test__/mock/users/mockUser";
 import { addRecordsToDb, checkErrorResponse } from "~/__test__/utils";

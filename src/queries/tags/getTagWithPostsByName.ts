@@ -23,7 +23,7 @@ export const getTagWithPostsByName: GetTagWithPostsByName = async (name: string,
           // skip: cursor !== undefined ? 1 : 0,
           include: {
             ...postWithAuthorNameTagsAndCommentCountQuery.include,
-            savedBy: {
+            saves: {
               where: {
                 userId
               }

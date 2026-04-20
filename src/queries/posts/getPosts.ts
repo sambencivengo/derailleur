@@ -34,7 +34,7 @@ export const getPosts: GetPosts = async (username?: string, category?: PostCateg
       },
       include: {
         ...postWithAuthorNameTagsAndCommentCountQuery.include,
-        savedBy: {
+        saves: {
           where: {
             userId: { in: [userId ?? ''] }
           }

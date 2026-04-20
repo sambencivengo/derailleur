@@ -3,7 +3,7 @@ import Link from 'next/link';
 import moment from 'moment';
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter, Badge, Button } from '~/components/ui';
 import { PostWithAuthorNameTagsAndCommentCount, UserAndSession } from '~/types';
-import { Bookmark, Heart, MessageSquare } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { PostCategoryTag } from '~/components/postCategoryTag';
 import { useLikePost } from '~/hooks/useLikePost';
@@ -16,7 +16,7 @@ interface PostPreviewProps {
 }
 export function PostPreview({ post, user }: PostPreviewProps) {
   const { handleLikePost, liked, numberOfLikes } = useLikePost({ postIsLiked: post.likes.length === 1 && user !== null, numOfLikes: post._count.likes, postId: post.id });
-  const { handleSavePost, saved } = useSavePost({ postIsSaved: post.savedBy.length !== 0, postId: post.id });
+  const { handleSavePost, saved } = useSavePost({ postIsSaved: post.saves.length !== 0, postId: post.id });
   const router = useRouter();
   const pathName = usePathname();
   const {
@@ -61,38 +61,38 @@ export function PostPreview({ post, user }: PostPreviewProps) {
         </CardHeader>{' '}
         <PostPreviewThumbnail postId={post.id} rideWithGPSLink={post.rideWithGPSLink} thumbnail={post.thumbnail} />
       </div>
-      <CardFooter className="w-full pb-2 pl-3 flex flex-wrap text-primary">
-        <div className="flex flex-row gap-2 items-center">
-          <Button
-            className="h-6 w-6 hover:bg-opacity-0"
-            size={'icon'}
-            variant={'link'}
-            onClick={() => {
-              if (user === null) {
-                router.push(`/login?returnPath=${pathName}`);
-              } else {
-                handleLikePost(user.id);
-              }
-            }}
-          >
-            {liked ? <Heart className={'text-primary'} fill={'#f97316'} /> : <Heart className={'text-primary'} />}
-          </Button>
-          <Link href={`/post/${id}`}>
-            <Button variant={'link'}>
-              {numberOfLikes} like{numberOfLikes > 1 || numberOfLikes === 0 ? 's' : ''}
-            </Button>
-          </Link>
-        </div>
-        <Link className="text-[16px]" href={`/post/${id}`}>
-          <Button variant="link" className="flex-row gap-1 ">
-            {post._count.comments}
-            <MessageSquare className="top-[1px]" />
-          </Button>
-        </Link>
-
+      <CardFooter className="w-full pb-2 px-3 flex flex-row items-center justify-start gap-4 text-primary">
         <Button
+          className="h-6 w-6 hover:bg-opacity-0"
           size={'icon'}
           variant={'link'}
+          onClick={() => {
+            if (user === null) {
+              router.push(`/login?returnPath=${pathName}`);
+            } else {
+              handleLikePost(user.id);
+            }
+          }}
+        >
+          {liked ? <Heart className={'text-primary'} fill={'#f97316'} /> : <Heart className={'text-primary'} />}
+        </Button>
+
+        <Button asChild variant="link" size="sm" className="text-xs px-0 h-auto">
+          <Link href={`/post/${id}`}>
+            {numberOfLikes} like{numberOfLikes > 1 || numberOfLikes === 0 ? 's' : ''}
+          </Link>
+        </Button>
+
+        <Button asChild variant="link" size="sm" className="text-xs px-0 h-auto">
+          <Link href={`/post/${id}`}>
+            {post._count.comments} comments
+          </Link>
+        </Button>
+
+        <Button
+          variant="link"
+          size="sm"
+          className="text-xs px-0 h-auto"
           onClick={() => {
             if (user === null) {
               router.push(`/login?returnPath=${pathName}`);
@@ -101,7 +101,7 @@ export function PostPreview({ post, user }: PostPreviewProps) {
             }
           }}
         >
-          {saved ? <Bookmark className={'text-primary'} fill={'#f97316'} /> : <Bookmark className={'text-primary'} />}
+          {saved ? 'Unsave' : 'Save'}
         </Button>
       </CardFooter>
     </Card>

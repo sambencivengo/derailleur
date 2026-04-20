@@ -86,7 +86,7 @@ model Post {
   thumbnail String?
   comments Comment[]
   category PostCategory @default(POST)
-  savedBy UserSavedPosts[]
+  saves UserSavedPosts[]
   likes UserLikedPosts[]
   @@unique([id, createdAt])
 }
