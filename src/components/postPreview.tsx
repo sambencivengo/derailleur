@@ -53,7 +53,7 @@ export function PostPreview({ post, user }: PostPreviewProps) {
           <div className="flex flex-row gap-1">
             <CardDescription className="text-xs">
               by{' '}
-              <Link className="underline hover:text-primary" href={`/user/${username}`}>
+              <Link className="font-bold hover:text-primary" href={`/user/${username}`}>
                 {username}
               </Link>{' '}
               {moment(createdAt).fromNow()}
@@ -62,7 +62,7 @@ export function PostPreview({ post, user }: PostPreviewProps) {
         </CardHeader>{' '}
         <PostPreviewThumbnail postId={post.id} rideWithGPSLink={post.rideWithGPSLink} thumbnail={post.thumbnail} />
       </div>
-      <CardFooter className="w-full pb-2 px-3 flex flex-row items-center justify-start gap-4 text-primary">
+      <CardFooter className="w-full text-xs pb-2 px-3 flex flex-row items-center justify-start gap-4 text-muted-foreground">
         <Button
           className="h-6 w-6 hover:bg-opacity-0"
           size={'icon'}
@@ -78,13 +78,13 @@ export function PostPreview({ post, user }: PostPreviewProps) {
           {liked ? <Heart className={'text-primary'} fill={'#f97316'} /> : <Heart className={'text-primary'} />}
         </Button>
 
-        <Button asChild variant="link" size="sm" className="text-xs px-0 h-auto">
+        <Button asChild variant="link" size="sm" className="text-muted-foreground text-xs px-0 h-auto">
           <Link href={`/post/${id}`}>
             {numberOfLikes} like{numberOfLikes > 1 || numberOfLikes === 0 ? 's' : ''}
           </Link>
         </Button>
 
-        <Button asChild variant="link" size="sm" className="text-xs px-0 h-auto">
+        <Button asChild variant="link" size="sm" className="text-muted-foreground text-xs px-0 h-auto">
           <Link href={`/post/${id}`}>
             {post._count.comments} comments
           </Link>
@@ -93,7 +93,7 @@ export function PostPreview({ post, user }: PostPreviewProps) {
         <Button
           variant="link"
           size="sm"
-          className="text-xs px-0 h-auto"
+          className="text-xs px-0 h-auto text-muted-foreground"
           onClick={() => {
             if (user === null) {
               router.push(`/login?returnPath=${pathName}`);
