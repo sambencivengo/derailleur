@@ -81,7 +81,7 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
               <Badge key={idx} variant="secondary">
                 {tag.name.toUpperCase()}
                 <button
-                  className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                  className="ml-1 ring-offset-background rounded-full outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       e.preventDefault();
@@ -118,13 +118,13 @@ export const MultiSelect = React.forwardRef<HTMLInputElement, MultiSelectProps>(
               if (selectables.length > 0) setOpen(true);
             }}
             placeholder="Add tags..."
-            className="uppercase placeholder:initial ml-2 bg-background outline-none placeholder:text-muted-foreground flex-1"
+            className="uppercase placeholder:initial ml-2 bg-background outline-hidden placeholder:text-muted-foreground flex-1"
           />
         </div>
       </div>
       <div className="relative mt-2">
         {open ? (
-          <div className="absolute w-full z-100 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
+          <div className="absolute w-full z-100 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-hidden animate-in">
             <CommandGroup className="h-full overflow-auto">
               {selectables.map((tag, idx) => {
                 return (

@@ -31,7 +31,7 @@ function renderThumbnailImage(postId: string, thumbnail: string | null, rideWith
             style={{
               width: '100%',
             }}
-            className="rounded-md data-[loaded=false]:animate-pulse data-[loaded=false]:bg-secondary-background"
+            className="rounded-md data-[loaded=false]:animate-pulse data-[loaded=false]:bg-muted"
             width={100}
             height={100}
           />

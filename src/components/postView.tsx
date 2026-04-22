@@ -164,7 +164,7 @@ export function PostView({ post }: PostViewProps) {
                   style={{
                     width: '100%',
                   }}
-                  className="data-[loaded=false]:animate-pulse data-[loaded=false]:bg-secondary-background object-cover w-[300px] h-[200px]"
+                  className="data-[loaded=false]:animate-pulse data-[loaded=false]:bg-muted object-cover w-[300px] h-[200px]"
                   width={500}
                   height={100}
                 />

@@ -18,7 +18,7 @@ export function RideWithGPSIFrame({ url, category }: { url: string; category: Po
   if (!Number(extractedRouteNumber) || Number(extractedRouteNumber) <= 0) {
     return <QueryError errors={[{ data: url, message: `Unable to create embedded route. There may be an issue with your share link: ${url}` }]} />;
   } else {
-    return <iframe src={`https://ridewithgps.com/embeds?type=${type}&id=${extractedRouteNumber}&sampleGraph=true`} className="rounded-lg w-[1px] min-w-full h-[600px] border-0 overflow-hidden" />;
+    return <iframe src={`https://ridewithgps.com/embeds?type=${type}&id=${extractedRouteNumber}&sampleGraph=true`} className="rounded-lg w-px min-w-full h-[600px] border-0 overflow-hidden" />;
   }
 }
 

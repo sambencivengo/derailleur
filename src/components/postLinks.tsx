@@ -84,7 +84,7 @@ export function PostLinks({ likesCount, postIsLiked, user, postId, numberOfComme
             <Link className="" href={''}>
               {numberOfComments}
             </Link>
-            <MessageSquare className="top-[1px]" />
+            <MessageSquare className="top-px" />
           </Button>
         </div>
         {user !== null && <CommentReplyForm parentCommentId={null} postId={postId} userId={user.id} isReplying={isReplying} setIsReplying={setIsReplying} setNewComments={setNewComments} />}

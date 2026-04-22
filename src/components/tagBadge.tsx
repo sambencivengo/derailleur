@@ -9,7 +9,7 @@ interface TagBadgeProps {
 export function TagBadge({ tag }: TagBadgeProps) {
   return (
     <Link key={tag.name} href={`/tags/${tag.name.toLowerCase().split(' ').join('-')}`}>
-      <Badge className='border border-primary' variant={'secondary'}>{`#${tag.name}`}</Badge>
+      <Badge className='border' variant={'secondary'}>{`#${tag.name}`}</Badge>
     </Link>
   )
 }
