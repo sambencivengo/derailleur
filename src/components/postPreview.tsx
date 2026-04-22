@@ -1,8 +1,8 @@
 'use client';
 import Link from 'next/link';
 import moment from 'moment';
-import { Card, CardHeader, CardTitle, CardDescription, CardFooter, Badge, Button } from '~/components/ui';
-import { PostForViewer, Tag, UserAndSession } from '~/types';
+import { Card, CardHeader, CardTitle, CardDescription, CardFooter, Button } from '~/components/ui';
+import { PostForViewer, UserAndSession } from '~/types';
 import { Heart } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { PostCategoryTag } from '~/components/postCategoryTag';
@@ -36,8 +36,8 @@ export function PostPreview({ post, user }: PostPreviewProps) {
 
   return (
     <Card className="w-full flex flex-col">
-      <div className="w-full flex justify-between flex-row">
-        <CardHeader className="h-auto p-3">
+      <div className="w-full flex justify-between flex-row ">
+        <CardHeader className="h-auto">
           <div className="flex flex-col gap-2">
             <CardTitle className="text-base line-clamp-2">
               <Link className="hover:text-primary" href={`/post/${id}`}>

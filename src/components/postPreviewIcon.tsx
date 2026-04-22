@@ -41,13 +41,13 @@ function renderThumbnailImage(postId: string, thumbnail: string | null, rideWith
   } else if (rideWithGPSLink) {
     return (
       <PostLinkWrapper postId={postId}>
-        <Map size={40} strokeWidth={1} className="px-3 w-[70px] h-[70px] hover:text-primary" />
+        <Map size={30} strokeWidth={1} className="px-3 w-[60px] h-[60px] hover:text-primary" />
       </PostLinkWrapper>
     );
   } else {
     return (
       <PostLinkWrapper postId={postId}>
-        <Text size={40} strokeWidth={1} className="px-3 w-[70px] h-[70px] hover:text-primary" />
+        <Text size={30} strokeWidth={1} className="px-3 w-[60px] h-[60px] hover:text-primary" />
       </PostLinkWrapper>
     );
   }
