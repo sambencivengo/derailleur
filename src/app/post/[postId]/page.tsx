@@ -1,7 +1,4 @@
 import { Suspense } from 'react';
-import { MainLayout } from '~/components/layouts/mainLayout';
-import { SideBarButtons } from '~/components/sideBarButtons';
-import { SideBarLayout } from '~/components/layouts/sideLayout';
 import { PostPageContent } from './postPageContent';
 import { PostPageSkeleton } from './postPageSkeleton';
 
@@ -15,13 +12,8 @@ export default async function Page(props: { params: Promise<{ postId: string }> 
   const { postId } = params;
 
   return (
-    <MainLayout>
-      <SideBarLayout side="left">
-        <SideBarButtons />
-      </SideBarLayout>
-      <Suspense fallback={<PostPageSkeleton />}>
-        <PostPageContent postId={postId} />
-      </Suspense>
-    </MainLayout>
+    <Suspense fallback={<PostPageSkeleton />}>
+      <PostPageContent postId={postId} />
+    </Suspense>
   );
 }

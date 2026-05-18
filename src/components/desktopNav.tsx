@@ -2,7 +2,6 @@
 import Link from 'next/link';
 import { ToggleDarkModeButton } from '~/components/toggleDarkModeButton';
 import { LogOutButton } from '~/components/logOutButton';
-import { NewPostLoginDialog } from '~/components/newPostLoginDialog';
 import { Button } from '~/components/ui';
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
 import { UserProfileButton } from '~/components/userProfileButton';
@@ -16,17 +15,13 @@ interface DesktopNavProps {
 export function DesktopNav({ user }: DesktopNavProps) {
   const { isOpen, setIsOpen, close } = useMenuState();
 
+  const newPostOrLoginLink = user === null ? "/login" : "/post/new";
   return (
     <div className="hidden md:flex items-center gap-3">
-      {user !== null ? (
-        <Link href="/post/new">
-          <Button size={'sm'}>New Post</Button>
-        </Link>
-      ) : (
-        <NewPostLoginDialog>
-          <Button size={'sm'}>New Post</Button>
-        </NewPostLoginDialog>
-      )}
+      <Link href={newPostOrLoginLink}>
+        <Button size={'sm'} onClick={() => console.log("clicked", newPostOrLoginLink)}>New Post</Button>
+      </Link>
+
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <MenuButton />

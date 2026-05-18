@@ -1,11 +1,15 @@
 import { MainLayout } from '~/components/layouts/mainLayout';
+import { SideBarButtons } from '~/components/sideBarButtons';
+import { SideBarLayout } from '~/components/layouts/sideLayout';
+
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <MainLayout>
-      {/* <div className="left-layout"></div> */}
-      <div className="w-full">{children}</div>
-      {/* <div className="right-layout"></div> */}
+      <SideBarLayout side="left">
+        <SideBarButtons />
+      </SideBarLayout>
+      {children}
     </MainLayout>
   );
 }
