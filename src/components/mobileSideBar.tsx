@@ -4,7 +4,7 @@ import { SideBarButtons } from '~/components/sideBarButtons';
 import { ToggleDarkModeButton } from '~/components/toggleDarkModeButton';
 import { SheetTrigger, SheetContent, Sheet } from '~/components/ui';
 
-export async function MobileSideBarButtons() {
+export async function MobileSideBar() {
   return (
     <div className="flex md:hidden pr-2 gap-2">
       <Sheet>
